@@ -39,12 +39,14 @@ export default function VisitsPage() {
   }
 
   if (isError) {
+    // The API interceptor rejects with an RFC 7807 Problem when one is available.
+    const problem = error as unknown as { title?: string };
     return (
       <Alert
         severity="error"
         action={<Button color="inherit" size="small" onClick={() => refetch()}>Retry</Button>}
       >
-        Could not load visits{('title' in (error as object)) ? `: ${(error as { title: string }).title}` : ''}.
+        Could not load visits{problem.title ? `: ${problem.title}` : ''}.
       </Alert>
     );
   }

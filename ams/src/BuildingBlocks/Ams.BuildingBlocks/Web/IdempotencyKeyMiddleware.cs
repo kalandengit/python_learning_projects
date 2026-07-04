@@ -56,7 +56,7 @@ public sealed class IdempotencyKeyMiddleware(
             }
 
             logger.LogInformation("Idempotent replay for key {IdempotencyKey}", key);
-            context.Response.StatusCode = int.Parse(stored["status"]);
+            context.Response.StatusCode = int.Parse(stored["status"], System.Globalization.CultureInfo.InvariantCulture);
             context.Response.ContentType = "application/json";
             context.Response.Headers["Idempotency-Replayed"] = "true";
             await context.Response.WriteAsync(stored["body"]);

@@ -28,8 +28,8 @@ public sealed class ValidationBehavior<TRequest, TResponse>(
                 throw new ValidationException(failures);
         }
 
-        return await next(cancellationToken);
+        return await next();
     }
 }
 
-// VERIFY: RequestHandlerDelegate signature (with/without CancellationToken) changed across MediatR 12.x minors — align with the pinned version.
+// VERIFY: RequestHandlerDelegate takes no args in MediatR 12.4.x; newer majors add a CancellationToken overload.

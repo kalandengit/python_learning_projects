@@ -38,13 +38,13 @@ public sealed class RevokeBadgeHandler(
     ILogger<RevokeBadgeHandler> logger)
     : IRequestHandler<RevokeBadgeCommand, RevokeBadgeResult>
 {
-    public async Task<RevokeBadgeResult> Handle(RevokeBadgeCommand command, CancellationToken ct)
+    public async Task<RevokeBadgeResult> Handle(RevokeBadgeCommand command, CancellationToken cancellationToken)
     {
-        var badge = await repository.LoadAsync(command.BadgeId, ct)
+        var badge = await repository.LoadAsync(command.BadgeId, cancellationToken)
             ?? throw new BadgeNotFoundException(command.BadgeId);
 
         badge.Revoke(command.Reason);
-        await repository.AppendAsync([badge], command.Actor, ct);
+        await repository.AppendAsync([badge], command.Actor, cancellationToken);
 
         logger.LogWarning(
             "Badge revoked {BadgeId} reason {Reason} by {Actor}",

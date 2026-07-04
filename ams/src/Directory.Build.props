@@ -7,6 +7,9 @@
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
     <EnableNETAnalyzers>true</EnableNETAnalyzers>
     <AnalysisLevel>latest-recommended</AnalysisLevel>
+    <!-- CA1848/CA1873 (LoggerMessage source-gen) intentionally advisory-only:
+         hot-path logging is measured via the Section-14 perf budgets instead. -->
+    <NoWarn>$(NoWarn);CA1848;CA1873</NoWarn>
     <InvariantGlobalization>false</InvariantGlobalization>
     <Authors>AMS Platform Team</Authors>
   </PropertyGroup>

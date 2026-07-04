@@ -1,0 +1,12 @@
+{
+  "version": 2,
+  "dgSpecHash": "ktI/G8uSJus=",
+  "success": true,
+  "projectFilePath": "/home/user/python_learning_projects/ams/src/Services/Badge/Ams.Badge.Domain/Ams.Badge.Domain.csproj",
+  "expectedPackageFiles": [
+    "/root/.nuget/packages/microsoft.extensions.logging.abstractions/6.0.0/microsoft.extensions.logging.abstractions.6.0.0.nupkg.sha512",
+    "/root/.nuget/packages/pipelines.sockets.unofficial/2.2.8/pipelines.sockets.unofficial.2.2.8.nupkg.sha512",
+    "/root/.nuget/packages/stackexchange.redis/2.8.16/stackexchange.redis.2.8.16.nupkg.sha512"
+  ],
+  "logs": []
+}

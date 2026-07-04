@@ -11,7 +11,7 @@ namespace Ams.Badge.Infrastructure.Signing;
 /// a new key version simply becomes "current" — old QR codes verify against
 /// their recorded key id until they expire.
 /// </summary>
-public sealed class KeyVaultQrSigner : IQrSigner
+public sealed class KeyVaultQrSigner : IQrSigner, IDisposable
 {
     private readonly KeyClient _keyClient;
     private readonly string _keyName;
@@ -51,6 +51,8 @@ public sealed class KeyVaultQrSigner : IQrSigner
             _refreshLock.Release();
         }
     }
+
+    public void Dispose() => _refreshLock.Dispose();
 }
 
 // VERIFY: requires Azure.Security.KeyVault.Keys package + "Key Vault Crypto User" role for the workload identity.

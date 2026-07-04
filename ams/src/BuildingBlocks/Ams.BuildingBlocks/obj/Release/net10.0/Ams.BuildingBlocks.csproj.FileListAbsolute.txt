@@ -1,0 +1,12 @@
+/home/user/python_learning_projects/ams/src/BuildingBlocks/Ams.BuildingBlocks/obj/Release/net10.0/Ams.BuildingBlocks.csproj.AssemblyReference.cache
+/home/user/python_learning_projects/ams/src/BuildingBlocks/Ams.BuildingBlocks/obj/Release/net10.0/Ams.BuildingBlocks.GeneratedMSBuildEditorConfig.editorconfig
+/home/user/python_learning_projects/ams/src/BuildingBlocks/Ams.BuildingBlocks/obj/Release/net10.0/Ams.BuildingBlocks.AssemblyInfoInputs.cache
+/home/user/python_learning_projects/ams/src/BuildingBlocks/Ams.BuildingBlocks/obj/Release/net10.0/Ams.BuildingBlocks.AssemblyInfo.cs
+/home/user/python_learning_projects/ams/src/BuildingBlocks/Ams.BuildingBlocks/obj/Release/net10.0/Ams.BuildingBlocks.csproj.CoreCompileInputs.cache
+/home/user/python_learning_projects/ams/src/BuildingBlocks/Ams.BuildingBlocks/bin/Release/net10.0/Ams.BuildingBlocks.deps.json
+/home/user/python_learning_projects/ams/src/BuildingBlocks/Ams.BuildingBlocks/bin/Release/net10.0/Ams.BuildingBlocks.dll
+/home/user/python_learning_projects/ams/src/BuildingBlocks/Ams.BuildingBlocks/bin/Release/net10.0/Ams.BuildingBlocks.pdb
+/home/user/python_learning_projects/ams/src/BuildingBlocks/Ams.BuildingBlocks/obj/Release/net10.0/Ams.BuildingBlocks.dll
+/home/user/python_learning_projects/ams/src/BuildingBlocks/Ams.BuildingBlocks/obj/Release/net10.0/refint/Ams.BuildingBlocks.dll
+/home/user/python_learning_projects/ams/src/BuildingBlocks/Ams.BuildingBlocks/obj/Release/net10.0/Ams.BuildingBlocks.pdb
+/home/user/python_learning_projects/ams/src/BuildingBlocks/Ams.BuildingBlocks/obj/Release/net10.0/ref/Ams.BuildingBlocks.dll

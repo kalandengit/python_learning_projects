@@ -123,9 +123,9 @@ public sealed class BadgeAggregate : AggregateRoot<Guid>
 
     // ---- Apply (state mutation only; shared by replay and new commands) ------
 
-    protected override void Apply(IDomainEvent @event)
+    protected override void Apply(IDomainEvent domainEvent)
     {
-        switch (@event)
+        switch (domainEvent)
         {
             case BadgeRequested e:
                 Id = e.BadgeId;
@@ -162,7 +162,7 @@ public sealed class BadgeAggregate : AggregateRoot<Guid>
                 State = BadgeState.Returned;
                 break;
             default:
-                throw new InvalidOperationException($"Unhandled event {@event.GetType().Name}");
+                throw new InvalidOperationException($"Unhandled event {domainEvent.GetType().Name}");
         }
     }
 

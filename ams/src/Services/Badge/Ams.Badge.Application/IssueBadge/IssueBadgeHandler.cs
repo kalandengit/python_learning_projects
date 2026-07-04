@@ -15,7 +15,7 @@ public sealed class IssueBadgeHandler(
     ILogger<IssueBadgeHandler> logger)
     : IRequestHandler<IssueBadgeCommand, IssueBadgeResult>
 {
-    public async Task<IssueBadgeResult> Handle(IssueBadgeCommand command, CancellationToken ct)
+    public async Task<IssueBadgeResult> Handle(IssueBadgeCommand command, CancellationToken cancellationToken)
     {
         var badgeId = Guid.CreateVersion7();
         var validity = new ValidityWindow(command.ValidFrom, command.ValidUntil);
@@ -25,11 +25,11 @@ public sealed class IssueBadgeHandler(
 
         string? qrKeyId = null;
         if (command.BadgeType == BadgeType.Qr)
-            qrKeyId = await qrSigner.CurrentKeyIdAsync(ct); // FR-024: signed QR, rotating keys
+            qrKeyId = await qrSigner.CurrentKeyIdAsync(cancellationToken); // FR-024: signed QR, rotating keys
 
         badge.Issue(qrKeyId);
 
-        await repository.AppendAsync([badge], command.Actor, ct);
+        await repository.AppendAsync([badge], command.Actor, cancellationToken);
 
         logger.LogInformation(
             "Badge issued {BadgeId} for cardholder {CardholderId} type {BadgeType} validUntil {ValidUntil}",

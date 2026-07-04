@@ -1,0 +1,11 @@
+{
+  "version": 2,
+  "dgSpecHash": "JnwgjDvpqg0=",
+  "success": true,
+  "projectFilePath": "/home/user/python_learning_projects/ams/src/BuildingBlocks/Ams.BuildingBlocks/Ams.BuildingBlocks.csproj",
+  "expectedPackageFiles": [
+    "/root/.nuget/packages/pipelines.sockets.unofficial/2.2.8/pipelines.sockets.unofficial.2.2.8.nupkg.sha512",
+    "/root/.nuget/packages/stackexchange.redis/2.8.16/stackexchange.redis.2.8.16.nupkg.sha512"
+  ],
+  "logs": []
+}

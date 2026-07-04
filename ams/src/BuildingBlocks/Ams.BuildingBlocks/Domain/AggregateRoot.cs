@@ -24,7 +24,7 @@ public abstract class AggregateRoot<TId> where TId : notnull
     }
 
     /// <summary>Mutates state from an event. Must be side-effect free.</summary>
-    protected abstract void Apply(IDomainEvent @event);
+    protected abstract void Apply(IDomainEvent domainEvent);
 
     /// <summary>Rehydrates the aggregate from its committed history.</summary>
     public void LoadFromHistory(IEnumerable<IDomainEvent> history)

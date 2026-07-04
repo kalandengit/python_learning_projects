@@ -1,0 +1,15 @@
+/home/user/python_learning_projects/ams/src/Services/Badge/Ams.Badge.Domain/bin/Release/net10.0/Ams.Badge.Domain.deps.json
+/home/user/python_learning_projects/ams/src/Services/Badge/Ams.Badge.Domain/bin/Release/net10.0/Ams.Badge.Domain.dll
+/home/user/python_learning_projects/ams/src/Services/Badge/Ams.Badge.Domain/bin/Release/net10.0/Ams.Badge.Domain.pdb
+/home/user/python_learning_projects/ams/src/Services/Badge/Ams.Badge.Domain/bin/Release/net10.0/Ams.BuildingBlocks.dll
+/home/user/python_learning_projects/ams/src/Services/Badge/Ams.Badge.Domain/bin/Release/net10.0/Ams.BuildingBlocks.pdb
+/home/user/python_learning_projects/ams/src/Services/Badge/Ams.Badge.Domain/obj/Release/net10.0/Ams.Badge.Domain.csproj.AssemblyReference.cache
+/home/user/python_learning_projects/ams/src/Services/Badge/Ams.Badge.Domain/obj/Release/net10.0/Ams.Badge.Domain.GeneratedMSBuildEditorConfig.editorconfig
+/home/user/python_learning_projects/ams/src/Services/Badge/Ams.Badge.Domain/obj/Release/net10.0/Ams.Badge.Domain.AssemblyInfoInputs.cache
+/home/user/python_learning_projects/ams/src/Services/Badge/Ams.Badge.Domain/obj/Release/net10.0/Ams.Badge.Domain.AssemblyInfo.cs
+/home/user/python_learning_projects/ams/src/Services/Badge/Ams.Badge.Domain/obj/Release/net10.0/Ams.Badge.Domain.csproj.CoreCompileInputs.cache
+/home/user/python_learning_projects/ams/src/Services/Badge/Ams.Badge.Domain/obj/Release/net10.0/Ams.Badg.30C7BB2B.Up2Date
+/home/user/python_learning_projects/ams/src/Services/Badge/Ams.Badge.Domain/obj/Release/net10.0/Ams.Badge.Domain.dll
+/home/user/python_learning_projects/ams/src/Services/Badge/Ams.Badge.Domain/obj/Release/net10.0/refint/Ams.Badge.Domain.dll
+/home/user/python_learning_projects/ams/src/Services/Badge/Ams.Badge.Domain/obj/Release/net10.0/Ams.Badge.Domain.pdb
+/home/user/python_learning_projects/ams/src/Services/Badge/Ams.Badge.Domain/obj/Release/net10.0/ref/Ams.Badge.Domain.dll
