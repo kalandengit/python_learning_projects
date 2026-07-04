@@ -1,0 +1,51 @@
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.0.31903.59
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ams.BuildingBlocks", "BuildingBlocks\Ams.BuildingBlocks\Ams.BuildingBlocks.csproj", "{1A6C6BF1-0001-4B7A-9A10-000000000001}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ams.Badge.Domain", "Services\Badge\Ams.Badge.Domain\Ams.Badge.Domain.csproj", "{1A6C6BF1-0002-4B7A-9A10-000000000002}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ams.Badge.Application", "Services\Badge\Ams.Badge.Application\Ams.Badge.Application.csproj", "{1A6C6BF1-0003-4B7A-9A10-000000000003}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ams.Badge.Infrastructure", "Services\Badge\Ams.Badge.Infrastructure\Ams.Badge.Infrastructure.csproj", "{1A6C6BF1-0004-4B7A-9A10-000000000004}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ams.Badge.Api", "Services\Badge\Ams.Badge.Api\Ams.Badge.Api.csproj", "{1A6C6BF1-0005-4B7A-9A10-000000000005}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ams.Badge.Tests", "Services\Badge\Ams.Badge.Tests\Ams.Badge.Tests.csproj", "{1A6C6BF1-0006-4B7A-9A10-000000000006}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{1A6C6BF1-0001-4B7A-9A10-000000000001}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1A6C6BF1-0001-4B7A-9A10-000000000001}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1A6C6BF1-0001-4B7A-9A10-000000000001}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1A6C6BF1-0001-4B7A-9A10-000000000001}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1A6C6BF1-0002-4B7A-9A10-000000000002}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1A6C6BF1-0002-4B7A-9A10-000000000002}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1A6C6BF1-0002-4B7A-9A10-000000000002}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1A6C6BF1-0002-4B7A-9A10-000000000002}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1A6C6BF1-0003-4B7A-9A10-000000000003}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1A6C6BF1-0003-4B7A-9A10-000000000003}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1A6C6BF1-0003-4B7A-9A10-000000000003}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1A6C6BF1-0003-4B7A-9A10-000000000003}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1A6C6BF1-0004-4B7A-9A10-000000000004}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1A6C6BF1-0004-4B7A-9A10-000000000004}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1A6C6BF1-0004-4B7A-9A10-000000000004}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1A6C6BF1-0004-4B7A-9A10-000000000004}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1A6C6BF1-0005-4B7A-9A10-000000000005}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1A6C6BF1-0005-4B7A-9A10-000000000005}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1A6C6BF1-0005-4B7A-9A10-000000000005}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1A6C6BF1-0005-4B7A-9A10-000000000005}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1A6C6BF1-0006-4B7A-9A10-000000000006}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1A6C6BF1-0006-4B7A-9A10-000000000006}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1A6C6BF1-0006-4B7A-9A10-000000000006}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1A6C6BF1-0006-4B7A-9A10-000000000006}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

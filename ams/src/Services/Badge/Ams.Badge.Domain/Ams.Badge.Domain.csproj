@@ -1,0 +1,9 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <RootNamespace>Ams.Badge.Domain</RootNamespace>
+  </PropertyGroup>
+  <ItemGroup>
+    <!-- Domain references ONLY the tiny shared kernel (ADR-013) — no frameworks. -->
+    <ProjectReference Include="..\..\..\BuildingBlocks\Ams.BuildingBlocks\Ams.BuildingBlocks.csproj" />
+  </ItemGroup>
+</Project>

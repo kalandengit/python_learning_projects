@@ -1,0 +1,1164 @@
+openapi: 3.1.0
+info:
+  title: Enterprise Access Management System (AMS) API
+  version: 1.0.0
+  description: >
+    Unified API for visitor management, badge lifecycle, physical access validation,
+    approvals, occupancy/evacuation, and audit evidence. Errors follow RFC 7807.
+    All POST/PATCH operations require an Idempotency-Key header. Collections use
+    cursor pagination (page[size], page[after], page[before]).
+  contact:
+    name: AMS Platform Team
+    email: ams-platform@example.com
+  license:
+    name: Proprietary
+servers:
+  - url: https://api.ams.example.com/v1
+    description: Production (Front Door -> APIM)
+  - url: https://api.uat.ams.example.com/v1
+    description: UAT
+
+security:
+  - oauth2: []
+
+tags:
+  - name: Visitors
+  - name: Visits
+  - name: Badges
+  - name: Validation
+  - name: AccessRequests
+  - name: Sites
+  - name: Evacuations
+  - name: Audit
+  - name: Webhooks
+
+paths:
+  /visitors:
+    post:
+      tags: [Visitors]
+      operationId: registerVisit
+      summary: Pre-register a visitor visit
+      security:
+        - oauth2: [ams.visits.write]
+      parameters:
+        - $ref: '#/components/parameters/IdempotencyKey'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: { $ref: '#/components/schemas/VisitRegistration' }
+            examples:
+              standard:
+                value:
+                  visitor: { fullName: "Aisha Rahman", email: "aisha@contoso-hvac.example", company: "Contoso HVAC" }
+                  hostId: "0197a1b2-3c4d-7e5f-8a9b-0c1d2e3f4a5b"
+                  siteId: "0197a1b2-9999-7aaa-8bbb-0ccc1ddd2eee"
+                  purpose: "Quarterly HVAC maintenance"
+                  window: { startsAt: "2026-07-10T08:00:00Z", endsAt: "2026-07-10T16:00:00Z" }
+      responses:
+        '201':
+          description: Visit created
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/Visit' }
+        '401': { $ref: '#/components/responses/Unauthorized' }
+        '403': { $ref: '#/components/responses/Forbidden' }
+        '422': { $ref: '#/components/responses/ValidationProblem' }
+    get:
+      tags: [Visitors]
+      operationId: listVisits
+      summary: List visits (cursor-paged)
+      security:
+        - oauth2: [ams.visits.read]
+      parameters:
+        - $ref: '#/components/parameters/PageSize'
+        - $ref: '#/components/parameters/PageAfter'
+        - $ref: '#/components/parameters/PageBefore'
+        - name: filter[siteId]
+          in: query
+          schema: { type: string, format: uuid }
+        - name: filter[state]
+          in: query
+          schema: { type: string, enum: [DRAFT, PENDING_APPROVAL, APPROVED, CHECKED_IN, CHECKED_OUT, CANCELLED, EXPIRED, SECURITY_REVIEW] }
+        - name: filter[hostId]
+          in: query
+          schema: { type: string, format: uuid }
+        - name: sort
+          in: query
+          description: "Sortable: createdAt, window.startsAt. Prefix '-' for descending."
+          schema: { type: string, default: "-createdAt" }
+      responses:
+        '200':
+          description: Page of visits
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/VisitPage' }
+        '401': { $ref: '#/components/responses/Unauthorized' }
+
+  /visitors/{visitId}:
+    parameters:
+      - $ref: '#/components/parameters/VisitId'
+    get:
+      tags: [Visitors]
+      operationId: getVisit
+      summary: Visit detail
+      security:
+        - oauth2: [ams.visits.read]
+      responses:
+        '200':
+          description: Visit
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/Visit' }
+        '404': { $ref: '#/components/responses/NotFound' }
+    patch:
+      tags: [Visitors]
+      operationId: amendVisit
+      summary: Amend a pre-registration (before check-in)
+      security:
+        - oauth2: [ams.visits.write]
+      parameters:
+        - $ref: '#/components/parameters/IdempotencyKey'
+        - $ref: '#/components/parameters/IfMatch'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: { $ref: '#/components/schemas/VisitAmendment' }
+      responses:
+        '200':
+          description: Amended visit
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/Visit' }
+        '409': { $ref: '#/components/responses/Conflict' }
+        '412': { $ref: '#/components/responses/PreconditionFailed' }
+        '422': { $ref: '#/components/responses/ValidationProblem' }
+
+  /visits/{visitId}/check-in:
+    parameters:
+      - $ref: '#/components/parameters/VisitId'
+    post:
+      tags: [Visits]
+      operationId: checkInVisitor
+      summary: Check in a visitor (kiosk QR scan or reception-assisted)
+      security:
+        - oauth2: [ams.visits.checkin]
+      parameters:
+        - $ref: '#/components/parameters/IdempotencyKey'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: { $ref: '#/components/schemas/CheckInRequest' }
+            examples:
+              kiosk:
+                value: { method: KIOSK_QR, qrToken: "eyJraWQiOiJxci0yMDI2LTA3In0...", documentsSigned: ["NDA-v4", "SAFETY-BRIEF-v2"] }
+      responses:
+        '200':
+          description: Checked in; badge reference returned
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/CheckInResult' }
+        '409': { $ref: '#/components/responses/Conflict' }
+        '422': { $ref: '#/components/responses/ValidationProblem' }
+
+  /visits/{visitId}/check-out:
+    parameters:
+      - $ref: '#/components/parameters/VisitId'
+    post:
+      tags: [Visits]
+      operationId: checkOutVisitor
+      summary: Check out a visitor
+      security:
+        - oauth2: [ams.visits.checkin]
+      parameters:
+        - $ref: '#/components/parameters/IdempotencyKey'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [method]
+              properties:
+                method: { type: string, enum: [KIOSK_QR, BADGE_DROPBOX, RECEPTION, HOST, AUTO_EXPIRY] }
+      responses:
+        '200':
+          description: Checked out
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/Visit' }
+        '409': { $ref: '#/components/responses/Conflict' }
+
+  /visits/{visitId}/cancel:
+    parameters:
+      - $ref: '#/components/parameters/VisitId'
+    post:
+      tags: [Visits]
+      operationId: cancelVisit
+      summary: Cancel a visit before check-in
+      security:
+        - oauth2: [ams.visits.write]
+      parameters:
+        - $ref: '#/components/parameters/IdempotencyKey'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [reason]
+              properties:
+                reason: { type: string, maxLength: 500 }
+      responses:
+        '200':
+          description: Cancelled
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/Visit' }
+        '409': { $ref: '#/components/responses/Conflict' }
+
+  /badges:
+    post:
+      tags: [Badges]
+      operationId: issueBadge
+      summary: Request and issue a badge for a cardholder
+      security:
+        - oauth2: [ams.badges.write]
+      parameters:
+        - $ref: '#/components/parameters/IdempotencyKey'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: { $ref: '#/components/schemas/BadgeIssueRequest' }
+      responses:
+        '201':
+          description: Badge issued
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/Badge' }
+        '409': { $ref: '#/components/responses/Conflict' }
+        '422': { $ref: '#/components/responses/ValidationProblem' }
+    get:
+      tags: [Badges]
+      operationId: listBadges
+      summary: List badges (cursor-paged)
+      security:
+        - oauth2: [ams.badges.read]
+      parameters:
+        - $ref: '#/components/parameters/PageSize'
+        - $ref: '#/components/parameters/PageAfter'
+        - $ref: '#/components/parameters/PageBefore'
+        - name: filter[cardholderId]
+          in: query
+          schema: { type: string, format: uuid }
+        - name: filter[state]
+          in: query
+          schema: { type: string, enum: [REQUESTED, ISSUED, ACTIVE, SUSPENDED, REVOKED, EXPIRED, LOST, RETURNED] }
+        - name: sort
+          in: query
+          schema: { type: string, default: "-issuedAt" }
+      responses:
+        '200':
+          description: Page of badges
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/BadgePage' }
+
+  /badges/{badgeId}:
+    parameters:
+      - $ref: '#/components/parameters/BadgeId'
+    get:
+      tags: [Badges]
+      operationId: getBadge
+      summary: Badge current state
+      security:
+        - oauth2: [ams.badges.read]
+      responses:
+        '200':
+          description: Badge
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/Badge' }
+        '404': { $ref: '#/components/responses/NotFound' }
+
+  /badges/{badgeId}/activate:
+    parameters:
+      - $ref: '#/components/parameters/BadgeId'
+    post:
+      tags: [Badges]
+      operationId: activateBadge
+      summary: Activate an issued badge
+      security:
+        - oauth2: [ams.badges.write]
+      parameters:
+        - $ref: '#/components/parameters/IdempotencyKey'
+      responses:
+        '200':
+          description: Activated
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/Badge' }
+        '409': { $ref: '#/components/responses/Conflict' }
+
+  /badges/{badgeId}/suspend:
+    parameters:
+      - $ref: '#/components/parameters/BadgeId'
+    post:
+      tags: [Badges]
+      operationId: suspendBadge
+      summary: Suspend a badge
+      security:
+        - oauth2: [ams.badges.write]
+      parameters:
+        - $ref: '#/components/parameters/IdempotencyKey'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: { $ref: '#/components/schemas/ReasonRequest' }
+      responses:
+        '200':
+          description: Suspended
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/Badge' }
+        '409': { $ref: '#/components/responses/Conflict' }
+
+  /badges/{badgeId}/revoke:
+    parameters:
+      - $ref: '#/components/parameters/BadgeId'
+    post:
+      tags: [Badges]
+      operationId: revokeBadge
+      summary: Revoke a badge (propagates to edges in <= 5 s P99)
+      security:
+        - oauth2: [ams.badges.admin]
+      parameters:
+        - $ref: '#/components/parameters/IdempotencyKey'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: { $ref: '#/components/schemas/ReasonRequest' }
+            examples:
+              lost:
+                value: { reason: "REPORTED_LOST", comment: "Cardholder reported loss via self-service" }
+      responses:
+        '200':
+          description: Revoked
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/Badge' }
+        '409': { $ref: '#/components/responses/Conflict' }
+
+  /badges/{badgeId}/replace:
+    parameters:
+      - $ref: '#/components/parameters/BadgeId'
+    post:
+      tags: [Badges]
+      operationId: replaceBadge
+      summary: Atomically revoke this badge and issue a replacement
+      security:
+        - oauth2: [ams.badges.write]
+      parameters:
+        - $ref: '#/components/parameters/IdempotencyKey'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [reason, newBadgeType]
+              properties:
+                reason: { type: string, enum: [REPORTED_LOST, DAMAGED, NAME_CHANGE, UPGRADE] }
+                newBadgeType: { type: string, enum: [RFID, QR, TEMPORARY_RFID] }
+      responses:
+        '201':
+          description: Replacement issued; old badge revoked in the same transaction
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/BadgeReplacement' }
+        '409': { $ref: '#/components/responses/Conflict' }
+
+  /badge-validations:
+    post:
+      tags: [Validation]
+      operationId: validateBadge
+      summary: Validate a badge presentation at a reader (P95 < 200 ms)
+      description: >
+        Called by edge gateways. Returns permit/deny with a reason code and the policy
+        version evaluated. Offline edges validate locally and upload decisions on reconnect.
+      security:
+        - oauth2: [ams.validation.execute]
+      parameters:
+        - $ref: '#/components/parameters/IdempotencyKey'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: { $ref: '#/components/schemas/ValidationRequest' }
+            examples:
+              rfid:
+                value: { credentialType: RFID, credentialReference: "a3f9c2...", readerId: "0197aaaa-1111-7bbb-8ccc-0ddd2eee3fff", direction: ENTRY, presentedAt: "2026-07-04T07:58:12Z" }
+      responses:
+        '200':
+          description: Decision (both permit and deny return 200 - the decision is the resource)
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/ValidationDecision' }
+        '422': { $ref: '#/components/responses/ValidationProblem' }
+
+  /access-requests:
+    post:
+      tags: [AccessRequests]
+      operationId: createAccessRequest
+      summary: Request access to a zone or access profile
+      security:
+        - oauth2: [ams.access.request]
+      parameters:
+        - $ref: '#/components/parameters/IdempotencyKey'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: { $ref: '#/components/schemas/AccessRequestCreate' }
+      responses:
+        '201':
+          description: Request created and routed
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/AccessRequest' }
+        '422': { $ref: '#/components/responses/ValidationProblem' }
+    get:
+      tags: [AccessRequests]
+      operationId: listAccessRequests
+      summary: List access requests (cursor-paged)
+      security:
+        - oauth2: [ams.access.read]
+      parameters:
+        - $ref: '#/components/parameters/PageSize'
+        - $ref: '#/components/parameters/PageAfter'
+        - $ref: '#/components/parameters/PageBefore'
+        - name: filter[state]
+          in: query
+          schema: { type: string, enum: [PENDING, ESCALATED, APPROVED, REJECTED, EXPIRED, WITHDRAWN] }
+        - name: filter[approverId]
+          in: query
+          schema: { type: string, format: uuid }
+      responses:
+        '200':
+          description: Page of requests
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/AccessRequestPage' }
+
+  /access-requests/{requestId}:
+    parameters:
+      - $ref: '#/components/parameters/RequestId'
+    get:
+      tags: [AccessRequests]
+      operationId: getAccessRequest
+      summary: Access request detail with stage history
+      security:
+        - oauth2: [ams.access.read]
+      responses:
+        '200':
+          description: Request
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/AccessRequest' }
+        '404': { $ref: '#/components/responses/NotFound' }
+
+  /access-requests/{requestId}/approve:
+    parameters:
+      - $ref: '#/components/parameters/RequestId'
+    post:
+      tags: [AccessRequests]
+      operationId: approveAccessRequest
+      summary: Approve the current stage
+      security:
+        - oauth2: [ams.access.approve]
+      parameters:
+        - $ref: '#/components/parameters/IdempotencyKey'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                comment: { type: string, maxLength: 1000 }
+      responses:
+        '200':
+          description: Stage approved
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/AccessRequest' }
+        '403': { $ref: '#/components/responses/Forbidden' }
+        '409': { $ref: '#/components/responses/Conflict' }
+
+  /access-requests/{requestId}/reject:
+    parameters:
+      - $ref: '#/components/parameters/RequestId'
+    post:
+      tags: [AccessRequests]
+      operationId: rejectAccessRequest
+      summary: Reject the request
+      security:
+        - oauth2: [ams.access.approve]
+      parameters:
+        - $ref: '#/components/parameters/IdempotencyKey'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: { $ref: '#/components/schemas/ReasonRequest' }
+      responses:
+        '200':
+          description: Rejected
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/AccessRequest' }
+        '409': { $ref: '#/components/responses/Conflict' }
+
+  /access-requests/{requestId}/delegate:
+    parameters:
+      - $ref: '#/components/parameters/RequestId'
+    post:
+      tags: [AccessRequests]
+      operationId: delegateAccessRequest
+      summary: Delegate this approval to a colleague (no re-delegation)
+      security:
+        - oauth2: [ams.access.approve]
+      parameters:
+        - $ref: '#/components/parameters/IdempotencyKey'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [delegateId, until]
+              properties:
+                delegateId: { type: string, format: uuid }
+                until: { type: string, format: date-time }
+                comment: { type: string, maxLength: 500 }
+      responses:
+        '200':
+          description: Delegated
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/AccessRequest' }
+        '422': { $ref: '#/components/responses/ValidationProblem' }
+
+  /sites:
+    get:
+      tags: [Sites]
+      operationId: listSites
+      summary: List sites (cursor-paged)
+      security:
+        - oauth2: [ams.sites.read]
+      parameters:
+        - $ref: '#/components/parameters/PageSize'
+        - $ref: '#/components/parameters/PageAfter'
+        - name: filter[region]
+          in: query
+          schema: { type: string }
+      responses:
+        '200':
+          description: Page of sites
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/SitePage' }
+
+  /sites/{siteId}/occupancy:
+    parameters:
+      - $ref: '#/components/parameters/SiteId'
+    get:
+      tags: [Sites]
+      operationId: getSiteOccupancy
+      summary: Real-time occupancy per zone (<= 5 s lag P95)
+      security:
+        - oauth2: [ams.occupancy.read]
+      responses:
+        '200':
+          description: Occupancy snapshot
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/OccupancySnapshot' }
+
+  /sites/{siteId}/evacuations:
+    parameters:
+      - $ref: '#/components/parameters/SiteId'
+    post:
+      tags: [Evacuations]
+      operationId: activateEvacuation
+      summary: Activate evacuation mode for a site (step-up auth required)
+      security:
+        - oauth2: [ams.evacuation.activate]
+      parameters:
+        - $ref: '#/components/parameters/IdempotencyKey'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [trigger]
+              properties:
+                trigger: { type: string, enum: [FIRE_ALARM, DRILL, SECURITY_INCIDENT, MANUAL] }
+                comment: { type: string, maxLength: 500 }
+      responses:
+        '201':
+          description: Evacuation activated; muster list generation started
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/Evacuation' }
+        '409': { $ref: '#/components/responses/Conflict' }
+
+  /evacuations/{evacuationId}/muster-report:
+    parameters:
+      - name: evacuationId
+        in: path
+        required: true
+        schema: { type: string, format: uuid }
+    get:
+      tags: [Evacuations]
+      operationId: getMusterReport
+      summary: Live muster status or final report
+      security:
+        - oauth2: [ams.evacuation.read]
+      responses:
+        '200':
+          description: Muster report
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/MusterReport' }
+
+  /audit-events:
+    get:
+      tags: [Audit]
+      operationId: listAuditEvents
+      summary: Query the immutable audit trail (ABAC-scoped, cursor-paged)
+      security:
+        - oauth2: [ams.audit.read]
+      parameters:
+        - $ref: '#/components/parameters/PageSize'
+        - $ref: '#/components/parameters/PageAfter'
+        - $ref: '#/components/parameters/PageBefore'
+        - name: filter[subjectId]
+          in: query
+          schema: { type: string, format: uuid }
+        - name: filter[action]
+          in: query
+          schema: { type: string }
+        - name: filter[occurredAfter]
+          in: query
+          schema: { type: string, format: date-time }
+        - name: filter[occurredBefore]
+          in: query
+          schema: { type: string, format: date-time }
+      responses:
+        '200':
+          description: Page of audit envelopes
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/AuditEventPage' }
+
+  /webhook-subscriptions:
+    post:
+      tags: [Webhooks]
+      operationId: createWebhookSubscription
+      summary: Subscribe an HTTPS endpoint to AMS events
+      security:
+        - oauth2: [ams.webhooks.manage]
+      parameters:
+        - $ref: '#/components/parameters/IdempotencyKey'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [url, events]
+              properties:
+                url: { type: string, format: uri, description: HTTPS only }
+                events:
+                  type: array
+                  items: { type: string, enum: [check-in.completed, badge.issued, badge.revoked] }
+                description: { type: string, maxLength: 200 }
+      responses:
+        '201':
+          description: Subscription created; signing secret returned once
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  subscriptionId: { type: string, format: uuid }
+                  signingSecret: { type: string, description: Shown once; store securely }
+
+webhooks:
+  check-in.completed:
+    post:
+      summary: A visitor completed check-in
+      requestBody:
+        content:
+          application/json:
+            schema: { $ref: '#/components/schemas/CheckInCompletedEvent' }
+      responses:
+        '200': { description: Acknowledged (2xx within 10 s or delivery is retried with backoff) }
+  badge.issued:
+    post:
+      summary: A badge was issued
+      requestBody:
+        content:
+          application/json:
+            schema: { $ref: '#/components/schemas/BadgeLifecycleEvent' }
+      responses:
+        '200': { description: Acknowledged }
+  badge.revoked:
+    post:
+      summary: A badge was revoked
+      requestBody:
+        content:
+          application/json:
+            schema: { $ref: '#/components/schemas/BadgeLifecycleEvent' }
+      responses:
+        '200': { description: Acknowledged }
+
+components:
+  securitySchemes:
+    oauth2:
+      type: oauth2
+      description: Microsoft Entra ID (OIDC). Humans use authorization-code + PKCE; services use client credentials.
+      flows:
+        authorizationCode:
+          authorizationUrl: https://login.microsoftonline.com/common/oauth2/v2.0/authorize
+          tokenUrl: https://login.microsoftonline.com/common/oauth2/v2.0/token
+          scopes:
+            ams.visits.read: Read visits
+            ams.visits.write: Create/amend visits
+            ams.visits.checkin: Check visitors in/out
+            ams.badges.read: Read badges
+            ams.badges.write: Issue/manage badges
+            ams.badges.admin: Revoke badges
+            ams.validation.execute: Execute badge validations (edge)
+            ams.access.request: Request access
+            ams.access.read: Read access requests
+            ams.access.approve: Approve/reject/delegate
+            ams.sites.read: Read sites
+            ams.occupancy.read: Read occupancy
+            ams.evacuation.activate: Activate evacuations
+            ams.evacuation.read: Read evacuation reports
+            ams.audit.read: Query audit trail
+            ams.webhooks.manage: Manage webhook subscriptions
+        clientCredentials:
+          tokenUrl: https://login.microsoftonline.com/common/oauth2/v2.0/token
+          scopes:
+            ams.validation.execute: Execute badge validations (edge)
+            ams.webhooks.manage: Manage webhook subscriptions
+
+  parameters:
+    IdempotencyKey:
+      name: Idempotency-Key
+      in: header
+      required: true
+      description: UUID per logical operation. Replays return the original response with Idempotency-Replayed true.
+      schema: { type: string, format: uuid }
+    IfMatch:
+      name: If-Match
+      in: header
+      required: false
+      description: ETag for optimistic concurrency; mismatch returns 412.
+      schema: { type: string }
+    PageSize:
+      name: page[size]
+      in: query
+      schema: { type: integer, minimum: 1, maximum: 200, default: 25 }
+    PageAfter:
+      name: page[after]
+      in: query
+      description: Opaque cursor; return items after this position.
+      schema: { type: string }
+    PageBefore:
+      name: page[before]
+      in: query
+      description: Opaque cursor; return items before this position.
+      schema: { type: string }
+    VisitId:
+      name: visitId
+      in: path
+      required: true
+      schema: { type: string, format: uuid }
+    BadgeId:
+      name: badgeId
+      in: path
+      required: true
+      schema: { type: string, format: uuid }
+    RequestId:
+      name: requestId
+      in: path
+      required: true
+      schema: { type: string, format: uuid }
+    SiteId:
+      name: siteId
+      in: path
+      required: true
+      schema: { type: string, format: uuid }
+
+  responses:
+    Unauthorized:
+      description: Missing/invalid token
+      content:
+        application/problem+json:
+          schema: { $ref: '#/components/schemas/Problem' }
+    Forbidden:
+      description: Authenticated but denied by RBAC/ABAC
+      content:
+        application/problem+json:
+          schema: { $ref: '#/components/schemas/Problem' }
+    NotFound:
+      description: Not found (or hidden by ABAC)
+      content:
+        application/problem+json:
+          schema: { $ref: '#/components/schemas/Problem' }
+    Conflict:
+      description: State conflict (invalid transition or concurrency)
+      content:
+        application/problem+json:
+          schema: { $ref: '#/components/schemas/Problem' }
+          examples:
+            invalidTransition:
+              value:
+                type: "urn:ams:badge:invalid-transition"
+                title: "Invalid badge state transition"
+                status: 409
+                detail: "Cannot transition badge from REVOKED to ACTIVE."
+                instance: "/v1/badges/0197b0.../activate"
+                traceId: "7c3f1a2b9d4e5f60"
+    PreconditionFailed:
+      description: ETag mismatch
+      content:
+        application/problem+json:
+          schema: { $ref: '#/components/schemas/Problem' }
+    ValidationProblem:
+      description: Semantic validation failure
+      content:
+        application/problem+json:
+          schema: { $ref: '#/components/schemas/ValidationProblem' }
+
+  schemas:
+    Problem:
+      type: object
+      description: RFC 7807 problem details
+      properties:
+        type: { type: string, format: uri, default: "about:blank" }
+        title: { type: string }
+        status: { type: integer }
+        detail: { type: string }
+        instance: { type: string }
+        traceId: { type: string }
+    ValidationProblem:
+      allOf:
+        - $ref: '#/components/schemas/Problem'
+        - type: object
+          properties:
+            errors:
+              type: object
+              additionalProperties:
+                type: array
+                items: { type: string }
+
+    PageLinks:
+      type: object
+      properties:
+        next: { type: [string, "null"], format: uri }
+        prev: { type: [string, "null"], format: uri }
+    PageMeta:
+      type: object
+      properties:
+        pageSize: { type: integer }
+
+    VisitorProfile:
+      type: object
+      required: [fullName, email]
+      properties:
+        fullName: { type: string, maxLength: 200 }
+        email: { type: string, format: email }
+        company: { type: string, maxLength: 200 }
+        phone: { type: string, maxLength: 32 }
+    VisitWindow:
+      type: object
+      required: [startsAt, endsAt]
+      properties:
+        startsAt: { type: string, format: date-time }
+        endsAt: { type: string, format: date-time }
+    VisitRegistration:
+      type: object
+      required: [visitor, hostId, siteId, purpose, window]
+      properties:
+        visitor: { $ref: '#/components/schemas/VisitorProfile' }
+        hostId: { type: string, format: uuid }
+        siteId: { type: string, format: uuid }
+        purpose: { type: string, maxLength: 500 }
+        window: { $ref: '#/components/schemas/VisitWindow' }
+        escortRequired: { type: boolean, default: false }
+    VisitAmendment:
+      type: object
+      properties:
+        purpose: { type: string, maxLength: 500 }
+        window: { $ref: '#/components/schemas/VisitWindow' }
+        hostId: { type: string, format: uuid }
+    Visit:
+      type: object
+      properties:
+        visitId: { type: string, format: uuid }
+        state: { type: string, enum: [DRAFT, PENDING_APPROVAL, APPROVED, CHECKED_IN, CHECKED_OUT, CANCELLED, EXPIRED, SECURITY_REVIEW] }
+        visitor: { $ref: '#/components/schemas/VisitorProfile' }
+        hostId: { type: string, format: uuid }
+        siteId: { type: string, format: uuid }
+        purpose: { type: string }
+        window: { $ref: '#/components/schemas/VisitWindow' }
+        badgeId: { type: [string, "null"], format: uuid }
+        createdAt: { type: string, format: date-time }
+        etag: { type: string }
+    VisitPage:
+      type: object
+      properties:
+        data:
+          type: array
+          items: { $ref: '#/components/schemas/Visit' }
+        links: { $ref: '#/components/schemas/PageLinks' }
+        meta: { $ref: '#/components/schemas/PageMeta' }
+
+    CheckInRequest:
+      type: object
+      required: [method]
+      properties:
+        method: { type: string, enum: [KIOSK_QR, RECEPTION] }
+        qrToken: { type: string, description: Required for KIOSK_QR }
+        documentsSigned:
+          type: array
+          items: { type: string }
+    CheckInResult:
+      type: object
+      properties:
+        visit: { $ref: '#/components/schemas/Visit' }
+        badge: { $ref: '#/components/schemas/Badge' }
+        hostNotified: { type: boolean }
+
+    ReasonRequest:
+      type: object
+      required: [reason]
+      properties:
+        reason: { type: string, maxLength: 100 }
+        comment: { type: string, maxLength: 1000 }
+
+    BadgeIssueRequest:
+      type: object
+      required: [cardholderId, badgeType, validFrom, validUntil]
+      properties:
+        cardholderId: { type: string, format: uuid }
+        badgeType: { type: string, enum: [RFID, QR, TEMPORARY_RFID] }
+        validFrom: { type: string, format: date-time }
+        validUntil: { type: string, format: date-time }
+        siteId: { type: string, format: uuid, description: Issuing site (stock tracking) }
+    Badge:
+      type: object
+      properties:
+        badgeId: { type: string, format: uuid }
+        cardholderId: { type: string, format: uuid }
+        badgeType: { type: string, enum: [RFID, QR, TEMPORARY_RFID] }
+        state: { type: string, enum: [REQUESTED, ISSUED, ACTIVE, SUSPENDED, REVOKED, EXPIRED, LOST, RETURNED] }
+        validFrom: { type: string, format: date-time }
+        validUntil: { type: string, format: date-time }
+        issuedAt: { type: string, format: date-time }
+        streamVersion: { type: integer, description: Aggregate version (optimistic concurrency) }
+    BadgePage:
+      type: object
+      properties:
+        data:
+          type: array
+          items: { $ref: '#/components/schemas/Badge' }
+        links: { $ref: '#/components/schemas/PageLinks' }
+        meta: { $ref: '#/components/schemas/PageMeta' }
+    BadgeReplacement:
+      type: object
+      properties:
+        revokedBadge: { $ref: '#/components/schemas/Badge' }
+        newBadge: { $ref: '#/components/schemas/Badge' }
+
+    ValidationRequest:
+      type: object
+      required: [credentialType, credentialReference, readerId, direction, presentedAt]
+      properties:
+        credentialType: { type: string, enum: [RFID, QR] }
+        credentialReference: { type: string, description: RFID hash or QR token - never raw PII }
+        readerId: { type: string, format: uuid }
+        direction: { type: string, enum: [ENTRY, EXIT] }
+        presentedAt: { type: string, format: date-time }
+        offline: { type: boolean, default: false, description: True when uploaded from an offline edge queue }
+    ValidationDecision:
+      type: object
+      properties:
+        decisionId: { type: string, format: uuid }
+        decision: { type: string, enum: [PERMIT, DENY] }
+        reasonCode:
+          type: string
+          enum: [OK, BADGE_REVOKED, BADGE_EXPIRED, BADGE_SUSPENDED, NO_GRANT, OUTSIDE_SCHEDULE, ANTI_PASSBACK, CAPACITY_REACHED, ABAC_DENY, TWO_PERSON_REQUIRED, UNKNOWN_CREDENTIAL, STALE_SNAPSHOT]
+        policyVersion: { type: string }
+        evaluatedIn: { type: string, description: Server-side duration, e.g. "PT0.041S" }
+
+    AccessRequestCreate:
+      type: object
+      required: [cardholderId, targetType, targetId, window, justification]
+      properties:
+        cardholderId: { type: string, format: uuid }
+        targetType: { type: string, enum: [ZONE, ACCESS_PROFILE] }
+        targetId: { type: string, format: uuid }
+        window: { $ref: '#/components/schemas/VisitWindow' }
+        justification: { type: string, maxLength: 1000 }
+    ApprovalStage:
+      type: object
+      properties:
+        stage: { type: integer }
+        approverId: { type: string, format: uuid }
+        state: { type: string, enum: [PENDING, APPROVED, REJECTED, ESCALATED, DELEGATED] }
+        decidedAt: { type: [string, "null"], format: date-time }
+        comment: { type: [string, "null"] }
+    AccessRequest:
+      type: object
+      properties:
+        requestId: { type: string, format: uuid }
+        cardholderId: { type: string, format: uuid }
+        targetType: { type: string, enum: [ZONE, ACCESS_PROFILE] }
+        targetId: { type: string, format: uuid }
+        state: { type: string, enum: [PENDING, ESCALATED, APPROVED, REJECTED, EXPIRED, WITHDRAWN] }
+        window: { $ref: '#/components/schemas/VisitWindow' }
+        stages:
+          type: array
+          items: { $ref: '#/components/schemas/ApprovalStage' }
+        createdAt: { type: string, format: date-time }
+    AccessRequestPage:
+      type: object
+      properties:
+        data:
+          type: array
+          items: { $ref: '#/components/schemas/AccessRequest' }
+        links: { $ref: '#/components/schemas/PageLinks' }
+        meta: { $ref: '#/components/schemas/PageMeta' }
+
+    Site:
+      type: object
+      properties:
+        siteId: { type: string, format: uuid }
+        name: { type: string }
+        region: { type: string }
+        timezone: { type: string, description: IANA zone id }
+    SitePage:
+      type: object
+      properties:
+        data:
+          type: array
+          items: { $ref: '#/components/schemas/Site' }
+        links: { $ref: '#/components/schemas/PageLinks' }
+        meta: { $ref: '#/components/schemas/PageMeta' }
+
+    OccupancySnapshot:
+      type: object
+      properties:
+        siteId: { type: string, format: uuid }
+        asOf: { type: string, format: date-time }
+        total: { type: integer }
+        zones:
+          type: array
+          items:
+            type: object
+            properties:
+              zoneId: { type: string, format: uuid }
+              name: { type: string }
+              count: { type: integer }
+              capacity: { type: [integer, "null"] }
+
+    Evacuation:
+      type: object
+      properties:
+        evacuationId: { type: string, format: uuid }
+        siteId: { type: string, format: uuid }
+        state: { type: string, enum: [ACTIVE, COMPLETED, CANCELLED] }
+        trigger: { type: string }
+        activatedAt: { type: string, format: date-time }
+        activatedBy: { type: string, format: uuid }
+    MusterReport:
+      type: object
+      properties:
+        evacuationId: { type: string, format: uuid }
+        state: { type: string, enum: [ACTIVE, COMPLETED, CANCELLED] }
+        totalOnSite: { type: integer }
+        confirmedSafe: { type: integer }
+        unaccounted: { type: integer }
+        persons:
+          type: array
+          items:
+            type: object
+            properties:
+              personRef: { type: string, description: Pseudonymous during drills where configured }
+              displayName: { type: string }
+              status: { type: string, enum: [ON_SITE, SAFE, MISSING, UNKNOWN] }
+              lastSeenZone: { type: [string, "null"] }
+              markedBy: { type: [string, "null"] }
+
+    AuditEvent:
+      type: object
+      properties:
+        eventId: { type: string, format: uuid }
+        occurredAt: { type: string, format: date-time }
+        actor: { type: string }
+        subjectType: { type: string }
+        subjectId: { type: string }
+        action: { type: string }
+        payloadHash: { type: string, description: SHA-256 of the source event payload }
+        traceId: { type: string }
+    AuditEventPage:
+      type: object
+      properties:
+        data:
+          type: array
+          items: { $ref: '#/components/schemas/AuditEvent' }
+        links: { $ref: '#/components/schemas/PageLinks' }
+        meta: { $ref: '#/components/schemas/PageMeta' }
+
+    WebhookEnvelope:
+      type: object
+      properties:
+        eventId: { type: string, format: uuid }
+        eventType: { type: string }
+        occurredAt: { type: string, format: date-time }
+        schemaVersion: { type: string, default: "1" }
+    CheckInCompletedEvent:
+      allOf:
+        - $ref: '#/components/schemas/WebhookEnvelope'
+        - type: object
+          properties:
+            data:
+              type: object
+              properties:
+                visitId: { type: string, format: uuid }
+                siteId: { type: string, format: uuid }
+                hostId: { type: string, format: uuid }
+                checkedInAt: { type: string, format: date-time }
+    BadgeLifecycleEvent:
+      allOf:
+        - $ref: '#/components/schemas/WebhookEnvelope'
+        - type: object
+          properties:
+            data:
+              type: object
+              properties:
+                badgeId: { type: string, format: uuid }
+                cardholderId: { type: string, format: uuid }
+                state: { type: string }
+                reason: { type: [string, "null"] }
