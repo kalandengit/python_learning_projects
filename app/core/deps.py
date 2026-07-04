@@ -83,6 +83,18 @@ async def get_auth(
         raise _UNAUTHORIZED from exc
 
 
+async def get_optional_auth(
+    credentials: Annotated[HTTPAuthorizationCredentials | None, Depends(_bearer)],
+    issuer: Annotated[TokenIssuer, Depends(get_token_issuer)],
+) -> AuthContext | None:
+    if credentials is None:
+        return None
+    try:
+        return issuer.auth_context(issuer.decode(credentials.credentials, "access"))
+    except TokenError:
+        return None
+
+
 def require_roles(*roles: UserRole) -> Callable[..., Awaitable[AuthContext]]:
     allowed = frozenset(roles)
 

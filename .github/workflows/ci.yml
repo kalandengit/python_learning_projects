@@ -1,0 +1,133 @@
+# EMS CI v3 — gates (§7): ruff clean · mypy strict · pytest coverage ≥80 ·
+# gitleaks · Trivy CRITICAL blocks · SBOM (CycloneDX) · SLSA provenance · OIDC→AWS.
+name: ci
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+permissions:
+  contents: read
+
+env:
+  UV_VERSION: "0.8.17"
+
+jobs:
+  lint:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: astral-sh/setup-uv@v5
+        with:
+          version: ${{ env.UV_VERSION }}
+      - run: uv sync --frozen
+      - name: ruff
+        run: uv run ruff check app tests migrations
+      - name: mypy (strict)
+        run: uv run mypy app tests
+
+  test:
+    runs-on: ubuntu-latest
+    services:
+      postgres:
+        image: postgis/postgis:18-3.6
+        # Fallback image per §2: postgis/postgis:17-3.5
+        env:
+          POSTGRES_USER: ems
+          POSTGRES_PASSWORD: ems
+          POSTGRES_DB: ems_test
+        ports: ["5432:5432"]
+        options: >-
+          --health-cmd "pg_isready -U ems -d ems_test"
+          --health-interval 5s --health-timeout 3s --health-retries 20
+      valkey:
+        image: valkey/valkey:8-alpine
+        ports: ["6379:6379"]
+        options: >-
+          --health-cmd "valkey-cli ping"
+          --health-interval 5s --health-timeout 3s --health-retries 20
+    env:
+      EMS_ENV: test
+      EMS_DATABASE_URL: postgresql+asyncpg://ems:ems@127.0.0.1:5432/ems_test
+      EMS_VALKEY_URL: redis://127.0.0.1:6379/0
+      EMS_PQC_ALLOW_HMAC_ONLY: "true"  # liboqs is exercised in the image build
+      EMS_STRIPE_WEBHOOK_SECRET: whsec_test_secret
+    steps:
+      - uses: actions/checkout@v4
+      - uses: astral-sh/setup-uv@v5
+        with:
+          version: ${{ env.UV_VERSION }}
+      - run: uv sync --frozen
+      - name: pytest (coverage gate ≥80%)
+        run: uv run pytest --cov=app --cov-report=term --cov-report=xml --cov-fail-under=80
+
+  gitleaks:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: gitleaks/gitleaks-action@v2
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+  trivy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Trivy filesystem scan (CRITICAL = fail)
+        uses: aquasecurity/trivy-action@0.29.0
+        with:
+          scan-type: fs
+          scan-ref: .
+          severity: CRITICAL
+          exit-code: "1"
+          ignore-unfixed: true
+
+  sbom:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: CycloneDX SBOM (EU CRA)
+        uses: anchore/sbom-action@v0
+        with:
+          path: .
+          format: cyclonedx-json
+          artifact-name: ems-backend.cdx.json
+          upload-artifact: true
+
+  build-image:
+    # Staging image build+push on main only; production deploy is a separate,
+    # manually-approved workflow (Part 5). Zero long-lived cloud keys: OIDC.
+    if: github.ref == 'refs/heads/main' && github.event_name == 'push'
+    needs: [lint, test, gitleaks, trivy]
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      id-token: write        # OIDC → AWS
+      attestations: write    # SLSA provenance
+      packages: write
+    steps:
+      - uses: actions/checkout@v4
+      - name: Configure AWS credentials (OIDC, no stored keys)
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          role-to-assume: ${{ vars.AWS_ECR_PUSH_ROLE_ARN }}
+          aws-region: eu-west-3
+      - name: Login to ECR
+        id: ecr
+        uses: aws-actions/amazon-ecr-login@v2
+      - name: Build and push
+        id: build
+        uses: docker/build-push-action@v6
+        with:
+          context: .
+          push: true
+          tags: ${{ steps.ecr.outputs.registry }}/ems-api:${{ github.sha }}
+      - name: SLSA build provenance attestation
+        uses: actions/attest-build-provenance@v2
+        with:
+          subject-name: ${{ steps.ecr.outputs.registry }}/ems-api
+          subject-digest: ${{ steps.build.outputs.digest }}
+          push-to-registry: true

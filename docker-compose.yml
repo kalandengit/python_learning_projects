@@ -1,0 +1,59 @@
+# EMS local stack v3 — PostgreSQL 18/PostGIS 3.6, Valkey 8, OTel collector, API.
+services:
+  db:
+    image: postgis/postgis:18-3.6
+    # Fallback if the 18-3.6 image is unavailable in your registry mirror:
+    # image: postgis/postgis:17-3.5
+    environment:
+      POSTGRES_USER: ems
+      POSTGRES_PASSWORD: ems
+      POSTGRES_DB: ems
+    ports:
+      - "5432:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ems -d ems"]
+      interval: 5s
+      timeout: 3s
+      retries: 10
+
+  valkey:
+    image: valkey/valkey:8-alpine
+    command: ["valkey-server", "--appendonly", "no", "--maxmemory", "256mb"]
+    ports:
+      - "6379:6379"
+    healthcheck:
+      test: ["CMD", "valkey-cli", "ping"]
+      interval: 5s
+      timeout: 3s
+      retries: 10
+
+  otel-collector:
+    image: otel/opentelemetry-collector-contrib:0.116.0
+    command: ["--config=/etc/otelcol/config.yaml"]
+    volumes:
+      - ./deploy/otel-collector.yaml:/etc/otelcol/config.yaml:ro
+    ports:
+      - "4317:4317"   # OTLP gRPC
+
+  api:
+    build: .
+    depends_on:
+      db:
+        condition: service_healthy
+      valkey:
+        condition: service_healthy
+    environment:
+      EMS_ENV: dev
+      EMS_DATABASE_URL: postgresql+asyncpg://ems:ems@db:5432/ems
+      EMS_VALKEY_URL: redis://valkey:6379/0
+      EMS_PQC_ALLOW_HMAC_ONLY: "false"   # liboqs is compiled into the image
+      EMS_OTEL_EXPORTER_OTLP_ENDPOINT: http://otel-collector:4317
+      # Dev-only ephemeral JWT/QR keys are generated at startup; real
+      # deployments inject them via AWS Secrets Manager (never in this file).
+    ports:
+      - "8000:8000"
+
+volumes:
+  pgdata:

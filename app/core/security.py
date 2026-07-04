@@ -93,7 +93,7 @@ class TokenIssuer:
     ) -> None:
         self._private_pem = private_pem
         self._public_pem = public_pem
-        self._access_ttl = access_ttl
+        self.access_ttl = access_ttl
         self._refresh_ttl = refresh_ttl
         self._mfa_ttl = mfa_ttl
 
@@ -110,7 +110,7 @@ class TokenIssuer:
     def issue_access(self, user_id: uuid.UUID, org_id: uuid.UUID, role: UserRole) -> str:
         return self._encode(
             {"sub": str(user_id), "org": str(org_id), "role": role.value, "typ": "access"},
-            self._access_ttl,
+            self.access_ttl,
         )
 
     def issue_refresh(

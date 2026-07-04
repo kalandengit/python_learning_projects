@@ -394,15 +394,19 @@ async def scan_ticket(
         )
         raise ScanRejected
 
+    # Snapshot scalars now — rollback() below expires ORM instances, and lazy
+    # attribute refresh is illegal in async sessions.
+    ticket_id, event_id, owner_id = ticket.id, ticket.event_id, ticket.owner_id
+
     # Hybrid PQC verification of the static payload (tamper defense in depth).
-    payload = static_payload(envelope.qr_token, ticket.event_id, ticket.owner_id)
+    payload = static_payload(envelope.qr_token, event_id, owner_id)
     if ticket.pqc_signature is None or not signer.verify(payload, ticket.pqc_signature):
         await _log_scan(
             session,
             result=ScanResult.REJECTED,
             reason="pqc_signature_invalid",
-            subject_id=ticket.id,
-            event_id=ticket.event_id,
+            subject_id=ticket_id,
+            event_id=event_id,
             device_id=device_id,
             scanner=scanner,
             zone=zone,
@@ -414,7 +418,7 @@ async def scan_ticket(
     row = (
         await session.execute(
             update(Ticket)
-            .where(Ticket.id == ticket.id, Ticket.status == TicketStatus.VALID)
+            .where(Ticket.id == ticket_id, Ticket.status == TicketStatus.VALID)
             .values(status=TicketStatus.USED, used_at=now)
             .returning(Ticket.id, Ticket.used_at)
         )
@@ -422,14 +426,14 @@ async def scan_ticket(
 
     if row is None:
         await session.rollback()
-        current = await session.scalar(select(Ticket.status).where(Ticket.id == ticket.id))
+        current = await session.scalar(select(Ticket.status).where(Ticket.id == ticket_id))
         if current is TicketStatus.USED:
             await _log_scan(
                 session,
                 result=ScanResult.DUPLICATE,
                 reason="already_used",
-                subject_id=ticket.id,
-                event_id=ticket.event_id,
+                subject_id=ticket_id,
+                event_id=event_id,
                 device_id=device_id,
                 scanner=scanner,
                 zone=zone,
@@ -439,8 +443,8 @@ async def scan_ticket(
             session,
             result=ScanResult.REJECTED,
             reason=f"status_{current.value if current else 'missing'}",
-            subject_id=ticket.id,
-            event_id=ticket.event_id,
+            subject_id=ticket_id,
+            event_id=event_id,
             device_id=device_id,
             scanner=scanner,
             zone=zone,
@@ -449,7 +453,7 @@ async def scan_ticket(
 
     session.add(
         TicketStatusHistory(
-            ticket_id=ticket.id,
+            ticket_id=ticket_id,
             from_status=TicketStatus.VALID,
             to_status=TicketStatus.USED,
             reason="entry_scan",
@@ -459,8 +463,8 @@ async def scan_ticket(
     session.add(
         ScanLog(
             subject_type=ScanSubject.TICKET,
-            subject_id=ticket.id,
-            event_id=ticket.event_id,
+            subject_id=ticket_id,
+            event_id=event_id,
             result=ScanResult.ACCEPTED,
             reason=None,
             zone=zone,
@@ -471,8 +475,8 @@ async def scan_ticket(
     await session.commit()
     return ScanOutcome(
         result=ScanResult.ACCEPTED,
-        ticket_id=ticket.id,
-        event_id=ticket.event_id,
+        ticket_id=ticket_id,
+        event_id=event_id,
         used_at=row[1],
         reason=None,
     )
