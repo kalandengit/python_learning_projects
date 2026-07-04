@@ -1,7 +1,7 @@
 """baseline schema
 
 Revision ID: 88a2f9e599a4
-Revises: 
+Revises:
 Create Date: 2026-07-04 10:00:16.551099
 """
 from collections.abc import Sequence

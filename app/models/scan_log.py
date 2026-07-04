@@ -27,7 +27,9 @@ class ScanLog(UUIDPkMixin, Base):
     reason: Mapped[str | None] = mapped_column(Text)
     zone: Mapped[str | None] = mapped_column(String(120))
     device_id: Mapped[str] = mapped_column(String(120))
-    scanned_by: Mapped[uuid.UUID | None] = mapped_column(ForeignKey("users.id", ondelete="SET NULL"))
+    scanned_by: Mapped[uuid.UUID | None] = mapped_column(
+        ForeignKey("users.id", ondelete="SET NULL")
+    )
     scanned_at: Mapped[datetime] = mapped_column(server_default=func.now())
 
     __table_args__ = (Index("ix_scan_logs_event_time", "event_id", "scanned_at"),)

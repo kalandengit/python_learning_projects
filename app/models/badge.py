@@ -9,7 +9,7 @@ from sqlalchemy import Enum, ForeignKey, LargeBinary, String
 from sqlalchemy.dialects.postgresql import JSONB
 from sqlalchemy.orm import Mapped, mapped_column
 
-from app.models.base import Base, BadgeType, TimestampMixin, UUIDPkMixin
+from app.models.base import BadgeType, Base, TimestampMixin, UUIDPkMixin
 
 
 class Badge(UUIDPkMixin, TimestampMixin, Base):

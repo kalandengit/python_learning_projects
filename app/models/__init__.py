@@ -3,8 +3,8 @@
 from app.models.badge import Badge
 from app.models.base import (
     SCANNER_ROLES,
-    Base,
     BadgeType,
+    Base,
     PaymentStatus,
     ScanResult,
     ScanSubject,

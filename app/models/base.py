@@ -75,4 +75,6 @@ class ScanResult(enum.StrEnum):
 
 
 # Scanner roles allowed to call the validate endpoints (rate-limited per device).
-SCANNER_ROLES = frozenset({UserRole.SUPER_ADMIN, UserRole.BOX_OFFICE_STAFF, UserRole.SECURITY_GUARD})
+SCANNER_ROLES = frozenset(
+    {UserRole.SUPER_ADMIN, UserRole.BOX_OFFICE_STAFF, UserRole.SECURITY_GUARD}
+)
