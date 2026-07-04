@@ -139,7 +139,7 @@ sequenceDiagram
     end
   end
   EG->>R: unlock / deny signal
-  Note over EG,AC: on reconnect: EG uploads queued decisions;<br/>AC reconciles vs revocations since last sync;<br/>conflicts flagged to SOC (OfflineDecisionConflictFlagged)
+  Note over EG,AC: on reconnect: EG uploads queued decisions,<br/>AC reconciles vs revocations since last sync,<br/>conflicts flagged to SOC (OfflineDecisionConflictFlagged)
 ```
 
 ## 10.5 Emergency evacuation mustering & reporting
@@ -155,7 +155,7 @@ sequenceDiagram
   T->>OS: POST /v1/sites/{id}/evacuations (step-up auth)
   OS->>EG: broadcast evacuation mode (entries freeze, readers -> muster-scan)
   OS->>OS: build muster list from occupancy projection (<=30 s)
-  OS-->>W: stream muster list (SSE; offline-first cache)
+  OS-->>W: stream muster list (SSE, offline-first cache)
   loop sweep
     W->>OS: mark person SAFE / MISSING (queued if offline, merged on sync)
     EG->>OS: muster-point badge scans -> auto-SAFE
