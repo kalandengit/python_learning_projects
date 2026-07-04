@@ -1,0 +1,57 @@
+replicaCount: 3
+
+image:
+  repository: amsacr.azurecr.io/ams/badge-service
+  tag: "" # set by CD tag-bump PR into ams-gitops (Section 12.2); never "latest"
+  pullPolicy: IfNotPresent
+
+serviceAccount:
+  name: badge-service
+  # Workload identity federation (Zero Trust: no secrets in the cluster)
+  annotations:
+    azure.workload.identity/client-id: "00000000-0000-0000-0000-000000000000" # set per env
+
+podLabels:
+  azure.workload.identity/use: "true"
+
+service:
+  port: 80
+  targetPort: 8080
+
+resources:
+  requests:
+    cpu: 250m
+    memory: 256Mi
+  limits:
+    cpu: "1"
+    memory: 512Mi
+
+autoscaling:
+  enabled: true
+  minReplicas: 3
+  maxReplicas: 12
+  targetCPUUtilizationPercentage: 70
+
+pdb:
+  minAvailable: 2
+
+config:
+  # Non-secret configuration -> ConfigMap (12-Factor). Secrets come from
+  # Key Vault via the CSI secrets-store provider, not from Helm values.
+  Auth__Authority: "https://login.microsoftonline.com/TENANT_ID/v2.0"
+  Auth__Audience: "api://ams-badge-service"
+  EventHubs__FullyQualifiedNamespace: "ams-ehns-prod.servicebus.windows.net"
+  KeyVault__Uri: "https://ams-kv-prod.vault.azure.net/"
+  KeyVault__QrKeyName: "qr-badge-signing"
+  Redis__Configuration: "ams-redis-weu-prod.redis.cache.windows.net:6380,ssl=true"
+  OTEL_EXPORTER_OTLP_ENDPOINT: "http://otel-collector.observability:4317"
+
+secretProviderClass: badge-service-kv # mounts ConnectionStrings__BadgeDb
+
+probes:
+  liveness:
+    path: /healthz/live
+    initialDelaySeconds: 10
+  readiness:
+    path: /healthz/ready
+    initialDelaySeconds: 5

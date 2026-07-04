@@ -1,0 +1,11 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ include "badge-service.fullname" . }}
+  labels: {{- include "badge-service.labels" . | nindent 4 }}
+data:
+  {{- range $key, $value := .Values.config }}
+  {{ $key }}: {{ $value | quote }}
+  {{- end }}
+# 12-Factor: non-secret config only. Secrets arrive via the Key Vault CSI
+# volume — never through Helm values or ConfigMaps (NFR-012).

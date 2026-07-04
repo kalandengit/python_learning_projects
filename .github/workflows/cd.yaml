@@ -1,0 +1,129 @@
+# =============================================================================
+# AMS CD — environment promotion dev -> test -> uat -> prod (Section 12.2).
+# The pipeline never touches the cluster: it opens a tag-bump PR against the
+# ams-gitops repo; ArgoCD reconciles (ADR-012). Prod is a manual GitHub
+# environment gate (2 reviewers).
+# =============================================================================
+name: cd
+
+on:
+  workflow_run:
+    workflows: [ci]
+    types: [completed]
+    branches: [main]
+  workflow_dispatch:
+    inputs:
+      image_tag:
+        description: "Image tag to promote (sha-<sha>)"
+        required: true
+      target_environment:
+        description: "dev | test | uat | prod"
+        required: true
+        default: dev
+
+permissions:
+  contents: read
+
+env:
+  GITOPS_REPO: example-org/ams-gitops # illustrative assumption: dedicated GitOps repo
+
+jobs:
+  resolve-tag:
+    if: github.event_name == 'workflow_dispatch' || github.event.workflow_run.conclusion == 'success'
+    runs-on: ubuntu-latest
+    outputs:
+      image_tag: ${{ steps.tag.outputs.tag }}
+    steps:
+      - id: tag
+        run: |
+          if [ "${{ github.event_name }}" = "workflow_dispatch" ]; then
+            echo "tag=${{ inputs.image_tag }}" >> "$GITHUB_OUTPUT"
+          else
+            echo "tag=sha-${{ github.event.workflow_run.head_sha }}" >> "$GITHUB_OUTPUT"
+          fi
+
+  deploy-dev:
+    needs: resolve-tag
+    if: github.event_name != 'workflow_dispatch' || inputs.target_environment == 'dev'
+    runs-on: ubuntu-latest
+    environment: dev
+    steps:
+      - name: Bump image tag in gitops repo (dev)
+        uses: actions/github-script@v7
+        with:
+          github-token: ${{ secrets.GITOPS_PAT }}
+          script: |
+            const tag = "${{ needs.resolve-tag.outputs.image_tag }}";
+            // Opens a PR against envs/dev/badge-service/values.yaml in the
+            // GitOps repo. Auto-merge is enabled for dev (Section 12.3).
+            await github.rest.actions.createWorkflowDispatch({
+              owner: "example-org", repo: "ams-gitops",
+              workflow_id: "bump-image.yaml", ref: "main",
+              inputs: { environment: "dev", service: "badge-service", tag }
+            });
+
+  smoke-dev:
+    needs: [resolve-tag, deploy-dev]
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Wait for ArgoCD healthy + run smoke probes
+        run: |
+          # Polls the dev health endpoint until the new tag is serving.
+          bash ams/scripts/smoke.sh https://api.dev.ams.example.com \
+            "${{ needs.resolve-tag.outputs.image_tag }}"
+
+  deploy-test:
+    needs: [resolve-tag, smoke-dev]
+    runs-on: ubuntu-latest
+    environment: test
+    steps:
+      - name: Promote to test
+        uses: actions/github-script@v7
+        with:
+          github-token: ${{ secrets.GITOPS_PAT }}
+          script: |
+            const tag = "${{ needs.resolve-tag.outputs.image_tag }}";
+            await github.rest.actions.createWorkflowDispatch({
+              owner: "example-org", repo: "ams-gitops",
+              workflow_id: "bump-image.yaml", ref: "main",
+              inputs: { environment: "test", service: "badge-service", tag }
+            });
+
+  deploy-uat:
+    needs: [resolve-tag, deploy-test]
+    runs-on: ubuntu-latest
+    environment: uat # QA approval configured on the environment
+    steps:
+      - name: Promote to uat
+        uses: actions/github-script@v7
+        with:
+          github-token: ${{ secrets.GITOPS_PAT }}
+          script: |
+            const tag = "${{ needs.resolve-tag.outputs.image_tag }}";
+            await github.rest.actions.createWorkflowDispatch({
+              owner: "example-org", repo: "ams-gitops",
+              workflow_id: "bump-image.yaml", ref: "main",
+              inputs: { environment: "uat", service: "badge-service", tag }
+            });
+
+  deploy-prod:
+    needs: [resolve-tag, deploy-uat]
+    runs-on: ubuntu-latest
+    # MANUAL GATE: environment 'prod' requires 2 reviewers + business hours
+    # (GitHub environment protection rules; Section 12.2).
+    environment: prod
+    steps:
+      - name: Promote to prod (canary via Flagger takes over in-cluster)
+        uses: actions/github-script@v7
+        with:
+          github-token: ${{ secrets.GITOPS_PAT }}
+          script: |
+            const tag = "${{ needs.resolve-tag.outputs.image_tag }}";
+            await github.rest.actions.createWorkflowDispatch({
+              owner: "example-org", repo: "ams-gitops",
+              workflow_id: "bump-image.yaml", ref: "main",
+              inputs: { environment: "prod", service: "badge-service", tag }
+            });
+
+# VERIFY: GITOPS_PAT should be a fine-grained token scoped to the gitops repo only — or replace with a GitHub App installation token.

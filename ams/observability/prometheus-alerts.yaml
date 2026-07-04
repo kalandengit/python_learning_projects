@@ -1,0 +1,152 @@
+# =============================================================================
+# AMS Prometheus alert rules — Section 13.5/13.6.
+# Multi-window multi-burn-rate pattern: page on fast burn (14.4x over 5m AND
+# 1h), ticket on slow burn (6x over 30m AND 6h). Every Section-0 performance
+# target has a live alert here — no decorative SLOs.
+# =============================================================================
+groups:
+  - name: ams-slo-burn-rates
+    rules:
+      # ---- Badge validation latency SLO: 95% < 200 ms -----------------------
+      - record: ams:validation_good_ratio_5m
+        expr: >
+          sum(rate(http_server_request_duration_seconds_bucket{route="/v1/badge-validations",le="0.2"}[5m]))
+          /
+          sum(rate(http_server_request_duration_seconds_count{route="/v1/badge-validations"}[5m]))
+      - record: ams:validation_good_ratio_1h
+        expr: >
+          sum(rate(http_server_request_duration_seconds_bucket{route="/v1/badge-validations",le="0.2"}[1h]))
+          /
+          sum(rate(http_server_request_duration_seconds_count{route="/v1/badge-validations"}[1h]))
+
+      - alert: AmsValidationLatencyBurnFast
+        expr: >
+          (1 - ams:validation_good_ratio_5m) > (14.4 * 0.05)
+          and
+          (1 - ams:validation_good_ratio_1h) > (14.4 * 0.05)
+        for: 2m
+        labels: {severity: page, service: access-control, slo: validation-latency}
+        annotations:
+          summary: "Badge validation latency burning error budget at >=14.4x"
+          description: "P95 200 ms SLO (Section 0) fast burn. Runbook: runbooks/validation-latency.md"
+
+      - alert: AmsValidationLatencyBurnSlow
+        expr: >
+          (1 - avg_over_time(ams:validation_good_ratio_5m[30m])) > (6 * 0.05)
+          and
+          (1 - avg_over_time(ams:validation_good_ratio_1h[6h])) > (6 * 0.05)
+        for: 15m
+        labels: {severity: ticket, service: access-control, slo: validation-latency}
+        annotations:
+          summary: "Badge validation latency slow burn (6x)"
+
+      # ---- API latency SLO (all services): 95% < 200 ms ---------------------
+      - alert: AmsApiLatencyBurnFast
+        expr: >
+          (
+            1 - sum by (service) (rate(http_server_request_duration_seconds_bucket{le="0.2"}[5m]))
+              / sum by (service) (rate(http_server_request_duration_seconds_count[5m]))
+          ) > (14.4 * 0.05)
+        for: 5m
+        labels: {severity: page, slo: api-latency}
+        annotations:
+          summary: "API latency SLO fast burn on {{ $labels.service }}"
+
+      # ---- Availability SLOs: 99.95% platform / 99.99% critical path --------
+      - alert: AmsAvailabilityBurnFast
+        expr: >
+          (
+            sum by (service) (rate(http_server_request_duration_seconds_count{status_code=~"5.."}[5m]))
+            / sum by (service) (rate(http_server_request_duration_seconds_count[5m]))
+          ) > (14.4 * 0.0005)
+        for: 2m
+        labels: {severity: page, slo: availability}
+        annotations:
+          summary: "Availability SLO (99.95%) fast burn on {{ $labels.service }}"
+
+      - alert: AmsCriticalAvailabilityBurnFast
+        expr: >
+          (
+            sum(rate(http_server_request_duration_seconds_count{route=~"/v1/badge-validations|/v1/sites/.*/evacuations.*",status_code=~"5.."}[5m]))
+            / sum(rate(http_server_request_duration_seconds_count{route=~"/v1/badge-validations|/v1/sites/.*/evacuations.*"}[5m]))
+          ) > (14.4 * 0.0001)
+        for: 1m
+        labels: {severity: page, slo: critical-availability}
+        annotations:
+          summary: "CRITICAL PATH availability (99.99%) burning — validation/evacuation endpoints"
+
+      # ---- Auth latency SLO: 95% < 300 ms ------------------------------------
+      - alert: AmsAuthLatencyBurnFast
+        expr: >
+          histogram_quantile(0.95, sum by (le) (rate(ams_auth_token_duration_seconds_bucket[5m]))) > 0.3
+        for: 10m
+        labels: {severity: ticket, slo: auth-latency}
+        annotations:
+          summary: "OIDC token acquisition P95 above 300 ms for 10m"
+
+      # ---- Approval completion SLO: 95% < 2 h (hours-scale windows) ----------
+      - alert: AmsApprovalSlaBurn
+        expr: >
+          (sum(rate(ams_approval_completion_seconds_bucket{le="7200"}[6h]))
+           / sum(rate(ams_approval_completion_seconds_count[6h]))) < 0.95
+        for: 30m
+        labels: {severity: ticket, service: approval, slo: approval-completion}
+        annotations:
+          summary: "Approval completion SLO (95% < 2 h) burning — check escalation workers"
+
+      # ---- Revocation propagation SLO: 99% <= 5 s -----------------------------
+      - alert: AmsRevocationPropagationBurn
+        expr: >
+          (sum(rate(ams_revocation_propagation_seconds_bucket{le="5"}[30m]))
+           / sum(rate(ams_revocation_propagation_seconds_count[30m]))) < 0.99
+        for: 10m
+        labels: {severity: page, service: badge, slo: revocation-propagation}
+        annotations:
+          summary: "Revocation propagation exceeding 5 s budget (NFR-013) — security relevant"
+
+      # ---- Audit ingest freshness SLO: 99% <= 60 s ----------------------------
+      - alert: AmsAuditLagBurn
+        expr: max(ams_audit_ingest_lag_seconds) > 60
+        for: 10m
+        labels: {severity: page, service: audit, slo: audit-freshness}
+        annotations:
+          summary: "Audit ingestion lag above 60 s (FR-048) — compliance exposure"
+
+  - name: ams-cause-alerts
+    rules:
+      - alert: AmsOutboxStalled
+        expr: max by (service) (ams_outbox_pending_rows) > 1000 or max by (service) (ams_outbox_lag_seconds) > 30
+        for: 5m
+        labels: {severity: page}
+        annotations:
+          summary: "Outbox backlog on {{ $labels.service }} — events not reaching Event Hubs (ADR-019)"
+
+      - alert: AmsConsumerLagHigh
+        expr: max by (consumer_group) (eventhubs_consumer_lag) > 10000
+        for: 10m
+        labels: {severity: ticket}
+        annotations:
+          summary: "Event Hubs consumer lag high for {{ $labels.consumer_group }}"
+
+      - alert: AmsEdgeFleetOffline
+        expr: sum(ams_edge_gateways_offline) > 5
+        for: 5m
+        labels: {severity: page, service: site}
+        annotations:
+          summary: "More than 5 edge gateways offline — check WAN/config push before it becomes a site outage"
+
+      - alert: AmsSnapshotStale
+        expr: max by (site) (ams_snapshot_staleness_seconds) > 3600
+        for: 15m
+        labels: {severity: ticket, service: access-control}
+        annotations:
+          summary: "Edge credential snapshot stale >1 h at site {{ $labels.site }} (24 h fail-secure limit approaching)"
+
+      - alert: AmsPodCrashLooping
+        expr: increase(kube_pod_container_status_restarts_total{namespace=~"ams-.*"}[15m]) > 3
+        for: 5m
+        labels: {severity: page}
+        annotations:
+          summary: "Pod {{ $labels.pod }} crash-looping in {{ $labels.namespace }}"
+
+# VERIFY: OTel semconv metric/label names (http_server_request_duration_seconds, status_code, route) must match the exporter's actual output — check one live scrape before trusting the expressions.

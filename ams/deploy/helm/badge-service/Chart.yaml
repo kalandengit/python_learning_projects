@@ -1,0 +1,10 @@
+apiVersion: v2
+name: badge-service
+description: AMS Badge service (event-sourced badge lifecycle) — .NET 10 Minimal API
+type: application
+version: 0.1.0
+appVersion: "1.0.0"
+keywords: [ams, badge, access-management]
+maintainers:
+  - name: AMS Platform Team
+    email: ams-platform@example.com

@@ -1,0 +1,149 @@
+# =============================================================================
+# AMS CI — build, test, SAST, secret scan, container scan, SBOM, image push.
+# Section 12.1 of the architecture package. Supply-chain controls: OIDC to
+# Azure (no stored cloud secrets), signed images, SBOM evidence.
+# =============================================================================
+name: ci
+
+on:
+  push:
+    branches: [main]
+    paths: ["ams/**", ".github/workflows/**"]
+  pull_request:
+    paths: ["ams/**", ".github/workflows/**"]
+
+permissions:
+  contents: read
+
+env:
+  DOTNET_VERSION: "10.0.x"
+  REGISTRY: amsacr.azurecr.io
+  IMAGE_NAME: ams/badge-service
+
+jobs:
+  build-test:
+    name: Build & test (.NET 10)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: ${{ env.DOTNET_VERSION }}
+
+      - name: Restore
+        run: dotnet restore ams/src/Ams.sln
+
+      - name: Build (warnings as errors)
+        run: dotnet build ams/src/Ams.sln -c Release --no-restore
+
+      - name: Unit tests with coverage
+        run: >
+          dotnet test ams/src/Ams.sln -c Release --no-build
+          --collect:"XPlat Code Coverage"
+          --logger "trx;LogFileName=test-results.trx"
+
+      - name: Upload test results
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: test-results
+          path: "**/TestResults/**"
+
+  secret-scan:
+    name: Secret scan (Gitleaks) # NFR-012 pipeline gate
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: gitleaks/gitleaks-action@v2
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+  sast:
+    name: SAST (CodeQL)
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      security-events: write
+    steps:
+      - uses: actions/checkout@v4
+      - uses: github/codeql-action/init@v3
+        with:
+          languages: csharp, javascript
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: ${{ env.DOTNET_VERSION }}
+      - name: Build for analysis
+        run: dotnet build ams/src/Ams.sln -c Release
+      - uses: github/codeql-action/analyze@v3
+
+  frontend:
+    name: Frontend build + a11y gate
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ams/frontend
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - run: npm ci
+      - run: npm run lint
+      - run: npm run build
+
+  image:
+    name: Container build, scan, SBOM, sign, push
+    runs-on: ubuntu-latest
+    needs: [build-test, secret-scan, sast]
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    permissions:
+      contents: read
+      id-token: write # OIDC federation to Azure + cosign keyless
+      packages: write
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Azure login (OIDC, no stored credentials)
+        uses: azure/login@v2
+        with:
+          client-id: ${{ secrets.AZURE_CLIENT_ID }}
+          tenant-id: ${{ secrets.AZURE_TENANT_ID }}
+          subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+
+      - name: ACR login
+        run: az acr login --name ${REGISTRY%%.*}
+
+      - name: Build image
+        run: >
+          docker build
+          -t $REGISTRY/$IMAGE_NAME:sha-${GITHUB_SHA}
+          -f ams/src/Services/Badge/Ams.Badge.Api/Dockerfile
+          ams/src
+
+      - name: Trivy scan (fail on HIGH/CRITICAL)
+        uses: aquasecurity/trivy-action@0.29.0
+        with:
+          image-ref: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:sha-${{ github.sha }}
+          exit-code: "1"
+          severity: HIGH,CRITICAL
+          ignore-unfixed: true
+
+      - name: SBOM (Syft, SPDX)
+        uses: anchore/sbom-action@v0
+        with:
+          image: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:sha-${{ github.sha }}
+          format: spdx-json
+          artifact-name: badge-service-sbom.spdx.json
+
+      - name: Push image (immutable tag)
+        run: docker push $REGISTRY/$IMAGE_NAME:sha-${GITHUB_SHA}
+
+      - name: Sign image (cosign keyless)
+        uses: sigstore/cosign-installer@v3
+      - run: cosign sign --yes $REGISTRY/$IMAGE_NAME:sha-${GITHUB_SHA}
+
+# VERIFY: image tag is sha-<full 40-char sha> everywhere (build, scan, SBOM, push, sign) — keep consistent when editing.
