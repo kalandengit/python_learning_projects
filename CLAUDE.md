@@ -10,12 +10,16 @@ them unless the user explicitly asks.
 
 ## Repository status (as of July 2026)
 
-The master prompt's §5 lists Parts 1–3 (schema, backend core, routes/tests) and the
-v3.0 Modernization Pack as completed, but **that code is not yet present in this
-repository** — it was produced in earlier sessions and has not been committed here.
-Before executing any remaining-work part (§6), check what actually exists in the
-tree; if a prerequisite from §5 is missing, surface that to the user rather than
-silently regenerating it.
+Parts 1–3 (§5) were **regenerated into this repository** in July 2026: schema +
+Alembic baseline (`app/models`, `migrations/`), backend core (`app/core`,
+`app/services`), all §4 routes (`app/routers`), the pytest suite (`tests/`,
+coverage ≥80% against real PostGIS + Valkey), Locust profile (`load/`),
+Dockerfile/compose v3 and CI v3 (`.github/workflows/ci.yml`). Remaining work
+starts at §6 Part 4 (React frontend). One documented deviation: ML-DSA-65
+signatures (3,309 B) exceed QR capacity (2,953 B), so the hybrid PQC signature
+is stored on the ticket/badge row and verified server-side on scan; the QR
+carries the HMAC envelope `{t,e,u,ts}` exactly as specified (see
+`app/core/pqc.py` docstring).
 
 ## Quick rules (see master prompt §7 for the full list)
 
