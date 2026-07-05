@@ -1,0 +1,135 @@
+{
+  "$comment": "SKELETON / SCHEMA for PROJECT_CONTEXT.json. Copy this shape, fill it from the analyzed project, and REMOVE all $comment keys before writing the final file. The output MUST be valid JSON, self-descriptive, and consistent with PROJECT_BLUEPRINT.md. Use null or [] for genuinely-absent data; never invent values. NEVER include secret values — only env-var names and purposes.",
+  "meta": {
+    "schema_version": "2.0",
+    "generated_by": "Claude Code - Project Knowledge Exporter",
+    "generated_at": "ISO-8601 timestamp",
+    "project_root": "/absolute/path",
+    "vcs": { "branch": "string|null", "commit": "string|null" },
+    "total_files": 0,
+    "total_lines_of_code": 0,
+    "languages": ["e.g. python", "typescript", "sql"]
+  },
+  "project": {
+    "name": "string",
+    "slug": "kebab-case",
+    "goal": "one-sentence goal",
+    "description_short": "1-3 sentences",
+    "type": "web_app|api|cli|mobile|library|monorepo|data_pipeline|other"
+  },
+  "stack": {
+    "$comment": "Include only the layers that exist; omit or null the rest.",
+    "frontend": {
+      "framework": "string|null",
+      "language": "string|null",
+      "styling": "string|null",
+      "state_management": "string|null",
+      "key_libraries": []
+    },
+    "backend": {
+      "runtime": "string|null",
+      "framework": "string|null",
+      "language": "string|null",
+      "key_libraries": []
+    },
+    "database": {
+      "primary": { "type": "string|null", "version": "string|null", "orm": "string|null" },
+      "cache": { "type": "string|null", "version": "string|null" }
+    },
+    "infrastructure": {
+      "containerization": "string|null",
+      "orchestration": "string|null",
+      "ci_cd": "string|null",
+      "hosting": "string|null"
+    }
+  },
+  "architecture": {
+    "style": "e.g. Clean Architecture / DDD / Modular Monolith",
+    "diagram_c4_level1": "short textual C4 context description",
+    "communication": "e.g. REST + Events (Redis Pub/Sub)",
+    "patterns": ["Repository", "DependencyInjection", "CQRS"]
+  },
+  "modules": [
+    {
+      "name": "string",
+      "path": "relative/path",
+      "responsibility": "single responsibility",
+      "exports": ["PublicSymbol"],
+      "imports": ["OtherModule"],
+      "entities": ["EntityName"],
+      "stateful": false
+    }
+  ],
+  "entities": [
+    {
+      "name": "User",
+      "table": "users",
+      "fields": [
+        { "name": "id", "type": "uuid", "pk": true, "nullable": false, "unique": true },
+        { "name": "email", "type": "varchar(255)", "pk": false, "nullable": false, "unique": true }
+      ],
+      "relations": [
+        { "type": "has_many|belongs_to|has_one|many_to_many", "entity": "Post", "foreign_key": "author_id" }
+      ],
+      "indexes": ["idx_users_email"],
+      "events": ["UserCreated"]
+    }
+  ],
+  "apis": [
+    {
+      "protocol": "rest|graphql|grpc|cli|function",
+      "method": "POST",
+      "path": "/api/auth/login",
+      "auth_required": false,
+      "rate_limit": "string|null",
+      "request": { "body": {}, "query": {}, "path_params": {} },
+      "responses": { "200": {}, "4xx": {} },
+      "validation_rules": []
+    }
+  ],
+  "workflows": [
+    {
+      "name": "User Registration",
+      "trigger": "string",
+      "steps": [
+        { "order": 1, "actor": "Guest|User|System", "action": "string" }
+      ]
+    }
+  ],
+  "business_rules": [
+    { "id": "BR-001", "condition": "string", "action": "string", "else": "string|null" }
+  ],
+  "coding_conventions": {
+    "naming": {
+      "files": "e.g. snake_case.py",
+      "classes": "PascalCase",
+      "functions": "snake_case|camelCase",
+      "constants": "UPPER_SNAKE_CASE"
+    },
+    "import_order": ["stdlib", "third_party", "local"],
+    "lint_format": ["e.g. ruff", "black"],
+    "commit_style": "e.g. Conventional Commits",
+    "git_workflow": "e.g. trunk-based"
+  },
+  "configuration": {
+    "env_vars": [
+      { "name": "DATABASE_URL", "purpose": "string", "required": true, "sensitive": true, "default": null }
+    ],
+    "secrets_management": "string|null"
+  },
+  "dependencies": {
+    "production": ["name@version"],
+    "development": ["name@version"]
+  },
+  "testing": {
+    "frameworks": [],
+    "types": ["unit", "integration", "e2e"],
+    "coverage_target": "string|null",
+    "coverage_actual": "string|null"
+  },
+  "known_limitations": ["string"],
+  "technical_debt": ["string"],
+  "roadmap": [
+    { "feature": "string", "priority": "high|medium|low", "status": "planned|in_progress|backlog" }
+  ]
+}
