@@ -65,6 +65,27 @@ async def test_event_create_publish_and_detail(
     ).status_code == 201
 
 
+async def test_list_tiers_visibility(
+    client: httpx.AsyncClient, make_user: MakeUser, make_event: MakeEvent
+) -> None:
+    organizer, o_headers = await make_user(UserRole.EVENT_ORGANIZER)
+    event, tier = await make_event(organizer.organization_id, published=False)
+
+    # Draft tiers: hidden from the public and other orgs, visible to the owner.
+    assert (await client.get(f"/api/v1/events/{event.id}/tiers")).status_code == 404
+    _, other = await make_user(UserRole.EVENT_ORGANIZER)
+    assert (
+        await client.get(f"/api/v1/events/{event.id}/tiers", headers=other)
+    ).status_code == 404
+    r = await client.get(f"/api/v1/events/{event.id}/tiers", headers=o_headers)
+    assert r.status_code == 200 and [t["id"] for t in r.json()] == [str(tier.id)]
+
+    # Once published, tiers are public.
+    await client.post(f"/api/v1/events/{event.id}/publish", headers=o_headers)
+    r = await client.get(f"/api/v1/events/{event.id}/tiers")
+    assert r.status_code == 200 and len(r.json()) == 1
+
+
 async def test_event_cursor_pagination(
     client: httpx.AsyncClient, make_user: MakeUser, make_event: MakeEvent
 ) -> None:

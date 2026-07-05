@@ -82,6 +82,29 @@ async def test_issue_requires_organizer_and_own_org(
     assert (await _issue_badge(client, o_headers, event.id)).status_code == 201
 
 
+async def test_list_badges_org_scoped(
+    client: httpx.AsyncClient, make_user: MakeUser, make_event: MakeEvent
+) -> None:
+    organizer, o_headers = await make_user(UserRole.EVENT_ORGANIZER)
+    event, _ = await make_event(organizer.organization_id)
+    await _issue_badge(client, o_headers, event.id, badge_type="SECURITY_STAFF")
+    await _issue_badge(client, o_headers, event.id, badge_type="VIP_VISITORS")
+
+    r = await client.get(f"/api/v1/badges?event_id={event.id}", headers=o_headers)
+    assert r.status_code == 200 and len(r.json()) == 2
+
+    # Another org cannot enumerate this event's badges.
+    _, other = await make_user(UserRole.EVENT_ORGANIZER)
+    assert (
+        await client.get(f"/api/v1/badges?event_id={event.id}", headers=other)
+    ).status_code == 404
+    # Attendees are not organizers.
+    _, attendee = await make_user()
+    assert (
+        await client.get(f"/api/v1/badges?event_id={event.id}", headers=attendee)
+    ).status_code == 403
+
+
 async def test_zone_abac(
     client: httpx.AsyncClient,
     app: FastAPI,

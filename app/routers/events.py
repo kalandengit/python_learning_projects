@@ -110,6 +110,28 @@ async def get_event(
     return await _event_out(session, event)
 
 
+@router.get("/{event_id}/tiers", response_model=list[TierOut])
+async def list_tiers(
+    event_id: uuid.UUID,
+    session: Annotated[AsyncSession, Depends(get_session)],
+    auth: Annotated[AuthContext | None, Depends(get_optional_auth)],
+) -> list[TierOut]:
+    event = await session.get(Event, event_id)
+    if event is None:
+        raise _NOT_FOUND
+    # Tiers of a draft are visible only to the owning organization.
+    if not event.is_published and (auth is None or auth.org_id != event.organization_id):
+        raise _NOT_FOUND
+    tiers = (
+        await session.scalars(
+            select(TicketTier)
+            .where(TicketTier.event_id == event.id)
+            .order_by(TicketTier.price_cents, TicketTier.created_at)
+        )
+    ).all()
+    return [TierOut.model_validate(t) for t in tiers]
+
+
 @router.post("/{event_id}/tiers", response_model=TierOut, status_code=status.HTTP_201_CREATED)
 async def create_tier(
     event_id: uuid.UUID,

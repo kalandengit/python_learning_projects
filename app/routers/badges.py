@@ -5,7 +5,8 @@ from __future__ import annotations
 import uuid
 from typing import Annotated
 
-from fastapi import APIRouter, Depends, HTTPException, status
+from fastapi import APIRouter, Depends, HTTPException, Query, status
+from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.config import Settings
@@ -21,7 +22,7 @@ from app.core.pqc import HybridSigner
 from app.core.rate_limit import RateLimiter
 from app.core.security import AuthContext
 from app.db import get_session
-from app.models import Event, ScanResult
+from app.models import Badge, Event, ScanResult
 from app.schemas.badges import (
     BadgeCreate,
     BadgeOut,
@@ -34,6 +35,26 @@ from app.services.qr_service import QRService
 router = APIRouter(prefix="/badges", tags=["badges"])
 
 _NOT_FOUND = HTTPException(status.HTTP_404_NOT_FOUND, detail="Not found")
+
+
+@router.get("", response_model=list[BadgeOut])
+async def list_badges(
+    auth: Annotated[AuthContext, Depends(require_organizer)],
+    session: Annotated[AsyncSession, Depends(get_session)],
+    event_id: Annotated[uuid.UUID, Query()],
+) -> list[BadgeOut]:
+    event = await session.get(Event, event_id)
+    # IDOR: an organizer only ever sees badges for their own org's events.
+    if event is None or event.organization_id != auth.org_id:
+        raise _NOT_FOUND
+    badges = (
+        await session.scalars(
+            select(Badge)
+            .where(Badge.event_id == event_id, Badge.organization_id == auth.org_id)
+            .order_by(Badge.created_at.desc())
+        )
+    ).all()
+    return [BadgeOut.model_validate(b) for b in badges]
 
 
 @router.post("", response_model=BadgeOut, status_code=status.HTTP_201_CREATED)
