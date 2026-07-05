@@ -75,3 +75,24 @@ class TimelineEntry(BaseModel):
 class BulkShiftAction(BaseModel):
     shift_ids: list[str]
     action: str  # publish | archive | delete
+
+
+class AuditLogOut(BaseModel):
+    id: str
+    actor_id: str | None
+    action: str
+    target_type: str | None
+    target_id: str | None
+    ip: str | None
+    device: str | None
+    reason: str | None
+    before_state: dict | None
+    after_state: dict | None
+    created_at: datetime
+
+    model_config = {"from_attributes": True}
+
+
+class PurgeResult(BaseModel):
+    purged: dict[str, int]
+    retention_days: int

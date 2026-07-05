@@ -3,19 +3,30 @@
 from __future__ import annotations
 
 from fastapi import APIRouter, Depends, HTTPException, Request, status
+from fastapi.responses import Response
 from sqlalchemy import select
 from sqlalchemy.orm import Session
 
 from ..database import get_db
-from ..deps import CurrentUser, client_ip, require_roles
+from ..deps import CurrentUser, client_ip, get_current_user, require_roles
 from ..models import Shift, UserRole
 from ..models.base import utcnow
 from ..schemas.common import BulkShiftAction, ShiftCreate, ShiftOut
 from ..services.audit import record_audit
+from ..services.pdf import render_schedule_pdf
 
 router = APIRouter(prefix="/planning", tags=["planning"])
 
 _planner = require_roles(UserRole.PLANNER, UserRole.ADMIN)
+
+
+def _pdf_response(shifts: list[Shift], *, title: str, subtitle: str, filename: str) -> Response:
+    body = render_schedule_pdf(shifts, title=title, subtitle=subtitle)
+    return Response(
+        content=body,
+        media_type="application/pdf",
+        headers={"Content-Disposition": f'attachment; filename="{filename}"'},
+    )
 
 
 @router.post("/shifts", response_model=ShiftOut, status_code=201)
@@ -50,6 +61,45 @@ def list_shifts(
         Shift.tenant_id == planner.tenant_id, Shift.deleted_at.is_(None)
     ).order_by(Shift.starts_at)
     return list(db.scalars(stmt))
+
+
+@router.get("/shifts/export.pdf")
+def export_shifts_pdf(
+    user_id: str | None = None,
+    db: Session = Depends(get_db),
+    planner: CurrentUser = Depends(_planner),
+) -> Response:
+    """Planner PDF export of the tenant's schedule, optionally for one employee."""
+    stmt = select(Shift).where(
+        Shift.tenant_id == planner.tenant_id, Shift.deleted_at.is_(None)
+    )
+    if user_id:
+        stmt = stmt.where(Shift.user_id == user_id)
+    shifts = list(db.scalars(stmt.order_by(Shift.starts_at)))
+    subtitle = f"Employee: {user_id}" if user_id else "All employees"
+    return _pdf_response(
+        shifts, title="StaffHub Schedule", subtitle=subtitle, filename="schedule.pdf"
+    )
+
+
+@router.get("/my-schedule.pdf")
+def export_my_schedule_pdf(
+    db: Session = Depends(get_db),
+    user: CurrentUser = Depends(get_current_user),
+) -> Response:
+    """Any employee may export their own schedule as a PDF."""
+    shifts = list(
+        db.scalars(
+            select(Shift).where(
+                Shift.tenant_id == user.tenant_id,
+                Shift.user_id == user.id,
+                Shift.deleted_at.is_(None),
+            ).order_by(Shift.starts_at)
+        )
+    )
+    return _pdf_response(
+        shifts, title="My Schedule", subtitle="", filename="my-schedule.pdf"
+    )
 
 
 @router.post("/shifts/bulk", response_model=dict)

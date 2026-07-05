@@ -67,6 +67,9 @@ The API bootstraps without seed data:
 | Requests: status history | ✅ one row per transition | `models/request.py` (`RequestStatusHistory`) |
 | Requests: online drafts | ✅ create/edit while `draft` | `routers/requests.py` |
 | Planning: shifts + bulk actions | ✅ publish/archive/delete | `routers/planning.py` |
+| Planning: PDF export | ✅ planner + self-service schedule PDF | `routers/planning.py`, `services/pdf.py` |
+| Audit log query API | ✅ admin/HR, filter + pagination | `routers/admin.py` |
+| Soft-delete retention purge | ✅ scheduled/on-demand hard purge | `services/purge.py`, `routers/admin.py` |
 | ICS feed (Must Have) | ✅ hashed token, revoke, annual expiry | `routers/ics.py`, `services/ics.py` |
 | Attachments: type/size limits | ✅ JPEG/PNG/PDF, 10 MB | `routers/attachments.py`, `config.py` |
 | Attachments: malware scan before availability | ✅ scan gates `is_available` | `services/storage.py`, `models/attachment.py` |
@@ -74,7 +77,7 @@ The API bootstraps without seed data:
 | Notification centre: read/unread, archive, deep links | ✅ | `routers/notifications.py` |
 | Timeline: unified chronological stream | ✅ shifts + requests + notifications | `routers/timeline.py` |
 | Audit log: actor/ip/device/reason/before/after | ✅ | `models/audit.py`, `services/audit.py` |
-| Soft delete + retention | ✅ (`deleted_at`/`deleted_by`; purge job TODO) | `models/base.py` (`SoftDeleteMixin`) |
+| Soft delete + retention | ✅ (`deleted_at`/`deleted_by` + purge) | `models/base.py`, `services/purge.py` |
 | Tenant feature flags | ✅ | `models/tenant.py`, `routers/admin.py` |
 | Rate limiting (login, uploads, requests, ICS) | ✅ tenant-aware, Redis-ready | `services/rate_limit.py`, `deps.py` |
 
@@ -109,9 +112,14 @@ Transition validity (409 on an illegal jump) is checked before authorization
 may review/approve/reject. Every transition writes history, an audit entry, and
 a notification to the requester.
 
+## Continuous integration
+
+`.github/workflows/ci.yml` installs the backend dependencies and runs the full
+`pytest` suite on every push and pull request (Python 3.11).
+
 ## Tests
 
-35 tests in `tests/` cover auth flows, the request lifecycle and RBAC, planning
-and bulk actions, the ICS feed end-to-end, notifications, the timeline,
-attachments (clean/infected/medical), tenant isolation, feature flags and rate
-limiting. Run with `pytest`.
+47 tests in `tests/` cover auth flows, the request lifecycle and RBAC, planning
+and bulk actions, PDF export, the ICS feed end-to-end, notifications, the
+timeline, attachments (clean/infected/medical), tenant isolation, feature flags,
+rate limiting, the audit-log query API, and retention purge. Run with `pytest`.
