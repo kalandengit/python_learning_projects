@@ -1,0 +1,4 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" role="img" aria-label="EMS">
+  <rect width="512" height="512" rx="96" fill="#4f46e5" />
+  <path d="M160 160h192v52H212v34h124v52H212v34h140v52H160z" fill="#fff" />
+</svg>
