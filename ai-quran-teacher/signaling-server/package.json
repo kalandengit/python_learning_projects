@@ -1,0 +1,20 @@
+{
+  "name": "ai-quran-teacher-signaling",
+  "version": "1.0.0",
+  "description": "WebRTC signaling server for AI Quran Teacher live classes (Socket.IO).",
+  "author": "Adaman KEITA",
+  "license": "GPL-3.0",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "test": "node --test"
+  },
+  "engines": {
+    "node": ">=20"
+  },
+  "dependencies": {
+    "cors": "^2.8.5",
+    "express": "^4.18.2",
+    "socket.io": "^4.7.4"
+  }
+}

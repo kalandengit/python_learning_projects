@@ -1,0 +1,14 @@
+# Node
+node_modules/
+dist/
+*.log
+.env
+
+# iOS / Xcode
+DerivedData/
+*.xcuserdatad/
+xcuserdata/
+*.ipa
+*.dSYM.zip
+Pods/
+.build/

@@ -1,0 +1,45 @@
+name: iOS CI
+
+# Requires the Xcode project (AIQuranTeacher.xcodeproj) to be generated and
+# committed — see ai-quran-teacher/ios/README.md. Until then this workflow
+# only runs when manually dispatched, so it does not fail every push.
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - 'ai-quran-teacher/ios/**'
+      - '.github/workflows/ios-ci.yml'
+
+jobs:
+  build-and-test:
+    runs-on: macos-latest
+    defaults:
+      run:
+        working-directory: ai-quran-teacher/ios
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+      - name: Check for Xcode project
+        id: check
+        run: |
+          if [ -d "AIQuranTeacher.xcodeproj" ]; then
+            echo "exists=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "exists=false" >> "$GITHUB_OUTPUT"
+            echo "AIQuranTeacher.xcodeproj not committed yet; skipping build."
+          fi
+      - name: Build and test
+        if: steps.check.outputs.exists == 'true'
+        run: |
+          xcodebuild -project AIQuranTeacher.xcodeproj \
+            -scheme AIQuranTeacher \
+            -sdk iphonesimulator \
+            -destination 'platform=iOS Simulator,name=iPhone 15' \
+            clean build test \
+            CODE_SIGN_IDENTITY="" CODE_SIGNING_REQUIRED=NO
+
+  # TestFlight deployment: add a job here using apple-actions/upload-testflight-build
+  # with APP_STORE_CONNECT_API_KEY, DISTRIBUTION_CERTIFICATE_BASE64,
+  # PROVISIONING_PROFILE_BASE64, CERTIFICATE_PASSWORD, DEVELOPER_TEAM_ID secrets.
+  # The full recipe is in docs/IMPLEMENTATION_GUIDE.md (CI/CD Setup section).
