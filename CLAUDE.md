@@ -14,8 +14,18 @@ Parts 1–3 (§5) were **regenerated into this repository** in July 2026: schema
 Alembic baseline (`app/models`, `migrations/`), backend core (`app/core`,
 `app/services`), all §4 routes (`app/routers`), the pytest suite (`tests/`,
 coverage ≥80% against real PostGIS + Valkey), Locust profile (`load/`),
-Dockerfile/compose v3 and CI v3 (`.github/workflows/ci.yml`). Remaining work
-starts at §6 Part 4 (React frontend). One documented deviation: ML-DSA-65
+Dockerfile/compose v3 and CI v3 (`.github/workflows/ci.yml`).
+
+**Part 4** (§6, React frontend) was completed in July 2026 under `frontend/`
+(Vite 8 / React 19 / TS strict / Tailwind v4; TanStack Query, Zustand, Zod, ky):
+API client with refresh-rotation retry, passkey/password+TOTP auth, event
+browse + tier purchase, Stripe redirect, My Tickets QR, organizer wizard
+(Leaflet map pin), badge admin, and the offline-capable scanner PWA. Two
+read-only backend endpoints were added for it (`GET events/{id}/tiers`,
+`GET badges?event_id=`). Remaining work starts at §6 **Part 5** (infrastructure:
+Terraform plan-only, seed/migration tasks, deploy workflow, Grafana/alarms).
+
+One documented deviation: ML-DSA-65
 signatures (3,309 B) exceed QR capacity (2,953 B), so the hybrid PQC signature
 is stored on the ticket/badge row and verified server-side on scan; the QR
 carries the HMAC envelope `{t,e,u,ts}` exactly as specified (see
