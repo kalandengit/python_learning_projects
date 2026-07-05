@@ -1,0 +1,62 @@
+# Full local stack for the AI Quran Teacher platform.
+#   docker compose up --build
+# Brings up Postgres, Redis, the NestJS API, and the WebRTC signaling server.
+services:
+  postgres:
+    image: postgres:16-alpine
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: ai_quran_teacher
+    ports:
+      - '5432:5432'
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ['CMD-SHELL', 'pg_isready -U postgres']
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  redis:
+    image: redis:7-alpine
+    ports:
+      - '6379:6379'
+    healthcheck:
+      test: ['CMD', 'redis-cli', 'ping']
+      interval: 5s
+      timeout: 3s
+      retries: 5
+
+  backend:
+    build: ./backend
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    environment:
+      DB_HOST: postgres
+      DB_PORT: 5432
+      DB_USERNAME: postgres
+      DB_PASSWORD: postgres
+      DB_NAME: ai_quran_teacher
+      DB_SYNCHRONIZE: 'true'
+      REDIS_URL: redis://redis:6379
+      JWT_SECRET: ${JWT_SECRET:-dev-only-insecure-secret}
+      ANTHROPIC_API_KEY: ${ANTHROPIC_API_KEY:-}
+      PORT: 3000
+    ports:
+      - '3000:3000'
+    # Scale horizontally: `docker compose up --scale backend=3` (put a load
+    # balancer in front; Redis coordinates cache + rate limiting across nodes).
+
+  signaling:
+    build: ./signaling-server
+    environment:
+      PORT: 3001
+    ports:
+      - '3001:3001'
+
+volumes:
+  pgdata:

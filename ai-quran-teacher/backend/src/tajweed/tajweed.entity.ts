@@ -14,7 +14,7 @@ export class TajweedMistake {
   id: string;
 
   @Index()
-  @Column({ nullable: true })
+  @Column({ type: 'uuid', nullable: true })
   userId: string | null;
 
   @Index()

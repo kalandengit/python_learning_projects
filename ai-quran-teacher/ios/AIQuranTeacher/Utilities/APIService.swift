@@ -14,11 +14,14 @@ final class APIService {
     }()
 
     private let session: URLSession
-    private let decoder = JSONDecoder()
+    private let decoder: JSONDecoder
     private let encoder = JSONEncoder()
 
     init(session: URLSession = .shared) {
         self.session = session
+        decoder = JSONDecoder()
+        // Backend serializes dates as ISO-8601 (e.g. exam deadlines, issuedAt).
+        decoder.dateDecodingStrategy = .iso8601
     }
 
     enum APIError: LocalizedError {
@@ -72,6 +75,54 @@ final class APIService {
             let answers: [Int]
         }
         return try await post("quiz/submit", body: Body(quizId: quizId, answers: answers))
+    }
+
+    // MARK: - Exams & Certificates
+
+    func startExam(userId: String, level: ExamLevel) async throws -> Exam {
+        struct Body: Encodable {
+            let userId: String
+            let level: String
+        }
+        return try await post("exams/start", body: Body(userId: userId, level: level.rawValue))
+    }
+
+    func submitExam(examId: String, answers: [Int]) async throws -> ExamResult {
+        struct Body: Encodable {
+            let examId: String
+            let answers: [Int]
+        }
+        return try await post("exams/submit", body: Body(examId: examId, answers: answers))
+    }
+
+    func fetchCertificates(userId: String) async throws -> [Certificate] {
+        try await get("exams/certificates/\(userId)")
+    }
+
+    func verifyCertificate(code: String) async throws -> CertificateVerification {
+        try await get("exams/verify/\(code)")
+    }
+
+    // MARK: - AI Tutor
+
+    func askTutor(
+        question: String,
+        context: String?,
+        aspects: [TutorAspect]? = nil
+    ) async throws -> TutorResponse {
+        struct Body: Encodable {
+            let question: String
+            let context: String?
+            let aspects: [String]?
+        }
+        return try await post(
+            "tutor/ask",
+            body: Body(
+                question: question,
+                context: context,
+                aspects: aspects?.map(\.rawValue)
+            )
+        )
     }
 
     // MARK: - Gamification

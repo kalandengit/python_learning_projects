@@ -42,6 +42,31 @@ which must be created on a Mac.
 6. Run on a simulator or device. Speech recognition requires a real device
    for best results; Arabic locale `ar-SA` must be available.
 
+## Design system
+
+`AIQuranTeacher/DesignSystem/` is a small, reusable design language shared
+across every screen — an emerald/gold "Dark Mode 2.0" theme informed by 2026
+education-app trends (soft gradients, tactile depth, gamified accents):
+
+- **`Theme.swift`** — brand palette, adaptive light/dark surfaces, signature
+  gradients (`heroGradient`, `goldGradient`, `ambientGradient`), spacing, and
+  motion tokens. Colors resolve per light/dark automatically, so no asset
+  catalog color sets are required.
+- **`Components.swift`** — `GlassCard`, `PrimaryButton`, `FeatureHeader`,
+  `Chip`, and `ProgressRing`, all built on the tokens.
+
+Keep new views on these tokens rather than hard-coding colors or spacing.
+
+## New feature screens
+
+- **`Views/Tutor/TutorView.swift`** — asks the AI tutor; renders each parallel
+  aspect (answer, tafsir, Tajweed, follow-ups) as its own card, with an
+  AI-generated disclaimer.
+- **`Views/Exam/`** — timed certification exams with a live countdown ring and
+  a gold `CertificateCard` on success.
+- **`Views/Certificate/CertificateVerifierView.swift`** — public verifier for
+  an exam certificate code.
+
 ## Architecture
 
 - **Models/** — Codable structs mirroring the backend API shapes.

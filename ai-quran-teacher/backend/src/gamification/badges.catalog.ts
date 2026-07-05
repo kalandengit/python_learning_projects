@@ -43,6 +43,27 @@ export const BADGE_CATALOG: BadgeDefinition[] = [
     xpReward: 300,
   },
   {
+    code: 'certified_foundation',
+    name: 'Certified: Foundation',
+    description: 'Pass the Foundation Tajweed exam.',
+    icon: '📜',
+    xpReward: 150,
+  },
+  {
+    code: 'certified_intermediate',
+    name: 'Certified: Intermediate',
+    description: 'Pass the Intermediate Tajweed exam.',
+    icon: '🎓',
+    xpReward: 250,
+  },
+  {
+    code: 'certified_advanced',
+    name: 'Certified: Advanced',
+    description: 'Pass the Advanced Tajweed exam.',
+    icon: '🏆',
+    xpReward: 400,
+  },
+  {
     code: 'surah_complete',
     name: 'Surah Complete',
     description: 'Recite an entire surah without major mistakes.',
