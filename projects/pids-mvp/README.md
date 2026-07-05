@@ -27,8 +27,13 @@ pids-mvp/
 │   └── benchmark.py        # capacity benchmark (rule engine / dedup / pipeline)
 └── deploy/
     ├── docker-compose.yml
-    └── k3s/pids.yaml       # Raspberry Pi 5 cluster manifests (Postgres, Redis, HPA)
+    ├── k3s/               # Pi 5 cluster: pids.yaml, kube-vip.yaml, metallb.yaml,
+    │                      #   observability.yaml, build-and-push.sh
+    └── monitoring/grafana-dashboard.json
 ```
+
+CI: `.github/workflows/build-pids-backend.yml` runs the tests and builds a multi-arch
+(amd64 + **arm64**) image to GHCR for the Pi 5 cluster.
 
 ## Run it
 
@@ -75,6 +80,8 @@ are in `deploy/k3s/`.
 - **RBAC auth** — role hierarchy (viewer→super_admin), stdlib PBKDF2 + HS256 tokens
   (swap for argon2/OIDC in production — noted in code).
 - **Multi-tenant** data model with a documented RLS isolation strategy.
+- **Observability** — `/metrics` Prometheus endpoint (events/alerts/dedup counters), plus a
+  Grafana dashboard (intrusion share, NAR proxy, notification rate) for the edge cluster.
 
 Verified end-to-end: humans at night → `high` intrusion, nuisance classes → `ignore`,
 duplicates → deduped, dashboard/alerts reflect the flow.

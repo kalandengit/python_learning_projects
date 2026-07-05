@@ -4,10 +4,11 @@ from __future__ import annotations
 import logging
 from contextlib import asynccontextmanager
 
-from fastapi import FastAPI
+from fastapi import FastAPI, Response
 
 from .api import ALL_ROUTERS
 from .config import get_settings
+from .metrics import REGISTRY
 from .database import SessionLocal, init_db
 from .dedup import InMemoryDedup, RedisDedup
 from .notifications import default_service
@@ -53,6 +54,12 @@ app = FastAPI(
 @app.get("/health", tags=["health"])
 def health() -> dict:
     return {"status": "ok", "environment": settings.environment}
+
+
+@app.get("/metrics", tags=["observability"], include_in_schema=False)
+def metrics() -> Response:
+    """Prometheus scrape endpoint (text exposition format)."""
+    return Response(content=REGISTRY.render(), media_type="text/plain; version=0.0.4")
 
 
 for router in ALL_ROUTERS:

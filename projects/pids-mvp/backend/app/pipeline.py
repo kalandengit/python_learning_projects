@@ -17,6 +17,7 @@ from sqlalchemy.orm import Session
 from . import models
 from .config import get_settings
 from .dedup import DedupBackend, compute_idempotency_key
+from .metrics import record_alert, record_dedup_dropped, record_event, record_notifications
 from .notifications import NotificationService
 from .rule_engine import RuleEngine, build_context
 from .schemas import DetectionEventIn, IngestResult
@@ -60,6 +61,7 @@ def process_detection(
 
     # 1. Deduplicate (at-least-once safe).
     if dedup.seen(key, settings.dedup_window_seconds):
+        record_dedup_dropped()
         return IngestResult(status="duplicate")
 
     # 2. Persist the event + mark camera alive.
@@ -97,6 +99,8 @@ def process_detection(
             detail={"event_id": event.id, "decision": outcome.decision, "rule": outcome.matched_rule},
         )
     )
+
+    record_event(outcome.decision)
 
     if not outcome.is_intrusion():
         db.commit()
@@ -145,6 +149,8 @@ def process_detection(
         )
 
     db.commit()
+    record_alert(alert.criticality)
+    record_notifications(len(alert.notifications))
     return IngestResult(
         status="intrusion",
         event_id=event.id,

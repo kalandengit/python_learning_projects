@@ -249,31 +249,53 @@ uvicorn app.main:app --host 0.0.0.0 --port 8000
 
 ### 3.3 Raspberry Pi 5 **cluster** with k3s
 
+**Pick two LAN IPs up front** (outside your DHCP range): a **control-plane VIP** (e.g.
+`192.168.1.239`) and a **Service LoadBalancer pool** (e.g. `192.168.1.240-250`).
+
 ```bash
+# 0) Build & push the multi-arch backend image (once) — CI does this automatically, or locally:
+REGISTRY=ghcr.io/<owner> ./deploy/k3s/build-and-push.sh
+
 # On pi5-cp1 — bootstrap an HA control plane (embedded etcd).
+# --disable servicelb hands LoadBalancer IPs to MetalLB instead of k3s's klipper.
 curl -sfL https://get.k3s.io | INSTALL_K3S_EXEC="server --cluster-init \
-  --disable traefik --tls-san <VIRTUAL_IP>" sh -
+  --disable traefik --disable servicelb --tls-san 192.168.1.239" sh -
 sudo cat /var/lib/rancher/k3s/server/node-token   # copy the token
 
-# On pi5-cp2 and pi5-cp3 — join as additional servers (quorum).
+# On pi5-cp2 and pi5-cp3 — join as additional servers (quorum tolerates 1 failure).
 curl -sfL https://get.k3s.io | INSTALL_K3S_EXEC="server \
-  --server https://pi5-cp1:6443 --disable traefik --tls-san <VIRTUAL_IP>" \
-  K3S_TOKEN=<TOKEN> sh -
+  --server https://192.168.1.239:6443 --disable traefik --disable servicelb \
+  --tls-san 192.168.1.239" K3S_TOKEN=<TOKEN> sh -
 
 # On each worker (pi5-w1..) — join as an agent.
-curl -sfL https://get.k3s.io | K3S_URL=https://pi5-cp1:6443 K3S_TOKEN=<TOKEN> sh -
+curl -sfL https://get.k3s.io | K3S_URL=https://192.168.1.239:6443 K3S_TOKEN=<TOKEN> sh -
 
-# Verify from a control-plane node.
 sudo k3s kubectl get nodes -o wide
 
-# Deploy PIDS (manifests in deploy/k3s/).
-sudo k3s kubectl apply -f deploy/k3s/
-sudo k3s kubectl -n pids get pods,svc
+# 1) Control-plane VIP (kube-vip) — set eth0 / 192.168.1.239 in the file first.
+sudo k3s kubectl apply -f deploy/k3s/kube-vip.yaml
+
+# 2) LoadBalancer IPs (MetalLB) — install the operator, then the pool.
+sudo k3s kubectl apply -f https://raw.githubusercontent.com/metallb/metallb/v0.14.8/config/manifests/metallb-native.yaml
+sudo k3s kubectl -n metallb-system rollout status deploy/controller
+sudo k3s kubectl apply -f deploy/k3s/metallb.yaml
+
+# 3) Deploy PIDS (Namespace, Redis, Postgres, API + LoadBalancer + HPA).
+sudo k3s kubectl apply -f deploy/k3s/pids.yaml
+sudo k3s kubectl -n pids get pods,svc     # pids-api Service should get an EXTERNAL-IP from the pool
+
+# 4) Observability — Prometheus + Grafana, then load the dashboard.
+sudo k3s kubectl apply -f deploy/k3s/observability.yaml
+sudo k3s kubectl -n monitoring create configmap pids-dashboard \
+  --from-file=deploy/monitoring/grafana-dashboard.json
+sudo k3s kubectl -n monitoring rollout restart deploy/grafana
+# Grafana at http://192.168.1.241:3000 (admin/admin — change it). Cameras POST to the pids-api VIP.
 ```
 
-> Enable a floating VIP with **kube-vip** (control-plane HA) and **MetalLB** (LoadBalancer IP for
-> the ingestion Service) so cameras post to one stable address. Use the multi-arch backend image
-> (build with `docker buildx build --platform linux/arm64`). Manifests: `deploy/k3s/`.
+> Manifests live in `deploy/k3s/` (`pids.yaml`, `kube-vip.yaml`, `metallb.yaml`,
+> `observability.yaml`) and the dashboard in `deploy/monitoring/`. The backend image is built for
+> **arm64** by `.github/workflows/build-pids-backend.yml` (or `deploy/k3s/build-and-push.sh`).
+> The backend exposes **`/metrics`** (Prometheus) out of the box.
 
 ---
 

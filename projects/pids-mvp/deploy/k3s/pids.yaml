@@ -1,8 +1,9 @@
 # PIDS on a Raspberry Pi 5 k3s cluster.
 # Apply with:  sudo k3s kubectl apply -f deploy/k3s/
-# Assumes a multi-arch (arm64) image pushed to a registry the nodes can reach —
-# replace `REGISTRY/pids-backend:arm64` below. Build it with:
-#   docker buildx build --platform linux/arm64 -t REGISTRY/pids-backend:arm64 --push backend/
+# Build the multi-arch image first (CI workflow .github/workflows/build-pids-backend.yml,
+# or locally: REGISTRY=ghcr.io/<owner> ./deploy/k3s/build-and-push.sh) and adjust the image
+# reference below if your registry/owner differs.
+# For the LoadBalancer Service VIP to work, install MetalLB first (deploy/k3s/metallb.yaml).
 ---
 apiVersion: v1
 kind: Namespace
@@ -110,7 +111,7 @@ spec:
     spec:
       containers:
         - name: api
-          image: REGISTRY/pids-backend:arm64
+          image: ghcr.io/kalandengit/pids-backend:latest  # built by .github/workflows or build-and-push.sh
           env:
             - { name: PIDS_ENVIRONMENT, value: pi-cluster }
             - name: PIDS_SECRET_KEY
