@@ -31,7 +31,25 @@ def test_in_memory_dedup_seen_semantics():
 
 
 def test_in_memory_dedup_expiry():
-    d = InMemoryDedup()
+    d = InMemoryDedup(purge_interval=0.0)  # purge every call for a deterministic expiry check
     assert d.seen("k", ttl_seconds=1) is False
     time.sleep(1.1)
     assert d.seen("k", ttl_seconds=1) is False  # expired -> treated as new again
+
+
+def test_in_memory_dedup_throttled_purge_still_expires_by_ttl():
+    # Even if the sweep is throttled, an expired key must not be reported as seen,
+    # because seen() checks the per-key expiry directly.
+    d = InMemoryDedup(purge_interval=3600.0)  # effectively never sweeps during the test
+    assert d.seen("k", ttl_seconds=1) is False
+    time.sleep(1.1)
+    assert d.seen("k", ttl_seconds=1) is False
+
+
+def test_in_memory_dedup_scales_without_quadratic_blowup():
+    # Regression guard: 50k distinct keys must stay fast (amortized O(1) per call).
+    d = InMemoryDedup()
+    start = time.perf_counter()
+    for i in range(50_000):
+        assert d.seen(f"k-{i}", ttl_seconds=60) is False
+    assert time.perf_counter() - start < 2.0  # generous; was ~8s with per-call full purge

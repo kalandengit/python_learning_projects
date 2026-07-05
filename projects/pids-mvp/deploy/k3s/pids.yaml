@@ -1,0 +1,166 @@
+# PIDS on a Raspberry Pi 5 k3s cluster.
+# Apply with:  sudo k3s kubectl apply -f deploy/k3s/
+# Assumes a multi-arch (arm64) image pushed to a registry the nodes can reach —
+# replace `REGISTRY/pids-backend:arm64` below. Build it with:
+#   docker buildx build --platform linux/arm64 -t REGISTRY/pids-backend:arm64 --push backend/
+---
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: pids
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  name: pids-secrets
+  namespace: pids
+type: Opaque
+stringData:
+  # Replace before applying (or generate with: kubectl create secret ...).
+  PIDS_SECRET_KEY: "CHANGE-ME-32-BYTES-MIN"
+  POSTGRES_PASSWORD: "CHANGE-ME"
+---
+# --- Redis: shared dedup set / cache across ingestion workers ---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: redis
+  namespace: pids
+spec:
+  replicas: 1
+  selector:
+    matchLabels: { app: redis }
+  template:
+    metadata:
+      labels: { app: redis }
+    spec:
+      containers:
+        - name: redis
+          image: redis:7-alpine
+          ports: [{ containerPort: 6379 }]
+          resources:
+            requests: { cpu: "100m", memory: "128Mi" }
+            limits: { cpu: "500m", memory: "256Mi" }
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: redis
+  namespace: pids
+spec:
+  selector: { app: redis }
+  ports: [{ port: 6379, targetPort: 6379 }]
+---
+# --- PostgreSQL: shared HA-capable datastore (single instance shown; use CloudNativePG for HA) ---
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: postgres
+  namespace: pids
+spec:
+  serviceName: postgres
+  replicas: 1
+  selector:
+    matchLabels: { app: postgres }
+  template:
+    metadata:
+      labels: { app: postgres }
+    spec:
+      containers:
+        - name: postgres
+          image: postgres:16-alpine
+          env:
+            - { name: POSTGRES_USER, value: pids }
+            - { name: POSTGRES_DB, value: pids }
+            - name: POSTGRES_PASSWORD
+              valueFrom: { secretKeyRef: { name: pids-secrets, key: POSTGRES_PASSWORD } }
+          ports: [{ containerPort: 5432 }]
+          volumeMounts: [{ name: data, mountPath: /var/lib/postgresql/data }]
+          resources:
+            requests: { cpu: "250m", memory: "256Mi" }
+            limits: { cpu: "1", memory: "1Gi" }
+  volumeClaimTemplates:
+    - metadata: { name: data }
+      spec:
+        accessModes: ["ReadWriteOnce"]
+        resources: { requests: { storage: 10Gi } }   # NVMe-backed StorageClass on the Pi
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: postgres
+  namespace: pids
+spec:
+  selector: { app: postgres }
+  ports: [{ port: 5432, targetPort: 5432 }]
+---
+# --- PIDS backend / ingestion (scale replicas to add throughput) ---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: pids-api
+  namespace: pids
+spec:
+  replicas: 2
+  selector:
+    matchLabels: { app: pids-api }
+  template:
+    metadata:
+      labels: { app: pids-api }
+    spec:
+      containers:
+        - name: api
+          image: REGISTRY/pids-backend:arm64
+          env:
+            - { name: PIDS_ENVIRONMENT, value: pi-cluster }
+            - name: PIDS_SECRET_KEY
+              valueFrom: { secretKeyRef: { name: pids-secrets, key: PIDS_SECRET_KEY } }
+            - name: PIDS_DATABASE_URL
+              value: "postgresql+psycopg://pids:$(POSTGRES_PASSWORD)@postgres:5432/pids"
+            - name: POSTGRES_PASSWORD
+              valueFrom: { secretKeyRef: { name: pids-secrets, key: POSTGRES_PASSWORD } }
+            - { name: PIDS_REDIS_URL, value: "redis://redis:6379/0" }
+          ports: [{ containerPort: 8000 }]
+          readinessProbe:
+            httpGet: { path: /health, port: 8000 }
+            initialDelaySeconds: 5
+            periodSeconds: 10
+          livenessProbe:
+            httpGet: { path: /health, port: 8000 }
+            initialDelaySeconds: 15
+            periodSeconds: 20
+          resources:
+            requests: { cpu: "200m", memory: "256Mi" }
+            limits: { cpu: "1", memory: "512Mi" }
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: pids-api
+  namespace: pids
+  annotations:
+    # With MetalLB installed, this gets a stable VIP cameras can post to.
+    metallb.universe.tf/loadBalancerIPs: "192.168.1.240"
+spec:
+  type: LoadBalancer
+  selector: { app: pids-api }
+  ports: [{ port: 80, targetPort: 8000 }]
+---
+# --- Autoscale ingestion on CPU (add workers under load) ---
+apiVersion: autoscaling/v2
+kind: HorizontalPodAutoscaler
+metadata:
+  name: pids-api
+  namespace: pids
+spec:
+  scaleTargetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: pids-api
+  minReplicas: 2
+  maxReplicas: 6
+  metrics:
+    - type: Resource
+      resource:
+        name: cpu
+        target: { type: Utilization, averageUtilization: 70 }

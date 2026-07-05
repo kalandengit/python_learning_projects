@@ -15,14 +15,19 @@ pids-mvp/
 │   ├── ARCHITECTURE.md     # C4, sequence, class, ER, deployment, network (Mermaid)
 │   ├── DATA_MODEL.md       # ER diagram + PostgreSQL DDL + retention/compliance
 │   ├── LLM_SELECTION.md    # which Claude model for what, with costs
-│   └── MATERIALS_BOM.md    # bill of materials + cost-efficiency project
+│   ├── MATERIALS_BOM.md    # bill of materials + cost-efficiency project
+│   └── RASPBERRY_PI5_DEPLOYMENT.md  # single Pi 5 + Pi 5 k3s cluster (Chain-of-Thought guide)
 ├── backend/                # runnable FastAPI reference implementation (tested)
 │   ├── app/                # models, rule engine, dedup, notifications, pipeline, API
 │   ├── tests/              # 26 tests (rule engine, dedup, end-to-end API)
 │   └── Dockerfile
 ├── frontend/index.html     # lightweight dark-mode SOC console (no build step)
-├── simulator/camera_sim.py # posts synthetic detections to the API
-└── deploy/docker-compose.yml
+├── simulator/
+│   ├── camera_sim.py       # posts synthetic detections to the API
+│   └── benchmark.py        # capacity benchmark (rule engine / dedup / pipeline)
+└── deploy/
+    ├── docker-compose.yml
+    └── k3s/pids.yaml       # Raspberry Pi 5 cluster manifests (Postgres, Redis, HPA)
 ```
 
 ## Run it
@@ -43,8 +48,22 @@ python ../simulator/camera_sim.py --discover --count 20 --night
 Run the tests:
 
 ```bash
-cd backend && python -m pytest -q      # 26 passed
+cd backend && python -m pytest -q      # 28 passed
 ```
+
+Benchmark capacity (for hardware sizing, e.g. Raspberry Pi 5):
+
+```bash
+python simulator/benchmark.py --n 50000
+# rule engine ~278K evals/s, dedup ~771K ops/s, pipeline ~149 events/s (x86 dev host, SQLite)
+```
+
+### Raspberry Pi 5 deployment
+
+See `docs/RASPBERRY_PI5_DEPLOYMENT.md` for a Chain-of-Thought study of running PIDS on a **single
+Pi 5 edge appliance** (small site) and a **Pi 5 k3s cluster** (large site, HA) — with hardware BOM,
+step-by-step setup, YOLO/Hailo-8L options, capacity sizing, and a phased roadmap. Cluster manifests
+are in `deploy/k3s/`.
 
 ## What the reference implementation demonstrates
 

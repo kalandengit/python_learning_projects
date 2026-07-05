@@ -34,20 +34,31 @@ class DedupBackend(Protocol):
 
 
 class InMemoryDedup:
-    """Process-local dedup with lazy TTL expiry. Not shared across processes."""
+    """Process-local dedup with lazy TTL expiry. Not shared across processes.
 
-    def __init__(self) -> None:
+    Expiry is swept on a throttled cadence (``purge_interval``) rather than on every call, so
+    ``seen()`` stays amortized O(1) even when the store holds many live keys. A full O(n) sweep
+    runs at most once per interval.
+    """
+
+    def __init__(self, purge_interval: float = 1.0) -> None:
         self._store: dict[str, float] = {}
+        self._purge_interval = purge_interval
+        self._next_purge = 0.0
 
-    def _purge(self, now: float) -> None:
+    def _maybe_purge(self, now: float) -> None:
+        if now < self._next_purge:
+            return
+        self._next_purge = now + self._purge_interval
         expired = [k for k, exp in self._store.items() if exp <= now]
         for k in expired:
             del self._store[k]
 
     def seen(self, key: str, ttl_seconds: int) -> bool:
         now = time.time()
-        self._purge(now)
-        if key in self._store:
+        self._maybe_purge(now)
+        exp = self._store.get(key)
+        if exp is not None and exp > now:
             return True
         self._store[key] = now + ttl_seconds
         return False
