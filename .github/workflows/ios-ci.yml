@@ -1,0 +1,27 @@
+name: iOS CI
+
+on:
+  push:
+    branches: [main]
+    paths: ['AIQuranTeacherProject/ios/**', '.github/workflows/ios-ci.yml']
+  pull_request:
+    paths: ['AIQuranTeacherProject/ios/**', '.github/workflows/ios-ci.yml']
+
+jobs:
+  build:
+    runs-on: macos-14
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Select Xcode
+        uses: maxim-lobanov/setup-xcode@v1
+        with:
+          xcode-version: latest-stable
+
+      # The iOS target is an early scaffold: no .xcodeproj is committed yet, so
+      # this job currently verifies the sources are present. Replace with a real
+      # `xcodebuild ... test` once the Xcode project exists.
+      - name: Verify iOS sources
+        run: |
+          echo "Listing iOS sources"
+          find AIQuranTeacherProject/ios -name '*.swift' | sort

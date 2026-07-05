@@ -1,0 +1,43 @@
+name: Backend CI
+
+on:
+  push:
+    branches: [main]
+    paths: ['AIQuranTeacherProject/backend/**', '.github/workflows/backend-ci.yml']
+  pull_request:
+    paths: ['AIQuranTeacherProject/backend/**', '.github/workflows/backend-ci.yml']
+
+defaults:
+  run:
+    working-directory: AIQuranTeacherProject/backend
+
+jobs:
+  build-and-test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: npm
+          cache-dependency-path: AIQuranTeacherProject/backend/package-lock.json
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Lint
+        run: npm run lint
+
+      - name: Build
+        run: npm run build
+
+      - name: Unit tests
+        run: npm test
+
+      - name: E2E tests
+        run: npm run test:e2e
+
+      - name: Audit (high severity)
+        run: npm audit --audit-level=high
+        continue-on-error: true
