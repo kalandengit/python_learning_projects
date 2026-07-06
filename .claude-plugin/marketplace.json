@@ -1,0 +1,23 @@
+{
+  "$schema": "https://json.schemastore.org/claude-code-marketplace.json",
+  "name": "kalandengit-skills",
+  "owner": {
+    "name": "kalandengit",
+    "url": "https://github.com/kalandengit"
+  },
+  "metadata": {
+    "description": "Claude Code skills by kalandengit. Add with: /plugin marketplace add kalandengit/python_learning_projects"
+  },
+  "plugins": [
+    {
+      "name": "planning-first",
+      "source": "./claude-skills/plugins/planning-first",
+      "description": "Forces a plan-first workflow: analyze requirements, propose an architecture, and get explicit approval before writing any code or files."
+    },
+    {
+      "name": "it-prompt-specialist",
+      "source": "./claude-skills/plugins/it-prompt-specialist",
+      "description": "Senior multidisciplinary IT expert lens across software, cloud, security, AI/ML, networking, and more."
+    }
+  ]
+}
