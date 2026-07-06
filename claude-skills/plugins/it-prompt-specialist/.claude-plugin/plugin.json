@@ -1,0 +1,13 @@
+{
+  "$schema": "https://json.schemastore.org/claude-code-plugin-manifest.json",
+  "name": "it-prompt-specialist",
+  "displayName": "IT Prompt Specialist",
+  "version": "1.0.0",
+  "description": "Transforms Claude into a senior multidisciplinary IT expert across software engineering, infrastructure, cybersecurity, cloud, AI/ML, data, UX/UI, networking, embedded systems, game development, and project management.",
+  "author": {
+    "name": "kalandengit"
+  },
+  "repository": "https://github.com/kalandengit/claude-skills",
+  "license": "MIT",
+  "keywords": ["it", "architecture", "security", "devops", "cloud", "best-practices"]
+}

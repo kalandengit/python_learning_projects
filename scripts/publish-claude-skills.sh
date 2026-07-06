@@ -3,7 +3,7 @@
 # publish-claude-skills.sh
 # ------------------------
 # Publishes the ready-made Claude Code skills marketplace bundle
-# (dist/claude-skills/) to a GitHub repository as its own standalone repo.
+# (claude-skills/) to a GitHub repository as its own standalone repo.
 #
 # Prereqbuisite: create an EMPTY repo on GitHub first (no README), e.g.
 #   https://github.com/new  ->  name: claude-skills  ->  Public  ->  Create
@@ -29,7 +29,7 @@ if git rev-parse --show-toplevel >/dev/null 2>&1; then
 else
   ROOT="$(pwd)"
 fi
-BUNDLE="$ROOT/dist/claude-skills"
+BUNDLE="$ROOT/claude-skills"
 
 if [ ! -f "$BUNDLE/.claude-plugin/marketplace.json" ]; then
   echo "!! Bundle not found at $BUNDLE (missing .claude-plugin/marketplace.json)" >&2
