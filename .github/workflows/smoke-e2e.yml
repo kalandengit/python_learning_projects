@@ -1,0 +1,37 @@
+name: E2E Smoke Test
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'AIQuranTeacherProject/backend/**'
+      - 'AIQuranTeacherProject/signaling-server/**'
+      - 'AIQuranTeacherProject/scripts/smoke-test.sh'
+      - '.github/workflows/smoke-e2e.yml'
+  pull_request:
+    paths:
+      - 'AIQuranTeacherProject/backend/**'
+      - 'AIQuranTeacherProject/signaling-server/**'
+      - 'AIQuranTeacherProject/scripts/smoke-test.sh'
+      - '.github/workflows/smoke-e2e.yml'
+
+jobs:
+  smoke:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+
+      - name: Install backend deps
+        working-directory: AIQuranTeacherProject/backend
+        run: npm ci
+
+      - name: Install signaling deps
+        working-directory: AIQuranTeacherProject/signaling-server
+        run: npm ci
+
+      - name: Run end-to-end smoke test
+        run: bash AIQuranTeacherProject/scripts/smoke-test.sh

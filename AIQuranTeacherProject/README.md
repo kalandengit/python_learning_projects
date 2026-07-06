@@ -84,7 +84,15 @@ at your backend.
 ```bash
 cd backend && npm test && npm run test:e2e   # 26 unit + 8 e2e
 cd ../signaling-server && npm test           # integration tests
+
+# Full live end-to-end smoke test (boots both services + a mock Mistral and
+# exercises every module over real HTTP):
+bash scripts/smoke-test.sh
 ```
+
+Dependencies are audited in CI (`npm audit`); an npm `overrides` entry pins
+Multer to a patched release. All test suites and the smoke test run in GitHub
+Actions on every PR.
 
 ## 🔐 Security highlights
 
