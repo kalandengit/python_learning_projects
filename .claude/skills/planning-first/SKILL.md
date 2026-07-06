@@ -1,6 +1,7 @@
 ---
 name: planning-first
 description: Force Claude à toujours commencer par une phase d'analyse et de planification détaillée avant toute implémentation. Use when the user requests a project, feature, architecture, automation, application, script, or system and you should analyze requirements, propose an architecture, and get explicit approval before writing any code or files.
+when_to_use: Any request to build, create, implement, develop, design, architect, scaffold, or automate a project, feature, application, script, service, or system. Trigger phrases include "build", "create", "make an app", "set up", "implement", "develop", "design an architecture". Applies BEFORE writing code or creating files.
 version: 1.0.0
 author: OpenAI
 ---
