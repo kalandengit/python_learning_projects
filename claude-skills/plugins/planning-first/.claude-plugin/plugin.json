@@ -1,0 +1,13 @@
+{
+  "$schema": "https://json.schemastore.org/claude-code-plugin-manifest.json",
+  "name": "planning-first",
+  "displayName": "Planning First",
+  "version": "1.0.0",
+  "description": "Forces Claude to analyze requirements, propose an architecture, present an execution plan and files preview, and get explicit approval before writing any code or files.",
+  "author": {
+    "name": "kalandengit"
+  },
+  "repository": "https://github.com/kalandengit/claude-skills",
+  "license": "MIT",
+  "keywords": ["planning", "architecture", "workflow", "plan-mode", "requirements"]
+}

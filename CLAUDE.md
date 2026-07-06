@@ -18,3 +18,22 @@ Specifically:
 - Include tests, error handling, input validation, type annotations, and logging where appropriate.
 
 Invoke it explicitly with `/it-prompt-specialist` when you want to force this lens.
+
+<!-- BEGIN planning-first (managed) -->
+## Skill: planning-first
+
+This repository ships the **planning-first** Claude Code skill at
+`.claude/skills/planning-first/`. Claude Code discovers it automatically in
+any session opened on this repo (including Claude Code on the web, where personal
+`~/.claude` skills are not available).
+
+When working in this project, apply that skill for any significant technical
+request: do NOT jump straight to code. First analyze requirements, propose an
+architecture (explaining the reasoning), produce a numbered execution plan,
+preview the files to be created, and STOP for explicit user approval before
+generating anything. Implement incrementally after approval, and return to the
+planning phase whenever requirements change.
+
+Invoke it explicitly with `/planning-first` when you want to force this lens.
+<!-- END planning-first (managed) -->
+
