@@ -41,6 +41,29 @@ signaling server, mapped to common standards (OWASP Top 10, least privilege).
 - [x] Docker image runs as a non-root user, multi-stage build, production-only deps.
 - [x] Pinned dependency ranges; run `npm audit` in CI.
 
+## JWT hardening (algorithm-confusion mitigation)
+Responding to the ongoing prevalence of JWT algorithm-confusion / `none`-algorithm
+forgery attacks:
+- [x] **Algorithm pinned to HS256** on both signing and verification — a token
+      with `alg: none` or a downgraded/substituted algorithm is rejected.
+      Covered by an e2e regression test (forged `none` token → 401).
+- [x] Tokens carry and are verified against a fixed **issuer** and **audience**.
+- [x] Expiry enforced (`ignoreExpiration: false`); short-lived access tokens.
+- [x] Strong secret required (≥ 32 chars in production, fail-fast).
+
+## Supply-chain hardening (2026 npm attack wave)
+Responding to 2026 npm compromises (axios, node-ipc, TanStack, @redhat-cloud-services /
+Shai-Hulud), whose common vectors were stolen maintainer accounts and **CI/CD
+credential theft**:
+- [x] **Least-privilege CI**: every workflow declares `permissions: contents: read`,
+      so a compromised dependency/action cannot use a write-scoped `GITHUB_TOKEN`.
+- [x] **Committed lockfiles** + `npm ci` (exact, reproducible installs).
+- [x] **`npm audit`** runs in CI; a patched-version `overrides` entry is used where
+      an upstream pin lags (e.g. Multer).
+- [x] **Dependabot** watches npm (backend + signaling) and GitHub Actions weekly.
+- [ ] (Recommended) Pin third-party Actions to commit SHAs; enable npm 2FA /
+      provenance and a secrets manager for deploy credentials.
+
 ## Payments (Stripe)
 - [x] Card data never touches our servers — Stripe Checkout/Portal (PCI **SAQ A**).
 - [x] Clients pick an allow-listed **plan**, never a price/amount (no tampering).

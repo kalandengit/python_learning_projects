@@ -26,6 +26,10 @@ export interface DatabaseConfig {
 export interface JwtConfig {
   secret: string;
   expiresIn: string;
+  /** Signing algorithm, pinned to prevent algorithm-confusion attacks. */
+  algorithm: 'HS256';
+  issuer: string;
+  audience: string;
 }
 
 export interface MistralConfig {
@@ -93,6 +97,11 @@ export default (): Configuration => ({
   jwt: {
     secret: process.env.JWT_SECRET ?? '',
     expiresIn: process.env.JWT_EXPIRES_IN ?? '3600s',
+    // Pinned to HS256 — verification also pins this, so an attacker cannot
+    // downgrade to "none" or trick the server via algorithm confusion.
+    algorithm: 'HS256',
+    issuer: process.env.JWT_ISSUER ?? 'ai-quran-teacher',
+    audience: process.env.JWT_AUDIENCE ?? 'ai-quran-teacher-clients',
   },
   mistral: {
     apiKey: process.env.MISTRAL_API_KEY ?? '',

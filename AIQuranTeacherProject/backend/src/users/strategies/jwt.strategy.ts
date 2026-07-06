@@ -18,6 +18,12 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
       jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
       ignoreExpiration: false,
       secretOrKey: jwt.secret,
+      // Pin the accepted algorithm so a forged "none"/RS256->HS256 token is
+      // rejected (algorithm-confusion mitigation), and bind tokens to this
+      // service via issuer/audience.
+      algorithms: [jwt.algorithm],
+      issuer: jwt.issuer,
+      audience: jwt.audience,
     });
   }
 

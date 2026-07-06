@@ -15,6 +15,9 @@ on:
       - 'AIQuranTeacherProject/scripts/smoke-test.sh'
       - '.github/workflows/smoke-e2e.yml'
 
+permissions:
+  contents: read
+
 jobs:
   smoke:
     runs-on: ubuntu-latest

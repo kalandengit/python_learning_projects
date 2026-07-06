@@ -1,0 +1,28 @@
+# Automated dependency and GitHub Actions updates.
+# Keeping dependencies current is a primary defence against the 2026 wave of
+# npm supply-chain compromises (axios, node-ipc, TanStack, @redhat-cloud-services).
+version: 2
+updates:
+  - package-ecosystem: npm
+    directory: /AIQuranTeacherProject/backend
+    schedule:
+      interval: weekly
+    open-pull-requests-limit: 10
+    groups:
+      # Batch minor/patch bumps to reduce PR noise; majors come separately.
+      backend-minor-patch:
+        update-types: [minor, patch]
+
+  - package-ecosystem: npm
+    directory: /AIQuranTeacherProject/signaling-server
+    schedule:
+      interval: weekly
+    groups:
+      signaling-minor-patch:
+        update-types: [minor, patch]
+
+  # Pin/refresh GitHub Actions — compromised actions were a key 2026 vector.
+  - package-ecosystem: github-actions
+    directory: /
+    schedule:
+      interval: weekly

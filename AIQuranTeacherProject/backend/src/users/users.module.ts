@@ -19,9 +19,14 @@ import { UsersService } from './users.service';
         const jwt = config.getOrThrow<JwtConfig>('jwt');
         return {
           secret: jwt.secret,
-          // `expiresIn` accepts an `ms`-style string (e.g. "3600s"); the value
-          // is validated config, so assert to the library's expected type.
+          // Sign with the pinned algorithm and stamp issuer/audience so the
+          // verifier can bind tokens to this service.
           signOptions: {
+            algorithm: jwt.algorithm,
+            issuer: jwt.issuer,
+            audience: jwt.audience,
+            // `expiresIn` accepts an `ms`-style string (e.g. "3600s"); the value
+            // is validated config, so assert to the library's expected type.
             expiresIn: jwt.expiresIn as unknown as number,
           },
         };

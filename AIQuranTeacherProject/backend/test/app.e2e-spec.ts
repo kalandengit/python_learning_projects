@@ -77,6 +77,20 @@ describe('AI Quran Teacher API (e2e)', () => {
     await request(app.getHttpServer()).get('/api/gamification/me').expect(401);
   });
 
+  it('rejects a forged "none"-algorithm JWT (alg-confusion mitigation)', async () => {
+    // Craft an unsigned token with alg=none — must be refused because the
+    // strategy pins algorithms to HS256.
+    const b64 = (o: object) =>
+      Buffer.from(JSON.stringify(o)).toString('base64url');
+    const forged =
+      `${b64({ alg: 'none', typ: 'JWT' })}.` +
+      `${b64({ sub: 'attacker', email: 'attacker@example.com' })}.`;
+    await request(app.getHttpServer())
+      .get('/api/gamification/me')
+      .set('Authorization', `Bearer ${forged}`)
+      .expect(401);
+  });
+
   it('registers a user and returns a token', async () => {
     const res = await request(app.getHttpServer())
       .post('/api/auth/register')
