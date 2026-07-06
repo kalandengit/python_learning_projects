@@ -22,7 +22,11 @@ pass() { echo "  ✓ $1"; }
 fail() { echo "  ✗ $1"; exit 1; }
 
 cleanup() {
-  for pid in "${PIDS[@]:-}"; do kill "$pid" 2>/dev/null || true; done
+  # Kill each service's whole process group (services are started with setsid),
+  # so the node child is terminated too — not just its wrapper shell.
+  for pid in "${PIDS[@]:-}"; do
+    kill -- -"$pid" 2>/dev/null || kill "$pid" 2>/dev/null || true
+  done
   rm -rf "$TMP"
 }
 trap cleanup EXIT
@@ -76,15 +80,16 @@ echo "==> Building backend"
 (cd "$ROOT/backend" && npm run build >/dev/null 2>&1) || fail "backend build failed"
 
 echo "==> Starting mock Mistral (:$MOCK_PORT)"
-MOCK_PORT="$MOCK_PORT" node "$TMP/mock-mistral.js" & PIDS+=($!)
+setsid bash -c "MOCK_PORT='$MOCK_PORT' exec node '$TMP/mock-mistral.js'" \
+  >"$TMP/mock.log" 2>&1 & PIDS+=($!)
 wait_for_conn "http://localhost:$MOCK_PORT/" "mock"
 
 echo "==> Starting backend (:$BACKEND_PORT)"
-( cd "$ROOT/backend" && \
-  PORT="$BACKEND_PORT" NODE_ENV=test DB_TYPE=sqlite DB_DATABASE=":memory:" DB_SYNCHRONIZE=true \
-  JWT_SECRET="smoke-test-secret-that-is-at-least-32-chars" CORS_ORIGINS="http://localhost:$BACKEND_PORT" \
-  MISTRAL_API_KEY=mock MISTRAL_API_URL="http://localhost:$MOCK_PORT/v1" \
-  node dist/main.js >"$TMP/backend.log" 2>&1 ) & PIDS+=($!)
+setsid bash -c "cd '$ROOT/backend' && \
+  PORT='$BACKEND_PORT' NODE_ENV=test DB_TYPE=sqlite DB_DATABASE=':memory:' DB_SYNCHRONIZE=true \
+  JWT_SECRET='smoke-test-secret-that-is-at-least-32-chars' CORS_ORIGINS='http://localhost:$BACKEND_PORT' \
+  MISTRAL_API_KEY=mock MISTRAL_API_URL='http://localhost:$MOCK_PORT/v1' \
+  exec node dist/main.js" >"$TMP/backend.log" 2>&1 & PIDS+=($!)
 wait_for "$B/health" "backend"
 
 echo "==> Backend module checks"
@@ -94,9 +99,13 @@ assert_status GET "$B/quran/surahs/1/ayahs/1" 200
 assert_status GET "$B/quran/surahs/999" 404
 assert_status GET "$B/gamification/me" 401   # protected, no token
 
+# Buffer the whole response before parsing (curl output can arrive in chunks).
+JSON_FIELD='let s="";process.stdin.on("data",d=>s+=d);process.stdin.on("end",()=>{try{process.stdout.write(String(JSON.parse(s)[process.argv[1]]||""))}catch{}})'
+# Unique email per run so a persisted DB never collides on registration.
+EMAIL="smoke-$$-$(date +%s)@example.com"
 TOKEN="$(curl -s -X POST "$B/auth/register" -H 'content-type: application/json' \
-  -d '{"email":"smoke@example.com","displayName":"Smoke","password":"StrongPass123"}' \
-  | node -e "process.stdin.on('data',d=>{try{process.stdout.write(JSON.parse(d).accessToken||'')}catch{}})")"
+  -d "{\"email\":\"$EMAIL\",\"displayName\":\"Smoke\",\"password\":\"StrongPass123\"}" \
+  | node -e "$JSON_FIELD" accessToken)"
 [ -n "$TOKEN" ] || fail "registration did not return a token"
 pass "registered user + received JWT"
 
@@ -107,7 +116,7 @@ QUIZ="$(curl -s -X POST "$B/quiz/generate" -H "authorization: Bearer $TOKEN" \
   -H 'content-type: application/json' -d '{"difficulty":"beginner","numQuestions":1}')"
 echo "$QUIZ" | grep -q '"correctIndex"' && fail "quiz leaked correctIndex to client"
 pass "quiz generated without leaking answers"
-QID="$(echo "$QUIZ" | node -e "process.stdin.on('data',d=>process.stdout.write(JSON.parse(d).id))")"
+QID="$(echo "$QUIZ" | node -e "$JSON_FIELD" id)"
 
 RESULT="$(curl -s -X POST "$B/quiz/$QID/submit" -H "authorization: Bearer $TOKEN" \
   -H 'content-type: application/json' -d '{"answers":[0]}')"
@@ -120,11 +129,20 @@ echo "$(curl -s "$B/gamification/me" -H "authorization: Bearer $TOKEN")" | grep 
 pass "gamification profile updated (badge earned)"
 assert_status GET "$B/gamification/leaderboard" 200 "$TOKEN"
 
+echo "==> Billing module checks (Stripe not configured in smoke env)"
+echo "$(curl -s "$B/billing/me" -H "authorization: Bearer $TOKEN")" | grep -q '"isPremium":false' \
+  || fail "billing/me should report isPremium=false"
+pass "billing/me -> not premium"
+assert_status POST "$B/billing/checkout" 503 "$TOKEN" '{"plan":"premium_monthly"}'  # Stripe not configured
+assert_status POST "$B/billing/checkout" 400 "$TOKEN" '{"plan":"bogus"}'            # invalid plan rejected
+assert_status POST "$B/billing/whitelist" 403 "$TOKEN" '{"userId":"00000000-0000-0000-0000-000000000000"}'  # non-admin
+assert_status POST "$B/billing/webhook" 400 "" '{"id":"evt"}'                       # missing signature
+
 echo "==> Signaling server (:$SIGNAL_PORT)"
-( cd "$ROOT/signaling-server" && \
-  PORT="$SIGNAL_PORT" NODE_ENV=test ALLOW_ANONYMOUS=true \
-  JWT_SECRET="smoke-test-secret-that-is-at-least-32-chars" CORS_ORIGINS="http://localhost:$BACKEND_PORT" \
-  node src/server.js >"$TMP/signal.log" 2>&1 ) & PIDS+=($!)
+setsid bash -c "cd '$ROOT/signaling-server' && \
+  PORT='$SIGNAL_PORT' NODE_ENV=test ALLOW_ANONYMOUS=true \
+  JWT_SECRET='smoke-test-secret-that-is-at-least-32-chars' CORS_ORIGINS='http://localhost:$BACKEND_PORT' \
+  exec node src/server.js" >"$TMP/signal.log" 2>&1 & PIDS+=($!)
 wait_for "http://localhost:$SIGNAL_PORT/health" "signaling"
 
 echo ""

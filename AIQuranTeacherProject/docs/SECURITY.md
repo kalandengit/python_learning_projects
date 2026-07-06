@@ -41,6 +41,17 @@ signaling server, mapped to common standards (OWASP Top 10, least privilege).
 - [x] Docker image runs as a non-root user, multi-stage build, production-only deps.
 - [x] Pinned dependency ranges; run `npm audit` in CI.
 
+## Payments (Stripe)
+- [x] Card data never touches our servers — Stripe Checkout/Portal (PCI **SAQ A**).
+- [x] Clients pick an allow-listed **plan**, never a price/amount (no tampering).
+- [x] Webhooks verified via signature over the **raw** body; bad signature → 400.
+- [x] Webhook handling is **idempotent** (safe under Stripe retries).
+- [x] Idempotency key on Checkout Session creation.
+- [x] Secret key server-only; only the publishable key is exposed to clients.
+- [x] Premium **whitelist** is admin-only (`RolesGuard`), audited, and time-boxed.
+
+See [`STRIPE_SECURITY.md`](./STRIPE_SECURITY.md) for the full Stripe review.
+
 ## Before production (TODO)
 - [ ] Replace TypeORM `synchronize` with versioned migrations.
 - [ ] Add refresh-token rotation and token revocation/blacklist.

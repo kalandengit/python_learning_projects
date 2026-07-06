@@ -40,12 +40,24 @@ export interface ThrottleConfig {
   limit: number;
 }
 
+export interface StripeConfig {
+  secretKey: string;
+  webhookSecret: string;
+  publishableKey: string;
+  /** Allow-listed price IDs, keyed by plan. Clients pick a plan, never a price. */
+  prices: Record<string, string>;
+  successUrl: string;
+  cancelUrl: string;
+  portalReturnUrl: string;
+}
+
 export interface Configuration {
   app: AppConfig;
   database: DatabaseConfig;
   jwt: JwtConfig;
   mistral: MistralConfig;
   throttle: ThrottleConfig;
+  stripe: StripeConfig;
 }
 
 const toBool = (value: string | undefined, fallback = false): boolean => {
@@ -91,5 +103,22 @@ export default (): Configuration => ({
   throttle: {
     ttlMs: toInt(process.env.THROTTLE_TTL_MS, 60000),
     limit: toInt(process.env.THROTTLE_LIMIT, 120),
+  },
+  stripe: {
+    secretKey: process.env.STRIPE_SECRET_KEY ?? '',
+    webhookSecret: process.env.STRIPE_WEBHOOK_SECRET ?? '',
+    publishableKey: process.env.STRIPE_PUBLISHABLE_KEY ?? '',
+    // Map friendly plan names to Stripe price IDs (server-side allow-list).
+    prices: {
+      premium_monthly: process.env.STRIPE_PRICE_PREMIUM_MONTHLY ?? '',
+      premium_yearly: process.env.STRIPE_PRICE_PREMIUM_YEARLY ?? '',
+    },
+    successUrl:
+      process.env.STRIPE_SUCCESS_URL ??
+      'http://localhost:3000/billing/success?session_id={CHECKOUT_SESSION_ID}',
+    cancelUrl:
+      process.env.STRIPE_CANCEL_URL ?? 'http://localhost:3000/billing/cancel',
+    portalReturnUrl:
+      process.env.STRIPE_PORTAL_RETURN_URL ?? 'http://localhost:3000/billing',
   },
 });

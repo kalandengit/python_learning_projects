@@ -18,6 +18,8 @@ AI-generated quizzes, live classes over WebRTC, and gamification — built with 
 | 🧠 **AI Quizzes** | Auto-generated tajweed quizzes with server-side grading |
 | 🏆 **Gamification** | Points, daily streaks, badges, and a leaderboard |
 | 👥 **Live Classes** | Peer-to-peer video/audio with chat via WebRTC + signaling server |
+| 💳 **Payments** | Stripe Checkout subscriptions + billing portal (PCI SAQ-A), signature-verified webhooks |
+| 🎟️ **Premium whitelist** | Admins grant free premium access to users for a defined period |
 
 ## 🧱 Architecture
 

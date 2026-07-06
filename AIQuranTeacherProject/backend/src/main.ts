@@ -7,7 +7,12 @@ import { AppModule } from './app.module';
 import { AppConfig } from './config/configuration';
 
 async function bootstrap(): Promise<void> {
-  const app = await NestFactory.create(AppModule, { bufferLogs: false });
+  const app = await NestFactory.create(AppModule, {
+    bufferLogs: false,
+    // Preserve the raw request body so Stripe webhook signatures can be
+    // verified (a parsed JSON body fails verification).
+    rawBody: true,
+  });
   const config = app.get(ConfigService);
   const appConfig = config.getOrThrow<AppConfig>('app');
   const logger = new Logger('Bootstrap');

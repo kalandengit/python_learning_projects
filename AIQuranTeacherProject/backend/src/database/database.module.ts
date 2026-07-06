@@ -8,6 +8,8 @@ import { GamificationProfile } from '../gamification/gamification.entity';
 import { Quiz, QuizAttempt } from '../quiz/quiz.entity';
 import { TajweedAnalysis } from '../tajweed/tajweed.entity';
 import { User } from '../users/user.entity';
+import { BillingCustomer } from '../billing/billing.entity';
+import { PremiumGrant } from '../billing/premium-grant.entity';
 
 const ENTITIES = [
   User,
@@ -17,6 +19,8 @@ const ENTITIES = [
   Quiz,
   QuizAttempt,
   GamificationProfile,
+  BillingCustomer,
+  PremiumGrant,
 ];
 
 /**

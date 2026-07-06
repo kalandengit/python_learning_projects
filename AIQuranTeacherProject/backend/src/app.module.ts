@@ -5,8 +5,10 @@ import { ThrottlerGuard, ThrottlerModule } from '@nestjs/throttler';
 import { AllExceptionsFilter } from './common/filters/all-exceptions.filter';
 import { JwtAuthGuard } from './common/guards/jwt-auth.guard';
 import { MistralModule } from './common/mistral/mistral.module';
+import { StripeModule } from './common/stripe/stripe.module';
 import configuration, { ThrottleConfig } from './config/configuration';
 import { validate } from './config/env.validation';
+import { BillingModule } from './billing/billing.module';
 import { DatabaseModule } from './database/database.module';
 import { GamificationModule } from './gamification/gamification.module';
 import { HealthController } from './health/health.controller';
@@ -32,11 +34,13 @@ import { UsersModule } from './users/users.module';
     }),
     DatabaseModule,
     MistralModule,
+    StripeModule,
     UsersModule,
     QuranModule,
     TajweedModule,
     GamificationModule,
     QuizModule,
+    BillingModule,
   ],
   controllers: [HealthController],
   providers: [

@@ -60,6 +60,14 @@ All routes are prefixed with `/api`. Protected routes require
 | `GET` | `/gamification/me` | ✅ | Points, streak, badges |
 | `GET` | `/gamification/badges` | ✅ | Badge catalogue |
 | `GET` | `/gamification/leaderboard` | ✅ | Top users |
+| `GET` | `/billing/config` | ✅ | Publishable key + available plans |
+| `GET` | `/billing/me` | ✅ | Subscription/entitlement (incl. whitelist) |
+| `POST` | `/billing/checkout` | ✅ | Start a Stripe Checkout subscription |
+| `POST` | `/billing/portal` | ✅ | Open the Stripe billing portal |
+| `POST` | `/billing/webhook` | signature | Stripe webhook (verified, raw body) |
+| `GET` | `/billing/whitelist` | admin | List free-access grants |
+| `POST` | `/billing/whitelist` | admin | Grant free premium (optional expiry) |
+| `DELETE` | `/billing/whitelist/:userId` | admin | Revoke a grant |
 
 ### Example
 
