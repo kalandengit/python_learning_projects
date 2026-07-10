@@ -19,8 +19,14 @@ async function upsertSubscription(subscription: Stripe.Subscription) {
   const admin = createAdminClient();
   const orgId = subscription.metadata.organization_id;
   const customerId = typeof subscription.customer === "string" ? subscription.customer : subscription.customer.id;
-  const priceId = subscription.items.data[0]?.price.id ?? null;
+  const firstItem = subscription.items.data[0] ?? null;
+  const priceId = firstItem?.price.id ?? null;
   if (!orgId) return;
+
+  // Stripe API 2025-03-31+ (SDK v18+) moved current_period_* from the
+  // subscription onto each subscription item.
+  const periodStart = firstItem?.current_period_start ?? null;
+  const periodEnd = firstItem?.current_period_end ?? null;
 
   await admin.from("subscriptions").upsert({
     organization_id: orgId,
@@ -29,8 +35,8 @@ async function upsertSubscription(subscription: Stripe.Subscription) {
     stripe_price_id: priceId,
     plan: planFromPrice(priceId),
     status: subscription.status,
-    current_period_start: new Date(subscription.current_period_start * 1000).toISOString(),
-    current_period_end: new Date(subscription.current_period_end * 1000).toISOString(),
+    current_period_start: periodStart ? new Date(periodStart * 1000).toISOString() : null,
+    current_period_end: periodEnd ? new Date(periodEnd * 1000).toISOString() : null,
     cancel_at_period_end: subscription.cancel_at_period_end,
     trial_end: subscription.trial_end ? new Date(subscription.trial_end * 1000).toISOString() : null
   }, { onConflict: "organization_id" });

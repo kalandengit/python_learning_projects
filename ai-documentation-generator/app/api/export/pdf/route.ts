@@ -42,7 +42,7 @@ export async function GET(request: NextRequest) {
       fileName
     });
 
-    return new NextResponse(pdf, {
+    return new NextResponse(new Uint8Array(pdf), {
       headers: {
         "content-type": "application/pdf",
         "content-disposition": `attachment; filename="${fileName}"`

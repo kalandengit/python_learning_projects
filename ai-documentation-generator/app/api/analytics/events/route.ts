@@ -7,7 +7,7 @@ const schema = z.object({
   organizationId: z.string().uuid(),
   eventName: z.string().min(2).max(120),
   source: z.enum(["client", "server", "worker", "webhook"]).default("client"),
-  properties: z.record(z.union([z.string(), z.number(), z.boolean(), z.null()])).default({})
+  properties: z.record(z.string(), z.union([z.string(), z.number(), z.boolean(), z.null()])).default({})
 });
 
 export async function POST(request: Request) {

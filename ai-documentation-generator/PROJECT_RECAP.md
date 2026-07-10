@@ -25,7 +25,11 @@ Apply `supabase/migrations/013_sprint13_browser_extension.sql`.
 5. Run the AI worker or database job drainer.
 
 ## Known risks
-- Root dependencies use `latest`; pin exact versions before production release.
+- ~~Root dependencies use `latest`~~ — **resolved**: dependencies are pinned to
+  exact versions with a committed `package-lock.json`; lint, typecheck, unit
+  tests, security-header check, and a production build were all validated
+  against the pins (Next 15.x, Tailwind 3.x, ESLint 9, TypeScript 5 — do not
+  bump these majors without migrating code).
 - Full-page stitching can duplicate sticky elements.
 - Manual tokens should become PKCE OAuth in a later sprint.
 - The existing repository must still be validated against a real Supabase and Stripe environment.

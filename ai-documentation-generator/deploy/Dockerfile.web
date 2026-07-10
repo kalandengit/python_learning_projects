@@ -1,11 +1,9 @@
 # syntax=docker/dockerfile:1
 #
 # AI Documentation Generator — web + worker image.
-# Single stage on purpose: the app pins deps to "latest" and ships no lockfile,
-# so we keep the build simple and resilient rather than clever. The same image
-# runs both the Next.js server (default CMD) and the BullMQ worker (command
-# override in docker-compose.yml), so devDependencies (tsx, typescript) must
-# remain installed.
+# Single stage on purpose: the same image runs both the Next.js server (default
+# CMD) and the BullMQ worker (command override in docker-compose.yml), so
+# devDependencies (tsx, typescript) must remain installed.
 
 FROM node:20-bookworm-slim
 WORKDIR /app
@@ -14,9 +12,9 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
       ca-certificates wget gnupg curl \
     && rm -rf /var/lib/apt/lists/*
 
-# --- Dependencies (no lockfile in the app -> npm install; force devDeps) ---
-COPY package.json ./
-RUN npm install --include=dev --no-audit --no-fund
+# --- Dependencies: exact-pinned + lockfile -> reproducible npm ci ---
+COPY package.json package-lock.json ./
+RUN npm ci --include=dev --no-audit --no-fund
 
 # --- Chromium + OS libs for PDF export (app/api/export/pdf uses Playwright) ---
 RUN npx --yes playwright install --with-deps chromium

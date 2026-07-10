@@ -59,6 +59,8 @@ Key facts for working in that subproject:
   (`workers/ai-documentation-worker.ts`) with a DB-drain fallback
   (`scripts/drain-ai-jobs.ts`).
 - Database changes are ordered Supabase migrations under `supabase/migrations/`.
-- Dependencies are currently pinned to `latest`; pin exact versions before any
-  production release (see `PROJECT_RECAP.md` and `docs/PRODUCTION_READINESS.md`).
+- Dependencies are pinned to exact versions with a committed `package-lock.json`
+  (validated: `npm run ci` green + production build). Builds use `npm ci`.
+  Notable pins: Next 15.x, Tailwind 3.x (v3 syntax in `globals.css`), ESLint 9,
+  TypeScript 5 — do not bump these majors without migrating the code.
 

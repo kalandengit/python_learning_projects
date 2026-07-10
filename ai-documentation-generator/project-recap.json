@@ -8,12 +8,12 @@
     "experimental full-page capture",
     "scoped extension tokens",
     "extension APIs",
-    "AI job polling"
+    "AI job polling",
+    "dependencies pinned to exact versions with committed lockfile (ci + build validated)"
   ],
   "migration": "013_sprint13_browser_extension.sql",
   "nextSprint": "Integration testing and stabilization",
   "risks": [
-    "latest dependencies are not pinned",
     "full-page sticky element duplication",
     "manual token auth should evolve to PKCE"
   ]
