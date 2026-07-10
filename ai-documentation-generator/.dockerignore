@@ -1,0 +1,15 @@
+node_modules
+.next
+out
+build
+.git
+.github
+**/*.tsbuildinfo
+browser-extension/node_modules
+browser-extension/.dist-cache
+deploy/.env
+deploy/keys
+npm-debug.log*
+.env
+.env.local
+.DS_Store

@@ -37,6 +37,11 @@ test-results/
 .env.test.local
 .env.production.local
 
+# --- Secrets: never commit private keys or the real env ---
+deploy/.env
+deploy/keys/*
+!deploy/keys/*.pub
+
 # --- Editor / OS ---
 .vercel
 .DS_Store

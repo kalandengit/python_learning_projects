@@ -1,0 +1,49 @@
+# syntax=docker/dockerfile:1
+#
+# AI Documentation Generator — web + worker image.
+# Single stage on purpose: the app pins deps to "latest" and ships no lockfile,
+# so we keep the build simple and resilient rather than clever. The same image
+# runs both the Next.js server (default CMD) and the BullMQ worker (command
+# override in docker-compose.yml), so devDependencies (tsx, typescript) must
+# remain installed.
+
+FROM node:20-bookworm-slim
+WORKDIR /app
+
+RUN apt-get update && apt-get install -y --no-install-recommends \
+      ca-certificates wget gnupg curl \
+    && rm -rf /var/lib/apt/lists/*
+
+# --- Dependencies (no lockfile in the app -> npm install; force devDeps) ---
+COPY package.json ./
+RUN npm install --include=dev --no-audit --no-fund
+
+# --- Chromium + OS libs for PDF export (app/api/export/pdf uses Playwright) ---
+RUN npx --yes playwright install --with-deps chromium
+
+# --- Application source ---
+COPY . .
+
+# NEXT_PUBLIC_* values are inlined into the client bundle at build time, so they
+# must be present as build args (supplied by docker-compose from the .env file).
+ARG NEXT_PUBLIC_APP_URL
+ARG NEXT_PUBLIC_SUPABASE_URL
+ARG NEXT_PUBLIC_SUPABASE_ANON_KEY
+ARG NEXT_PUBLIC_POSTHOG_KEY
+ARG NEXT_PUBLIC_POSTHOG_HOST
+ENV NEXT_PUBLIC_APP_URL=$NEXT_PUBLIC_APP_URL \
+    NEXT_PUBLIC_SUPABASE_URL=$NEXT_PUBLIC_SUPABASE_URL \
+    NEXT_PUBLIC_SUPABASE_ANON_KEY=$NEXT_PUBLIC_SUPABASE_ANON_KEY \
+    NEXT_PUBLIC_POSTHOG_KEY=$NEXT_PUBLIC_POSTHOG_KEY \
+    NEXT_PUBLIC_POSTHOG_HOST=$NEXT_PUBLIC_POSTHOG_HOST \
+    NODE_OPTIONS=--max-old-space-size=2048
+
+RUN npm run build
+
+# Runtime is production; devDeps stay on disk for the worker's tsx runner.
+ENV NODE_ENV=production \
+    PORT=3000 \
+    HOSTNAME=0.0.0.0
+EXPOSE 3000
+
+CMD ["npm", "run", "start"]
