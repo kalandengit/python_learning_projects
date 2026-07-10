@@ -1,0 +1,6 @@
+export type Settings={baseUrl:string;token:string}; export type Project={id:string;name:string;description:string|null}; export type CaptureMode="visible"|"region"|"full_page";
+export const DEFAULT_BASE_URL="http://localhost:3000";
+export async function getSettings():Promise<Settings>{const v=await chrome.storage.local.get(["baseUrl","token"]);return{baseUrl:typeof v.baseUrl==="string"?v.baseUrl:DEFAULT_BASE_URL,token:typeof v.token==="string"?v.token:""}}
+export async function saveSettings(s:Settings){await chrome.storage.local.set(s)}
+export async function api<T>(path:string,init:RequestInit={}):Promise<T>{const s=await getSettings();const r=await fetch(`${s.baseUrl.replace(/\/$/,"")}${path}`,{...init,headers:{Authorization:`Bearer ${s.token}`,...(init.headers||{})}});const j=await r.json().catch(()=>({}));if(!r.ok)throw new Error(j.error||`Request failed (${r.status})`);return j as T}
+export function dataUrlToBlob(dataUrl:string){const [head,data]=dataUrl.split(",");const mime=/data:(.*?);/.exec(head)?.[1]||"image/png";const binary=atob(data);const bytes=new Uint8Array(binary.length);for(let i=0;i<binary.length;i++)bytes[i]=binary.charCodeAt(i);return new Blob([bytes],{type:mime});}

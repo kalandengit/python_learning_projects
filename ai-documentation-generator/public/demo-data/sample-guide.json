@@ -1,0 +1,11 @@
+{
+  "title": "Create a New Project",
+  "persona": "Product manager",
+  "steps": [
+    { "title": "Open Projects", "body": "Navigate to the Projects page from the dashboard sidebar." },
+    { "title": "Create project", "body": "Click New Project and enter a clear product or workflow name." },
+    { "title": "Upload screenshots", "body": "Add screenshots that show the workflow in order." },
+    { "title": "Generate documentation", "body": "Run AI generation and review the structured draft." }
+  ],
+  "export_formats": ["markdown", "html", "pdf"]
+}

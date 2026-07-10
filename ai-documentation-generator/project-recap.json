@@ -1,0 +1,20 @@
+{
+  "project": "AI Documentation Generator",
+  "sprint": 13,
+  "status": "implemented_needs_local_validation",
+  "completed": [
+    "Manifest V3 extension",
+    "visible and region capture",
+    "experimental full-page capture",
+    "scoped extension tokens",
+    "extension APIs",
+    "AI job polling"
+  ],
+  "migration": "013_sprint13_browser_extension.sql",
+  "nextSprint": "Integration testing and stabilization",
+  "risks": [
+    "latest dependencies are not pinned",
+    "full-page sticky element duplication",
+    "manual token auth should evolve to PKCE"
+  ]
+}

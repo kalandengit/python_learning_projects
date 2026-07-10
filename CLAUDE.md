@@ -37,3 +37,28 @@ planning phase whenever requirements change.
 Invoke it explicitly with `/planning-first` when you want to force this lens.
 <!-- END planning-first (managed) -->
 
+## Subproject: ai-documentation-generator
+
+This repository also hosts a self-contained application under
+`ai-documentation-generator/` — a **Next.js 15 (App Router) + TypeScript +
+Supabase + Stripe** SaaS that turns screenshots into editable documentation.
+It is developed in sprints (currently **Sprint 13 — Browser Extension MVP**,
+version `0.13.0`, status: *implemented, needs local validation*).
+
+Key facts for working in that subproject:
+
+- It is a **Node/Next.js** project and has its own `ai-documentation-generator/.gitignore`.
+  The repository-root `.gitignore` is Python-oriented and would otherwise wrongly
+  ignore the app's `lib/` source tree and the committed `browser-extension/dist/`
+  build — the app-level `.gitignore` re-includes them. Verify with
+  `git check-ignore` before assuming a file is untracked.
+- Run all app commands from inside `ai-documentation-generator/`
+  (`npm install`, `npm run dev`, `npm run ci`, `npm run test`, `npm run test:e2e`).
+- AI is provider-agnostic (`lib/ai/providers/` with a `types.ts` contract and an
+  `openai.ts` implementation); background work runs through BullMQ
+  (`workers/ai-documentation-worker.ts`) with a DB-drain fallback
+  (`scripts/drain-ai-jobs.ts`).
+- Database changes are ordered Supabase migrations under `supabase/migrations/`.
+- Dependencies are currently pinned to `latest`; pin exact versions before any
+  production release (see `PROJECT_RECAP.md` and `docs/PRODUCTION_READINESS.md`).
+

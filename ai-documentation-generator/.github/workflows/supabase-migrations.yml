@@ -1,0 +1,28 @@
+name: Supabase migrations check
+
+on:
+  pull_request:
+    paths:
+      - 'supabase/migrations/**'
+      - '.github/workflows/supabase-migrations.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  migrations:
+    name: Validate migration files
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Validate migration naming
+        run: |
+          set -euo pipefail
+          for file in supabase/migrations/*.sql; do
+            basename "$file" | grep -Eq '^[0-9]{14}_.+\.sql$' || {
+              echo "Invalid migration name: $file"
+              exit 1
+            }
+          done
+          echo "Migration filenames are valid."
