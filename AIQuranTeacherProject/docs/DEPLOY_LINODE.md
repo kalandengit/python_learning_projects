@@ -35,6 +35,39 @@ cd python_learning_projects/AIQuranTeacherProject
 bash deploy/setup.sh
 ```
 
+## 2b. Firewall
+
+`deploy/setup.sh` already configures the host firewall (**UFW**): default-deny
+inbound, **allow only 22 (SSH, rate-limited), 80 (HTTP), 443 (HTTPS)**, allow
+all outbound. Verify:
+
+```bash
+ufw status verbose
+# Expect only: 22/tcp (LIMIT), 80/tcp (ALLOW), 443/tcp (ALLOW)
+```
+
+**Two things to know:**
+
+1. **Docker bypasses UFW for published ports.** Docker edits iptables directly,
+   so any port in a compose `ports:` mapping is reachable even if UFW would deny
+   it. This stack **only publishes 80/443** (Caddy). The backend (3000),
+   signaling (3001), and **Postgres (5432)** use `expose` — internal Docker
+   network only — so they are **never** exposed to the internet. Don't change
+   those to `ports:`.
+
+2. **Optional: Linode Cloud Firewall** (defense in depth, upstream of the host).
+   In the Linode dashboard → **Firewalls** → Create, attach it to the Linode, and
+   set **Inbound** rules:
+   | Action | Protocol | Port | Source |
+   | --- | --- | --- | --- |
+   | Accept | TCP | 22 | your IP/32 (lock SSH to you) |
+   | Accept | TCP | 80 | all |
+   | Accept | TCP | 443 | all |
+   | Drop | — | everything else | — |
+
+   Outbound: allow all. Locking **22** to your own IP is the single biggest
+   hardening win.
+
 ## 3. Configure secrets
 ```bash
 cp deploy/.env.example .env
