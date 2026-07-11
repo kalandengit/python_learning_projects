@@ -96,6 +96,23 @@ Dependencies are audited in CI (`npm audit`); an npm `overrides` entry pins
 Multer to a patched release. All test suites and the smoke test run in GitHub
 Actions on every PR.
 
+## ☁️ Deploy (test) to a Linode VPS
+
+A one-VPS Docker Compose stack — **Postgres + backend + signaling + Caddy**
+(automatic HTTPS) — is included:
+
+```bash
+# on a fresh Ubuntu 24.04 Linode:
+git clone https://github.com/kalandengit/python_learning_projects.git
+cd python_learning_projects/AIQuranTeacherProject
+bash deploy/setup.sh                 # installs Docker + firewall
+cp deploy/.env.example .env          # set POSTGRES_PASSWORD, JWT_SECRET, PUBLIC_URL
+docker compose up -d --build
+curl http://YOUR_VPS_IP/api/health
+```
+
+Full step-by-step: **[docs/DEPLOY_LINODE.md](./docs/DEPLOY_LINODE.md)**.
+
 ## 🔐 Security highlights
 
 Global JWT auth (secure by default), bcrypt hashing, strict input validation,
