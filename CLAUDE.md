@@ -37,3 +37,24 @@ planning phase whenever requirements change.
 Invoke it explicitly with `/planning-first` when you want to force this lens.
 <!-- END planning-first (managed) -->
 
+<!-- BEGIN project-knowledge-exporter (managed) -->
+## Skill: project-knowledge-exporter
+
+This repository ships the **project-knowledge-exporter** Claude Code skill at
+`.claude/skills/project-knowledge-exporter/`. Claude Code discovers it
+automatically in any session opened on this repo (including Claude Code on the
+web, where personal `~/.claude` skills are not available).
+
+When asked to export project knowledge, document a codebase end-to-end, produce
+a handoff/rebuild package, or preserve architecture and decisions, apply that
+skill: first **investigate the repo** (tree, README/CLAUDE.md, manifests,
+Docker/CI, source, models, APIs, tests, git history), then generate the five
+knowledge files — `PROJECT_BLUEPRINT.md`, `PROJECT_CONTEXT.json`,
+`PROJECT_REBUILD_PROMPT.md`, `DECISION_LOG.md`, and `DEVELOPMENT_STATE.md` —
+grounded in what you found, labeling observed facts vs. inferences and avoiding
+large source dumps.
+
+Invoke it explicitly with `/project-knowledge-exporter` when you want to force
+this lens.
+<!-- END project-knowledge-exporter (managed) -->
+

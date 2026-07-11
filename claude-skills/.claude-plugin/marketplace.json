@@ -18,6 +18,11 @@
       "name": "it-prompt-specialist",
       "source": "./plugins/it-prompt-specialist",
       "description": "Senior multidisciplinary IT expert lens across software, cloud, security, AI/ML, networking, and more."
+    },
+    {
+      "name": "project-knowledge-exporter",
+      "source": "./plugins/project-knowledge-exporter",
+      "description": "Analyzes an entire project and generates a durable, LLM-portable knowledge package (blueprint, context JSON, rebuild prompt, decision log, development state) for handoff and reconstruction."
     }
   ]
 }

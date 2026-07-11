@@ -1,0 +1,13 @@
+{
+  "$schema": "https://json.schemastore.org/claude-code-plugin-manifest.json",
+  "name": "project-knowledge-exporter",
+  "displayName": "Project Knowledge Exporter",
+  "version": "1.0.0",
+  "description": "Analyzes an entire project and generates a durable, LLM-portable knowledge package (blueprint, structured context JSON, rebuild prompt, decision log, development state) so it can be understood, maintained, extended, and reconstructed even if the repo and history are lost.",
+  "author": {
+    "name": "kalandengit"
+  },
+  "repository": "https://github.com/kalandengit/claude-skills",
+  "license": "MIT",
+  "keywords": ["documentation", "knowledge-export", "handoff", "architecture", "reconstruction", "adr", "llm-context"]
+}
