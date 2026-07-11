@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>ߒߞߏ — N'KO Voice Transcriptor</title>
+<link rel="stylesheet" href="/static/styles.css">
+</head>
+<body>
+<header>
+  <h1><span class="nko-glyph">ߒߞߏ</span> N'KO Voice Transcriptor</h1>
+  <p class="subtitle">Speak Bambara — read N'Ko</p>
+  <div id="auth-status"></div>
+</header>
+
+<main>
+  <!-- Auth panel -->
+  <section id="auth-panel" class="card">
+    <h2>Sign in</h2>
+    <form id="auth-form" autocomplete="on">
+      <label>Username
+        <input id="username" name="username" minlength="3" maxlength="64"
+               pattern="[a-zA-Z0-9_.\-]+" required autocomplete="username">
+      </label>
+      <label>Password
+        <input id="password" name="password" type="password" minlength="10"
+               maxlength="128" required autocomplete="current-password">
+      </label>
+      <div class="row">
+        <button type="submit" data-mode="login">Log in</button>
+        <button type="submit" data-mode="register" class="secondary">Register</button>
+      </div>
+      <p id="auth-error" class="error" role="alert"></p>
+    </form>
+  </section>
+
+  <!-- Recorder panel -->
+  <section id="app-panel" class="card hidden">
+    <h2>Record</h2>
+    <div class="row">
+      <button id="record-btn" class="record">● Start recording</button>
+      <span id="record-timer" aria-live="polite"></span>
+    </div>
+    <p class="hint">…or upload an audio file:</p>
+    <input type="file" id="file-input" accept="audio/*">
+    <p id="app-error" class="error" role="alert"></p>
+
+    <div id="result" class="hidden">
+      <h3>N'Ko</h3>
+      <p class="nko-text" id="result-nko" dir="rtl" lang="nqo"></p>
+      <h3>Latin (Bambara)</h3>
+      <p id="result-latin" lang="bm"></p>
+      <button id="copy-btn" class="secondary">Copy N'Ko</button>
+    </div>
+
+    <h2>Try text directly</h2>
+    <div class="row">
+      <input id="text-input" placeholder="e.g. i ni ce" maxlength="500">
+      <button id="text-btn" class="secondary">→ ߒߞߏ</button>
+    </div>
+    <p class="nko-text" id="text-output" dir="rtl" lang="nqo"></p>
+
+    <h2>History</h2>
+    <ul id="history"></ul>
+  </section>
+</main>
+
+<footer>
+  <p>Bambara → N'Ko (script of Solomana Kanté). Recognition quality depends on
+     the configured ASR engine.</p>
+</footer>
+
+<script src="/static/app.js"></script>
+</body>
+</html>
