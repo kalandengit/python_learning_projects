@@ -41,7 +41,7 @@
     "@phosphor-icons/core": "^2.1.1",
     "@popperjs/core": "^2.10.2",
     "@swc/helpers": "^0.5.23",
-    "aphrodite": "https://github.com/learningequality/aphrodite/",
+    "aphrodite": "git+https://github.com/learningequality/aphrodite.git#fdc8d7be8912a5cf17f74ff10f124013c52c3e32",
     "classnames": "^1.1.4",
     "fractional": "^1.0.0",
     "jquery": "^2.1.1",

@@ -16,8 +16,10 @@ catalog:
   "@vueuse/core": ^11.3.0
   xhr-mock: ^2.5.1
   core-js: ^3.47.0
-  kalanfa-constants: 0.2.16
-  kalanfa-design-system: 5.7.0
+  # External packages published on npm under their upstream Kolibri names;
+  # aliased so Kalanfa-renamed imports keep resolving.
+  kalanfa-constants: npm:kolibri-constants@0.2.16
+  kalanfa-design-system: npm:kolibri-design-system@5.7.0
   lodash: ^4.17.23
   vue: 2.7.16
   vue-meta: ^2.4.0
