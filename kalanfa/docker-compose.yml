@@ -14,7 +14,7 @@ services:
       timeout: 5s
       retries: 30
     volumes:
-      - kolibri-pg:/var/lib/postgresql/data
+      - kalanfa-pg:/var/lib/postgresql/data
 #    command: "postgres -c log_statement=all -c log_line_prefix='%t %d '"
 volumes:
-  kolibri-pg:
+  kalanfa-pg:

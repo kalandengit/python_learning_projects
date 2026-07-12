@@ -1,21 +1,21 @@
 #!/bin/bash
 set -e
 
-if [[ -z "$KOLIBRI_HOME" ]]; then
+if [[ -z "$KALANFA_HOME" ]]; then
   # Defined in the Dockerfile, but enforce it's existence
-  export KOLIBRI_HOME=/kolibri
+  export KALANFA_HOME=/kalanfa
 fi
 
-# Validate /kolibri is a mount point
-if ! mountpoint -q "$KOLIBRI_HOME"; then
-  echo "ERROR: $KOLIBRI_HOME must be a mounted volume" >&2
-  echo "Please mount a volume to $KOLIBRI_HOME when running this container" >&2
-  echo "Example: docker run -v /path/to/data:$KOLIBRI_HOME ..." >&2
+# Validate /kalanfa is a mount point
+if ! mountpoint -q "$KALANFA_HOME"; then
+  echo "ERROR: $KALANFA_HOME must be a mounted volume" >&2
+  echo "Please mount a volume to $KALANFA_HOME when running this container" >&2
+  echo "Example: docker run -v /path/to/data:$KALANFA_HOME ..." >&2
   exit 1
 fi
 
 # Generate or read node ID for Morango sync
-NODE_ID_FILE="$KOLIBRI_HOME/.node_id"
+NODE_ID_FILE="$KALANFA_HOME/.node_id"
 if [ ! -f "$NODE_ID_FILE" ]; then
   NODE_ID=$(cat /proc/sys/kernel/random/uuid)
   echo "$NODE_ID" > "$NODE_ID_FILE"
@@ -31,12 +31,12 @@ export MORANGO_NODE_ID="$NODE_ID"
 
 # if the user mapping is `0 0`, then host and container users are likely in-sync-- both root
 if grep -qE "\s+0\s+0\s+" /proc/self/uid_map; then
-  echo "Starting Kolibri as user 'kolibri'..."
-  # Ensure files are owned by kolibri user
-  find "$KOLIBRI_HOME" ! -user kolibri -print0 | xargs -0 -I {} chown kolibri:kolibri "{}"
+  echo "Starting Kalanfa as user 'kalanfa'..."
+  # Ensure files are owned by kalanfa user
+  find "$KALANFA_HOME" ! -user kalanfa -print0 | xargs -0 -I {} chown kalanfa:kalanfa "{}"
   # Drop to unprivileged user
-  exec setpriv --reuid=kolibri --regid=kolibri --init-groups "$@"
+  exec setpriv --reuid=kalanfa --regid=kalanfa --init-groups "$@"
 else
-  echo "Starting Kolibri..."
+  echo "Starting Kalanfa..."
   exec "$@"
 fi

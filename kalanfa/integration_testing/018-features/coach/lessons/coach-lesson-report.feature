@@ -1,7 +1,7 @@
 Feature: Coach can see and review lesson reports
 
   Background:
-    Given I am signed in to Kolibri as Coach
+    Given I am signed in to Kalanfa as Coach
       And I am at *Coach - '<class>' > Lessons*
       And there are lessons with all progress statuses
       And there are learners who have interacted with different resource types

@@ -15,7 +15,7 @@ Talk to us
 Translate
 ---------
 
-Help us `translate the application on Crowdin <https://crowdin.com/project/kolibri>`__.
+Help us `translate the application on Crowdin <https://crowdin.com/project/kalanfa>`__.
 
 Give feedback
 -------------
@@ -27,7 +27,7 @@ If you are proposing a new feature or giving feedback on an existing feature:
 * Explain in detail what you're trying to do and why the existing system isn't working for you
 * Keep the scope as narrow as possible, to make it easier to understand the specific problem you're trying to address
 
-If you have found a bug and are comfortable using Github and Markdown, you can create a `Github issue <https://github.com/learningequality/kolibri/issues>`__. Please search the existing issues first to see if it's already been reported.
+If you have found a bug and are comfortable using Github and Markdown, you can create a `Github issue <https://github.com/learningequality/kalanfa/issues>`__. Please search the existing issues first to see if it's already been reported.
 
 Please make sure to use the template. Replace the HTML comments (the ``<!-- ... -->``) with the information requested.
 
@@ -39,8 +39,8 @@ Visit the `Contributing to our open code base <https://learningequality.org/cont
 Write documentation
 -------------------
 
-If you'd like to help improve Kolibri's `User Documentation <https://kolibri.readthedocs.io/en/latest/>`__, see the `Kolibri docs Github repo <https://github.com/learningequality/kolibri-docs>`__.
+If you'd like to help improve Kalanfa's `User Documentation <https://kalanfa.readthedocs.io/en/latest/>`__, see the `Kalanfa docs Github repo <https://github.com/learningequality/kalanfa-docs>`__.
 
-You can also help improve our developer documentation that you're reading now! These are in the main Kolibri repo.
+You can also help improve our developer documentation that you're reading now! These are in the main Kalanfa repo.
 
 Both our developer docs and the user docs are formatted using `reStructuredText <http://docutils.sourceforge.net/rst.html>`__.

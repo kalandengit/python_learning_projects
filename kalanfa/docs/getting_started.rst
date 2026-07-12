@@ -3,10 +3,10 @@
 Getting started
 ===============
 
-First of all, thank you for your interest in contributing to Kolibri! The project was founded by volunteers dedicated to helping make educational materials more accessible to those in need, and every contribution makes a difference. The instructions below should get you up and running the code in no time!
+First of all, thank you for your interest in contributing to Kalanfa! The project was founded by volunteers dedicated to helping make educational materials more accessible to those in need, and every contribution makes a difference. The instructions below should get you up and running the code in no time!
 
 .. note::
-  **Planning to integrate with Kolibri?** Most APIs are internal and unstable, designed for Kolibri's own use. Only ``/public/`` endpoints are maintained with backwards compatibility. See the :doc:`backend_architecture/index` for details on API stability.
+  **Planning to integrate with Kalanfa?** Most APIs are internal and unstable, designed for Kalanfa's own use. Only ``/public/`` endpoints are maintained with backwards compatibility. See the :doc:`backend_architecture/index` for details on API stability.
 
 Prerequisites
 -------------
@@ -19,14 +19,14 @@ If you encounter issues:
 * Please let us know if our docs can be improved, either by filing an issue or submitting a PR!
 
 .. note::
-  Theoretically, Windows can be used to develop Kolibri, but we haven't done much testing with it. If you're running Windows, you are likely to encounter some issues with this guide, and we'd appreciate any help improving these docs for Windows developers!
+  Theoretically, Windows can be used to develop Kalanfa, but we haven't done much testing with it. If you're running Windows, you are likely to encounter some issues with this guide, and we'd appreciate any help improving these docs for Windows developers!
 
 Git and GitHub
 ~~~~~~~~~~~~~~
 
 #. Install and set up `Git <https://help.github.com/articles/set-up-git/>`__ on your computer. Try this `tutorial <http://learngitbranching.js.org/>`__ if you need more practice with Git!
 #. `Sign up and configure your GitHub account <https://github.com/join>`__ if you don't have one already.
-#. `Fork the main Kolibri repository <https://github.com/learningequality/kolibri>`__. This will make it easier to `submit pull requests <https://help.github.com/articles/using-pull-requests/>`__. Read more details `about forking <https://help.github.com/articles/fork-a-repo/>`__ from GitHub.
+#. `Fork the main Kalanfa repository <https://github.com/learningequality/kalanfa>`__. This will make it easier to `submit pull requests <https://help.github.com/articles/using-pull-requests/>`__. Read more details `about forking <https://help.github.com/articles/fork-a-repo/>`__ from GitHub.
 #. **Important**: Install and set up the `Git LFS extension <https://docs.github.com/en/repositories/working-with-files/managing-large-files/installing-git-large-file-storage>`__.
 
 
@@ -37,17 +37,17 @@ Git and GitHub
 Checking out the code
 ~~~~~~~~~~~~~~~~~~~~~
 
-First, clone your Kolibri fork to your local computer. In the command below, replace ``$USERNAME`` with your own GitHub username:
+First, clone your Kalanfa fork to your local computer. In the command below, replace ``$USERNAME`` with your own GitHub username:
 
 .. code-block:: bash
 
-  git clone git@github.com:$USERNAME/kolibri.git
+  git clone git@github.com:$USERNAME/kalanfa.git
 
 Next, initialize Git LFS:
 
 .. code-block:: bash
 
-  cd kolibri  # Enter the Kolibri directory
+  cd kalanfa  # Enter the Kalanfa directory
   git lfs install
 
 To make git blame more informative, we keep track of commits that make a lot of changes to the codebase but are not directly related to the code itself, like large scale automatic code formatting. To prevent these commits appearing in the blame output, run:
@@ -61,7 +61,7 @@ Finally, add the Learning Equality repo as a remote called `upstream`. That way 
 
 .. code-block:: bash
 
-  git remote add upstream git@github.com:learningequality/kolibri.git
+  git remote add upstream git@github.com:learningequality/kalanfa.git
   git fetch --all  # Check if there are changes upstream
   git checkout -t upstream/develop # Checkout the development branch
 
@@ -69,7 +69,7 @@ Finally, add the Learning Equality repo as a remote called `upstream`. That way 
 Python and uv
 ~~~~~~~~~~~~~
 
-Kolibri uses `uv <https://docs.astral.sh/uv/>`__ to manage Python versions and virtual environments. Install uv following the `official installation guide <https://docs.astral.sh/uv/getting-started/installation/>`__.
+Kalanfa uses `uv <https://docs.astral.sh/uv/>`__ to manage Python versions and virtual environments. Install uv following the `official installation guide <https://docs.astral.sh/uv/getting-started/installation/>`__.
 
 uv will automatically install the correct Python version when you set up the project — you do not need to install Python separately or use pyenv.
 
@@ -86,13 +86,13 @@ uv automatically creates and manages a virtual environment in the ``.venv`` dire
   uv sync --group dev --all-packages          # Creates venv, installs Python, installs all dev deps
 
 .. note::
-  ``--all-packages`` installs every workspace member under ``python_packages/`` alongside root Kolibri's own dependencies in the shared virtual environment. See :doc:`/howtos/python_monorepo` for details on the workspace layout and why the flag is required.
+  ``--all-packages`` installs every workspace member under ``python_packages/`` alongside root Kalanfa's own dependencies in the shared virtual environment. See :doc:`/howtos/python_monorepo` for details on the workspace layout and why the flag is required.
 
 Your virtual environment is now ready. Use ``uv run`` to execute commands within it:
 
 .. code-block:: bash
 
-  uv run kolibri --version     # Run kolibri CLI
+  uv run kalanfa --version     # Run kalanfa CLI
   uv run pytest                # Run tests
 
 To activate the virtual environment in your shell (for interactive use):
@@ -119,7 +119,7 @@ Environment variables can be set in many ways, including:
 
 There are two environment variables you should plan to set:
 
-* ``KOLIBRI_RUN_MODE`` is **required**.
+* ``KALANFA_RUN_MODE`` is **required**.
 
   This variable is sent to our `pingback server <https://github.com/learningequality/nutritionfacts>`_ (private repo), and you must set it to something besides an empty string. This allows us to filter development work out of our usage statistics. There are also some `special testing behaviors <https://github.com/learningequality/nutritionfacts/blob/b150ec9fd80cd0f02c087956fd5f16b2592f94d4/nutritionfacts/views.py#L125-L179>`_ that can be triggered for special strings, as described elsewhere in the developer docs and integration testing Gherkin scenarios.
   |br|
@@ -127,12 +127,12 @@ There are two environment variables you should plan to set:
 
   .. code-block:: bash
 
-    export KOLIBRI_RUN_MODE="dev"
+    export KALANFA_RUN_MODE="dev"
 
 
-* ``KOLIBRI_HOME`` is optional.
+* ``KALANFA_HOME`` is optional.
 
-  This variable determines where Kolibri will store its content and databases. It is useful to set if you want to have multiple versions of Kolibri running simultaneously.
+  This variable determines where Kalanfa will store its content and databases. It is useful to set if you want to have multiple versions of Kalanfa running simultaneously.
 
 
 Install Python dependencies
@@ -153,7 +153,7 @@ Install Node.js, pnpm and other dependencies
 
 For a more detailed guide to using nodeenv see :doc:`/howtos/nodeenv`.
 
-The Python project-specific dependencies installed above will install ``nodeenv``, which is a useful tool for using specific versions of Node.js and other Node.js tools in Python environments. To setup Node.js and pnpm within the Kolibri project environment, ensure your Python virtual environment is active, then run:
+The Python project-specific dependencies installed above will install ``nodeenv``, which is a useful tool for using specific versions of Node.js and other Node.js tools in Python environments. To setup Node.js and pnpm within the Kalanfa project environment, ensure your Python virtual environment is active, then run:
 
 .. code-block:: bash
 
@@ -172,7 +172,7 @@ To initialize the database run the following command:
 
 .. code-block:: bash
 
-  kolibri manage migrate
+  kalanfa manage migrate
 
 
 Running the server
@@ -212,7 +212,7 @@ Alternatively, you can run the devserver with `hot reload <https://vue-loader.vu
 
     pnpm run devserver core,learn
 
-  Would run the devserver not in hot mode, and rebuild the core Kolibri assets and the Learn plugin.
+  Would run the devserver not in hot mode, and rebuild the core Kalanfa assets and the Learn plugin.
 
 
 For a complete reference of the commands that can be run and what they do, inspect the ``scripts`` section of the root *./package.json* file.
@@ -237,15 +237,15 @@ In production, content is served through `Whitenoise <http://whitenoise.evans.io
   pnpm run build
 
   # now, run the Django production server
-  kolibri start
+  kalanfa start
 
 Now you should be able to access the server at ``http://127.0.0.1:8080/``.
 
-Kolibri has support for being run as a ``Type=notify`` service under
+Kalanfa has support for being run as a ``Type=notify`` service under
 `systemd <https://www.freedesktop.org/software/systemd/>`__. When doing so, it
-is recommended to run ``kolibri start`` with the ``--skip-update`` option, and
-to run ``kolibri configure setup`` separately beforehand to handle database
-migrations and other one-time setup steps. This avoids the ``kolibri start``
+is recommended to run ``kalanfa start`` with the ``--skip-update`` option, and
+to run ``kalanfa configure setup`` separately beforehand to handle database
+migrations and other one-time setup steps. This avoids the ``kalanfa start``
 command timing out under systemd if migrations are happening.
 
 
@@ -278,7 +278,7 @@ and in the second terminal, start the webpack build process for frontend assets:
 Running in App Mode
 ~~~~~~~~~~~~~~~~~~~
 
-Some of Kolibri's functionality will differ when being run as a mobile app. In order to access the development server in that "app mode" context, open Kolibri using the URL logged in the terminal.
+Some of Kalanfa's functionality will differ when being run as a mobile app. In order to access the development server in that "app mode" context, open Kalanfa using the URL logged in the terminal.
 
 When the development server is started, you will see a message with a particular URL that you will need to use in order to initialize your browser session properly. Once your browser session has been initialized for use in the app mode, your browser session will remain in this mode until you clear your cookies.
 
@@ -302,7 +302,7 @@ We have a project-level *.editorconfig* file to help you configure your text edi
 Vue development tools
 ---------------------
 
-`Vue.js devtools (Legacy) <https://devtools-v6.vuejs.org/guide/installation.html#legacy>`__ is a browser plugin that is very helpful when working with Vue.js components and Vuex. Kolibri is using Vue 2, so be sure to find the "Legacy" plugin as the latest version of the extension is for Vue 3.
+`Vue.js devtools (Legacy) <https://devtools-v6.vuejs.org/guide/installation.html#legacy>`__ is a browser plugin that is very helpful when working with Vue.js components and Vuex. Kalanfa is using Vue 2, so be sure to find the "Legacy" plugin as the latest version of the extension is for Vue 3.
 
 To ensure a more efficient workflow, install appropriate editor plugins for Vue.js, ESLint, and stylelint.
 
@@ -310,14 +310,14 @@ To ensure a more efficient workflow, install appropriate editor plugins for Vue.
 Sample resources and data
 -------------------------
 
-Once you have the server running, proceed to import some channels and resources. To quickly import all available and supported Kolibri resource types, `import with the token <https://kolibri.readthedocs.io/en/latest/manage/resources.html?highlight=import#import-with-token>`__  ``nakav-mafak`` for the `Kolibri QA channel <https://kolibri-dev.learningequality.org/en/learn/#/topics/t/95a52b386f2c485cb97dd60901674a98>`__ (~350MB).
+Once you have the server running, proceed to import some channels and resources. To quickly import all available and supported Kalanfa resource types, `import with the token <https://kalanfa.readthedocs.io/en/latest/manage/resources.html?highlight=import#import-with-token>`__  ``nakav-mafak`` for the `Kalanfa QA channel <https://kalanfa-dev.learningequality.org/en/learn/#/topics/t/95a52b386f2c485cb97dd60901674a98>`__ (~350MB).
 
 
 Now you can create users, classes, lessons, etc manually. To auto-generate some sample user data you can also run:
 
 .. code-block:: bash
 
-  kolibri manage generateuserdata
+  kalanfa manage generateuserdata
 
 
 
@@ -396,7 +396,7 @@ Recommended workflow with prek
 Design system
 -------------
 
-We have a large number of reusable patterns, conventions, and components built into the application. Review the `Kolibri Design System <https://design-system.learningequality.org/>`__ to get a sense for the tools at your disposal, and to ensure that new changes stay consistent with established UI patterns.
+We have a large number of reusable patterns, conventions, and components built into the application. Review the `Kalanfa Design System <https://design-system.learningequality.org/>`__ to get a sense for the tools at your disposal, and to ensure that new changes stay consistent with established UI patterns.
 
 
 Updating documentation
@@ -408,7 +408,7 @@ First, install the documentation dependencies:
 
   uv sync --group docs
 
-To make changes to documentation, edit the ``rst`` files in the ``kolibri/docs`` directory and then run:
+To make changes to documentation, edit the ``rst`` files in the ``kalanfa/docs`` directory and then run:
 
 .. code-block:: bash
 
@@ -430,35 +430,35 @@ Automated testing
 -----------------
 
 
-Kolibri comes with a Javascript test suite based on `Jest <https://jestjs.io/>`__. To run all front-end tests:
+Kalanfa comes with a Javascript test suite based on `Jest <https://jestjs.io/>`__. To run all front-end tests:
 
 .. code-block:: bash
 
   pnpm run test
 
-Kolibri comes with a Python test suite based on `pytest <https://docs.pytest.org/en/latest/>`__. To run all back-end tests:
+Kalanfa comes with a Python test suite based on `pytest <https://docs.pytest.org/en/latest/>`__. To run all back-end tests:
 
 .. code-block:: bash
 
   pytest
 
-To run specific tests only, you can add the filepath of the file. To further filter either by TestClass name or test method name, you can add `-k` followed by a string to filter classes or methods by. For example, to only run a test named ``test_admin_can_delete_membership`` in kolibri/auth/test/test_permissions.py:
+To run specific tests only, you can add the filepath of the file. To further filter either by TestClass name or test method name, you can add `-k` followed by a string to filter classes or methods by. For example, to only run a test named ``test_admin_can_delete_membership`` in kalanfa/auth/test/test_permissions.py:
 
 .. code-block:: bash
 
-  pytest kolibri/auth/test/test_permissions -k test_admin_can_delete_membership
+  pytest kalanfa/auth/test/test_permissions -k test_admin_can_delete_membership
 
-To only run the whole class named ``MembershipPermissionsTestCase`` in kolibri/auth/test/test_permissions.py:
-
-.. code-block:: bash
-
-  pytest kolibri/auth/test/test_permissions -k MembershipPermissionsTestCase
-
-For more advanced usage, logical operators can also be used in wrapped strings, for example, the following will run only one test, named ``test_admin_can_delete_membership`` in the ``MembershipPermissionsTestCase`` class in kolibri/auth/test/test_permissions.py:
+To only run the whole class named ``MembershipPermissionsTestCase`` in kalanfa/auth/test/test_permissions.py:
 
 .. code-block:: bash
 
-  pytest kolibri/auth/test/test_permissions -k "MembershipPermissionsTestCase and test_admin_can_delete_membership"
+  pytest kalanfa/auth/test/test_permissions -k MembershipPermissionsTestCase
+
+For more advanced usage, logical operators can also be used in wrapped strings, for example, the following will run only one test, named ``test_admin_can_delete_membership`` in the ``MembershipPermissionsTestCase`` class in kalanfa/auth/test/test_permissions.py:
+
+.. code-block:: bash
+
+  pytest kalanfa/auth/test/test_permissions -k "MembershipPermissionsTestCase and test_admin_can_delete_membership"
 
 You can run tests for a specific Python version using:
 
@@ -503,12 +503,12 @@ After making changes to the code and committing them locally, push your working 
 
   git push origin my-awesome-changes
 
-Go to Kolibri's `GitHub page <https://github.com/learningequality/kolibri>`__, and create a the new pull request.
+Go to Kalanfa's `GitHub page <https://github.com/learningequality/kalanfa>`__, and create a the new pull request.
 
 .. note::
   Please fill in all the applicable sections in the PR template and DELETE unecessary headings
 
-Another member of the team will review your code, and either ask for updates on your part or merge your PR to Kolibri codebase. Until the PR is merged you can push new commits to your branch and add updates to it.
+Another member of the team will review your code, and either ask for updates on your part or merge your PR to Kalanfa codebase. Until the PR is merged you can push new commits to your branch and add updates to it.
 
 Learn more about our :ref:`dev_workflow` and :ref:`release_process`
 
@@ -516,7 +516,7 @@ Learn more about our :ref:`dev_workflow` and :ref:`release_process`
 Development using Docker
 ------------------------
 
-Engineers who are familiar with Docker can start a Kolibri instance without setting up the full JavaScript and Python development environments on the host machine.
+Engineers who are familiar with Docker can start a Kalanfa instance without setting up the full JavaScript and Python development environments on the host machine.
 
 For more information, see the *docker* directory and the ``docker-*`` commands in the *Makefile*.
 
@@ -524,7 +524,7 @@ For more information, see the *docker* directory and the ``docker-*`` commands i
 Development server
 ~~~~~~~~~~~~~~~~~~
 
-Start the Kolibri devserver running inside a container:
+Start the Kalanfa devserver running inside a container:
 
 .. code-block:: bash
 
@@ -541,7 +541,7 @@ Building a pex file
 .. note::
   The easiest way to obtain a `pex <https://pex.readthedocs.io/en/latest/whatispex.html>`__ file is to submit a Github PR and download the built assets from buildkite.
 
-If you want to build and run a pex from the Kolibri code in your current local source files without relying on the github and the buildkite integration, you can run the following commands to build a pex file:
+If you want to build and run a pex from the Kalanfa code in your current local source files without relying on the github and the buildkite integration, you can run the following commands to build a pex file:
 
 .. code-block:: bash
 
@@ -554,7 +554,7 @@ file using the production server approach described below.
 Production server
 ~~~~~~~~~~~~~~~~~
 
-You can start a Kolibri instance running any pex file by setting the appropriate
+You can start a Kalanfa instance running any pex file by setting the appropriate
 environment variables in your local copy of `docker/env.list` then running the commands:
 
 .. code-block:: bash
@@ -568,5 +568,5 @@ environment variables in your local copy of `docker/env.list` then running the c
 The choice of pex file can be controlled by setting environment variables in the
 file *./docker/env.list*:
 
- * ``KOLIBRI_PEX_URL``: Download URL or the string ``default``
+ * ``KALANFA_PEX_URL``: Download URL or the string ``default``
  * ``DOCKERMNT_PEX_PATH``: Local path such as ``/docker/mnt/nameof.pex``

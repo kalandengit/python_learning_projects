@@ -2,7 +2,7 @@ Feature: Super admin can edit their own profile information
 	Super admin needs to be able to edit their own profile information
 
   Background:
-    Given I am signed in to Kolibri as Super admin
+    Given I am signed in to Kalanfa as Super admin
       And I am at the *User > Profile* page
 
   Scenario: Super admin can edit their profile information

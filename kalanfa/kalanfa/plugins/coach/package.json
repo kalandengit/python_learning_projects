@@ -1,0 +1,29 @@
+{
+  "name": "kalanfa-coach-plugin",
+  "description": "Coach Plugin for Kalanfa",
+  "private": true,
+  "version": "0.0.1",
+  "dependencies": {
+    "@vueuse/core": "catalog:",
+    "csv-generator-client": "^2.1.1",
+    "kalanfa": "workspace:*",
+    "kalanfa-app": "workspace:*",
+    "kalanfa-common": "workspace:*",
+    "kalanfa-constants": "catalog:",
+    "kalanfa-design-system": "catalog:",
+    "kalanfa-logging": "workspace:*",
+    "kalanfa-plugin-data": "workspace:*",
+    "lockr": "0.8.5",
+    "lodash": "catalog:",
+    "markdown-it": "14.2.0",
+    "truncate-utf8-bytes": "^1.0.2",
+    "vue": "catalog:",
+    "vue-router": "catalog:",
+    "vuex": "catalog:"
+  },
+  "devDependencies": {
+    "@testing-library/jest-dom": "catalog:",
+    "@testing-library/vue": "catalog:",
+    "@vue/test-utils": "catalog:"
+  }
+}

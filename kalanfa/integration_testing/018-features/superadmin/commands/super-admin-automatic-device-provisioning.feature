@@ -1,9 +1,9 @@
 Feature: Super admin can provision a device in the same way the setup wizard would
-    Super admin needs to be able to customize the Kolibri settings by modifying the options.ini file and pointing to a JSON file in Paths -> AUTOMATIC_PROVISION_FILE
+    Super admin needs to be able to customize the Kalanfa settings by modifying the options.ini file and pointing to a JSON file in Paths -> AUTOMATIC_PROVISION_FILE
 
   Background:
-    Given that the Kolibri server is not running
-      And I have opened the "options.ini" file which is located inside the ".kolibri" folder
+    Given that the Kalanfa server is not running
+      And I have opened the "options.ini" file which is located inside the ".kalanfa" folder
       And there are the following sections: [Cache], [Database], [Server], [Paths], [Urls], [Deployment], [Python], [Tasks], [Learn]
       And I have created a JSON file with the following format: {
         "facility_name": "My Facility",
@@ -35,17 +35,17 @@ Feature: Super admin can provision a device in the same way the setup wizard wou
   Scenario: Setup a device by modifying the AUTOMATIC_PROVISION_FILE setting in the options.ini file
     When I add "AUTOMATIC_PROVISION_FILE = <file path>" under the [Paths] section
       And I save my changes
-      And I run the "kolibri start" command in the terminal or command prompt #example file path: /home/user/.kolibri/automatic_device_provisioning.json
+      And I run the "kalanfa start" command in the terminal or command prompt #example file path: /home/user/.kalanfa/automatic_device_provisioning.json
     Then I see in the terminal that a facility with name 'My Facility' has been created
     	And I see that all the other presets and settings are updated as specified in the JSON file
     	And I see that the automatic provisioning file is removed from the directory after successful provisioning
-    	And I see that the Kolibri server is running
-    When I open Kolibri in a web browser
+    	And I see that the Kalanfa server is running
+    When I open Kalanfa in a web browser
     Then I am at the *Library* page as was specified in the JSON file
     When I go to the *Sign in* page
     	And I enter the credentials specified in the JSON file
     Then I am at the *Device > Channels* page
-    	And I see the *Welcome to Kolibri!* message
+    	And I see the *Welcome to Kalanfa!* message
     When I close the message
     	And I go to *Device > Settings*
     Then I see the *Default language* is set to *English*

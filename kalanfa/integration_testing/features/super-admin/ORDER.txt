@@ -35,9 +35,9 @@ device/super-admin-change-device-name.feature
 device/super-admin-import-facility-from-a-peer-post-setup.feature
 device/super-admin-managing-facility-tasks.feature
 device/super-admin-rename-facility.feature
-device/super-admin-sync-all-to-kolibri-data-portal.feature
+device/super-admin-sync-all-to-kalanfa-data-portal.feature
 device/super-admin-sync-facility-with-a-peer-device.feature
-device/super-admin-sync-one-facility-to-kolibri-data-portal.feature
+device/super-admin-sync-one-facility-to-kalanfa-data-portal.feature
 super-admin-new-landing-page-in-coach-plugin.feature
 super-admin-new-landing-page-in-facility-plugin.feature
 device/super-admin-remove-facility.feature
@@ -50,5 +50,5 @@ commands/super-admin-bulk-import-users.feature
 commands/super-admin-deletefacility-command.feature
 commands/super-admin-hard-delete-user.feature
 commands/super-admin-profile-command.feature
-commands/super-admin-set-kolibri-port.feature
-commands/super-admin-load-kolibri-with-content-fallback-directories.feature
+commands/super-admin-set-kalanfa-port.feature
+commands/super-admin-load-kalanfa-with-content-fallback-directories.feature

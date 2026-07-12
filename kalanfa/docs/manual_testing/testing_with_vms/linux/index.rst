@@ -1,4 +1,4 @@
-Test Kolibri in Linux guest
+Test Kalanfa in Linux guest
 ===========================
 
 .. include:: ./download_images.rst

@@ -19,7 +19,7 @@ Import and configure Ubuntu VM image into VirtualBox
 
    .. image:: ./vbox-4.jpg
 
-7. In the **Shared Folders** pane add the folder you created previously where you keep Kolibri and other installers on your host machine that you want to make available for virtual machines.
+7. In the **Shared Folders** pane add the folder you created previously where you keep Kalanfa and other installers on your host machine that you want to make available for virtual machines.
 
    .. image:: ./vbox-5.png
 

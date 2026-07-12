@@ -1,0 +1,27 @@
+{
+  "name": "kalanfa-sentry-plugin",
+  "description": "A plugin to provide sentry integration for Kalanfa",
+  "private": true,
+  "scripts": {
+    "build": "kalanfa-build prod --plugins kalanfa_sentry_plugin",
+    "clean": "kalanfa-build clean --plugins kalanfa_sentry_plugin",
+    "compress": "kalanfa-build compress 'kalanfa_sentry_plugin/static/**/*.{html,js,css,svg,map,eot,ttf}'",
+    "dev": "kalanfa-build dev --plugins kalanfa_sentry_plugin",
+    "lint-frontend": "kalanfa-format --pattern 'kalanfa_sentry_plugin/**/*.{js,vue,scss,less,css}' --ignore '**/dist/**' '**/node_modules/**' '**/static/**'",
+    "lint-frontend:format": "pnpm run lint-frontend --write"
+  },
+  "dependencies": {
+    "@sentry/vue": "^10.19.0",
+    "browserslist-config-kalanfa": "workspace:*",
+    "kalanfa": "workspace:*",
+    "kalanfa-plugin-data": "workspace:*",
+    "vue": "catalog:"
+  },
+  "devDependencies": {
+    "kalanfa-build": "workspace:*",
+    "kalanfa-format": "workspace:*"
+  },
+  "browserslist": [
+    "extends browserslist-config-kalanfa"
+  ]
+}

@@ -4,7 +4,7 @@ set -eux -o pipefail
 
 # Assumes this script is run from the project root
 PROJECT_ROOT="$(pwd)"
-KOLIBRI_HOME="$(mktemp -d)"
+KALANFA_HOME="$(mktemp -d)"
 PYTHONPATH="${PYTHONPATH:-}"
 
 # Prepend project root to python path
@@ -14,15 +14,15 @@ else
   PYTHONPATH="${PROJECT_ROOT}"
 fi
 
-export KOLIBRI_HOME
+export KALANFA_HOME
 export PYTHONPATH
 
 # Clean existing DBs and generate fresh DBs
-rm -rf kolibri/dist/home
-(cd kolibri && python -m kolibri manage deprovision --destroy-all-user-data --permanent-irrevocable-data-loss)
-mkdir -p kolibri/dist/home
-cp $KOLIBRI_HOME/*.sqlite3 kolibri/dist/home/
-rm -rf $KOLIBRI_HOME
+rm -rf kalanfa/dist/home
+(cd kalanfa && python -m kalanfa manage deprovision --destroy-all-user-data --permanent-irrevocable-data-loss)
+mkdir -p kalanfa/dist/home
+cp $KALANFA_HOME/*.sqlite3 kalanfa/dist/home/
+rm -rf $KALANFA_HOME
 
 # disable command echoing
 set +x
@@ -38,7 +38,7 @@ echo "Verifying databases..."
 
 for QUERY in "${!QUERY_MATRIX[@]}"; do
   DB=${QUERY_MATRIX[$QUERY]}
-  ROW_COUNT=$(sqlite3 -cmd ".headers off" kolibri/dist/home/$DB "$QUERY")
+  ROW_COUNT=$(sqlite3 -cmd ".headers off" kalanfa/dist/home/$DB "$QUERY")
   if [ "$ROW_COUNT" -ne 0 ]; then
     echo "Preseeded DBs have existing data | $ROW_COUNT = $QUERY"
     exit 1

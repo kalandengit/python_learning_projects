@@ -2,7 +2,7 @@ Feature: Learner closes and reopens content
   Learner needs to be redirected to where they left off when they reopen a content item
 
   Background:
-    Given I am signed in to Kolibri as a learner user
+    Given I am signed in to Kalanfa as a learner user
       And I have previously interacted with the resource
 
   Scenario: Learner reopens a video/audio within a lesson

@@ -12,7 +12,7 @@ Feature: My downloads list
 			And the side menu is no longer expanded
 
 	Scenario: *My downloads* - desktop view
-		Given I'm viewing Kolibri in a desktop browser
+		Given I'm viewing Kalanfa in a desktop browser
 			And I have some resources already downloaded on the device
 		When I go to *My downloads*
 		Then I see all the resources displayed in a table with *Name*, *File size*, *Date added* and *Status* columns
@@ -27,7 +27,7 @@ Feature: My downloads list
 			And I see a disabled *Remove selected* button
 
 	Scenario: *My downloads* - mobile view
-		Given I'm viewing Kolibri in a mobile browser
+		Given I'm viewing Kalanfa in a mobile browser
 			And I have some resources already downloaded on the device
 		When I go to *My downloads*
 		Then I see all the resources displayed in a table with only a *Name* column

@@ -2,10 +2,10 @@ Feature: Lessons notifications
   Class coaches and facility coaches need to be able to see all notifications (*started*, *completed*, and *needs help*) when students engage with lessons.
 
   Background:
-    Given I am signed in to Kolibri as a class coach
+    Given I am signed in to Kalanfa as a class coach
       And as a coach I have assigned a lesson with one exercise to the entire class and started it
       And there are learners enrolled in the class
-      And in a different browser I am signed in to Kolibri as a learner #or using a browser tab in incognito mode; repeat the following scenarios with different learners to test multiple notifications
+      And in a different browser I am signed in to Kalanfa as a learner #or using a browser tab in incognito mode; repeat the following scenarios with different learners to test multiple notifications
 
   Scenario: Class activity - Coach sees a notification that a learner has started the lesson
   	Given the coach is at *Coach > '<class>' > Class Home* page

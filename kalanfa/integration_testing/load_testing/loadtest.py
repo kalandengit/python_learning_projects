@@ -1,8 +1,8 @@
 #!/usr/bin/env python
 """
-Kolibri Load Testing Tool
+Kalanfa Load Testing Tool
 
-A comprehensive CLI for setting up and running load tests against Kolibri servers.
+A comprehensive CLI for setting up and running load tests against Kalanfa servers.
 Orchestrates device provisioning, user import, content setup, flow capture, and load testing.
 
 Usage:
@@ -27,7 +27,7 @@ import time
 import webbrowser
 
 import click
-from kolibri_client import KolibriClient
+from kalanfa_client import KalanfaClient
 from logger import info
 from logger import plain
 from logger import section
@@ -48,7 +48,7 @@ def _exit_with_error(message):
 
 
 @click.group(invoke_without_command=True)
-@click.option("--server", prompt="Kolibri server URL", help="Kolibri server URL")
+@click.option("--server", prompt="Kalanfa server URL", help="Kalanfa server URL")
 @click.option("--username", prompt="Admin username", help="Admin username")
 @click.option(
     "--password", prompt="Admin password", hide_input=True, help="Admin password"
@@ -84,7 +84,7 @@ def cli(
     max_retries,
     retry_delay,
 ):
-    """Kolibri Load Testing Tool"""
+    """Kalanfa Load Testing Tool"""
     ctx.ensure_object(dict)
     ctx.obj["server"] = server
     ctx.obj["username"] = username
@@ -106,7 +106,7 @@ def cli(
 @click.pass_context
 def provision(ctx):
     """Provision device if not already provisioned"""
-    client = KolibriClient(ctx.obj["server"])
+    client = KalanfaClient(ctx.obj["server"])
 
     if not client.is_provisioned():
         info("Provisioning device...")
@@ -122,7 +122,7 @@ def provision(ctx):
 @click.pass_context
 def setup_facility(ctx):
     """Setup or get facility"""
-    client = KolibriClient(ctx.obj["server"], ctx.obj["username"], ctx.obj["password"])
+    client = KalanfaClient(ctx.obj["server"], ctx.obj["username"], ctx.obj["password"])
     facility_id = client.get_or_create_facility(FACILITY_NAME)
     success(f"Facility: {facility_id}")
 
@@ -132,7 +132,7 @@ def setup_facility(ctx):
 def import_users(ctx):
     """Import users from CSV"""
     num_users = ctx.obj["users"]
-    client = KolibriClient(ctx.obj["server"], ctx.obj["username"], ctx.obj["password"])
+    client = KalanfaClient(ctx.obj["server"], ctx.obj["username"], ctx.obj["password"])
     facility_id = client.get_or_create_facility(FACILITY_NAME)
 
     info(f"Importing {num_users} users...")
@@ -144,7 +144,7 @@ def import_users(ctx):
 @click.pass_context
 def import_channel(ctx):
     """Import channel content"""
-    client = KolibriClient(ctx.obj["server"], ctx.obj["username"], ctx.obj["password"])
+    client = KalanfaClient(ctx.obj["server"], ctx.obj["username"], ctx.obj["password"])
     info(f"Importing channel {QA_CHANNEL_ID}...")
     client.import_channel(QA_CHANNEL_ID)
     success(f"Channel imported: {QA_CHANNEL_ID}")
@@ -154,7 +154,7 @@ def import_channel(ctx):
 @click.pass_context
 def create_lesson(ctx):
     """Create comprehensive lesson with mixed content"""
-    client = KolibriClient(ctx.obj["server"], ctx.obj["username"], ctx.obj["password"])
+    client = KalanfaClient(ctx.obj["server"], ctx.obj["username"], ctx.obj["password"])
 
     # Get facility and classroom
     facility_id = client.get_or_create_facility(FACILITY_NAME)
@@ -171,28 +171,28 @@ def create_lesson(ctx):
 @cli.command()
 @click.pass_context
 def capture(ctx):
-    """Capture HAR file for current Kolibri version"""
-    # Get Kolibri version for HAR filename
-    client = KolibriClient(ctx.obj["server"], ctx.obj["username"], ctx.obj["password"])
+    """Capture HAR file for current Kalanfa version"""
+    # Get Kalanfa version for HAR filename
+    client = KalanfaClient(ctx.obj["server"], ctx.obj["username"], ctx.obj["password"])
     device_info = client.get_device_info()
-    kolibri_version = device_info.get("kolibri_version", "unknown")
+    kalanfa_version = device_info.get("kalanfa_version", "unknown")
 
-    # Name HAR file with Kolibri version
-    har_filename = f"lesson_flow_kolibri_{kolibri_version}.har"
+    # Name HAR file with Kalanfa version
+    har_filename = f"lesson_flow_kalanfa_{kalanfa_version}.har"
     har_path = os.path.join(HAR_FILES_DIR, har_filename)
 
     # Check if HAR already exists
     if os.path.exists(har_path):
-        success(f"HAR file already exists for Kolibri {kolibri_version}")
+        success(f"HAR file already exists for Kalanfa {kalanfa_version}")
         plain(f"  {har_path}")
-        plain("\nDelete it to re-capture, or use a different Kolibri version")
+        plain("\nDelete it to re-capture, or use a different Kalanfa version")
         return
 
     os.makedirs(HAR_FILES_DIR, exist_ok=True)
 
     from recorder import capture_manual_flow
 
-    info(f"Manual capture mode for Kolibri {kolibri_version}...")
+    info(f"Manual capture mode for Kalanfa {kalanfa_version}...")
     capture_manual_flow(ctx.obj["server"], har_path)
     success(f"✓ HAR file captured: {har_path}")
 
@@ -201,17 +201,17 @@ def capture(ctx):
 @click.pass_context
 def run(ctx):
     """Run Locust load test"""
-    client = KolibriClient(ctx.obj["server"], ctx.obj["username"], ctx.obj["password"])
+    client = KalanfaClient(ctx.obj["server"], ctx.obj["username"], ctx.obj["password"])
 
-    # Get Kolibri version to find the right HAR file
+    # Get Kalanfa version to find the right HAR file
     device_info = client.get_device_info()
-    kolibri_version = device_info.get("kolibri_version", "unknown")
+    kalanfa_version = device_info.get("kalanfa_version", "unknown")
 
     if ctx.obj["har"]:
         har_path = ctx.obj["har"]
     else:
         # Find version-specific HAR file
-        har_filename = f"lesson_flow_kolibri_{kolibri_version}.har"
+        har_filename = f"lesson_flow_kalanfa_{kalanfa_version}.har"
         har_path = os.path.join(HAR_FILES_DIR, har_filename)
 
     if not os.path.exists(har_path):
@@ -243,15 +243,15 @@ def run(ctx):
 
     # Set up environment variables for locustfile
     env = os.environ.copy()
-    env["KOLIBRI_HAR_FILE"] = har_path
-    env["KOLIBRI_SERVER_URL"] = ctx.obj["server"]
-    env["KOLIBRI_FACILITY_ID"] = facility_id
-    env["KOLIBRI_CLASSROOM_ID"] = classroom_id
-    env["KOLIBRI_LESSON_ID"] = lesson_id
-    env["KOLIBRI_NUM_USERS"] = str(users)
-    env["KOLIBRI_MAX_RETRIES"] = str(max_retries)
-    env["KOLIBRI_RETRY_DELAY"] = str(retry_delay)
-    env["KOLIBRI_VERSION"] = kolibri_version
+    env["KALANFA_HAR_FILE"] = har_path
+    env["KALANFA_SERVER_URL"] = ctx.obj["server"]
+    env["KALANFA_FACILITY_ID"] = facility_id
+    env["KALANFA_CLASSROOM_ID"] = classroom_id
+    env["KALANFA_LESSON_ID"] = lesson_id
+    env["KALANFA_NUM_USERS"] = str(users)
+    env["KALANFA_MAX_RETRIES"] = str(max_retries)
+    env["KALANFA_RETRY_DELAY"] = str(retry_delay)
+    env["KALANFA_VERSION"] = kalanfa_version
 
     cmd = [
         "locust",
@@ -274,7 +274,7 @@ def run(ctx):
         # Auto-start the test when using web UI
         cmd.append("--autostart")
 
-    info(f"Running Locust test (Kolibri {kolibri_version})...")
+    info(f"Running Locust test (Kalanfa {kalanfa_version})...")
     plain(f"HAR file: {har_path}")
     plain(f"Users: {users}, Spawn rate: {spawn_rate}, Duration: {duration}")
     plain(f"Retry config: max_retries={max_retries}, retry_delay={retry_delay}s")
@@ -321,7 +321,7 @@ def setup(ctx):
 def full(ctx):
     """Run complete setup → capture → test workflow"""
     section("=" * 70)
-    section("KOLIBRI LOAD TEST - FULL WORKFLOW")
+    section("KALANFA LOAD TEST - FULL WORKFLOW")
     section("=" * 70)
 
     total_steps = 6 if ctx.obj["har"] else 7

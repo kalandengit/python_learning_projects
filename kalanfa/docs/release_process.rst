@@ -3,20 +3,20 @@
 Release process
 ===============
 
-Kolibri releases are `tracked in Notion <https://www.notion.so/learningequality/Kolibri-releases-3119700069ff42e984da88ee11fe13a3>`__. This page contains:
+Kalanfa releases are `tracked in Notion <https://www.notion.so/learningequality/Kalanfa-releases-3119700069ff42e984da88ee11fe13a3>`__. This page contains:
 
-* A 'Kolibri releases' tracker database
+* A 'Kalanfa releases' tracker database
 * A set of templates in the tracker database for Major/Minor and Final/pre-releases
 * Checkslists of release steps
 * Additional guidance on performing release steps
 
-We also maintain a small set of `release process automation scripts <https://github.com/learningequality/kolibri-release-utils/>`__ which automate some processes.
+We also maintain a small set of `release process automation scripts <https://github.com/learningequality/kalanfa-release-utils/>`__ which automate some processes.
 
 
 npm packages
 ============
 
-Packages in ``packages/`` are published to npm independently of Kolibri releases. Not all packages are published — those with ``"private": true`` in their ``package.json`` are skipped (currently ``kolibri-common``, ``kolibri-sandbox``, and ``kolibri-zip``).
+Packages in ``packages/`` are published to npm independently of Kalanfa releases. Not all packages are published — those with ``"private": true`` in their ``package.json`` are skipped (currently ``kalanfa-common``, ``kalanfa-sandbox``, and ``kalanfa-zip``).
 
 Automatic publishing
 --------------------
@@ -62,7 +62,7 @@ Every publish includes an SLSA provenance attestation linking the npm version to
 Python packages
 ===============
 
-Packages in ``python_packages/`` are published to PyPI independently of Kolibri releases and independently of each other. Only publishable packages are published; everything else is workspace-only. A package is publishable if it's listed in ``pypi_packages_publish.yml``'s ``paths:`` filter and ``workflow_dispatch`` options.
+Packages in ``python_packages/`` are published to PyPI independently of Kalanfa releases and independently of each other. Only publishable packages are published; everything else is workspace-only. A package is publishable if it's listed in ``pypi_packages_publish.yml``'s ``paths:`` filter and ``workflow_dispatch`` options.
 
 Automatic publishing
 --------------------
@@ -85,4 +85,4 @@ Or set an exact version: ``uv version --package <package-name> <new-version>``. 
 First publish of a new package
 ------------------------------
 
-PyPI and TestPyPI support registering a *pending* trusted publisher for a project that doesn't exist yet. Before merging the PR that adds the package, register a pending publisher on both `pypi.org <https://pypi.org/manage/account/publishing/>`__ and `test.pypi.org <https://test.pypi.org/manage/account/publishing/>`__ for the new project name, with owner ``learningequality``, repository ``kolibri``, and workflow ``pypi_packages_publish.yml``.
+PyPI and TestPyPI support registering a *pending* trusted publisher for a project that doesn't exist yet. Before merging the PR that adds the package, register a pending publisher on both `pypi.org <https://pypi.org/manage/account/publishing/>`__ and `test.pypi.org <https://test.pypi.org/manage/account/publishing/>`__ for the new project name, with owner ``learningequality``, repository ``kalanfa``, and workflow ``pypi_packages_publish.yml``.

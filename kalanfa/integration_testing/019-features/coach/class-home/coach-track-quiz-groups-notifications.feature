@@ -2,9 +2,9 @@ Feature: Quiz notifications for multiple groups
   Class coaches and facility coaches need to be able to see all notifications (*started* and *completed*) when groups of learners start and complete quizzes
 
   Background:
-    Given I am signed in to Kolibri as a class coach
+    Given I am signed in to Kalanfa as a class coach
       And as a coach I have assigned a quiz to a group of learners and started it
-      And in a different browser I am signed in to Kolibri as a learner from the group #or using a browser tab in incognito mode; repeat the following scenarios with different learners to test multiple notifications
+      And in a different browser I am signed in to Kalanfa as a learner from the group #or using a browser tab in incognito mode; repeat the following scenarios with different learners to test multiple notifications
 
   Scenario: Class activity - Coach sees a notification that a group learner has started the quiz
   	Given the coach is at *Coach > '<class>' > Class Home* page

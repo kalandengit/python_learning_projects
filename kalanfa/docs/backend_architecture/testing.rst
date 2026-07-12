@@ -28,7 +28,7 @@ Tests are organized in ``test/`` directories within each module:
 
 .. code-block:: text
 
-  kolibri/core/auth/
+  kalanfa/core/auth/
   ├── models.py
   ├── api.py
   ├── permissions.py
@@ -60,19 +60,19 @@ Run specific test file:
 
 .. code-block:: bash
 
-  pytest kolibri/core/auth/test/test_permissions.py
+  pytest kalanfa/core/auth/test/test_permissions.py
 
 Run specific test with filter:
 
 .. code-block:: bash
 
-  pytest kolibri/core/auth/test/test_permissions.py -k test_admin_can_delete_membership
+  pytest kalanfa/core/auth/test/test_permissions.py -k test_admin_can_delete_membership
 
 Run tests for a specific class:
 
 .. code-block:: bash
 
-  pytest kolibri/core/auth/test/test_permissions.py -k MembershipPermissionsTestCase
+  pytest kalanfa/core/auth/test/test_permissions.py -k MembershipPermissionsTestCase
 
 For more advanced usage, see :ref:`automated testing`.
 
@@ -82,7 +82,7 @@ Test Patterns and Examples
 Django vs. Pure Python Tests
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Kolibri contains both Django application code and generic Python code, which require different testing approaches:
+Kalanfa contains both Django application code and generic Python code, which require different testing approaches:
 
 **Django application code** (models, views, API endpoints):
 - Use ``django.test.TestCase`` or ``rest_framework.test.APITestCase``
@@ -234,21 +234,21 @@ Use Django's ``reverse()`` function to generate URLs to avoid brittleness:
       def test_can_list_facilities(self):
           """Test that authenticated user can list facilities"""
           self.client.force_authenticate(user=self.user)
-          url = reverse('kolibri:core:facility-list')
+          url = reverse('kalanfa:core:facility-list')
           response = self.client.get(url)
           self.assertEqual(response.status_code, status.HTTP_200_OK)
           self.assertEqual(len(response.data), 1)
 
       def test_unauthenticated_cannot_create_facility(self):
           """Test that unauthenticated user cannot create facility"""
-          url = reverse('kolibri:core:facility-list')
+          url = reverse('kalanfa:core:facility-list')
           response = self.client.post(url, {'name': 'New'})
           self.assertEqual(response.status_code, status.HTTP_403_FORBIDDEN)
 
       def test_can_retrieve_specific_facility(self):
           """Test retrieving a specific facility by ID"""
           self.client.force_authenticate(user=self.user)
-          url = reverse('kolibri:core:facility-detail', kwargs={'pk': self.facility.id})
+          url = reverse('kalanfa:core:facility-detail', kwargs={'pk': self.facility.id})
           response = self.client.get(url)
           self.assertEqual(response.status_code, status.HTTP_200_OK)
           self.assertEqual(response.data['id'], str(self.facility.id))
@@ -289,7 +289,7 @@ Testing permissions
 Testing ValuesViewset APIs
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-``ValuesViewset`` is a performance-optimized API pattern used in Kolibri. For complete documentation on the ValuesViewset pattern, see :doc:`api_patterns`.
+``ValuesViewset`` is a performance-optimized API pattern used in Kalanfa. For complete documentation on the ValuesViewset pattern, see :doc:`api_patterns`.
 
 Test ValuesViewset endpoints the same way as standard DRF endpoints:
 
@@ -323,7 +323,7 @@ Test ValuesViewset endpoints the same way as standard DRF endpoints:
       def test_list_lessons_returns_correct_fields(self):
           """Test that lesson list returns expected fields"""
           self.client.force_authenticate(user=self.admin)
-          url = reverse('kolibri:core:lesson-list')
+          url = reverse('kalanfa:core:lesson-list')
           response = self.client.get(url)
 
           self.assertEqual(response.status_code, status.HTTP_200_OK)
@@ -338,7 +338,7 @@ Test ValuesViewset endpoints the same way as standard DRF endpoints:
       def test_retrieve_lesson_includes_related_data(self):
           """Test that retrieving lesson includes classroom data"""
           self.client.force_authenticate(user=self.admin)
-          url = reverse('kolibri:core:lesson-detail', kwargs={'pk': self.lesson.id})
+          url = reverse('kalanfa:core:lesson-detail', kwargs={'pk': self.lesson.id})
           response = self.client.get(url)
 
           self.assertEqual(response.status_code, status.HTTP_200_OK)
@@ -348,7 +348,7 @@ Test ValuesViewset endpoints the same way as standard DRF endpoints:
 
 **Performance testing:**
 
-Use Django Silk to profile your ValuesViewset endpoints and verify query performance. This helps ensure you're not creating N+1 queries and that your implementation is actually performant. Run Kolibri with Silk enabled, make requests to your endpoint, and review the query counts and execution times in the Silk interface.
+Use Django Silk to profile your ValuesViewset endpoints and verify query performance. This helps ensure you're not creating N+1 queries and that your implementation is actually performant. Run Kalanfa with Silk enabled, make requests to your endpoint, and review the query counts and execution times in the Silk interface.
 
 Using pytest fixtures
 ~~~~~~~~~~~~~~~~~~~~~
@@ -358,7 +358,7 @@ For pytest-style tests, use fixtures:
 .. code-block:: python
 
   import pytest
-  from kolibri.core.auth.test.helpers import provision_device
+  from kalanfa.core.auth.test.helpers import provision_device
 
   @pytest.fixture
   def facility_data():

@@ -6,7 +6,7 @@ Feature: Super admin imports more content
   Background:
     Given there is the <channel> channel on the device, at the version *L*
       And the same channel on Studio has been updated and republished, at the version *N*
-      And I am signed in to Kolibri as super admin, or a user with device permissions to import content
+      And I am signed in to Kalanfa as super admin, or a user with device permissions to import content
       And I am on the *Device > Channels* page
 
   Scenario: Update channel and import new content from Studio
@@ -66,7 +66,7 @@ Feature: Super admin imports more content
         And I see the green *New* label
       When I click the *Manage* button
         And I click *Import more*
-        And I select *Kolibri Studio*
+        And I select *Kalanfa Studio*
       Then I am on <channel> channel page
         And I see that all the topic checkboxes are inactive
         And I see *X new* label for topic(s) with new resources

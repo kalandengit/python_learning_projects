@@ -2,7 +2,7 @@ Feature: Groups
   Coach needs to be able to create, edit and delete groups of learners and needs to be able to view the associated reports
 
   Background:
-    Given I am signed in to Kolibri as a super admin or a coach
+    Given I am signed in to Kalanfa as a super admin or a coach
       And I am at the *Coach - '<class>' > Groups* page
       And there are lessons with resources and exercises assigned to the class
 

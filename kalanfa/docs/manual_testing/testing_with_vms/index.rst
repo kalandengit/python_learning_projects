@@ -6,7 +6,7 @@ Testing with Virtual Machines
    :titlesonly:
 
    install_virtualbox/index
-   kolibri_releases
+   kalanfa_releases
    windows/index
    linux/index
    mac_osx/index

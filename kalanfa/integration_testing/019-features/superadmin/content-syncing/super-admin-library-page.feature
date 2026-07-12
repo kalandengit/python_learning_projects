@@ -1,4 +1,4 @@
-Feature: Super admin can see and explore the Kolibri library
+Feature: Super admin can see and explore the Kalanfa library
 
   Background:
     Given I am signed in as a super admin user
@@ -6,14 +6,14 @@ Feature: Super admin can see and explore the Kolibri library
 			And I am at *Learn > Library*
 			And there are imported channels with resources on the device
 
-	Scenario: Super admin is able to see Kolibri Studio library
+	Scenario: Super admin is able to see Kalanfa Studio library
 		When I load the *Learn > Library* page
 			And I look at the *Other libraries* section of the page
-		Then I see the *Kolibri library* section
+		Then I see the *Kalanfa library* section
 			And I see up to 6 cards on up to 2 rows
 
 	Scenario: Super admin can explore libraries
-		Given I see the *Kolibri library* section
+		Given I see the *Kalanfa library* section
 		When I click *Explore* button
 		Then I the *Explore libraries* modal
 			And I see all of the available channels

@@ -12,7 +12,7 @@ Feature: Manage password requirements in app context
 	Scenario: Users are not required to input password when creating accounts
 		Given that the facility setting *Require password for learners* is unchecked
 			And I am signed out
-		When I open the Kolibri app
+		When I open the Kalanfa app
 			And I tap *Create account*
 		Then I only see the input fields for *Username* and *Fullname*
 			And I don't see the *Password* and *Re-enter password* fields
@@ -50,7 +50,7 @@ Feature: Manage password requirements in app context
 	Scenario: Users are required to input password when creating accounts
 		Given that the facility setting *Require password for learners* is checked
 			And I am signed out
-		When I open Kolibri app
+		When I open Kalanfa app
 			And I tap *Create account*
 		Then I see the input fields for *Username*, *Fullname*, *Password* and *Re-enter password*
 
@@ -66,9 +66,9 @@ Feature: Manage password requirements in app context
 		Given that the facility setting *Require password for learners* is checked
 			And I have a learner account
 			And my account was created without the password
-		When I open the Kolibri app
+		When I open the Kalanfa app
 			And I tap/type my username
 		Then I see and input fields to type a new password and retype the same
 		When I type my password
 			And I click or tap *Continue*
-		Then I see my Kolibri account
+		Then I see my Kalanfa account

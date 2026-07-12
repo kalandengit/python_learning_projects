@@ -18,7 +18,7 @@ def capture_manual_flow(server_url, output_har):
     User manually completes the lesson flow while browser records all network traffic.
 
     Args:
-        server_url: Kolibri server URL
+        server_url: Kalanfa server URL
         output_har: Path to save HAR file
         lesson_metadata: Optional dict with lesson info for display
 
@@ -64,7 +64,7 @@ def capture_manual_flow(server_url, output_har):
         )
         page = context.new_page()
 
-        # Navigate to Kolibri
+        # Navigate to Kalanfa
         page.goto(server_url)
 
         # Wait for user to close browser

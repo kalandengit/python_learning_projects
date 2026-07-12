@@ -5,7 +5,7 @@ Once you've created a python virtual environment, you can use `nodeenv` to insta
 
 First make sure your virtual environment is activated. With pyenv you can do this with:
 ```bash
-$ pyenv activate kolibri-py3.9
+$ pyenv activate kalanfa-py3.9
 ```
 
 If nodeenv is not already installed in your virtual environment, you can install it using this command:
@@ -28,13 +28,13 @@ Once you've determined the version, you can install it:
 ```bash
 $ nodeenv --python-virtualenv --node 20.19.3
  * Install prebuilt node (20.19.3) ..... done.
- * Appending data to /home/bjester/Projects/learningequality/kolibri/venv/bin/activate
- * Appending data to /home/bjester/Projects/learningequality/kolibri/venv/bin/activate.fish
+ * Appending data to /home/bjester/Projects/learningequality/kalanfa/venv/bin/activate
+ * Appending data to /home/bjester/Projects/learningequality/kalanfa/venv/bin/activate.fish
 ```
 
 You'll notice in the output above, the installation modifies the virtual environment activation scripts. Reloading the virtual environment will ensure everything works correctly.
 ```bash
 $ pyenv deactivate
-$ pyenv activate kolibri-py3.9
+$ pyenv activate kalanfa-py3.9
 $ npm install -g pnpm # success
 ```

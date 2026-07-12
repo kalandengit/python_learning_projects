@@ -2,7 +2,7 @@ Feature: Admin creates users
   Admin needs to be able to create user accounts for each role in the facility
 
   Background:
-    Given I am signed in to Kolibri as facility admin user
+    Given I am signed in to Kalanfa as facility admin user
       And I am on *Facility > Users* page
 
   Scenario: Create facility coach user account

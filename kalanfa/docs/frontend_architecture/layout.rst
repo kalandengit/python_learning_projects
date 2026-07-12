@@ -1,7 +1,7 @@
 Layout of frontend code
 =======================
 
-Frontend code and assets are generally contained in one of two places: either in one of the plugin subdirectories (under *kolibri/plugins*) or in *kolibri/core*, which contains code shared across all plugins as described below.
+Frontend code and assets are generally contained in one of two places: either in one of the plugin subdirectories (under *kalanfa/plugins*) or in *kalanfa/core*, which contains code shared across all plugins as described below.
 
 Within these directories, there should be an *assets* directory with *src* and *test* under it. Most assets will go in *src*, and tests for the components will go in *test*.
 
@@ -9,7 +9,7 @@ For example:
 
 .. code-block:: none
 
-  kolibri/
+  kalanfa/
     core/                             # core (shared) items
       assets/
         src/
@@ -52,4 +52,4 @@ In the example above, the *views/AnotherPage/index.vue* file in *learn* can use 
 
   For many development scenarios, only files in these directories need to be touched.
 
-  There is also a lot of logic and configuration relevant to frontend code loading, parsing, testing, and linting. This includes webpack, NPM, and integration with the plugin system. This is somewhat scattered, and includes logic in *frontend_build/...*, *package.json*, *kolibri/core/webpack/...*, and other locations. Much of this functionality is described in other sections of the docs (such as :doc:`./frontend_build_pipeline`), but it can take some time to understand how it all hangs together.
+  There is also a lot of logic and configuration relevant to frontend code loading, parsing, testing, and linting. This includes webpack, NPM, and integration with the plugin system. This is somewhat scattered, and includes logic in *frontend_build/...*, *package.json*, *kalanfa/core/webpack/...*, and other locations. Much of this functionality is described in other sections of the docs (such as :doc:`./frontend_build_pipeline`), but it can take some time to understand how it all hangs together.

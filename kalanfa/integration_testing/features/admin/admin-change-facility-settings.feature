@@ -2,7 +2,7 @@ Feature: Admin changes facility settings
   Admin needs to be able to change the user sign-in/up, self-edit, and content download options according to the needs of the facility
 
   Background:
-    Given I am signed in to Kolibri as facility admin user
+    Given I am signed in to Kalanfa as facility admin user
       And I am on *Facility > Settings* page
       And there are learner and coach user accounts created in the facility
 

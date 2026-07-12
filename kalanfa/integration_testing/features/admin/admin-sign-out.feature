@@ -1,8 +1,8 @@
 Feature: Admin sign-out
-  Admins needs to be able to sign out when they finish using Kolibri
+  Admins needs to be able to sign out when they finish using Kalanfa
 
   Background:
-    Given that I am signed in to Kolibri
+    Given that I am signed in to Kalanfa
 
   Scenario: Sign-out from user menu
     When I select the user menu in the top right hand corner

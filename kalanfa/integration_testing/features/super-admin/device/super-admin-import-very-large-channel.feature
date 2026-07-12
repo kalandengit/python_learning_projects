@@ -4,9 +4,9 @@ Feature: Super admin imports entire large channel
     # Since it may take some time to import this channel, consider when is the best time for you to run this scenario
 
   Background:
-    Given I am signed in to Kolibri as super admin, or a user with device permissions to import content
+    Given I am signed in to Kalanfa as super admin, or a user with device permissions to import content
       And I am on *Device > Channels* page
-      And I selected a source to import from: Kolibri Studio, local network or attached drive
+      And I selected a source to import from: Kalanfa Studio, local network or attached drive
 
   Scenario: Import channel with several thousands of resources
     Given I see the *Select resources for import* heading

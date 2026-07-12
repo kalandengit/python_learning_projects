@@ -1,7 +1,7 @@
 Feature: Learner does not see the 'download' resource button
 
   Background:
-    Given that Kolibri is running in app context
+    Given that Kalanfa is running in app context
       And the *Show 'download' button with resources* option at *Facility > Settings* page is disabled
 
   Scenario: Lesson content download

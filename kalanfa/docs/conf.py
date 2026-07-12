@@ -1,5 +1,5 @@
 #
-# Kolibri 'developer docs' build configuration file
+# Kalanfa 'developer docs' build configuration file
 #
 # This file is execfile()d with the current directory set to its containing dir.
 import inspect
@@ -21,19 +21,19 @@ sys.path.insert(0, os.path.abspath(parent))
 
 builddir = os.path.join(cwd, "_build")
 
-# When we start loading stuff from kolibri, we're gonna need this
+# When we start loading stuff from kalanfa, we're gonna need this
 os.environ.setdefault(
-    "DJANGO_SETTINGS_MODULE", "kolibri.deployment.default.settings.base"
+    "DJANGO_SETTINGS_MODULE", "kalanfa.deployment.default.settings.base"
 )
-os.environ["KOLIBRI_HOME"] = os.path.join(builddir, "kolibri_home")
+os.environ["KALANFA_HOME"] = os.path.join(builddir, "kalanfa_home")
 
-# This is necessary because the directory needs to exist for Kolibri to run when
+# This is necessary because the directory needs to exist for Kalanfa to run when
 # not invoked through CLI.
-if not os.path.exists(os.environ["KOLIBRI_HOME"]):
-    os.makedirs(os.environ["KOLIBRI_HOME"])
+if not os.path.exists(os.environ["KALANFA_HOME"]):
+    os.makedirs(os.environ["KALANFA_HOME"])
 
-# This import *must* come after the path insertion, otherwise sphinx won't be able to find the kolibri module
-import kolibri  # noqa
+# This import *must* come after the path insertion, otherwise sphinx won't be able to find the kalanfa module
+import kalanfa  # noqa
 
 
 django.setup()
@@ -116,7 +116,7 @@ source_suffix = [".rst", ".md"]
 master_doc = "index"
 
 # General information about the project.
-project = "Kolibri developer documentation"
+project = "Kalanfa developer documentation"
 copyright = "{year:d}, Learning Equality".format(year=datetime.now().year)
 
 # The version info for the project you're documenting, acts as replacement for
@@ -124,9 +124,9 @@ copyright = "{year:d}, Learning Equality".format(year=datetime.now().year)
 # built documents.
 #
 # The short X.Y version.
-version = kolibri.__version__
+version = kalanfa.__version__
 # The full version, including alpha/beta/rc tags.
-release = kolibri.__version__
+release = kalanfa.__version__
 
 # List of patterns, relative to source directory, that match files and
 # directories to ignore when looking for source files.
@@ -213,7 +213,7 @@ html_show_sphinx = False
 html_show_copyright = False
 
 # Output file base name for HTML help builder.
-htmlhelp_basename = "kolibri-dev"
+htmlhelp_basename = "kalanfa-dev"
 
 # Add replacement codes
 rst_prolog = """

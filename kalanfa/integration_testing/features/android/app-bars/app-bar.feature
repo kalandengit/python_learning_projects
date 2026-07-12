@@ -1,7 +1,7 @@
 Feature: Device setup
 
   Background:
-    Given that the Kolibri installation was successful
+    Given that the Kalanfa installation was successful
     	And I am signed in
 
 	Scenario: Overflow on smaller breakpoints
@@ -42,12 +42,12 @@ Feature: Device setup
 	Scenario: Updates to side menu
 		When I select the *Menu* tab
 		Then the menu opens to the plugin in which the user is currently
-			And I can see that the *X* icon and the *Kolibri* label at the top
+			And I can see that the *X* icon and the *Kalanfa* label at the top
 			And I can see my name, username and role
 			And I can see my points
 			And I can see that all the other sections of the menu are collapsed
 			And I can see the *My downloads*, *Profile*, *Change language* and *Sign out* options
-			And I can see the kolibri icon, version of Kolibri, and copyrigt text
+			And I can see the kalanfa icon, version of Kalanfa, and copyrigt text
 			And I can see the *Usage and privacy* link
 
 	Scenario: Updates to learn-only device side menu

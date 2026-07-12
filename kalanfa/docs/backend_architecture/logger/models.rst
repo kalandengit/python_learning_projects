@@ -1,6 +1,6 @@
 Models
 ======
 
-.. automodule:: kolibri.core.logger.models
+.. automodule:: kalanfa.core.logger.models
     :members:
     :noindex:

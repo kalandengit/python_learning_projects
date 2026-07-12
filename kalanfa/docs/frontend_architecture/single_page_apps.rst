@@ -1,26 +1,26 @@
 Single-page Apps
 ================
 
-The Kolibri frontend is made of a few high-level "app" plugins, which are single-page JS applications (conventionally *app.js*) with their own base URL and a single root Vue.js component. Examples of apps are 'Learn' and 'User Management'. Apps are independent of each other, and can only reference components and styles from within themselves and from core.
+The Kalanfa frontend is made of a few high-level "app" plugins, which are single-page JS applications (conventionally *app.js*) with their own base URL and a single root Vue.js component. Examples of apps are 'Learn' and 'User Management'. Apps are independent of each other, and can only reference components and styles from within themselves and from core.
 
-Each app is implemented as a Kolibri plugin (see :doc:`/backend_architecture/plugins`), and is defined in a subdirectory of *kolibri/plugins*.
+Each app is implemented as a Kalanfa plugin (see :doc:`/backend_architecture/plugins`), and is defined in a subdirectory of *kalanfa/plugins*.
 
-On the Server-side, the ``kolibri_plugin.py`` file describes most of the configuration for the single-page app. In particular, this includes the base Django HTML template to return (with an empty ``<body>``), the URL at which the app is exposed, and the javascript entry file which is run on load.
+On the Server-side, the ``kalanfa_plugin.py`` file describes most of the configuration for the single-page app. In particular, this includes the base Django HTML template to return (with an empty ``<body>``), the URL at which the app is exposed, and the javascript entry file which is run on load.
 
-On the client-side, the app creates a single ``KolibriModule`` object in the entry file (conventionally *app.js*) and registers this with the core app, a global variable called ``kolibriCoreAppGlobal``. The Kolibri Module then mounts single root component to the HTML returned by the server, which recursively contains all additional components, html and logic.
+On the client-side, the app creates a single ``KalanfaModule`` object in the entry file (conventionally *app.js*) and registers this with the core app, a global variable called ``kalanfaCoreAppGlobal``. The Kalanfa Module then mounts single root component to the HTML returned by the server, which recursively contains all additional components, html and logic.
 
-Defining a new Kolibri module
+Defining a new Kalanfa module
 -----------------------------
 
 .. note::
 
   This section is mostly relevant if you are creating a new app or plugin. If you are just creating new components, you don't need to do this.
 
-A Kolibri Module is initially defined in Python by sub-classing the ``WebpackBundleHook`` class (in ``kolibri.core.webpack.hooks``). The hook defines the JS entry point (conventionally called *app.js*) where the ``KolibriModule`` subclass is instantiated, and where events and callbacks on the module are registered. These are defined in the ``events`` and ``once`` properties. Each defines key-value pairs of the name of an event, and the name of the method on the ``KolibriModule`` object. When these events are triggered on the Kolibri core JavaScript app, these callbacks will be called. (If the ``KolibriModule`` is registered for asynchronous loading, the Kolibri Module will first be loaded, and then the callbacks called when it is ready. See :doc:`/frontend_architecture/frontend_build_pipeline` for more information.)
+A Kalanfa Module is initially defined in Python by sub-classing the ``WebpackBundleHook`` class (in ``kalanfa.core.webpack.hooks``). The hook defines the JS entry point (conventionally called *app.js*) where the ``KalanfaModule`` subclass is instantiated, and where events and callbacks on the module are registered. These are defined in the ``events`` and ``once`` properties. Each defines key-value pairs of the name of an event, and the name of the method on the ``KalanfaModule`` object. When these events are triggered on the Kalanfa core JavaScript app, these callbacks will be called. (If the ``KalanfaModule`` is registered for asynchronous loading, the Kalanfa Module will first be loaded, and then the callbacks called when it is ready. See :doc:`/frontend_architecture/frontend_build_pipeline` for more information.)
 
-All apps should extend the ``KolibriModule`` class found in the `kolibri-module` package as the default export.
+All apps should extend the ``KalanfaModule`` class found in the `kalanfa-module` package as the default export.
 
-The ``ready`` method will be automatically executed once the Module is loaded and registered with the Kolibri Core App. By convention, JavaScript is injected into the served HTML *after* the ``<rootvue>`` tag, meaning that this tag should be available when the ``ready`` method is called, and the root component (conventionally in *vue/index.vue*) can be mounted here.
+The ``ready`` method will be automatically executed once the Module is loaded and registered with the Kalanfa Core App. By convention, JavaScript is injected into the served HTML *after* the ``<rootvue>`` tag, meaning that this tag should be available when the ``ready`` method is called, and the root component (conventionally in *vue/index.vue*) can be mounted here.
 
 Creating a side nav entry
 -------------------------
@@ -29,8 +29,8 @@ If you want to expose your new single page app as a top level navigation item in
 
 .. code-block:: python
 
-  from kolibri.core.hooks import NavigationHook
-  from kolibri.plugins.hooks import register_hook
+  from kalanfa.core.hooks import NavigationHook
+  from kalanfa.plugins.hooks import register_hook
 
   @register_hook
   class ExampleNavItem(NavigationHook):
@@ -40,15 +40,15 @@ For more information on using `bundle_id` and connecting it to the relevant Java
 
 .. code-block:: js
 
-  import { registerNavItem } from 'kolibri/composables/useNav';
-  import urls from 'kolibri/urls';
-  import { coreStrings } from 'kolibri/uiText/commonCoreStrings';
+  import { registerNavItem } from 'kalanfa/composables/useNav';
+  import urls from 'kalanfa/urls';
+  import { coreStrings } from 'kalanfa/uiText/commonCoreStrings';
   import baseRoutes from '../routes/baseRoutes';
   import { learnStrings } from './commonLearnStrings';
 
   registerNavItem({
     get url() {
-      return urls['kolibri:kolibri.plugins.learn:learn']();
+      return urls['kalanfa:kalanfa.plugins.learn:learn']();
     },
     get routes() {
       return [
@@ -86,9 +86,9 @@ This will create a navigation component which will be registered to appear in th
 Content viewers
 ---------------
 
-A special kind of Kolibri Module is dedicated to rendering particular content types. All content renderers should extend the ``ContentViewer`` class found in the `kolibri-viewer` package as the default export. In addition, rather than subclassing the ``WebpackBundleHook`` class, content renderers should be defined in the Python code using the ``ContentRendererHook`` class defined in ``kolibri.content.hooks``. In addition to the standard options for the ``WebpackBundleHook``, the ``ContentRendererHook`` also requires a ``presets`` tuple listing the format presets that it will render.
+A special kind of Kalanfa Module is dedicated to rendering particular content types. All content renderers should extend the ``ContentViewer`` class found in the `kalanfa-viewer` package as the default export. In addition, rather than subclassing the ``WebpackBundleHook`` class, content renderers should be defined in the Python code using the ``ContentRendererHook`` class defined in ``kalanfa.content.hooks``. In addition to the standard options for the ``WebpackBundleHook``, the ``ContentRendererHook`` also requires a ``presets`` tuple listing the format presets that it will render.
 
-.. automodule:: kolibri.core.content.hooks
+.. automodule:: kalanfa.core.content.hooks
     :members:
     :noindex:
 
@@ -98,7 +98,7 @@ The component should use the `useContentViewer` composable and the `contentViewe
 
 .. code-block:: javascript
 
-  import useContentViewer, { contentViewerProps } from 'kolibri/composables/useContentViewer';
+  import useContentViewer, { contentViewerProps } from 'kalanfa/composables/useContentViewer';
 
 In order to log data about users viewing content, the component should emit ``startTracking``, ``updateProgress``, and ``stopTracking`` events, using the Vue ``$emit`` method. ``startTracking`` and ``stopTracking`` are emitted without any arguments, whereas ``updateProgress`` should be emitted with a single value between 0 and 1 representing the current proportion of progress on the content.
 

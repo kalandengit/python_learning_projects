@@ -17,7 +17,7 @@ Feature: Coaches automatic syncing
     	And I see the *Quizzes*, *Lessons* and *Class activity* panels
     When I click on the *View learner devices* link
     Then I can see the *Learners in <class>* table
-    	And I can see which learner devices are connected to the central Kolibri server
+    	And I can see which learner devices are connected to the central Kalanfa server
     	And I can see when did they last synced the progress activity
 			And I see the sync statuses of every connected device
 		When I click the *Information about sync statuses* hyperlink

@@ -2,7 +2,7 @@ Feature: Coach creates groups
   Coach needs to be able create groups to support different learning needs and speeds
 
   Background:
-    Given I am signed in to Kolibri as a coach user
+    Given I am signed in to Kalanfa as a coach user
       And I am in *Coach - '<class>' > Plan > Groups* page
       And there are learners in the selected class
 

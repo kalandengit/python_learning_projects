@@ -23,7 +23,7 @@ help:
 	@echo "clean-build: remove build artifacts"
 	@echo "clean-pyc: remove Python file artifacts"
 	@echo "clean-assets: removes JavaScript build assets"
-	@echo "writeversion: updates the kolibri/VERSION file"
+	@echo "writeversion: updates the kalanfa/VERSION file"
 	@echo "release: package and upload a release"
 	@echo "setrequirements: creates a customized requirements.txt"
 	@echo "buildconfig: customizes the default plugins and Django settings module"
@@ -37,7 +37,7 @@ help:
 	@echo "test-with-postgres: run tests quickly with a temporary postgresql backend"
 	@echo "coverage: run tests, recording and printing out Python code coverage"
 	@echo "docs: generate developer documentation"
-	@echo "start-foreground-with-postgres: run Kolibri in foreground mode with a temporary postgresql backend"
+	@echo "start-foreground-with-postgres: run Kalanfa in foreground mode with a temporary postgresql backend"
 	@echo ""
 	@echo "Internationalization"
 	@echo "--------------------"
@@ -62,8 +62,8 @@ clean-assets:
 	pnpm run clean
 
 clean-build:
-	rm -f kolibri/VERSION
-	rm -f kolibri/_version.py
+	rm -f kalanfa/VERSION
+	rm -f kalanfa/_version.py
 	rm -fr build/
 	rm -fr dist/
 	rm -fr dist-packages-cache/
@@ -72,10 +72,10 @@ clean-build:
 	rm -fr .eggs
 	rm -fr .cache
 	rm -f SQLITE_MAX_VARIABLE_NUMBER.cache
-	rm -fr kolibri/dist/* || true # remove everything
-	git checkout -- kolibri/dist # restore __init__.py
-	rm -r kolibri/utils/build_config/* || true # remove everything
-	git checkout -- kolibri/utils/build_config # restore __init__.py
+	rm -fr kalanfa/dist/* || true # remove everything
+	git checkout -- kalanfa/dist # restore __init__.py
+	rm -r kalanfa/utils/build_config/* || true # remove everything
+	git checkout -- kalanfa/utils/build_config # restore __init__.py
 	rm -r requirements.txt || true # remove requirements.txt
 	git checkout -- requirements.txt # restore requirements.txt
 
@@ -89,7 +89,7 @@ clean-docs:
 
 clean-test-pypi:
 	pip install pypi-cleanup==0.1.8
-	pypi-cleanup --host https://test.pypi.org --package kolibri --leave-most-recent-only --yes --do-it --username aronleqtest
+	pypi-cleanup --host https://test.pypi.org --package kalanfa --leave-most-recent-only --yes --do-it --username aronleqtest
 
 lint:
 	prek run --all-files
@@ -104,17 +104,17 @@ test-all:
 
 test-morango-integ:
 	export INTEGRATION_TEST=1; \
-	python -O -m pytest kolibri/core/auth/test/test_morango_integration.py
+	python -O -m pytest kalanfa/core/auth/test/test_morango_integration.py
 
 %-with-postgres:
 	@echo -e "\e[33mWARNING: for testing purposes only; postgresql database backend is ephemeral\e[0m"
 	@echo -e "\e[36mINFO: run 'docker compose -v' to remove the database volume\e[0m"
-	export KOLIBRI_DATABASE_ENGINE=postgres; \
-	export KOLIBRI_DATABASE_NAME=default; \
-	export KOLIBRI_DATABASE_USER=postgres; \
-	export KOLIBRI_DATABASE_PASSWORD=postgres; \
-	export KOLIBRI_DATABASE_HOST=127.0.0.1; \
-	export KOLIBRI_DATABASE_PORT=15432; \
+	export KALANFA_DATABASE_ENGINE=postgres; \
+	export KALANFA_DATABASE_NAME=default; \
+	export KALANFA_DATABASE_USER=postgres; \
+	export KALANFA_DATABASE_PASSWORD=postgres; \
+	export KALANFA_DATABASE_HOST=127.0.0.1; \
+	export KALANFA_DATABASE_PORT=15432; \
 	set -ex; \
 	function _on_interrupt() { docker compose down; }; \
 	trap _on_interrupt SIGINT SIGTERM SIGKILL ERR; \
@@ -128,7 +128,7 @@ test-morango-integ:
 	docker compose down -v
 
 start-foreground:
-	kolibri start --foreground
+	kalanfa start --foreground
 
 assets:
 	pnpm install
@@ -146,7 +146,7 @@ release:
 	@ls -l dist/
 	@echo "Release process documentation:"
 	@echo ""
-	@echo "http://kolibri-dev.readthedocs.io/en/develop/references/release_process.html"
+	@echo "http://kalanfa-dev.readthedocs.io/en/develop/references/release_process.html"
 	@echo ""
 	@echo ""
 	@echo "Quick check list:"
@@ -154,7 +154,7 @@ release:
 	@echo "1. Release notes?"
 	@echo "2. Downloaded CrowdIn translations?"
 	@echo "3. Pushed CrowdIn translations to repo?"
-	@echo "4. Version info as tag and in kolibri.VERSION?"
+	@echo "4. Version info as tag and in kalanfa.VERSION?"
 	@echo "5. Did you do a signed commit and push to Github?"
 	@echo "6. Check that the .whl and .tar.gz dists work?"
 	@echo ""
@@ -165,46 +165,46 @@ release:
 	twine upload -s dist/*
 
 clean-staticdeps:
-	rm -rf kolibri/dist/* || true # remove everything
-	git checkout -- kolibri/dist # restore __init__.py
+	rm -rf kalanfa/dist/* || true # remove everything
+	git checkout -- kalanfa/dist # restore __init__.py
 
 staticdeps: clean-staticdeps
 	# Resolve the bundled runtime dependencies from the `base` group in
 	# pyproject.toml, pinned to Python 3.6 compatible versions.
-	uv pip install --python-version 3.6 --target kolibri/dist --group base
+	uv pip install --python-version 3.6 --target kalanfa/dist --group base
 	# requirements.txt only carries any EXTRA_REQUIREMENTS injected by
 	# setrequirements (empty by default).
-	uv pip install --python-version 3.6 --target kolibri/dist -r "requirements.txt"
-	rm -rf kolibri/dist/*.egg-info
-	rm -r kolibri/dist/man kolibri/dist/bin || true # remove the two folders introduced by pip 10
+	uv pip install --python-version 3.6 --target kalanfa/dist -r "requirements.txt"
+	rm -rf kalanfa/dist/*.egg-info
+	rm -r kalanfa/dist/man kalanfa/dist/bin || true # remove the two folders introduced by pip 10
 
 staticdeps-cext:
-	rm -rf kolibri/dist/cext || true # remove everything
+	rm -rf kalanfa/dist/cext || true # remove everything
 	uv run --script build_tools/install_cexts.py --file "requirements/cext.txt" # pip install c extensions
-	uv pip install --python-version 3.6 --target kolibri/dist/cext -r "requirements/cext_noarch.txt" --no-deps
-	rm -rf kolibri/dist/*.egg-info
+	uv pip install --python-version 3.6 --target kalanfa/dist/cext -r "requirements/cext_noarch.txt" --no-deps
+	rm -rf kalanfa/dist/*.egg-info
 
 strip-staticdeps:
-	find kolibri/dist -name "*.so" -exec strip --strip-unneeded {} \;
-	find kolibri/dist -name "*.so" -exec aarch64-linux-gnu-strip --strip-unneeded {} \;
-	find kolibri/dist -name "*.so" -exec arm-linux-gnueabihf-strip --strip-unneeded {} \;
+	find kalanfa/dist -name "*.so" -exec strip --strip-unneeded {} \;
+	find kalanfa/dist -name "*.so" -exec aarch64-linux-gnu-strip --strip-unneeded {} \;
+	find kalanfa/dist -name "*.so" -exec arm-linux-gnueabihf-strip --strip-unneeded {} \;
 
 staticdeps-compileall:
 	bash -c 'python --version'
 	# Seems like the compileall module does not return a non-zero exit code when failing
-	bash -c 'if ( python -m compileall -x py2only kolibri -q | grep SyntaxError ) ; then echo "Failed to compile kolibri/dist/" ; exit 1 ; else exit 0 ; fi'
+	bash -c 'if ( python -m compileall -x py2only kalanfa -q | grep SyntaxError ) ; then echo "Failed to compile kalanfa/dist/" ; exit 1 ; else exit 0 ; fi'
 
 set-no-uv-python-version-for-tests:
 	@DESC=$$(git describe --tags --always | sed 's/^v//'); \
 	VERSION=$$(echo $$DESC | sed -E 's/^([0-9.]+)-([0-9]+)-g(.+)/\1.dev\2+g\3/'); \
-	echo '# file generated by Makefile for testing Python versions without uv support' > kolibri/_version.py; \
-	echo "__version__ = version = \"$$VERSION\"" >> kolibri/_version.py; \
+	echo '# file generated by Makefile for testing Python versions without uv support' > kalanfa/_version.py; \
+	echo "__version__ = version = \"$$VERSION\"" >> kalanfa/_version.py; \
 	echo "Set version to $$VERSION"
 
 writeversion:
-	uv run python -c "import kolibri; print(kolibri.__version__)" > kolibri/VERSION
+	uv run python -c "import kalanfa; print(kalanfa.__version__)" > kalanfa/VERSION
 	@echo ""
-	@echo "Current version is now `cat kolibri/VERSION`"
+	@echo "Current version is now `cat kalanfa/VERSION`"
 
 preseeddb:
 	./build_tools/preseed_home.sh
@@ -215,8 +215,8 @@ setrequirements:
 	uv run --script build_tools/customize_requirements.py
 
 buildconfig:
-	rm -r kolibri/utils/build_config/* || true # remove everything
-	git checkout -- kolibri/utils/build_config # restore __init__.py
+	rm -r kalanfa/utils/build_config/* || true # remove everything
+	git checkout -- kalanfa/utils/build_config # restore __init__.py
 	python build_tools/customize_build.py
 
 dist: setrequirements writeversion staticdeps staticdeps-cext strip-staticdeps buildconfig i18n-extract-frontend assets i18n-django-compilemessages preseeddb
@@ -224,10 +224,10 @@ dist: setrequirements writeversion staticdeps staticdeps-cext strip-staticdeps b
 	ls -l dist
 
 pex:
-	ls dist/*.whl | while read whlfile; do version=$$(uv run --script ./build_tools/read_whl_version.py $$whlfile); uvx --from "pex==2.1.153" pex $$whlfile --disable-cache -o dist/kolibri-`echo $$version | sed 's/+/_/g'`.pex -m kolibri --python-shebang=/usr/bin/python3; done
+	ls dist/*.whl | while read whlfile; do version=$$(uv run --script ./build_tools/read_whl_version.py $$whlfile); uvx --from "pex==2.1.153" pex $$whlfile --disable-cache -o dist/kalanfa-`echo $$version | sed 's/+/_/g'`.pex -m kalanfa --python-shebang=/usr/bin/python3; done
 
-# Kolibri plugins packaged under python_packages/. Each entry is the inner
-# <dist>/<module> dir (the importable package). kolibri_plugin.py marks a real
+# Kalanfa plugins packaged under python_packages/. Each entry is the inner
+# <dist>/<module> dir (the importable package). kalanfa_plugin.py marks a real
 # plugin module, so test/ dirs are excluded. build_plugins.txt is intentionally
 # NOT used here — it also drives the webpack build.
 # NOTE: discovery here is automatic. A new plugin's FRONTEND strings sync via the
@@ -235,17 +235,17 @@ pex:
 # first BACKEND string, however, needs a hand-written PO entry in crowdin.yml — its
 # django.po basename collides otherwise — or its strings extract locally but never
 # sync (see crowdin.yml).
-I18N_PLUGIN_DIRS := $(shell find python_packages -mindepth 3 -maxdepth 3 -name kolibri_plugin.py -printf '%h ')
+I18N_PLUGIN_DIRS := $(shell find python_packages -mindepth 3 -maxdepth 3 -name kalanfa_plugin.py -printf '%h ')
 # Subset that ship a frontend bundle; only these are valid for --plugins extraction
 # (webpack_json.py raises ImportError for a --plugins module with no buildConfig.js).
 I18N_PLUGIN_FRONTEND_DIRS := $(shell find python_packages -mindepth 3 -maxdepth 3 -name buildConfig.js -not -path '*/node_modules/*' -printf '%h ')
 
 i18n-extract-backend:
-	cd kolibri && uv run python -m kolibri manage makemessages -- -l en --ignore 'node_modules/*' --ignore 'kolibri/dist/*' --all
+	cd kalanfa && uv run python -m kalanfa manage makemessages -- -l en --ignore 'node_modules/*' --ignore 'kalanfa/dist/*' --all
 	@for dir in $(I18N_PLUGIN_DIRS); do \
 		echo "Extracting backend messages for $$dir"; \
 		mkdir -p $$dir/locale; \
-		( cd $$dir && PYTHONPATH="$(CURDIR):$$PYTHONPATH" uv run --project "$(CURDIR)" python -m kolibri manage makemessages -- -l en --ignore 'node_modules/*' ) || exit 1; \
+		( cd $$dir && PYTHONPATH="$(CURDIR):$$PYTHONPATH" uv run --project "$(CURDIR)" python -m kalanfa manage makemessages -- -l en --ignore 'node_modules/*' ) || exit 1; \
 	done
 
 i18n-extract-frontend:
@@ -262,7 +262,7 @@ i18n-extract-frontend:
 			continue; \
 		fi; \
 		echo "Extracting frontend messages for $$module"; \
-		pnpm exec kolibri-i18n extract-messages --plugins $$module || exit 1; \
+		pnpm exec kalanfa-i18n extract-messages --plugins $$module || exit 1; \
 	done
 
 i18n-extract: i18n-extract-frontend i18n-extract-backend
@@ -271,16 +271,16 @@ i18n-transfer-context:
 	pnpm transfercontext
 
 i18n-django-compilemessages:
-	# Change working directory to kolibri/ such that compilemessages
+	# Change working directory to kalanfa/ such that compilemessages
 	# finds only the .po files nested there.
-	cd kolibri && PYTHONPATH="..:$$PYTHONPATH" uv run python -m kolibri manage compilemessages --skip-update
+	cd kalanfa && PYTHONPATH="..:$$PYTHONPATH" uv run python -m kalanfa manage compilemessages --skip-update
 	# Compile each python_packages/* plugin's .po from inside its own dir so
 	# compilemessages finds only that plugin's catalog. A plugin with no locale/
 	# (or a header-only .po) is a harmless no-op. --project/PYTHONPATH pin the root
 	# uv project so uv does not pick up the member pyproject.toml (same as extract).
 	@for dir in $(I18N_PLUGIN_DIRS); do \
 		echo "Compiling messages for $$dir"; \
-		( cd $$dir && PYTHONPATH="$(CURDIR):$$PYTHONPATH" uv run --project "$(CURDIR)" python -m kolibri manage compilemessages --skip-update ) || exit 1; \
+		( cd $$dir && PYTHONPATH="$(CURDIR):$$PYTHONPATH" uv run --project "$(CURDIR)" python -m kalanfa manage compilemessages --skip-update ) || exit 1; \
 	done
 
 i18n-upload: i18n-extract
@@ -293,20 +293,20 @@ i18n-pretranslate-approve-all:
 	pnpm exec crowdin pre-translate --branch ${CROWDIN_BRANCH} --translate-untranslated-only --method=tm --auto-approve-option=all
 
 i18n-download-translations: i18n-extract-frontend
-	touch kolibri/locale/.crowdin-download-marker
+	touch kalanfa/locale/.crowdin-download-marker
 	pnpm exec crowdin download --branch ${CROWDIN_BRANCH}
-	@if [ -z "$$(find kolibri/locale/*/LC_MESSAGES -type f \( -name '*.po' -o -name '*.csv' \) -newer kolibri/locale/.crowdin-download-marker 2>/dev/null)" ]; then \
+	@if [ -z "$$(find kalanfa/locale/*/LC_MESSAGES -type f \( -name '*.po' -o -name '*.csv' \) -newer kalanfa/locale/.crowdin-download-marker 2>/dev/null)" ]; then \
 		echo "❌ ERROR: No translation files were downloaded - Crowdin download may have failed silently"; \
 		echo "Check the output above for errors during the download process"; \
-		rm -f kolibri/locale/.crowdin-download-marker; \
+		rm -f kalanfa/locale/.crowdin-download-marker; \
 		exit 1; \
 	fi
 	@echo "✅ Translation files downloaded successfully"
-	rm -f kolibri/locale/.crowdin-download-marker
+	rm -f kalanfa/locale/.crowdin-download-marker
 	uv run python build_tools/i18n/cleanup_unsupported_languages.py
-	pnpm exec kolibri-i18n code-gen --output-dir ./packages/kolibri/utils/internal
+	pnpm exec kalanfa-i18n code-gen --output-dir ./packages/kalanfa/utils/internal
 	$(MAKE) i18n-django-compilemessages
-	pnpm exec kolibri-i18n create-message-files --pluginFile ./build_tools/build_plugins.txt --ignore '**/node_modules/!(kolibri-common)/**','**/static/**'
+	pnpm exec kalanfa-i18n create-message-files --pluginFile ./build_tools/build_plugins.txt --ignore '**/node_modules/!(kalanfa-common)/**','**/static/**'
 	# Generate each frontend plugin's <namespace>-messages.json into its own locale/.
 	# Frontend plugins only: create-message-files --plugins routes through plugin_data,
 	# which raises ImportError for a module with no buildConfig.js. Skip plugins whose
@@ -318,7 +318,7 @@ i18n-download-translations: i18n-extract-frontend
 			continue; \
 		fi; \
 		echo "Creating message files for $$module"; \
-		pnpm exec kolibri-i18n create-message-files --plugins $$module --ignore '**/node_modules/!(kolibri-common)/**','**/static/**' || exit 1; \
+		pnpm exec kalanfa-i18n create-message-files --plugins $$module --ignore '**/node_modules/!(kalanfa-common)/**','**/static/**' || exit 1; \
 	done
 
 i18n-download-source-fonts:
@@ -338,10 +338,10 @@ i18n-download-glossary:
 i18n-upload-glossary:
 	pnpm exec crowdin glossary upload
 
-# Build a docker image for the latest version of Kolibri, tag it as `latest`
+# Build a docker image for the latest version of Kalanfa, tag it as `latest`
 docker-build:
 	$(MAKE) -C docker build
 
-# Build a docker image for a specific version of Kolibri: make build-0.19.3
+# Build a docker image for a specific version of Kalanfa: make build-0.19.3
 docker-build-%:
 	$(MAKE) -C docker build-$(subst docker-build-,,$@)

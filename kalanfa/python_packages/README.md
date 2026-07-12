@@ -1,6 +1,6 @@
 # python_packages/
 
-Member packages of the Kolibri Python monorepo, managed as a uv workspace.
+Member packages of the Kalanfa Python monorepo, managed as a uv workspace.
 
 Each subdirectory is an independently-versioned, independently-publishable Python
 package with its own `pyproject.toml`. See

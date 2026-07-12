@@ -5,7 +5,7 @@ set -euo pipefail
 #
 # Usage:
 #   ./scripts/pypi_publish.sh                              # auto-detect and publish all changed packages
-#   ./scripts/pypi_publish.sh kolibri-sync-extras-plugin    # publish a specific package
+#   ./scripts/pypi_publish.sh kalanfa-sync-extras-plugin    # publish a specific package
 #
 # Environment:
 #   PYPI_TARGET=testpypi   publish to TestPyPI instead of PyPI

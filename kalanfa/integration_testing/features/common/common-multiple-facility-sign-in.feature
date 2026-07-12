@@ -1,14 +1,14 @@
 Feature: Multiple facility sign in
-  Kolibri users need to have a streamlined sign in and account creation experience when there is more than one facility on the device.
+  Kalanfa users need to have a streamlined sign in and account creation experience when there is more than one facility on the device.
 
   Background:
     Given there is more than one facility on the device
       And I am on the sign in page
 
-  Scenario: User accesses Kolibri for the first time on their browser and creates a new account
-    Given I am viewing Kolibri for the first time in my current browser
+  Scenario: User accesses Kalanfa for the first time on their browser and creates a new account
+    Given I am viewing Kalanfa for the first time in my current browser
       And there is no account that has signed in before on the device
-    When I open Kolibri in my browser
+    When I open Kalanfa in my browser
     Then I see *Are you a new user?*
       And I see a *Create an account* button
       And I see *Sign in if you have an existing account*
@@ -16,7 +16,7 @@ Feature: Multiple facility sign in
       And I see a *Explore without account* link
 
   Scenario: User creates account when there is more than one facility on the device
-    When I open Kolibri in the browser
+    When I open Kalanfa in the browser
     Then I see *Are you a new user?*
     When I click *Create an account*
     Then I see *Select the facility that you want to associate your new account with:*
@@ -42,7 +42,7 @@ Feature: Multiple facility sign in
 
   Scenario: User changes mind during account creation and wants to sign in to an existing account
     Given *Allow learners to sign in with no password* facility setting is inactive
-    When I open Kolibri in the browser
+    When I open Kalanfa in the browser
     Then I see *Are you a new user?*
     When I click *Create an account*
     Then I see a list of facilities on the device
@@ -59,10 +59,10 @@ Feature: Multiple facility sign in
       And I see a username text field
 
   Scenario: Learner signs in for the first time in current browser
-    Given I am viewing Kolibri for the first time in my current browser
+    Given I am viewing Kalanfa for the first time in my current browser
       And I have valid learner account credentials
       And *Allow learners to sign in with no password* facility setting is disabled
-    When I open Kolibri in the browser
+    When I open Kalanfa in the browser
     Then I see *Sign in if you have an existing account*
     When I click *Sign in*
     Then I see *Select the facility that has your account*
@@ -79,8 +79,8 @@ Feature: Multiple facility sign in
   # Use cookies to remember which facility was last signed in to
     Given that the most recent user <username> signed in to <facility> on my browser
       And that <username> has signed out
-      And that <username> has closed Kolibri in their browser
-    When I open Kolibri in the browser
+      And that <username> has closed Kalanfa in their browser
+    When I open Kalanfa in the browser
     Then I see *Sign in to <facility>*
       And I see a *Change* link button
     When I click *Change*

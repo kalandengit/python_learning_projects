@@ -18,11 +18,11 @@ Pull requests
 Submissions
 ~~~~~~~~~~~
 
-Be sure to follow the `instructions <https://github.com/learningequality/kolibri/blob/develop/.github/PULL_REQUEST_TEMPLATE.md>`__ shown in the Github PR template when you `create a new PR <https://github.com/learningequality/kolibri/compare>`__.
+Be sure to follow the `instructions <https://github.com/learningequality/kalanfa/blob/develop/.github/PULL_REQUEST_TEMPLATE.md>`__ shown in the Github PR template when you `create a new PR <https://github.com/learningequality/kalanfa/compare>`__.
 
 In particular, **please use the labels** "Needs review", "Work in progress", and "Needs updates" mutually exclusively to communicate the state of the PR.
 
-Developers maintain their own clones of the Learning Equality `Kolibri repo <https://github.com/learningequality/kolibri/>`__ in their personal Github accounts, and `submit pull requests <https://help.github.com/articles/creating-a-pull-request/>`__ back to the LE repo.
+Developers maintain their own clones of the Learning Equality `Kalanfa repo <https://github.com/learningequality/kalanfa/>`__ in their personal Github accounts, and `submit pull requests <https://help.github.com/articles/creating-a-pull-request/>`__ back to the LE repo.
 
 Every pull request will require some combination of manual testing, code review, automated tests, gherkin stories, and UI design review. Developers must fully test their own code before requesting a review, and then closely follow the template and checklist that appears in the PR description. All automated tests must pass.
 
@@ -42,7 +42,7 @@ Some additional guidelines:
 Git history
 ~~~~~~~~~~~
 
-Within the Kolibri repo, we have the following primary rule:
+Within the Kalanfa repo, we have the following primary rule:
 
     *Never* rewrite history on shared branches.
 
@@ -106,7 +106,7 @@ The project as a whole is released under the MIT license, and copyright on its c
 
 Individual files, such as code copied in from other projects may be under a different license, if that license is compatible.
 
-Similarly, files from Kolibri may end up being copied into other projects.
+Similarly, files from Kalanfa may end up being copied into other projects.
 
 For these reasons, copyright and license data may be listed explicitly at the top of some files. For example:
 
@@ -117,7 +117,7 @@ For these reasons, copyright and license data may be listed explicitly at the to
 
 This format is machine readable and complies with the `REUSE specification <https://reuse.software/>`__ for software licensing.
 
-For files where the license is not explicitly stated, the `overall project license <https://github.com/learningequality/kolibri/blob/develop/LICENSE>`__ applies.
+For files where the license is not explicitly stated, the `overall project license <https://github.com/learningequality/kalanfa/blob/develop/LICENSE>`__ applies.
 
 
 Development phases
@@ -148,7 +148,7 @@ We have the following release types:
    * Experimental work is OK
 
 
-Within the Learning Equality Kolibri repository:
+Within the Learning Equality Kalanfa repository:
 
 * The ``develop`` branch is our current development branch, and the default target for PRs
 * Release branches named like ``release-v1.2.x`` (for example). This will track all patch releases within the 1.2.x minor release line. Distinct releases are tracked as tags like ``v1.2.3``
@@ -160,7 +160,7 @@ If a change needs to be introduced to an older release, target the oldest releas
 Github labels
 -------------
 
-We use a `wide range of labels <https://github.com/learningequality/kolibri/labels>`__ to help organize issues and pull requests in the Kolibri repo.
+We use a `wide range of labels <https://github.com/learningequality/kalanfa/labels>`__ to help organize issues and pull requests in the Kalanfa repo.
 
 
 Priority

@@ -1,6 +1,6 @@
 Models
 ======
 
-.. automodule:: kolibri.core.auth.models
+.. automodule:: kalanfa.core.auth.models
     :members:
     :noindex:

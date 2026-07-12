@@ -1,0 +1,353 @@
+import tempfile
+import uuid
+
+from django.core.management import call_command
+from django.test import TestCase
+from django.test import TransactionTestCase
+from le_utils.constants import content_kinds
+from mock import call
+from mock import patch
+
+from kalanfa.core.content.constants.schema_versions import CONTENT_SCHEMA_VERSION
+from kalanfa.core.content.models import ChannelMetadata
+from kalanfa.core.content.models import ContentNode
+from kalanfa.core.content.upgrade import fix_multiple_trees_with_tree_id1
+from kalanfa.core.content.upgrade import update_num_coach_contents
+from kalanfa.core.content.utils.upgrade import diff_stats
+
+from .sqlalchemytesting import django_connection_engine
+
+
+def get_engine(connection_string):
+    return django_connection_engine()
+
+
+test_channel_id = "6199dde695db4ee4ab392222d5af1e5c"
+
+
+mock_content_file = tempfile.mkstemp()
+mock_content_db_file = tempfile.mkstemp()
+
+
+@patch("kalanfa.core.content.upgrade.import_channel_from_local_db")
+class FixMultipleTreesWithId1TestCase(TransactionTestCase):
+    databases = "__all__"
+
+    fixtures = ["content_test.json"]
+
+    def execute(self):
+        fix_multiple_trees_with_tree_id1()
+
+    @patch(
+        "kalanfa.core.content.upgrade.get_content_database_file_path",
+        return_value=mock_content_file[1],
+    )
+    def test_extra_channel_contentdb_exists(self, path_mock, import_mock):
+        root_node = ContentNode.objects.create(
+            title="test",
+            id=uuid.uuid4().hex,
+            content_id=uuid.uuid4().hex,
+            channel_id=uuid.uuid4().hex,
+        )
+        ChannelMetadata.objects.create(
+            id=root_node.channel_id,
+            root=root_node,
+            name="test",
+            min_schema_version=CONTENT_SCHEMA_VERSION,
+        )
+        # Do this to side step django mptts auto tree_id code
+        ContentNode.objects.filter(parent=None).update(tree_id=1)
+        self.assertEqual(ContentNode.objects.filter(parent=None, tree_id=1).count(), 2)
+        self.execute()
+        self.assertEqual(ContentNode.objects.filter(parent=None, tree_id=1).count(), 1)
+        import_mock.assert_called_with(root_node.channel_id)
+
+    @patch(
+        "kalanfa.core.content.upgrade.get_content_database_file_path",
+        return_value=mock_content_file[1],
+    )
+    def test_two_extra_channels_contentdb_exists(self, path_mock, import_mock):
+        root_node_1 = ContentNode.objects.create(
+            title="test",
+            id=uuid.uuid4().hex,
+            content_id=uuid.uuid4().hex,
+            channel_id=uuid.uuid4().hex,
+        )
+        ChannelMetadata.objects.create(
+            id=root_node_1.channel_id,
+            root=root_node_1,
+            name="test",
+            min_schema_version=CONTENT_SCHEMA_VERSION,
+        )
+        root_node_2 = ContentNode.objects.create(
+            title="test",
+            id=uuid.uuid4().hex,
+            content_id=uuid.uuid4().hex,
+            channel_id=uuid.uuid4().hex,
+        )
+        # Add an additional node so that root_node_1 channel is processed first.
+        ContentNode.objects.create(
+            title="test1",
+            id=uuid.uuid4().hex,
+            content_id=uuid.uuid4().hex,
+            channel_id=root_node_2.channel_id,
+            parent=root_node_2,
+        )
+        ChannelMetadata.objects.create(
+            id=root_node_2.channel_id,
+            root=root_node_2,
+            name="test",
+            min_schema_version=CONTENT_SCHEMA_VERSION,
+        )
+        # Do this to side step django mptts auto tree_id code
+        ContentNode.objects.filter(parent=None).update(tree_id=1)
+        self.assertEqual(ContentNode.objects.filter(parent=None, tree_id=1).count(), 3)
+        self.execute()
+        self.assertEqual(ContentNode.objects.filter(parent=None, tree_id=1).count(), 1)
+        import_mock.assert_has_calls(
+            [call(root_node_1.channel_id), call(root_node_2.channel_id)]
+        )
+
+    @patch(
+        "kalanfa.core.content.upgrade.get_content_database_file_path", return_value=""
+    )
+    def test_extra_channel_no_contentdb_exists(self, path_mock, import_mock):
+        root_node = ContentNode.objects.create(
+            title="test",
+            id=uuid.uuid4().hex,
+            content_id=uuid.uuid4().hex,
+            channel_id=uuid.uuid4().hex,
+        )
+        ChannelMetadata.objects.create(
+            id=root_node.channel_id,
+            root=root_node,
+            name="test",
+            min_schema_version=CONTENT_SCHEMA_VERSION,
+        )
+        # Do this to side step django mptts auto tree_id code
+        ContentNode.objects.filter(parent=None).update(tree_id=1)
+        self.assertEqual(ContentNode.objects.filter(parent=None, tree_id=1).count(), 2)
+        self.execute()
+        self.assertEqual(ContentNode.objects.filter(parent=None, tree_id=1).count(), 2)
+        import_mock.assert_not_called()
+
+    @patch(
+        "kalanfa.core.content.upgrade.get_content_database_file_path",
+        side_effect=["", mock_content_file[1]],
+    )
+    def test_two_extra_channels_one_contentdb_exists(self, path_mock, import_mock):
+        root_node_1 = ContentNode.objects.create(
+            title="test",
+            id=uuid.uuid4().hex,
+            content_id=uuid.uuid4().hex,
+            channel_id=uuid.uuid4().hex,
+        )
+        ChannelMetadata.objects.create(
+            id=root_node_1.channel_id,
+            root=root_node_1,
+            name="test",
+            min_schema_version=CONTENT_SCHEMA_VERSION,
+        )
+        root_node_2 = ContentNode.objects.create(
+            title="test",
+            id=uuid.uuid4().hex,
+            content_id=uuid.uuid4().hex,
+            channel_id=uuid.uuid4().hex,
+        )
+        # Add an additional node so that root_node_1 channel is processed first.
+        ContentNode.objects.create(
+            title="test1",
+            id=uuid.uuid4().hex,
+            content_id=uuid.uuid4().hex,
+            channel_id=root_node_2.channel_id,
+            parent=root_node_2,
+        )
+        ChannelMetadata.objects.create(
+            id=root_node_2.channel_id,
+            root=root_node_2,
+            name="test",
+            min_schema_version=CONTENT_SCHEMA_VERSION,
+        )
+        # Do this to side step django mptts auto tree_id code
+        ContentNode.objects.filter(parent=None).update(tree_id=1)
+        self.assertEqual(ContentNode.objects.filter(parent=None, tree_id=1).count(), 3)
+        self.execute()
+        self.assertEqual(ContentNode.objects.filter(parent=None, tree_id=1).count(), 2)
+        with self.assertRaises(AssertionError):
+            import_mock.assert_called_with(root_node_1.channel_id)
+        import_mock.assert_called_with(root_node_2.channel_id)
+
+
+@patch("kalanfa.core.content.utils.sqlalchemybridge.get_engine", new=get_engine)
+class UpdateNumCoachContents(TransactionTestCase):
+    fixtures = ["content_test.json"]
+
+    def setUp(self):
+        super().setUp()
+        ContentNode.objects.all().update(available=False)
+
+    def test_no_content_nodes_coach_content(self):
+        ContentNode.objects.all().update(available=True)
+        ContentNode.objects.all().update(coach_content=False)
+        update_num_coach_contents()
+        root = ChannelMetadata.objects.get(id=test_channel_id).root
+        self.assertEqual(root.num_coach_contents, 0)
+
+    def test_all_root_content_nodes_coach_content(self):
+        ContentNode.objects.all().update(available=True, coach_content=False)
+        root_node = ContentNode.objects.get(parent__isnull=True)
+        ContentNode.objects.filter(parent=root_node).exclude(
+            kind=content_kinds.TOPIC
+        ).update(coach_content=True)
+        update_num_coach_contents()
+        root_node.refresh_from_db()
+        self.assertEqual(root_node.num_coach_contents, 2)
+
+    def test_one_root_content_node_coach_content(self):
+        ContentNode.objects.all().update(available=True, coach_content=False)
+        root_node = ContentNode.objects.get(parent__isnull=True)
+        node = (
+            ContentNode.objects.filter(parent=root_node)
+            .exclude(kind=content_kinds.TOPIC)
+            .first()
+        )
+        node.coach_content = True
+        node.save()
+        update_num_coach_contents()
+        root_node.refresh_from_db()
+        self.assertEqual(root_node.num_coach_contents, 1)
+
+    def test_one_root_topic_node_coach_content(self):
+        ContentNode.objects.all().update(available=True, coach_content=False)
+        root_node = ContentNode.objects.get(parent__isnull=True)
+        node = ContentNode.objects.filter(
+            parent=root_node, kind=content_kinds.TOPIC
+        ).first()
+        node.coach_content = True
+        node.save()
+        update_num_coach_contents()
+        root_node.refresh_from_db()
+        self.assertEqual(root_node.num_coach_contents, 0)
+
+    def test_one_child_node_coach_content(self):
+        ContentNode.objects.all().update(available=True, coach_content=False)
+        root_node = ContentNode.objects.get(parent__isnull=True)
+        node = ContentNode.objects.filter(
+            parent=root_node, kind=content_kinds.TOPIC
+        ).first()
+        ContentNode.objects.create(
+            title="test1",
+            id=uuid.uuid4().hex,
+            content_id=uuid.uuid4().hex,
+            channel_id=root_node.channel_id,
+            parent=node,
+            kind=content_kinds.VIDEO,
+            available=True,
+            coach_content=True,
+        )
+        update_num_coach_contents()
+        root_node.refresh_from_db()
+        node.refresh_from_db()
+        self.assertEqual(root_node.num_coach_contents, 1)
+        self.assertEqual(node.num_coach_contents, 1)
+
+    def test_one_child_coach_content_parent_no_siblings(self):
+        ContentNode.objects.all().update(available=True, coach_content=False)
+        root_node = ContentNode.objects.get(parent__isnull=True)
+        topic_node = ContentNode.objects.filter(
+            parent=root_node, kind=content_kinds.TOPIC
+        ).first()
+        parent_node = ContentNode.objects.create(
+            title="test1",
+            id=uuid.uuid4().hex,
+            content_id=uuid.uuid4().hex,
+            channel_id=root_node.channel_id,
+            parent=topic_node,
+            kind=content_kinds.TOPIC,
+            available=True,
+            coach_content=False,
+        )
+        ContentNode.objects.create(
+            title="test2",
+            id=uuid.uuid4().hex,
+            content_id=uuid.uuid4().hex,
+            channel_id=root_node.channel_id,
+            parent=parent_node,
+            kind=content_kinds.VIDEO,
+            available=True,
+            coach_content=True,
+        )
+        ContentNode.objects.create(
+            title="test3",
+            id=uuid.uuid4().hex,
+            content_id=uuid.uuid4().hex,
+            channel_id=root_node.channel_id,
+            parent=parent_node,
+            kind=content_kinds.VIDEO,
+            available=True,
+            coach_content=False,
+        )
+        update_num_coach_contents()
+        parent_node.refresh_from_db()
+        self.assertEqual(parent_node.num_coach_contents, 1)
+
+    def tearDown(self):
+        call_command("flush", interactive=False)
+        super().tearDown()
+
+
+@patch("kalanfa.core.content.utils.upgrade.channel_import.initialize_import_manager")
+@patch("kalanfa.core.content.utils.upgrade.transfer_channel")
+@patch("kalanfa.core.content.utils.upgrade.Bridge")
+@patch("kalanfa.core.content.utils.upgrade.get_current_job", return_value=None)
+@patch(
+    "kalanfa.core.content.utils.upgrade.read_channel_metadata_from_db_file",
+    return_value={"version": 3},
+)
+@patch(
+    "kalanfa.core.content.utils.upgrade.get_new_resources_available_for_import",
+    return_value=([], [], 0),
+)
+@patch(
+    "kalanfa.core.content.utils.upgrade.count_removed_resources",
+    return_value=0,
+)
+@patch(
+    "kalanfa.core.content.utils.upgrade.get_automatically_updated_resources",
+    return_value=([], [], 0),
+)
+@patch("kalanfa.core.content.utils.upgrade.annotation")
+@patch("kalanfa.core.content.utils.upgrade.os.remove")
+@patch("kalanfa.core.content.utils.upgrade.process_cache")
+class DiffStatsVersionRequestedTestCase(TestCase):
+    """
+    Verifies that diff_stats always passes version_requested=True to
+    initialize_import_manager so that the annotated-DB import proceeds
+    regardless of version direction (upgrade or downgrade).
+    """
+
+    channel_id = "6199dde695db4ee4ab392222d5af1e5c"
+
+    def test_diff_stats_passes_version_requested_true(
+        self,
+        process_cache_mock,
+        remove_mock,
+        annotation_mock,
+        get_auto_updated_mock,
+        count_removed_mock,
+        get_new_resources_mock,
+        read_metadata_mock,
+        get_current_job_mock,
+        BridgeMock,
+        transfer_channel_mock,
+        initialize_import_manager_mock,
+    ):
+        diff_stats(self.channel_id, "network", baseurl="http://example.com")
+
+        initialize_import_manager_mock.assert_called_once()
+        _, kwargs = initialize_import_manager_mock.call_args
+        self.assertTrue(
+            kwargs.get("version_requested"),
+            "diff_stats must pass version_requested=True to initialize_import_manager "
+            "so that the annotated-DB import proceeds for both upgrades and downgrades.",
+        )

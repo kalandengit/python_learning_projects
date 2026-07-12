@@ -2,7 +2,7 @@ Feature: Learner manually marks resource as complete
   Learner needs to be able to manually indicate they're finished with a resource
 
   Background:
-    Given that I am signed in to Kolibri as a learner user
+    Given that I am signed in to Kalanfa as a learner user
       And that I am viewing a resource that I have not completed
 
   Scenario: Marking an incomplete resource as complete

@@ -14,15 +14,15 @@
   },
 
   "projects": [{
-    "guid": "kolibri",
-    "name": "Kolibri",
-    "description": "The Kolibri Learning Platform is an offline-first platform for teaching and learning with technology without requiring the Internet.",
+    "guid": "kalanfa",
+    "name": "Kalanfa",
+    "description": "The Kalanfa Learning Platform is an offline-first platform for teaching and learning with technology without requiring the Internet.",
     "webpageUrl": {
-      "url": "https://learningequality.org/kolibri/about-kolibri/",
+      "url": "https://learningequality.org/kalanfa/about-kalanfa/",
       "wellKnown": "https://learningequality.org/.well-known/funding-manifest-urls"
     },
     "repositoryUrl": {
-      "url": "https://github.com/learningequality/kolibri"
+      "url": "https://github.com/learningequality/kalanfa"
     },
     "licenses": ["spdx:MIT"],
     "tags": ["education", "knowledge", "mobility", "web-development"]
@@ -76,7 +76,7 @@
         "guid": "github-sponsors-1",
         "status": "active",
         "name": "$1 a month",
-        "description": "Access 100,000 learning resources free to use in Kolibri. Show your support by helping learners around the globe.",
+        "description": "Access 100,000 learning resources free to use in Kalanfa. Show your support by helping learners around the globe.",
         "amount": 1,
         "currency": "USD",
         "frequency": "monthly",
@@ -112,7 +112,7 @@
         "guid": "github-sponsors-100",
         "status": "active",
         "name": "$100 a month",
-        "description": "Makes a new collection of learning materials to help children learn in their own language available for use on Kolibri.",
+        "description": "Makes a new collection of learning materials to help children learn in their own language available for use on Kalanfa.",
         "amount": 100,
         "currency": "USD",
         "frequency": "monthly",
@@ -124,7 +124,7 @@
         "guid": "github-sponsors-1000",
         "status": "active",
         "name": "$1,000 a month",
-        "description": "Share your ideas for future Kolibri development with the Learning Equality Product Lead by joining a 30 minute Q&A session. Help us deepen Kolibri's reach and impact!",
+        "description": "Share your ideas for future Kalanfa development with the Learning Equality Product Lead by joining a 30 minute Q&A session. Help us deepen Kalanfa's reach and impact!",
         "amount": 1000,
         "currency": "USD",
         "frequency": "monthly",

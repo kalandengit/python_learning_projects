@@ -2,7 +2,7 @@ Feature: Coach makes lessons visible
    Coaches need to make lessons visible in order for learners to gain access and start working with them, and make them invisible afterwards
 
   Background:
-    Given I am signed in to kolibri as Coach user
+    Given I am signed in to kalanfa as Coach user
       And I am on *Coach - '<class>' > Plan > Lessons* page
       And I see the table of lessons which includes <lesson>
       And in the second browser or an incognito tab I am signed in as a learner on *Learn > Classes > '<class>'*
@@ -46,7 +46,7 @@ Feature: Coach makes lessons visible
       Then I don't see the lesson '<lesson>'
 
   Background:
-    Given I am signed in to kolibri as coach user
+    Given I am signed in to kalanfa as coach user
       And I am on *Coach - '<class>' > Report > Lessons* page
       And I see the table of lessons which includes <lesson>
 
@@ -89,7 +89,7 @@ Feature: Coach makes lessons visible
     Then I don't see the lesson '<lesson>'
 
   Background:
-    Given I am signed in to Kolibri as a Coach user
+    Given I am signed in to Kalanfa as a Coach user
       And I am on *Coach - '<class>' > Plan > Lessons > '<lesson>'* page
 
   Scenario: Coach turns ON the lesson *Visible for learners* status - no Learner Only Devices
@@ -132,7 +132,7 @@ Feature: Coach makes lessons visible
     Then I don't see the lesson '<lesson>'
 
   Background:
-    Given I am signed in to Kolibri as a Coach user
+    Given I am signed in to Kalanfa as a Coach user
       And I am on *Coach - '<class>' > Report > Lessons > '<lesson>'* page
 
   Scenario: Coach turns ON the lesson *Visible for learners* status - no Learner Only Devices

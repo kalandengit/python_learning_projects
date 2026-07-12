@@ -1,6 +1,6 @@
 """
-This module defines functions for customizing the plugins used at Kolibri build time
-the default plugins used at Kolibri run time, and the default value for
+This module defines functions for customizing the plugins used at Kalanfa build time
+the default plugins used at Kalanfa run time, and the default value for
 the DJANGO_SETTINGS_MODULE environment variable.
 
 For more detail see the documentation in __init__.py
@@ -42,7 +42,7 @@ def load_plugins_from_file(file_path):
 
 
 build_config_path = os.path.join(
-    os.path.dirname(__file__), "../kolibri/utils/build_config"
+    os.path.dirname(__file__), "../kalanfa/utils/build_config"
 )
 
 default_settings_template = "settings_path = '{path}'"

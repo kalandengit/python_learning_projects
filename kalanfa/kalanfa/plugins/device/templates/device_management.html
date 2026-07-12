@@ -1,0 +1,6 @@
+{% extends "kalanfa/base.html" %}
+{% load webpack_tags %}
+
+{% block content %}
+  {% webpack_asset 'kalanfa.plugins.device.app' %}
+{% endblock %}

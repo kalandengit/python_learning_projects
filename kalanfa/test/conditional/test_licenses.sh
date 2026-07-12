@@ -1,12 +1,12 @@
 #!/bin/bash
 # Checks that none of the currently installed pip requirements are
 # GPL because it would violate the licenses of those requirements
-# because Kolibri is MIT and thus cannot re-distribute GPL as such.
+# because Kalanfa is MIT and thus cannot re-distribute GPL as such.
 #
 # This is also intended as a proof-of-concept as we should head
 # in a direction of fetching licenses automatically and bundle them
 # automatically. Currently, packages have some info included in
-# kolibri/dist/*-info
+# kalanfa/dist/*-info
 
 set -e
 

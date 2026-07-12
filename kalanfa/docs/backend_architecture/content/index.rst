@@ -1,7 +1,7 @@
 Content database module
 =======================
 
-This is a core module found in ``kolibri/core/content``.
+This is a core module found in ``kalanfa/core/content``.
 
 .. toctree::
    :maxdepth: 1

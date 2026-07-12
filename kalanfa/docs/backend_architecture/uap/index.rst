@@ -1,7 +1,7 @@
 Users, auth, and permissions module
 ===================================
 
-This is a core module found in ``kolibri/core/auth``.
+This is a core module found in ``kalanfa/core/auth``.
 
 .. toctree::
    :maxdepth: 1

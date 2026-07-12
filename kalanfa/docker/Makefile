@@ -1,16 +1,16 @@
-# Docker Makefile for building and testing the official Kolibri Docker image
+# Docker Makefile for building and testing the official Kalanfa Docker image
 # Run from the docker/ directory to limit build context
 
 .PHONY: build build-latest build-version run clean test
 
 # Default image name
-IMAGE_NAME ?= kolibri
-KOLIBRI_VERSION ?= latest
-KOLIBRI_VERSION_SPEC ?=
+IMAGE_NAME ?= kalanfa
+KALANFA_VERSION ?= latest
+KALANFA_VERSION_SPEC ?=
 CONTAINER_CLI ?= docker
 
-ifneq (latest,$(KOLIBRI_VERSION))
-	KOLIBRI_VERSION_SPEC = "==$(KOLIBRI_VERSION)"
+ifneq (latest,$(KALANFA_VERSION))
+	KALANFA_VERSION_SPEC = "==$(KALANFA_VERSION)"
 endif
 
 ifeq (, $(shell command -v $(CONTAINER_CLI) 2>/dev/null))
@@ -20,22 +20,22 @@ endif
 # Build the Docker image with docker/ as context
 build:
 	$(CONTAINER_CLI) build \
-		-t $(IMAGE_NAME):$(KOLIBRI_VERSION) \
-		--build-arg KOLIBRI_VERSION=$(KOLIBRI_VERSION) \
-		--build-arg KOLIBRI_VERSION_SPEC=$(KOLIBRI_VERSION_SPEC) \
+		-t $(IMAGE_NAME):$(KALANFA_VERSION) \
+		--build-arg KALANFA_VERSION=$(KALANFA_VERSION) \
+		--build-arg KALANFA_VERSION_SPEC=$(KALANFA_VERSION_SPEC) \
 		-f Dockerfile .
 
 # Build with as specific version
 build-%:
-	$(MAKE) build KOLIBRI_VERSION=$(subst build-,,$@)
+	$(MAKE) build KALANFA_VERSION=$(subst build-,,$@)
 
 # Run container for testing (requires volume mount)
 run:
 	$(CONTAINER_CLI) run --rm -it \
-		-v /tmp/kolibri-test:/kolibri \
+		-v /tmp/kalanfa-test:/kalanfa \
 		-p 8080:8080 \
 		-p 8081:8081 \
-		$(IMAGE_NAME):$(KOLIBRI_VERSION)
+		$(IMAGE_NAME):$(KALANFA_VERSION)
 
 # Test that container refuses to start without volume mount
 test-mount-check:

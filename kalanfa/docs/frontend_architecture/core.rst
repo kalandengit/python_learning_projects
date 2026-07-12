@@ -2,9 +2,9 @@ Shared core functionality
 =========================
 
 
-Kolibri provides a set of shared "core" functionality – including components, styles, and helper logic, and libraries – which can be re-used across apps and plugins. This forms a public API that others may depend on, so we keep it limited to ensure we can continue to support it.
+Kalanfa provides a set of shared "core" functionality – including components, styles, and helper logic, and libraries – which can be re-used across apps and plugins. This forms a public API that others may depend on, so we keep it limited to ensure we can continue to support it.
 
-For code that needs to be reused across two plugins, it is recommended to put it in the `kolibri-common` package instead. This will allow easy reuse, but without expanding our API and increasing the number of things we potentially have to support for external users.
+For code that needs to be reused across two plugins, it is recommended to put it in the `kalanfa-common` package instead. This will allow easy reuse, but without expanding our API and increasing the number of things we potentially have to support for external users.
 
 JS libraries and Vue components
 -------------------------------
@@ -13,24 +13,24 @@ The following libraries and components are available for import, in all module c
 
 - ``vue`` - the Vue.js object
 - ``vuex`` - the Vuex object
-- ``kolibri-logging`` - our wrapper around the `loglevel logging module <https://github.com/pimterry/loglevel>`__
+- ``kalanfa-logging`` - our wrapper around the `loglevel logging module <https://github.com/pimterry/loglevel>`__
 - ``AppBarPage`` - a shared Vue.js page component (*AppBarPage.vue*)
 
-The complete specification for commonly shared modules can be found in ``packages/kolibri/package.json``. The "exports" field defines the things inside the package that can be imported, and the "exposes" field defines additional modules that are bundled into the core package.
+The complete specification for commonly shared modules can be found in ``packages/kalanfa/package.json``. The "exports" field defines the things inside the package that can be imported, and the "exposes" field defines additional modules that are bundled into the core package.
 
 .. code-block:: javascript
 
   import Vue from 'vue';
-  import AppBarPage from 'kolibri/components/AppBarPage';
+  import AppBarPage from 'kalanfa/components/AppBarPage';
 
 Adding additional globally-available objects is relatively straightforward due to the :doc:`plugin and webpack build system <frontend_build_pipeline>`.
 
-In general, code should not be added to the kolibri package unless it has been specified as required in planned work. This is to avoid cluttering the core package with unnecessary code.
+In general, code should not be added to the kalanfa package unless it has been specified as required in planned work. This is to avoid cluttering the core package with unnecessary code.
 
 Styling
 -------
 
-To help enforce style guide specs, we provide global variables that can be used throughout the codebase. This requires including  ``@import '~kolibri-design-system/lib/styles/definitions';`` within a SCSS file or a component's ``<style>`` block. This exposes all variables in ``definitions.scss``.
+To help enforce style guide specs, we provide global variables that can be used throughout the codebase. This requires including  ``@import '~kalanfa-design-system/lib/styles/definitions';`` within a SCSS file or a component's ``<style>`` block. This exposes all variables in ``definitions.scss``.
 
 Dynamic core theme
 ------------------
@@ -77,28 +77,28 @@ To use computed classes for Vue.js transitions, you can use the ``{event}-class`
 Bootstrapped data
 -----------------
 
-The ``kolibriCoreAppGlobal`` object is also used to bootstrap data into the JS app, rather than making unnecessary API requests.
+The ``kalanfaCoreAppGlobal`` object is also used to bootstrap data into the JS app, rather than making unnecessary API requests.
 
-For example, we currently embellish the ``kolibriCoreAppGlobal`` object with a ``urls`` object. This is defined by `Django JS Reverse <https://github.com/ierror/django-js-reverse>`__ and exposes Django URLs on the client side. This will primarily be used for accessing API Urls for synchronizing with the REST API.
+For example, we currently embellish the ``kalanfaCoreAppGlobal`` object with a ``urls`` object. This is defined by `Django JS Reverse <https://github.com/ierror/django-js-reverse>`__ and exposes Django URLs on the client side. This will primarily be used for accessing API Urls for synchronizing with the REST API.
 
 URLs and API Endpoints
 ~~~~~~~~~~~~~~~~~~~~~~
 
-Kolibri uses a consistent URL namespacing pattern (e.g., ``kolibri:core:session_list``) that bridges Django's backend URL system with JavaScript frontend code. URLs can be accessed in JavaScript via the ``urls`` object:
+Kalanfa uses a consistent URL namespacing pattern (e.g., ``kalanfa:core:session_list``) that bridges Django's backend URL system with JavaScript frontend code. URLs can be accessed in JavaScript via the ``urls`` object:
 
 .. code-block:: javascript
 
-  import urls from 'kolibri/urls';
-  import client from 'kolibri/client';
+  import urls from 'kalanfa/urls';
+  import client from 'kalanfa/client';
 
   // Call a list endpoint
   const response = await client({
-    url: urls['kolibri:core:session_list'](),
+    url: urls['kalanfa:core:session_list'](),
   });
 
   // Call a detail endpoint with a parameter
   const response = await client({
-    url: urls['kolibri:core:session_detail'](sessionId),
+    url: urls['kalanfa:core:session_detail'](sessionId),
   });
 
 For comprehensive information about URL namespacing, including how to define URLs in Django and use them in JavaScript, see the :doc:`/howtos/working_with_urls_and_api_endpoints` guide.
@@ -110,7 +110,7 @@ These methods are also publicly exposed methods of the core app:
 
 .. code-block:: javascript
 
-  kolibriCoreAppGlobal.register_kolibri_module_async   // Register a Kolibri module for asynchronous loading.
-  kolibriCoreAppGlobal.register_kolibri_module_sync    // Register a Kolibri module once it has loaded.
-  kolibriCoreAppGlobal.stopListening                   // Unbind an event/callback pair from triggering.
-  kolibriCoreAppGlobal.emit                            // Emit an event, with optional args.
+  kalanfaCoreAppGlobal.register_kalanfa_module_async   // Register a Kalanfa module for asynchronous loading.
+  kalanfaCoreAppGlobal.register_kalanfa_module_sync    // Register a Kalanfa module once it has loaded.
+  kalanfaCoreAppGlobal.stopListening                   // Unbind an event/callback pair from triggering.
+  kalanfaCoreAppGlobal.emit                            // Emit an event, with optional args.

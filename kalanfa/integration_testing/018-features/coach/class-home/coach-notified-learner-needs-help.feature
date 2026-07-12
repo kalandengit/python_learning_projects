@@ -1,10 +1,10 @@
 Feature: Coach is notified that a learner needs help
 
   Background:
-    Given I am signed in to Kolibri as a class coach
+    Given I am signed in to Kalanfa as a class coach
       And as a coach I have assigned a lesson with an exercise to the entire class and started it
       And there are learners enrolled in the class
-      And in a different browser I am signed in to Kolibri as a learner #or using a browser tab in incognito mode
+      And in a different browser I am signed in to Kalanfa as a learner #or using a browser tab in incognito mode
 
   Scenario: Coach gets notification that learner needs help with an exercise
     When as learner I intentionally give 4 consecutive incorrect answers to a question

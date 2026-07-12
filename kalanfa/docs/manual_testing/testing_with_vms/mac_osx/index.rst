@@ -1,4 +1,4 @@
-Test Kolibri in OSX guest
+Test Kalanfa in OSX guest
 =========================
 
 Coming soon!

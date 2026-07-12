@@ -2,7 +2,7 @@ Feature: Admin enrolls learners and assign coaches to classes
   Admin needs to be able to enroll learners and assign coaches in classes in the facility
 
   Background:
-    Given I am signed in to Kolibri as a facility admin user
+    Given I am signed in to Kalanfa as a facility admin user
       And I am at the *Facility > Classes* page
       And there is a class created in the facility
       And there are learner and coach users created in the facility

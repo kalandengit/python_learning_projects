@@ -5,9 +5,9 @@ if [ $# -lt 2 ]; then
   echo "Usage: $0 <package-name> <patch|minor|major>"
   echo ""
   echo "Examples:"
-  echo "  $0 kolibri-format patch"
-  echo "  $0 kolibri-format minor"
-  echo "  $0 kolibri-format major"
+  echo "  $0 kalanfa-format patch"
+  echo "  $0 kalanfa-format minor"
+  echo "  $0 kalanfa-format major"
   exit 1
 fi
 

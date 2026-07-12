@@ -2,7 +2,7 @@ Feature: Learner change language
   Learner needs to be able to change language after login from the user menu
 
   Background:
-    Given that I am signed in to Kolibri as a learner user
+    Given that I am signed in to Kalanfa as a learner user
 
   Scenario: Change language from the user menu
     When I open the user menu
@@ -11,21 +11,21 @@ Feature: Learner change language
     When I select <language>
      And I click *Confirm* button
     Then the modal closes
-      And I see Kolibri UI in <language> language
+      And I see Kalanfa UI in <language> language
 
   Scenario: Learner has changed their own language from <device_language> to <language> prior to logging in
     When I log in
-    Then Kolibri is in <language>
+    Then Kalanfa is in <language>
     When I log out
-    Then I am redirected to the sign in page and Kolibri is in <language>
-    When I open a new tab and open Kolibri
-    Then Kolibri is displayed in <language>
+    Then I am redirected to the sign in page and Kalanfa is in <language>
+    When I open a new tab and open Kalanfa
+    Then Kalanfa is displayed in <language>
     When I refresh the page
-    Then Kolibri is displayed in <language>
-    When I navigate the Kolibri UI
-    Then Kolibri remains in <language>
-    When I open a fresh Incognito or Private Browsing window and go to Kolibri's root server URL
-    Then Kolibri is displayed in <device_language>
+    Then Kalanfa is displayed in <language>
+    When I navigate the Kalanfa UI
+    Then Kalanfa remains in <language>
+    When I open a fresh Incognito or Private Browsing window and go to Kalanfa's root server URL
+    Then Kalanfa is displayed in <device_language>
 
 Examples:
   | language  |

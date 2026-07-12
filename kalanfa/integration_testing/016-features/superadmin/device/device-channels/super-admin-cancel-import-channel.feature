@@ -2,7 +2,7 @@ Feature: Super admin cancels import, export or delete tasks
     Super admin needs to be able to cancel import, export or delete tasks
 
   Background:
-    Given I am signed in to Kolibri as super admin, or a user with device permissions to import content
+    Given I am signed in to Kalanfa as super admin, or a user with device permissions to import content
       And I am on *Device > Tasks* page
 
   Scenario: Cancel import task

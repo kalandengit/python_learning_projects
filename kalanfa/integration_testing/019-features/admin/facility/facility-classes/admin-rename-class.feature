@@ -2,7 +2,7 @@ Feature: Admin renames a class
   Admin users need to be able to rename classes in each facility
 
   Background:
-    Given I am signed in to Kolibri as a facility admin user
+    Given I am signed in to Kalanfa as a facility admin user
       And I am at the *Facility > Classes* page
       And there is at least one already created class
 

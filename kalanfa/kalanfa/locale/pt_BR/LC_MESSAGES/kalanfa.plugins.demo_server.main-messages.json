@@ -1,0 +1,10 @@
+{
+  "DemoServerBannerContent.demoServerA1": "Ler a documentação",
+  "DemoServerBannerContent.demoServerA2": "Baixar e installar a última versão",
+  "DemoServerBannerContent.demoServerHeader": "Bem-vindo ao site de demonstração Kalanfa",
+  "DemoServerBannerContent.demoServerL1": "Explorar como Aluno ({user}/{pass} ou explorar sem criar conta)",
+  "DemoServerBannerContent.demoServerL2": "Professor ({user}/{pass})",
+  "DemoServerBannerContent.demoServerP1": "Escolha um tipo de usuário para explorar Kalanfa:",
+  "DemoServerBannerContent.demoServerP2": "Esta versão online de Kalanfa é somente para uso demonstrativo. Atenção: todos os dados são apagados periodicamente; os conteúdos aqui apresentados são apenas uma pequena amostra da biblioteca Kalanfa. O site contempla a última versão da plataforma.",
+  "DemoServerBannerContent.demoServerP3": "Para aprender mais sobre como usar Kalanfa num contexto offline e entender melhor a plataforma:"
+}

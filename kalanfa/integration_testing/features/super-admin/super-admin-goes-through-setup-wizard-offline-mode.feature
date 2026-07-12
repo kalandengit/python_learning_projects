@@ -4,18 +4,18 @@ Feature: Super admin goes through the setup wizard in offline mode
   # In case of testing on virtual machine:
   # Make sure that your testing environment has no Internet connection (before you start the VM, go to Properties > Network > Adapter 1, and uncheck the Enable Network Adapter checkbox; try to do a Google search to confirm that the VM has no Internet access).
   # Download it on your host and unzip anywhere on your Windows 10 VM guest (Desktop should work fine). VM's Shared Folders setting should work even without the network adapter.
-  # Keep both folders (Kolibri and KOLIBRI_DATA) together in the same location.
-  # Open the Kolibri folder and double-click the Kolibri.exe file.
+  # Keep both folders (Kalanfa and KALANFA_DATA) together in the same location.
+  # Open the Kalanfa folder and double-click the Kalanfa.exe file.
 
   Background:
     Given The testing environment has no active Internet connection
-      And The Kolibri installation was successful
+      And The Kalanfa installation was successful
       And the server is running for the first time
       And the App is opened in the virtual machine
 
   Scenario: Select language
     Given that I am at the beginning of the setup wizard
-      And I see *Please select the default language for Kolibri*
+      And I see *Please select the default language for Kalanfa*
     When I click the link *Español*
     Then the wizard language changes to Spanish
     When I click *More languages*
@@ -30,7 +30,7 @@ Feature: Super admin goes through the setup wizard in offline mode
     Then I see *Getting started*
 
   Scenario: Select 'Quick start'
-    Given I see *How are you using Kolibri?*
+    Given I see *How are you using Kalanfa?*
     When I select *Quick start*
       And I click *Continue*
     Then I see *Create super admin account*
@@ -66,4 +66,4 @@ Feature: Super admin goes through the setup wizard in offline mode
       And I see *Responsibilities as an administrator* text
       And I see the Finish button
     When I click the Finish button
-    Then I am logged in to Kolibri
+    Then I am logged in to Kalanfa

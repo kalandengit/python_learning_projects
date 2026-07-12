@@ -2,15 +2,15 @@ Feature: Super Admin bulk import users into a facility
     Super Admin needs to be able to do a bulk import of users using the command line, together with the information about the classes they are enrolled or assigned to
 
   Background:
-    Given that the Kolibri server has one device with one or more facilities
+    Given that the Kalanfa server has one device with one or more facilities
 
   Scenario: Execute the bulkimportusers command and review the report
-    When I run the 'kolibri manage bulkimportusers --dryrun --output-file=test.csv' command in the Terminal
+    When I run the 'kalanfa manage bulkimportusers --dryrun --output-file=test.csv' command in the Terminal
     Then I see a report containing the number of users and classes to be created, deleted and updated
       And I see the list of errors, if any
 
   Scenario: Execute the bulkimportusers command and review the users and classes are created
-    When I run the 'kolibri manage bulkimportusers  --output-file=test.csv ' command in the Terminal
+    When I run the 'kalanfa manage bulkimportusers  --output-file=test.csv ' command in the Terminal
     Then I see a report containing the number of users and classes to be created, deleted and updated
       And I see the list of errors, if any
     When I open the facility in the browser
@@ -20,7 +20,7 @@ Feature: Super Admin bulk import users into a facility
   Scenario: Execute the import command and review the users and classes are deleted and updated
     When I create a new CSV file changing some information of the existing users
       But the CSV file does not contain all the users registered at the facility
-    When I run the 'kolibri manage bulkimportusers --delete --output-file=test2.csv ' command in the Terminal
+    When I run the 'kalanfa manage bulkimportusers --delete --output-file=test2.csv ' command in the Terminal
     Then I see a report containing the number of users and classes to be created, deleted and updated
       And I see the list of errors, if any
     When I open the facility in the browser

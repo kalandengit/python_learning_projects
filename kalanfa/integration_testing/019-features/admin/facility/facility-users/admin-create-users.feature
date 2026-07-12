@@ -2,7 +2,7 @@ Feature: Admin creates users
   Admin users need to be able to create user accounts for each role in the facility
 
   Background:
-    Given I am signed in to Kolibri as a facility admin user
+    Given I am signed in to Kalanfa as a facility admin user
     	And the *Enter username and password* option is enabled at *Facility > Settings*
       And I am at *Facility > Users* page
 

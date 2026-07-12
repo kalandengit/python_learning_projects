@@ -1,11 +1,11 @@
 Feature: Super admin changes device settings
   Super admin needs to be able to change settings related to access to resources, unlisted channels and the default landing page
   Background:
-    Given I am signed in to Kolibri as super admin user
+    Given I am signed in to Kalanfa as super admin user
       And I am on *Device > Settings* page
       And there are learner and coach user accounts created in the facility
-      And a channel has been imported from Kolibri Studio using a token
-      And there is another Kolibri instance on my network
+      And a channel has been imported from Kalanfa Studio using a token
+      And there is another Kalanfa instance on my network
 
   Scenario: Allow guest browsing
     Given the *Allow users to access resources without signing in* checkbox is unchecked

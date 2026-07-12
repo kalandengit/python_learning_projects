@@ -48,21 +48,21 @@ install-dependencies:
 images/base.img:
 	sudo pimod/pimod.sh base.Pifile
 
-images/Kolibri.img:
-	sudo pimod/pimod.sh kolibri.Pifile
+images/Kalanfa.img:
+	sudo pimod/pimod.sh kalanfa.Pifile
 
 images: install-dependencies
 	mkdir -p images
 	$(MAKE) images/source.img
 	$(MAKE) images/base.img
-	$(MAKE) images/Kolibri.img
+	$(MAKE) images/Kalanfa.img
 
 zipfile: images
-# Get the version based on the debian file name kolibri_<version>-Xubuntu1_all.deb
-	$(eval VERSION=$(shell ls ${DIST_DIR} | grep kolibri | sed -r 's/kolibri_(.*)-[0-9]+ubuntu1_all.deb/\1/'))
+# Get the version based on the debian file name kalanfa_<version>-Xubuntu1_all.deb
+	$(eval VERSION=$(shell ls ${DIST_DIR} | grep kalanfa | sed -r 's/kalanfa_(.*)-[0-9]+ubuntu1_all.deb/\1/'))
 # Rename the image file to include the version
-	mv images/Kolibri.img images/kolibri-pi-image-$(VERSION).img
+	mv images/Kalanfa.img images/kalanfa-pi-image-$(VERSION).img
 # Zip the image file
-	zip -j $(DIST_DIR)/kolibri-pi-image-$(VERSION).zip images/kolibri-pi-image-$(VERSION).img
+	zip -j $(DIST_DIR)/kalanfa-pi-image-$(VERSION).zip images/kalanfa-pi-image-$(VERSION).img
 # Clean up the final image file
-	rm images/kolibri-pi-image-$(VERSION).img
+	rm images/kalanfa-pi-image-$(VERSION).img

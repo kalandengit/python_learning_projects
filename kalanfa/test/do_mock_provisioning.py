@@ -5,7 +5,7 @@ from time import time
 
 import requests
 
-from kolibri.core.auth.constants.demographics import NOT_SPECIFIED
+from kalanfa.core.auth.constants.demographics import NOT_SPECIFIED
 
 logger = logging.getLogger(__name__)
 
@@ -32,7 +32,7 @@ data = {
 }
 
 status_code = None
-timeout = 30  # wait for kolibri to start
+timeout = 30  # wait for kalanfa to start
 now = time()
 
 logger.info("mock provisioning...")

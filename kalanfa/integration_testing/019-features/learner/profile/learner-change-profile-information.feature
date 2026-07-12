@@ -2,7 +2,7 @@ Feature: Learner changes profile information
 	Learner needs to be able to change their own profile information
 
   Background:
-    Given I am signed in to Kolibri as a learner user
+    Given I am signed in to Kalanfa as a learner user
     	And I am at my *Profile* page
       And the facility is set up to allow learners to edit their full name, username and password
 

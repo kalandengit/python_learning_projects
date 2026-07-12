@@ -1,27 +1,27 @@
 Feature: Manage sync schedule
-	Super admin can create and manage a sync schedule in order to sync facility data between Kolibri devices and KDP
+	Super admin can create and manage a sync schedule in order to sync facility data between Kalanfa devices and KDP
 
 	Background:
 		Given I am signed in as a super admin
 			And I am at *Device > Facilities*
 			And I see the list with facilities on my device
-			And there are other devices on which Kolibri is installed
+			And there are other devices on which Kalanfa is installed
 			And those devices have the same <facility> as my server
 			And those devices are connected to my local network
-			And those devices are currently running Kolibri
+			And those devices are currently running Kalanfa
 
 	Scenario: Create sync schedule for a device
 		When I click on the *Options* drop-down for a facility for the first time
 			And I click the *Manage sync schedule* option
 		Then I see the *Sync schedules* page
-			And I see *Set a schedule for Kolibri to automatically sync with other Kolibri devices sharing this facility. Devices with the same sync schedule will be synced one at a time.*
+			And I see *Set a schedule for Kalanfa to automatically sync with other Kalanfa devices sharing this facility. Devices with the same sync schedule will be synced one at a time.*
 			And I see the facility's name
 			And I see an *Add device* button
 			And I see a table with the following columns: *Device name*, *Schedule*, *Status*
 			And I see *There are no syncs scheduled*
 		When I click the *Add device* button
 		Then I see the *Select a source* modal
-			And I see the following radio buttons: *Kolibri Data Portal (online)* and *Local network or internet*
+			And I see the following radio buttons: *Kalanfa Data Portal (online)* and *Local network or internet*
 		When I select the *Local network or internet* radio button
 			And I click the *Continue* button
 		Then I see the *Select device* modal
@@ -43,7 +43,7 @@ Feature: Manage sync schedule
 		Given I am at the *Sync schedules* page for a device
 		When I click the *Add device* button
 		Then I see the *Select a source* modal window
-			And I see the following radio buttons: *Kolibri Data Portal (online)* which is selected by default and *Local network or internet*
+			And I see the following radio buttons: *Kalanfa Data Portal (online)* which is selected by default and *Local network or internet*
 		When I click the *Continue* button
 		Then I see the *Register facility* modal window
 		When I enter a valid project token
@@ -52,7 +52,7 @@ Feature: Manage sync schedule
 			And I see the following text: *Register with <KDP Project name>? Data will be saved to the cloud.
 		When I click the *Register* button
 		Then I see the *Edit device sync schedule* page
-			And I see *Kolibri Data Portal*, the *Frequency* drop-down, the current server time and the *If scheduled sync fails, keep trying* checkbox
+			And I see *Kalanfa Data Portal*, the *Frequency* drop-down, the current server time and the *If scheduled sync fails, keep trying* checkbox
 		When I click on the *Frequency* drop-down
 			And I select one of the available options
 		When I click the *Save* button
@@ -66,15 +66,15 @@ Feature: Manage sync schedule
     When I check the *Last synced* value after the specified time interval has passed
     Then I see *Last sync: <time>* under the facility name
 
-  Scenario: Successful sync with another Kolibri server on my local network or internet
-  	Given I've already created a sync schedule with another Kolibri server on my local network or internet
+  Scenario: Successful sync with another Kalanfa server on my local network or internet
+  	Given I've already created a sync schedule with another Kalanfa server on my local network or internet
     When I check the *Last synced* value after the specified time interval has passed
     Then I see *Last sync: <time>* under the facility name
 
   Scenario: Failed sync to KDP
     #TO DO: currently this is not implemented
 
-   Scenario: Failed sync with another Kolibri server on my local network or internet
+   Scenario: Failed sync with another Kalanfa server on my local network or internet
    	#TO DO: currently this is not implemented
 
 	Scenario: Edit device sync schedule

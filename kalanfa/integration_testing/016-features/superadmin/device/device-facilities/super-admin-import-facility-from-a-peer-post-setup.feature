@@ -44,14 +44,14 @@ Feature: Import facility from a peer (post-setup)
 		Then I see the <facility> appear in my *Facilities* list
 			And I see a message under the new <facility> *Last synced: just now*
 
-	Scenario: Import facility from a peer by manually adding the URL address of an existing Kolibri instance
+	Scenario: Import facility from a peer by manually adding the URL address of an existing Kalanfa instance
 		When I click the *Import facility* button
 		Then I see the *Select network address* modal
 			And I see a list of peer devices
 			And I see the network address of each device
 		When I click *Add new address*
     Then I see the *New address* modal
-		When I enter the URL address of an existing Kolibri instance in the *Full network address* field
+		When I enter the URL address of an existing Kalanfa instance in the *Full network address* field
     	And I enter a name for this address in the *Name* field
     	And I click *Add*
     Then I am back at the *Select network address* modal
@@ -79,7 +79,7 @@ Feature: Import facility from a peer (post-setup)
 			And I see *Last successful sync: <X> <time> ago under the failed sync message
 
 	Scenario: Ensure you can import a facility after Wi-Fi network change
-		Given there are at least two Kolibri instances running in the same network
+		Given there are at least two Kalanfa instances running in the same network
 		When I connect both devices to a different Wi-Fi network #check in the logs that you see a log entry for zerocnf network registration for example: Registering ourselves to zeroconf network with id 'f770b209237d550fb8cc34ee00d93719' and port '8080'
 			And as a Super Admin I go to Device>Facilities
 			And I click the *Import facility* button

@@ -2,7 +2,7 @@ Feature: Coach copies lesson
   Coaches need to be able to copy lessons to the same or a different class, and assign it to different groups or an entire class
 
   Background:
-    Given I am signed in to Kolibri as coach user
+    Given I am signed in to Kalanfa as coach user
       And I am on *Coach - '<class>' > Plan > Lessons* page
       And I see the <lesson> lesson
 

@@ -2,7 +2,7 @@ Feature: Super admin deletes classes
     Super admin needs to be able to delete classes from the facility
 
   Background:
-    Given I am signed in to Kolibri as Super admin
+    Given I am signed in to Kalanfa as Super admin
       And I am on *Facility > Classes* page
       And there is a class <class> created in the facility
 

@@ -7,7 +7,7 @@ Feature: Super admin imports granular resources from peer
 
   Background:
     Given there is no content from <channel> channel on the device
-      And I am signed in to Kolibri as super admin, or a user with device permissions to import content
+      And I am signed in to Kalanfa as super admin, or a user with device permissions to import content
       And I am on *Import from '<local_address>' > Select resources for import* page with the list of available channels
 
   Scenario: Import resources granularly from a local peer

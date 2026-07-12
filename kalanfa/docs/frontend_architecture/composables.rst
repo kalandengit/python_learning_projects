@@ -1,12 +1,12 @@
 Composables
 ===========
 
-Composables are reusable functions that encapsulate stateful logic using Vue's Composition API. They are the **preferred approach** for state management in Kolibri, replacing Vuex (which is deprecated).
+Composables are reusable functions that encapsulate stateful logic using Vue's Composition API. They are the **preferred approach** for state management in Kalanfa, replacing Vuex (which is deprecated).
 
 They follow the naming convention ``use*`` (e.g., ``useChannels``, ``useTaskPolling``).
 
 .. note::
-  The Composition API is the preferred approach for all new Vue code in Kolibri, not just composables. New components should use ``setup()`` rather than the Options API. Existing Options API components do not need to be migrated, but new code should follow Composition API patterns.
+  The Composition API is the preferred approach for all new Vue code in Kalanfa, not just composables. New components should use ``setup()`` rather than the Options API. Existing Options API components do not need to be migrated, but new code should follow Composition API patterns.
 
 .. seealso::
   For information about Vuex deprecation, see :doc:`vuex`.
@@ -39,8 +39,8 @@ File naming and location
 - **Name**: ``use*.js`` (e.g., ``useChannels.js``)
 - **Location**:
 
-  - Shared composables: ``packages/kolibri-common/composables/``
-  - Plugin-specific: ``kolibri/plugins/<plugin>/frontend/composables/``
+  - Shared composables: ``packages/kalanfa-common/composables/``
+  - Plugin-specific: ``kalanfa/plugins/<plugin>/frontend/composables/``
   - Component-specific: Co-located with component
 
 Function structure
@@ -255,7 +255,7 @@ Composables can use lifecycle hooks just like components:
 Using @vueuse/core
 ------------------
 
-Kolibri uses utilities from `@vueuse/core <https://vueuse.org/>`__ which provides many useful composables:
+Kalanfa uses utilities from `@vueuse/core <https://vueuse.org/>`__ which provides many useful composables:
 
 - ``useTimeoutPoll`` - Polling with automatic cleanup
 - ``get/set`` - Safe reactive ref access
@@ -301,9 +301,9 @@ Examples in the Codebase
 
 Good examples to reference:
 
-- ``packages/kolibri-common/composables/useChannels.js`` - Shared state pattern
-- ``packages/kolibri-common/composables/useTaskPolling.js`` - Polling pattern
-- ``packages/kolibri-common/composables/usePreviousRoute.js`` - Provider/inject pattern
-- ``packages/kolibri-common/composables/useBaseSearch.js`` - Complex state management
+- ``packages/kalanfa-common/composables/useChannels.js`` - Shared state pattern
+- ``packages/kalanfa-common/composables/useTaskPolling.js`` - Polling pattern
+- ``packages/kalanfa-common/composables/usePreviousRoute.js`` - Provider/inject pattern
+- ``packages/kalanfa-common/composables/useBaseSearch.js`` - Complex state management
 
-Browse ``packages/kolibri-common/composables/`` for more examples.
+Browse ``packages/kalanfa-common/composables/`` for more examples.

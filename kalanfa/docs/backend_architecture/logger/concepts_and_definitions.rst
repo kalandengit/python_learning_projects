@@ -66,7 +66,7 @@ These models provide information about when users took exams.
 User session logs
 -----------------
 
-These models provide a record of a user session in Kolibri. It encodes the channels
+These models provide a record of a user session in Kalanfa. It encodes the channels
 interacted with, the length of time engaged, and the specific pages visited.
 
 Concretely, a UserSessionLog records which pages a user visits and how long the user

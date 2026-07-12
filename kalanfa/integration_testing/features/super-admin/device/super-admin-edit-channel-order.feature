@@ -2,7 +2,7 @@ Feature: Super admin edits the order of channels
     Super admin needs to be able to reorder the channels so they present to learners according to the facility needs
 
   Background:
-    Given I am signed in to Kolibri as super admin, or a user with device permissions to import content
+    Given I am signed in to Kalanfa as super admin, or a user with device permissions to import content
       And I am on *Device > Channels* page
       And there are at least 3 channels on the device
 

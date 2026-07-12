@@ -2,7 +2,7 @@ Feature: Coach manages lesson resources
    Coaches need to be able to manage (add more, reorder and remove) the resources in a lesson according to their needs
 
   Background:
-    Given I am signed in to Kolibri as a coach
+    Given I am signed in to Kalanfa as a coach
     	And there are imported channels with resources
       And I am at *Coach - '<class>' > Lessons > '<lesson>'* page
       And there is a lesson with resources

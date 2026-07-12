@@ -2,7 +2,7 @@ Feature: Admin changes profile information
   Admin needs to be able to change their own profile information
 
   Background:
-    Given I am signed in to Kolibri as a facility admin
+    Given I am signed in to Kalanfa as a facility admin
       And I am at my *Profile* page
 
   Scenario: Admin can edit their profile information

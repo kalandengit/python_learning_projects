@@ -2,7 +2,7 @@ Feature: Assign and remove learners to and from groups
   Coach needs to be able to assign learners to groups to support different learning needs and speeds
 
   Background:
-    Given I am signed in to Kolibri as a coach user
+    Given I am signed in to Kalanfa as a coach user
       And I am on the *Coach - '<class>' > Plan > Groups* page
       And there are groups created
 

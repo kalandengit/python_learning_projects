@@ -1,5 +1,5 @@
-kolibri-server-uninstall.feature
-kolibri-server-stop.feature
-kolibri-server-change-port.feature
-kolibri-server-handle-multiple-args-in-url.feature
-kolibri-server-show-file-streams.feature
+kalanfa-server-uninstall.feature
+kalanfa-server-stop.feature
+kalanfa-server-change-port.feature
+kalanfa-server-handle-multiple-args-in-url.feature
+kalanfa-server-show-file-streams.feature

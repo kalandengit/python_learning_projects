@@ -2,12 +2,12 @@ Feature: Learners automatic syncing
 
   Background:
     Given I am signed in as a learner on a learn-only device (LOD)
-    	And there is a Kolibri server in the network
+    	And there is a Kalanfa server in the network
   				And a coach has enrolled the learner to a class and assigned lesson and quiz resources to the learner
 
 	Scenario: LOD - Assigned lesson and quiz resources are automatically transferred to the learn-only device
   	Given I am signed in as learner on a learn-only device
-  		And there is a Kolibri server in the network
+  		And there is a Kalanfa server in the network
   		And a coach has enrolled the learner to a class and assigned lesson and quiz resources to the learner
   	When I go to the *Home* page
   		And I click on the class name
@@ -53,30 +53,30 @@ Feature: Learners automatic syncing
 
 	Scenario: LOD - Learner allows mobile data on first time use
 		Given I have set my device to allow download on mobile connection
-			And I am about to do something that would use the mobile connection for the first time in Kolibri
+			And I am about to do something that would use the mobile connection for the first time in Kalanfa
 		Then I see the *Use mobile data?* modal
-			And I see *You may have a limited amount of data on your mobile plan. Allowing Kolibri to download resources via mobile data may use up your entire plan and/or incur extra charges.*
-			And I see the option *Do do not allow Kolibri to use mobile data* selected by default
-			And I see the other option *Allow Kolibri to use mobile data*
+			And I see *You may have a limited amount of data on your mobile plan. Allowing Kalanfa to download resources via mobile data may use up your entire plan and/or incur extra charges.*
+			And I see the option *Do do not allow Kalanfa to use mobile data* selected by default
+			And I see the other option *Allow Kalanfa to use mobile data*
 			And I see a *Continue* button
-		When I select the *Allow Kolibri to use mobile data* option
+		When I select the *Allow Kalanfa to use mobile data* option
 			And I click *Continue*
 		Then I see that I am able to use the mobile data
 
 	Scenario: LOD - Learner disallows mobile data on first time use
 		Given I have set my device to allow download on mobile connection
-			And I am about to do something that would use the mobile connection for the first time in Kolibri
-		And I see *You may have a limited amount of data on your mobile plan. Allowing Kolibri to download resources via mobile data may use up your entire plan and/or incur extra charges.*
-			And I see the option *Do do not allow Kolibri to use mobile data* selected by default
-			And I see the other option *Allow Kolibri to use mobile data*
+			And I am about to do something that would use the mobile connection for the first time in Kalanfa
+		And I see *You may have a limited amount of data on your mobile plan. Allowing Kalanfa to download resources via mobile data may use up your entire plan and/or incur extra charges.*
+			And I see the option *Do do not allow Kalanfa to use mobile data* selected by default
+			And I see the other option *Allow Kalanfa to use mobile data*
 			And I see a *Continue* button
 		When I click *Continue*
 		Then I see that I am not able to use the mobile data #the *Other libraries* section would appear empty
 
 	Scenario: LOD - Learner can see automatic syncing updates while not using the Android app
-		Given I've closed Kolibri
+		Given I've closed Kalanfa
 			And it's still running in the background
-			And I have allowed Kolibri to run in the background and see notification
+			And I have allowed Kalanfa to run in the background and see notification
 		When I check my device notifications
 			And there is an automatic syncing about to begin
 		Then I see the following notification: *Updating your library*
@@ -88,7 +88,7 @@ Feature: Learners automatic syncing
 		Then I see the following notification: *Library updated*
 
 	Scenario: LOD - Learner can see that automatic syncing has failed while not using the Android app
-		Given I've closed Kolibri
+		Given I've closed Kalanfa
 			And it's still running in the background
 			And the automatic syncing has failed
 		When I check my device notifications

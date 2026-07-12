@@ -2,7 +2,7 @@ Feature: Coach changes profile information
   Coach needs to be able to change their own profile information
 
   Background:
-    Given I am signed in to Kolibri as a coach user
+    Given I am signed in to Kalanfa as a coach user
       And I am at the *Profile* page
 
   Scenario: Coach can edit their profile information

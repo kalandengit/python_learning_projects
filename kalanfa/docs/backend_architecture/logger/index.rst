@@ -1,7 +1,7 @@
 User log module
 ===============
 
-This is a core module found in ``kolibri/core/logger``.
+This is a core module found in ``kalanfa/core/logger``.
 
 .. toctree::
    :maxdepth: 1

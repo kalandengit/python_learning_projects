@@ -1,35 +1,35 @@
 # Working with URLs and API Endpoints
 
-This guide explains how to work with URLs and API endpoints in Kolibri, including the URL namespacing system used throughout the codebase.
+This guide explains how to work with URLs and API endpoints in Kalanfa, including the URL namespacing system used throughout the codebase.
 
 ## Overview
 
-Kolibri uses a consistent URL namespacing pattern that bridges Django's backend URL system with JavaScript frontend code. This allows type-safe URL construction with automatic parameter validation across the entire stack.
+Kalanfa uses a consistent URL namespacing pattern that bridges Django's backend URL system with JavaScript frontend code. This allows type-safe URL construction with automatic parameter validation across the entire stack.
 
 ## URL Naming Convention
 
-All URLs in Kolibri follow the namespace pattern:
+All URLs in Kalanfa follow the namespace pattern:
 
 ```
-kolibri:<plugin_module>:<url_name>
+kalanfa:<plugin_module>:<url_name>
 ```
 
 Where:
-- `kolibri` is the app namespace (always constant)
-- `<plugin_module>` is either `core` for core Kolibri functionality, or the full plugin module path (e.g., `kolibri.plugins.coach`) for plugins
+- `kalanfa` is the app namespace (always constant)
+- `<plugin_module>` is either `core` for core Kalanfa functionality, or the full plugin module path (e.g., `kalanfa.plugins.coach`) for plugins
 - `<url_name>` is the specific URL name (for ViewSets, this is typically `<basename>_list` or `<basename>_detail`)
 
 ### Core URLs
 
-Core Kolibri URLs use `core`:
+Core Kalanfa URLs use `core`:
 
 ```
-kolibri:core:session_list                    # ViewSet list endpoint
-kolibri:core:session_detail                  # ViewSet detail endpoint
-kolibri:core:facilityuser_list               # ViewSet list endpoint
-kolibri:core:contentnode_recommendations_for # ViewSet custom action
-kolibri:core:usernameavailable               # Non-ViewSet custom URL
-kolibri:core:deleteimporteduser              # Non-ViewSet custom URL
+kalanfa:core:session_list                    # ViewSet list endpoint
+kalanfa:core:session_detail                  # ViewSet detail endpoint
+kalanfa:core:facilityuser_list               # ViewSet list endpoint
+kalanfa:core:contentnode_recommendations_for # ViewSet custom action
+kalanfa:core:usernameavailable               # Non-ViewSet custom URL
+kalanfa:core:deleteimporteduser              # Non-ViewSet custom URL
 ```
 
 ### Plugin URLs
@@ -37,9 +37,9 @@ kolibri:core:deleteimporteduser              # Non-ViewSet custom URL
 Plugin URLs use the full plugin module path as the namespace:
 
 ```
-kolibri:kolibri.plugins.coach:lessonreport_list       # ViewSet list endpoint
-kolibri:kolibri.plugins.learn:learnerlesson_detail    # ViewSet detail endpoint
-kolibri:kolibri.plugins.device:devicepermissions_list # ViewSet list endpoint
+kalanfa:kalanfa.plugins.coach:lessonreport_list       # ViewSet list endpoint
+kalanfa:kalanfa.plugins.learn:learnerlesson_detail    # ViewSet detail endpoint
+kalanfa:kalanfa.plugins.device:devicepermissions_list # ViewSet list endpoint
 ```
 
 ### ViewSet URL Patterns
@@ -59,13 +59,13 @@ class ContentNodeViewSet(viewsets.ReadOnlyModelViewSet):
 
     @action(detail=True, methods=['get'])
     def recommendations_for(self, request, pk=None):
-        # Creates: kolibri:core:contentnode_recommendations_for
+        # Creates: kalanfa:core:contentnode_recommendations_for
         # The detail=True means it accepts a pk parameter
         pass
 
     @action(detail=False, methods=['get'])
     def random(self, request):
-        # Creates: kolibri:core:contentnode_random
+        # Creates: kalanfa:core:contentnode_random
         # The detail=False means no pk parameter
         pass
 ```
@@ -78,15 +78,15 @@ The `detail` parameter controls whether the action operates on a single item (`d
 
 Core API URLs are organized by module in separate `api_urls.py` files. By convention (not a requirement), each core app that has API endpoints has its own `api_urls.py` file:
 
-- `kolibri/core/auth/api_urls.py` - Authentication, users, facilities, sessions
-- `kolibri/core/content/api_urls.py` - Content nodes, channels
-- `kolibri/core/device/api_urls.py` - Device settings, permissions
-- `kolibri/core/logger/api_urls.py` - Logging endpoints
-- `kolibri/core/exams/api_urls.py` - Exam management
-- `kolibri/core/lessons/api_urls.py` - Lesson management
+- `kalanfa/core/auth/api_urls.py` - Authentication, users, facilities, sessions
+- `kalanfa/core/content/api_urls.py` - Content nodes, channels
+- `kalanfa/core/device/api_urls.py` - Device settings, permissions
+- `kalanfa/core/logger/api_urls.py` - Logging endpoints
+- `kalanfa/core/exams/api_urls.py` - Exam management
+- `kalanfa/core/lessons/api_urls.py` - Lesson management
 - And others...
 
-Here's an example from `kolibri/core/auth/api_urls.py`:
+Here's an example from `kalanfa/core/auth/api_urls.py`:
 
 ```python
 from rest_framework import routers
@@ -94,13 +94,13 @@ from rest_framework import routers
 router = routers.SimpleRouter()
 
 # This creates:
-# - kolibri:core:session_list
-# - kolibri:core:session_detail
+# - kalanfa:core:session_list
+# - kalanfa:core:session_detail
 router.register(r"session", SessionViewSet, basename="session")
 
 # This creates:
-# - kolibri:core:facilityuser_list
-# - kolibri:core:facilityuser_detail
+# - kalanfa:core:facilityuser_list
+# - kalanfa:core:facilityuser_detail
 router.register(r"facilityuser", FacilityUserViewSet, basename="facilityuser")
 urlpatterns = router.urls
 ```
@@ -109,12 +109,12 @@ The `basename` parameter determines the URL name pattern.
 
 **How the namespace is created:**
 
-The `kolibri:core` namespace is created through Django's URL configuration in `kolibri/core/urls.py`:
-- The module sets `app_name = "kolibri"` (the first part)
+The `kalanfa:core` namespace is created through Django's URL configuration in `kalanfa/core/urls.py`:
+- The module sets `app_name = "kalanfa"` (the first part)
 - Core URLs use tuple syntax: `core_urlpatterns = ([...], "core")` (the second part)
-- Result: `app_name` + tuple namespace = `kolibri:core`
+- Result: `app_name` + tuple namespace = `kalanfa:core`
 
-All core app `api_urls.py` modules are aggregated in `kolibri/core/api_urls.py` and included in the core URL configuration.
+All core app `api_urls.py` modules are aggregated in `kalanfa/core/api_urls.py` and included in the core URL configuration.
 
 ### Plugin URLs
 
@@ -125,14 +125,14 @@ Plugin API URLs require two components: defining the URLs in a module (by conven
 Create a module (conventionally named `api_urls.py`, but the name is not required) with your URL patterns:
 
 ```python
-# kolibri/plugins/coach/api_urls.py
+# kalanfa/plugins/coach/api_urls.py
 from rest_framework import routers
 
 router = routers.DefaultRouter()
 
 # This creates:
-# - kolibri:kolibri.plugins.coach:lessonreport_list
-# - kolibri:kolibri.plugins.coach:lessonreport_detail
+# - kalanfa:kalanfa.plugins.coach:lessonreport_list
+# - kalanfa:kalanfa.plugins.coach:lessonreport_detail
 router.register(r"lessonreport", LessonReportViewset, basename="lessonreport")
 
 urlpatterns = router.urls
@@ -140,20 +140,20 @@ urlpatterns = router.urls
 
 **Step 2: Register the module with your plugin class**
 
-In your plugin's `kolibri_plugin.py`, set the `untranslated_view_urls` attribute to the name of your URL module:
+In your plugin's `kalanfa_plugin.py`, set the `untranslated_view_urls` attribute to the name of your URL module:
 
 ```python
-# kolibri/plugins/coach/kolibri_plugin.py
-from kolibri.plugins import KolibriPluginBase
+# kalanfa/plugins/coach/kalanfa_plugin.py
+from kalanfa.plugins import KalanfaPluginBase
 
-class Coach(KolibriPluginBase):
+class Coach(KalanfaPluginBase):
     untranslated_view_urls = "api_urls"  # Name of the module, not a path
     # ... other plugin configuration
 ```
 
 **How the namespace is created:**
 
-The plugin's namespace is automatically derived from its module path (e.g., `kolibri.plugins.coach`). The plugin registration system in `kolibri/plugins/utils/urls.py` wraps each plugin's URLs with its module path as the namespace, creating URLs like `kolibri:kolibri.plugins.coach:lessonreport_list`.
+The plugin's namespace is automatically derived from its module path (e.g., `kalanfa.plugins.coach`). The plugin registration system in `kalanfa/plugins/utils/urls.py` wraps each plugin's URLs with its module path as the namespace, creating URLs like `kalanfa:kalanfa.plugins.coach:lessonreport_list`.
 
 **Important:** Simply having an `api_urls.py` file is not enough - the plugin class MUST set the `untranslated_view_urls` attribute to register those URLs.
 
@@ -179,8 +179,8 @@ urlpatterns = [
 ```
 
 These will be accessible as:
-- `kolibri:core:usernameavailable`
-- `kolibri:core:deleteimporteduser`
+- `kalanfa:core:usernameavailable`
+- `kalanfa:core:deleteimporteduser`
 
 ## Frontend: Using URLs
 
@@ -189,24 +189,24 @@ These will be accessible as:
 The most common way to use URLs in frontend code is to import the `urls` object and call URL functions directly:
 
 ```javascript
-import urls from 'kolibri/urls';
-import client from 'kolibri/client';
+import urls from 'kalanfa/urls';
+import client from 'kalanfa/client';
 
 // List endpoint (no parameters)
 const response = await client({
-  url: urls['kolibri:core:session_list'](),
+  url: urls['kalanfa:core:session_list'](),
   method: 'GET',
 });
 
 // Detail endpoint (with parameter)
 const response = await client({
-  url: urls['kolibri:core:session_detail'](sessionId),
+  url: urls['kalanfa:core:session_detail'](sessionId),
   method: 'GET',
 });
 
 // Custom endpoint with parameter
 const response = await client({
-  url: urls['kolibri:core:deleteimporteduser'](userId),
+  url: urls['kalanfa:core:deleteimporteduser'](userId),
   method: 'DELETE',
 });
 ```
@@ -216,7 +216,7 @@ const response = await client({
 API Resources provide a higher-level abstraction that automatically handles URL namespacing:
 
 ```javascript
-import { Resource } from 'kolibri/apiResource';
+import { Resource } from 'kalanfa/apiResource';
 
 // Create a resource for the 'facilityuser' ViewSet in the 'core' namespace
 const FacilityUserResource = new Resource({
@@ -224,13 +224,13 @@ const FacilityUserResource = new Resource({
   namespace: 'core',  // defaults to 'core' if not specified
 });
 
-// The Resource automatically constructs: 'kolibri:core:facilityuser'
+// The Resource automatically constructs: 'kalanfa:core:facilityuser'
 // and uses _list and _detail suffixes for endpoints
 
-// Fetch a collection (calls kolibri:core:facilityuser_list)
+// Fetch a collection (calls kalanfa:core:facilityuser_list)
 const users = await FacilityUserResource.fetchCollection();
 
-// Fetch a single model (calls kolibri:core:facilityuser_detail)
+// Fetch a single model (calls kalanfa:core:facilityuser_detail)
 const user = await FacilityUserResource.fetchModel({ id: userId });
 
 // Save a model
@@ -243,15 +243,15 @@ await FacilityUserResource.saveModel({
 For plugin resources:
 
 ```javascript
-import { Resource } from 'kolibri/apiResource';
+import { Resource } from 'kalanfa/apiResource';
 
 // Create a resource for a plugin ViewSet
 const LessonReportResource = new Resource({
   name: 'lessonreport',
-  namespace: 'kolibri.plugins.coach',
+  namespace: 'kalanfa.plugins.coach',
 });
 
-// This constructs: 'kolibri:kolibri.plugins.coach:lessonreport'
+// This constructs: 'kalanfa:kalanfa.plugins.coach:lessonreport'
 ```
 
 ### Custom Methods on Resources
@@ -259,9 +259,9 @@ const LessonReportResource = new Resource({
 Resources can have custom methods that use specific URL endpoints:
 
 ```javascript
-import { Resource } from 'kolibri/apiResource';
-import urls from 'kolibri/urls';
-import client from 'kolibri/client';
+import { Resource } from 'kalanfa/apiResource';
+import urls from 'kalanfa/urls';
+import client from 'kalanfa/client';
 
 const FacilityUserResource = new Resource({
   name: 'facilityuser',
@@ -269,14 +269,14 @@ const FacilityUserResource = new Resource({
   // Custom method using a specific URL
   removeImportedUser(user_id) {
     return client({
-      url: urls['kolibri:core:deleteimporteduser'](user_id),
+      url: urls['kalanfa:core:deleteimporteduser'](user_id),
       method: 'DELETE',
     });
   },
 
   async listRemoteFacilityLearners(params) {
     const { data } = await client({
-      url: urls['kolibri:core:remotefacilityauthenticateduserinfo'](),
+      url: urls['kalanfa:core:remotefacilityauthenticateduserinfo'](),
       method: 'POST',
       data: params,
     });
@@ -291,15 +291,15 @@ const FacilityUserResource = new Resource({
 
 1. **Django URL Registration**
    - ViewSets are registered with REST Framework routers using a `basename`
-   - Django generates URL names like `kolibri:core:session_list`
+   - Django generates URL names like `kalanfa:core:session_list`
 
 2. **JavaScript URL Generation**
    - The `django-js-reverse` package converts Django URLs to JavaScript
    - URL patterns with parameters are converted to template strings (e.g., `"/api/auth/session/%(id)s/"`)
-   - This data is injected into the `kolibriCoreAppGlobal.urls` object
+   - This data is injected into the `kalanfaCoreAppGlobal.urls` object
 
 3. **Frontend URL Resolution**
-   - The `UrlResolver` class (in `packages/kolibri/urls.js`) reads the URL patterns
+   - The `UrlResolver` class (in `packages/kalanfa/urls.js`) reads the URL patterns
    - It creates functions that accept parameters and return complete URLs
    - A Proxy is used to provide dynamic property access for all URL functions
 
@@ -314,20 +314,20 @@ const FacilityUserResource = new Resource({
 Backend:                                       Frontend:
 ─────────                                      ──────────
 
-router.register(                               urls['kolibri:core:session_detail']('abc123')
+router.register(                               urls['kalanfa:core:session_detail']('abc123')
   r"session",                                              ↓
   SessionViewSet,                              Looks up pattern: "/api/auth/session/%(id)s/"
   basename="session"                                       ↓
 )                                              Substitutes parameter: "/api/auth/session/abc123/"
           ↓                                                ↓
 Django creates URLs:                           Returns complete URL
-- kolibri:core:session_list
-- kolibri:core:session_detail
+- kalanfa:core:session_list
+- kalanfa:core:session_detail
           ↓
 django-js-reverse converts to JavaScript
           ↓
-kolibriCoreAppGlobal.urls = {
-  "kolibri:core:session_detail": [
+kalanfaCoreAppGlobal.urls = {
+  "kalanfa:core:session_detail": [
     ["/api/auth/session/%(id)s/", ["id"]]
   ]
 }
@@ -340,7 +340,7 @@ kolibriCoreAppGlobal.urls = {
 - **Direct URL access**: Use when you need fine-grained control or are making one-off requests
   ```javascript
   const response = await client({
-    url: urls['kolibri:core:session_list'](),
+    url: urls['kalanfa:core:session_list'](),
   });
   ```
 
@@ -358,7 +358,7 @@ Never hard-code URLs:
 const url = '/api/auth/session/';
 
 // ✅ GOOD - Use URL namespacing
-const url = urls['kolibri:core:session_list']();
+const url = urls['kalanfa:core:session_list']();
 ```
 
 ### 3. Provide All Required Parameters
@@ -367,10 +367,10 @@ URL functions will throw errors if required parameters are missing:
 
 ```javascript
 // ❌ BAD - Missing required parameter
-const url = urls['kolibri:core:session_detail']();  // Error!
+const url = urls['kalanfa:core:session_detail']();  // Error!
 
 // ✅ GOOD - All parameters provided
-const url = urls['kolibri:core:session_detail'](sessionId);
+const url = urls['kalanfa:core:session_detail'](sessionId);
 ```
 
 ### 4. Use Consistent Basenames
@@ -405,10 +405,10 @@ URL functions will not exist if the plugin is disabled, so if you are referencin
 
 ```javascript
 // ❌ BAD - Undefined is not a function!
-const url = urls['kolibri:kolibri.plugins.device:device']();
+const url = urls['kalanfa:kalanfa.plugins.device:device']();
 
 // ✅ GOOD - no error, but url is null if disabled
-const urlFn = urls['kolibri:kolibri.plugins.device:device'];
+const urlFn = urls['kalanfa:kalanfa.plugins.device:device'];
 const url = urlFn ? urlFn() : null;
 ```
 
@@ -419,13 +419,13 @@ const url = urlFn ? urlFn() : null;
 In the browser console, you can inspect all available URLs:
 
 ```javascript
-import urls from 'kolibri/urls';
+import urls from 'kalanfa/urls';
 
 // Get the raw URL patterns
 console.log(urls._patterns);
 
 // Test a specific URL function
-console.log(urls['kolibri:core:session_list']());
+console.log(urls['kalanfa:core:session_list']());
 // Output: "/api/auth/session/"
 ```
 
@@ -453,7 +453,7 @@ Resources support fetching custom detail endpoints (custom actions on a specific
 ```javascript
 // Backend: @action(detail=True, methods=['get'])
 // def recommendations_for(self, request, pk=None)
-// Creates: kolibri:core:contentnode_recommendations_for
+// Creates: kalanfa:core:contentnode_recommendations_for
 
 const data = await ContentNodeResource.fetchDetailModel(
   'recommendations_for',  // action name
@@ -469,7 +469,7 @@ Resources support fetching custom list endpoints (custom actions on the collecti
 ```javascript
 // Backend: @action(detail=False, methods=['get'])
 // def random(self, request)
-// Creates: kolibri:core:contentnode_random
+// Creates: kalanfa:core:contentnode_random
 
 const data = await ContentNodeResource.fetchListCollection(
   'random',  // action name

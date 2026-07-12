@@ -2,7 +2,7 @@ Feature: Learner on a LOD can import and remove users
 
   Background:
     Given I am signed in as a learner on a learn-only device (LOD)
-    	And there is a Kolibri server in the network
+    	And there is a Kalanfa server in the network
     	And I am at *Device > Users*
 
 	Scenario: Learner can import a user

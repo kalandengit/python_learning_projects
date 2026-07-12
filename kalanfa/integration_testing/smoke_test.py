@@ -1,12 +1,12 @@
 """
-Browser smoke test for Kolibri.
+Browser smoke test for Kalanfa.
 
-Starts Kolibri, navigates the "On my own" setup wizard using Playwright,
+Starts Kalanfa, navigates the "On my own" setup wizard using Playwright,
 and takes a screenshot of the post-setup landing page.
 
 Environment variables:
-    KOLIBRI_HOME: Path to Kolibri home directory (optional)
-    KOLIBRI_PORT: Port to run Kolibri on (default: 8080)
+    KALANFA_HOME: Path to Kalanfa home directory (optional)
+    KALANFA_PORT: Port to run Kalanfa on (default: 8080)
     SCREENSHOT_PATH: Path to save the screenshot (default: screenshot.png)
 """
 
@@ -23,65 +23,65 @@ from playwright.sync_api import sync_playwright
 
 logger = logging.getLogger(__name__)
 
-KOLIBRI_PORT = os.environ.get("KOLIBRI_PORT", "8080")
-KOLIBRI_URL = f"http://localhost:{KOLIBRI_PORT}"
-STARTUP_TIMEOUT = 120  # seconds to wait for Kolibri to start
+KALANFA_PORT = os.environ.get("KALANFA_PORT", "8080")
+KALANFA_URL = f"http://localhost:{KALANFA_PORT}"
+STARTUP_TIMEOUT = 120  # seconds to wait for Kalanfa to start
 SCREENSHOT_PATH = os.environ.get("SCREENSHOT_PATH", "screenshot.png")
 
 
-def wait_for_kolibri(process, timeout=STARTUP_TIMEOUT):
-    """Wait for Kolibri server to become accessible."""
+def wait_for_kalanfa(process, timeout=STARTUP_TIMEOUT):
+    """Wait for Kalanfa server to become accessible."""
     start = time.time()
     while time.time() - start < timeout:
         ret = process.poll()
         if ret is not None:
-            raise RuntimeError(f"Kolibri process exited prematurely with code {ret}")
+            raise RuntimeError(f"Kalanfa process exited prematurely with code {ret}")
         try:
-            urllib.request.urlopen(KOLIBRI_URL, timeout=5)
+            urllib.request.urlopen(KALANFA_URL, timeout=5)
             return
         except (urllib.error.URLError, ConnectionError, OSError):
             time.sleep(2)
-    raise TimeoutError(f"Kolibri did not start within {timeout} seconds")
+    raise TimeoutError(f"Kalanfa did not start within {timeout} seconds")
 
 
 def run_smoke_test():
-    """Start Kolibri and navigate the setup wizard."""
-    # Start Kolibri as a subprocess, inheriting stdout/stderr so CI captures logs
+    """Start Kalanfa and navigate the setup wizard."""
+    # Start Kalanfa as a subprocess, inheriting stdout/stderr so CI captures logs
     env = os.environ.copy()
-    env["KOLIBRI_RUN_MODE"] = "integration-test"
-    kolibri_process = subprocess.Popen(
+    env["KALANFA_RUN_MODE"] = "integration-test"
+    kalanfa_process = subprocess.Popen(
         [
             sys.executable,
             "-m",
-            "kolibri",
+            "kalanfa",
             "start",
             "--foreground",
-            f"--port={KOLIBRI_PORT}",
+            f"--port={KALANFA_PORT}",
         ],
         env=env,
     )
 
     try:
-        logger.info("Waiting for Kolibri to start...")
-        wait_for_kolibri(kolibri_process)
-        logger.info("Kolibri is ready.")
+        logger.info("Waiting for Kalanfa to start...")
+        wait_for_kalanfa(kalanfa_process)
+        logger.info("Kalanfa is ready.")
 
         with sync_playwright() as p:
             browser = p.chromium.launch(headless=True)
             page = browser.new_page()
 
             try:
-                # Navigate to Kolibri
-                page.goto(KOLIBRI_URL, wait_until="domcontentloaded")
+                # Navigate to Kalanfa
+                page.goto(KALANFA_URL, wait_until="domcontentloaded")
                 logger.info(f"Loaded: {page.url}")
 
-                # Step 1: "How are you using Kolibri?" — "On my own" is pre-selected
+                # Step 1: "How are you using Kalanfa?" — "On my own" is pre-selected
                 page.get_by_role("button", name="Continue").click()
-                logger.info("Step 1: Clicked Continue (How are you using Kolibri?)")
+                logger.info("Step 1: Clicked Continue (How are you using Kalanfa?)")
 
                 # Wait for the language selection step to appear via URL
                 page.wait_for_url(lambda url: "default-language" in url, timeout=30000)
-                # Step 2: "Please select the default language for Kolibri" — English is default
+                # Step 2: "Please select the default language for Kalanfa" — English is default
                 page.get_by_role("button", name="Continue").click()
                 logger.info("Step 2: Clicked Continue (Default language)")
 
@@ -95,7 +95,7 @@ def run_smoke_test():
                 page.get_by_role("button", name="Continue").click()
                 logger.info("Step 3: Filled credentials and clicked Continue")
 
-                # Step 4: "Setting up Kolibri" — wait for redirect to the learn page
+                # Step 4: "Setting up Kalanfa" — wait for redirect to the learn page
                 page.wait_for_url(
                     lambda url: "/learn" in url,
                     timeout=60000,
@@ -126,13 +126,13 @@ def run_smoke_test():
                 browser.close()
 
     finally:
-        kolibri_process.terminate()
+        kalanfa_process.terminate()
         try:
-            kolibri_process.wait(timeout=10)
+            kalanfa_process.wait(timeout=10)
         except subprocess.TimeoutExpired:
-            kolibri_process.kill()
-            kolibri_process.wait()
-        logger.info("Kolibri process stopped.")
+            kalanfa_process.kill()
+            kalanfa_process.wait()
+        logger.info("Kalanfa process stopped.")
 
 
 if __name__ == "__main__":

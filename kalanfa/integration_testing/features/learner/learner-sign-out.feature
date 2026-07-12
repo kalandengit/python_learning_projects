@@ -1,9 +1,9 @@
 Feature: Learner sign-out
-    Learners need to be able to sign out when finished using Kolibri
+    Learners need to be able to sign out when finished using Kalanfa
     Also important for correct progress tracking of individual learners
 
   Background:
-    Given that I am signed in to Kolibri as a learner user
+    Given that I am signed in to Kalanfa as a learner user
 
   Scenario: Sign-out from user menu
     When I select the user menu in the top right hand corner

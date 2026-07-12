@@ -1,10 +1,10 @@
 Feature: Admin syncs facility
-  Admin needs to be able to sync their facility data to Kolibri Data Portal
+  Admin needs to be able to sync their facility data to Kalanfa Data Portal
 
   Background:
     Given I am logged in as a Facility admin
       And my facility has been registered before
-      And I want to sync my facility data to Kolibri Data Portal
+      And I want to sync my facility data to Kalanfa Data Portal
       And I am in the Data tab in the Facility plugin
 
   Scenario: Learn what sync does
@@ -19,6 +19,6 @@ Feature: Admin syncs facility
     Then I see *Last successful sync: Just now* underneath the facility name
 
   Scenario: Failed sync
-    When I set KOLIBRI_DATA_PORTAL_SYNCING_BASE_URL to a fake URL so the sync will fail
+    When I set KALANFA_DATA_PORTAL_SYNCING_BASE_URL to a fake URL so the sync will fail
     And I click *Sync*
     Then I see *Most recent sync failed* underneath the facility name

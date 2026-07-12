@@ -2,7 +2,7 @@ Feature: Admin assigns users to class(es)
   Admin users need to be able to assign users to classes
 
   Background:
-    Given I am signed in to Kolibri as a facility admin user
+    Given I am signed in to Kalanfa as a facility admin user
       And I am at *Facility > Users* page
       And there are several created users of type coach, facility coach, and admin
       And there are several classes

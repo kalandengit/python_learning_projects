@@ -1,6 +1,6 @@
 """
 For usage instructions, see:
-    https://kolibri-dev.readthedocs.io/en/develop/release_process.html
+    https://kalanfa-dev.readthedocs.io/en/develop/release_process.html
 """
 
 import csv
@@ -16,7 +16,7 @@ logging.basicConfig(format="%(levelname)s: %(message)s", level=logging.INFO)
 logging.StreamHandler(sys.stdout)
 
 
-FILE_NAME = "kolibri.core.default_frontend-messages.json"
+FILE_NAME = "kalanfa.core.default_frontend-messages.json"
 
 # used in `mostRecentNotification` function in coreBase/index.vue
 I18N_TITLE = "title"

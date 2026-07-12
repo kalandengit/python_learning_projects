@@ -26,10 +26,10 @@ logging.basicConfig(format="%(levelname)s: %(message)s", level=logging.INFO)
 logging.StreamHandler(sys.stdout)
 
 
-# Path to the kolibri locale data folder - fixed for Kolibri development environment
-LOCALE_DATA_FOLDER = os.path.join(os.path.dirname(__file__), "../../kolibri/locale")
+# Path to the kalanfa locale data folder - fixed for Kalanfa development environment
+LOCALE_DATA_FOLDER = os.path.join(os.path.dirname(__file__), "../../kalanfa/locale")
 
-# Path to the kolibri locale language_info file
+# Path to the kalanfa locale language_info file
 LANGUAGE_INFO_PATH = os.path.join(LOCALE_DATA_FOLDER, "language_info.json")
 
 # Keys used in language_info.json

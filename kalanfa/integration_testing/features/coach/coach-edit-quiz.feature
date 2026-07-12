@@ -2,7 +2,7 @@ Feature: Coach edits quizzes
   Coach needs to be able to edit existing quiz details from both Plan and Report
 
   Background:
-    Given I am signed in to Kolibri as a coach user
+    Given I am signed in to Kalanfa as a coach user
       And there is a quiz <quiz> created previously
       And the quiz is started
       And I am on the *Coach - '<class>' > Plan > Quizzes > '<quiz>'* page

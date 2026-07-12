@@ -1,7 +1,7 @@
 Feature: Learners
 
   Background:
-    Given I am signed in to Kolibri as a super admin or a coach
+    Given I am signed in to Kalanfa as a super admin or a coach
       And I am at the *Coach - '<class>' > Learners* page
       And there are learners who have interacted with and completed lessons and quizzes
 

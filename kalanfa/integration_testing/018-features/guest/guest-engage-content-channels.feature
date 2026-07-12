@@ -2,7 +2,7 @@ Feature: Guest engages content channels
   Guest needs to engage with content at the Library page
 
   Background:
-    Given I am on Kolibri sign in page
+    Given I am on Kalanfa sign in page
       And I click the *Explore without account* button
       And there is at least one channel imported on the device
       And I am at the *Learn > Library* page

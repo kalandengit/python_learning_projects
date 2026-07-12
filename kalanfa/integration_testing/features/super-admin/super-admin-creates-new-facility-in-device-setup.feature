@@ -1,8 +1,8 @@
 Feature: Super admin creates new facility during the device setup
-  Super admin needs to create their own account and perform the initial facility configuration of Kolibri through the setup wizard
+  Super admin needs to create their own account and perform the initial facility configuration of Kalanfa through the setup wizard
 
   Background:
-    Given that the Kolibri installation was successful
+    Given that the Kalanfa installation was successful
       And the server is running for the first time
       And the browser is opened at the IP address 127.0.0.1:8080
       And I have selected a language in the device setup
@@ -71,6 +71,6 @@ Feature: Super admin creates new facility during the device setup
       Then the modal closes
       When I click *Finish*
       Then I see the *Setting up the facility...* page
-        And I see the *Welcome to Kolibri!* modal
+        And I see the *Welcome to Kalanfa!* modal
       When I click *Continue*
       Then I see the *Device > Channels* page

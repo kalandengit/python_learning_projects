@@ -20,7 +20,7 @@ You can have several VMs imported in the VirtualBox Manager Window. Select the V
 
    .. image:: ./configure_vm_04.png
 
-3. In the **Shared Folders** pane add the folder you created previously where you keep Kolibri and other installers on your host machine that you want to make available for virtual machines.
+3. In the **Shared Folders** pane add the folder you created previously where you keep Kalanfa and other installers on your host machine that you want to make available for virtual machines.
 
    .. image:: ./configure_vm_05.png
 

@@ -2,10 +2,10 @@
 """
 Pre-commit hook to keep the plugin scaffolder's fallback version pins in sync.
 
-``kolibri/utils/plugin_scaffold/manifest.py`` declares ``FRONTEND_DEPENDENCIES``
+``kalanfa/utils/plugin_scaffold/manifest.py`` declares ``FRONTEND_DEPENDENCIES``
 — pinned versions used for a scaffolded ``package.json`` when the plugin is NOT
 inside a pnpm workspace that provides the dependency (see the note there). Those
-pins mirror the versions Kolibri currently ships, so they go stale whenever a
+pins mirror the versions Kalanfa currently ships, so they go stale whenever a
 workspace member is bumped or a catalog entry changes.
 
 This hook recomputes each pin from the source of truth — a member package's own
@@ -23,7 +23,7 @@ import sys
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 WORKSPACE_FILE = os.path.join(ROOT, "pnpm-workspace.yaml")
-MANIFEST_FILE = os.path.join(ROOT, "kolibri", "utils", "plugin_scaffold", "manifest.py")
+MANIFEST_FILE = os.path.join(ROOT, "kalanfa", "utils", "plugin_scaffold", "manifest.py")
 
 
 def _unquote(text):

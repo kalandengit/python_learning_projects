@@ -30,7 +30,7 @@ Feature: Super admin explores other libraries
 		Then I see the *All libraries* page
 			And I see a *All libraries* label
 			And I see *Showing the libraries on other devices and networks around you* below the *All libraries* label
-			And I see the *Kolibri content library* at the top
+			And I see the *Kalanfa content library* at the top
 			And I see the available unpinned full devices #TO DO needs clarification whether we see the pinned devices too
 			And I see the available learn-only devices
 			And I see the *External storage* section

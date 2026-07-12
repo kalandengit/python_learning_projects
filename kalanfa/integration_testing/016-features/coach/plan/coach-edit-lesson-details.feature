@@ -2,7 +2,7 @@ Feature: Coach edits lessons
   Coach needs to be able to edit existing lesson title and description, and to reassign lessons to group(s) or entire class
 
   Background:
-    Given I am signed in to Kolibri as a coach user
+    Given I am signed in to Kalanfa as a coach user
       And I am on the *Coach - '<class>' > Plan > Lessons > '<lesson>'* page
       And there are 2 or more learner groups
       And there is a lesson <lesson> created previously

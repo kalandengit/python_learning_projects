@@ -2,9 +2,9 @@ Feature: Super admin selects to import entire channels or only topics/resources
     Super admin needs to be able to switch between importing entire channels and importing topics or resources
 
   Background:
-    Given I am signed in to Kolibri as super admin, or a user with device permissions to import content
+    Given I am signed in to Kalanfa as super admin, or a user with device permissions to import content
       And I am on *Device > Channels* page
-      And I selected a source to import from: Kolibri Studio, local network or attached drive
+      And I selected a source to import from: Kalanfa Studio, local network or attached drive
 
   Scenario: Import entire content channels
     Given I see the *Select resources for import* heading

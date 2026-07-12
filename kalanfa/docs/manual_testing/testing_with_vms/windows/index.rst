@@ -1,4 +1,4 @@
-Test Kolibri in Windows guest
+Test Kalanfa in Windows guest
 =============================
 
 .. contents::
@@ -12,4 +12,4 @@ Test Kolibri in Windows guest
 .. include:: ./start_vm.rst
 .. include:: ./recommendations_for_tuning.rst
 .. include:: ./install_additional_browsers.rst
-.. include:: ./install_kolibri.rst
+.. include:: ./install_kalanfa.rst

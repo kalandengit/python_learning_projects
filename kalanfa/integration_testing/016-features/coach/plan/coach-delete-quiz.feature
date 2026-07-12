@@ -2,7 +2,7 @@ Feature: Coach deletes quiz
   Coach needs to be able to delete the quiz when necessary
 
   Background:
-    Given I am signed in to Kolibri as coach user
+    Given I am signed in to Kalanfa as coach user
       And I am on *Coach - '<class>' > Plan > Quizzes* page
 
   Scenario: Delete quiz

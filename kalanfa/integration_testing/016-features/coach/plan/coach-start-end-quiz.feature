@@ -2,7 +2,7 @@ Feature: Coach start and end quizzes according to their teaching needs
   Coaches need to start quizzes in order for learners to gain access and be able to submit after answering questions
 
   Background:
-    Given I am signed in to Kolibri as coach user
+    Given I am signed in to Kalanfa as coach user
 
   Scenario: Start quiz
     Given that there is a quiz <quiz> that has never been started

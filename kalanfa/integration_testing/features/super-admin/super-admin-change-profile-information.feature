@@ -2,7 +2,7 @@ Feature: Super admin changes their own profile information
 	Super admin needs to be able to change their own profile information
 
   Background:
-    Given I am signed in to Kolibri as Super admin
+    Given I am signed in to Kalanfa as Super admin
       And I am on the *User > Profile* page
 
   Scenario: Super admin changes username and full name

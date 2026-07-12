@@ -2,7 +2,7 @@ Feature: Quizzes
   Coaches need to be able to customize quizzes by swapping out questions or editing questions to create the quiz they want.
 
 	Background:
-    Given I am signed in to Kolibri as a super admin or a coach
+    Given I am signed in to Kalanfa as a super admin or a coach
     	And there are imported channels with exercises on the device
     	And there is a class with enrolled learners in it
       And I am at the *Coach - '<class>' > Quizzes* page

@@ -3,7 +3,7 @@ Feature: Guest interacts with the View folder resources side panel
 	and can go to the next folder of the channel
 
 	Background:
-		Given I am browsing Kolibri as a Guest user
+		Given I am browsing Kalanfa as a Guest user
       And I click the *Explore without account* button
       And there is at least one channel with folders imported on the device
       And I am at the *Learn > Library* page

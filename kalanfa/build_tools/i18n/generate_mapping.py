@@ -21,7 +21,7 @@ def get_language_mapping():
     # Get the path to language_info.json relative to this script
     script_dir = os.path.dirname(os.path.abspath(__file__))
     json_path = os.path.join(
-        script_dir, "..", "..", "kolibri", "locale", "language_info.json"
+        script_dir, "..", "..", "kalanfa", "locale", "language_info.json"
     )
 
     with open(json_path, "r", encoding="utf-8") as f:

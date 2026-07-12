@@ -1,36 +1,49 @@
+# Kalanfa
 
-# Kolibri
+**Kalanfa** est la plateforme d'apprentissage **hors-ligne d'abord** du
+**PROJET_SCHOOL_MOUMA_BKO_2026** (École MOUMA, Bamako) : enseigner et
+apprendre avec la technologie, même sans connexion Internet fiable.
 
-[![Python test status](https://github.com/learningequality/kolibri/actions/workflows/tox.yml/badge.svg?branch=develop)](https://github.com/learningequality/kolibri/actions/workflows/tox.yml)
-[![JS test status](https://github.com/learningequality/kolibri/actions/workflows/frontend-tests.yml/badge.svg?branch=develop)](https://github.com/learningequality/kolibri/actions/workflows/frontend-tests.yml)
-[![Developer docs](https://img.shields.io/badge/docs-dev-blue.svg)](http://kolibri-dev.readthedocs.org/en/develop/)
-[![Developer chat](https://img.shields.io/badge/chat-dev-blue.svg)](http://webchat.freenode.net?channels=%23kolibri)
-[![PyPI](https://img.shields.io/pypi/v/kolibri.svg?color=blue)](https://pypi.org/project/kolibri/)
-[![Demo](https://img.shields.io/badge/demo-online-blue.svg)](http://kolibridemo.learningequality.org/)
-[![User docs](https://img.shields.io/badge/docs-user-blue.svg)](http://kolibri.readthedocs.org/en/latest/)
-[![Discourse topics](https://img.shields.io/discourse/https/community.learningequality.org/topics.svg?color=blue)](https://community.learningequality.org/)
+Kalanfa est un fork rebaptisé de la [plateforme Kolibri](https://github.com/learningequality/kolibri)
+de [Learning Equality](https://learningequality.org/) (licence MIT — voir
+[`LICENSE`](./LICENSE) et [`ATTRIBUTION.md`](./ATTRIBUTION.md)). Ce fork est
+indépendant et n'est pas affilié à Learning Equality.
 
-This repository is for software developers wishing to contribute to Kolibri. If you are looking for help installing, configuring and using Kolibri, please refer to the [User Guide](https://kolibri.readthedocs.io/).
+## Qu'est-ce que Kalanfa ?
 
+Une plateforme SaaS multi-établissements pour l'éducation :
 
-## What is Kolibri?
+- **Hors-ligne d'abord** : fonctionne sans Internet, synchronise quand la
+  connexion revient — pensée pour les réalités de Bamako et de l'Afrique de
+  l'Ouest.
+- **Bibliothèque de contenus** : chaînes de ressources pédagogiques
+  (leçons, vidéos, exercices) distribuables par USB ou pair-à-pair.
+- **Rôles** : apprenant, enseignant (coach), administrateur — avec tableaux
+  de bord de suivi de progression en temps réel.
+- **Établissements (facilities)** : chaque école est un espace isolé —
+  la base du modèle SaaS multi-tenant.
 
-[Kolibri Learning Platform](https://learningequality.org/kolibri/): the offline-first platform for teaching and learning with technology without requiring the Internet.
+### Feuille de route MOUMA
 
-Developed with and for the community by [Learning Equality](https://learningequality.org/).
+Modules de gestion scolaire à venir par-dessus la plateforme :
+inscriptions (fiches de renseignement), notes & bulletins PDF, suivi
+Montessori (observations, domaines), frais de scolarité, fiches de poste.
 
-## How can I use it?
+## Démarrage (développement)
 
-Kolibri is [available for download](https://learningequality.org/download/) from our website.
+```bash
+# Environnement Python (3.9 - 3.13)
+python -m venv .venv && source .venv/bin/activate
+pip install -e .
 
-## How do I get help or give feedback?
+# Lancer le serveur
+kalanfa start --foreground
+```
 
-You can ask questions, make suggestions, and report issues in the [community forums](https://community.learningequality.org/).
+Le frontend se construit avec Node.js + pnpm (`pnpm install && pnpm build`).
+Voir `docs/` pour l'architecture détaillée.
 
-If you have found a bug and are comfortable using Github and Markdown, you can create a [Github issue](https://github.com/learningequality/kolibri/issues) following the instructions in the issue template.
+## Licence
 
-## How can I contribute?
-
-We welcome contributors!
-
-To find out how to contribute, visit [Contributing to our open code base](https://learningequality.org/contributing-to-our-open-code-base).
+MIT — © 2021 Learning Equality et autres contributeurs (projet d'origine),
+adaptations Kalanfa pour le PROJET_SCHOOL_MOUMA_BKO_2026.

@@ -1,0 +1,20 @@
+{
+  "name": "kalanfa-core",
+  "description": "Core App for Kalanfa",
+  "private": true,
+  "version": "0.0.1",
+  "dependencies": {
+    "@babel/core": "^7.29.7",
+    "@babel/preset-env": "^7.29.7",
+    "@vueuse/core": "catalog:",
+    "babel-loader": "^10.1.1",
+    "browserslist-config-kalanfa": "workspace:*",
+    "core-js": "catalog:",
+    "kalanfa": "workspace:*",
+    "kalanfa-common": "workspace:*",
+    "kalanfa-logging": "workspace:*",
+    "kalanfa-plugin-data": "workspace:*",
+    "lodash": "catalog:",
+    "vue": "catalog:"
+  }
+}

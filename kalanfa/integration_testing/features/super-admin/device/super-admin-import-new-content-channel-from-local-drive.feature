@@ -3,7 +3,7 @@ Feature: Super admin imports from a new channel on a local drive
 
   Background:
     Given there is no content from <channel> channel on the device
-      And I am signed in to Kolibri as super admin, or a user with device permissions to import content
+      And I am signed in to Kalanfa as super admin, or a user with device permissions to import content
       And I am on *Import from '<drive>' > Select resources for import* page with the list of available channels
 
   Scenario: Import new resources from local drive

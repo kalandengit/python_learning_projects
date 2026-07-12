@@ -2,7 +2,7 @@ Feature: Super admin deletes channel(s) or resource(s)
     Super admin needs to be able to delete complete content channels and single or multiple resources from the device
 
   Background:
-    Given I am signed in to Kolibri as super admin, or a user with device permissions to import content
+    Given I am signed in to Kalanfa as super admin, or a user with device permissions to import content
       And I am on *Device > Channels* page
       And there are <channel1> and <channel2> channels on the device
       And there is <resource> resource in the <channel2> channel

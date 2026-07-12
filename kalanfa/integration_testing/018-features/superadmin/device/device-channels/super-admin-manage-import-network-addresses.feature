@@ -2,7 +2,7 @@ Feature: Super admin manages import network locations
   Super admin needs to be able to add and remove a network location from which they can import content
 
   Background:
-    Given I am signed in to Kolibri as a super admin user, or a user with device permissions to import content
+    Given I am signed in to Kalanfa as a super admin user, or a user with device permissions to import content
       And I am on the *Select network address* modal
       And I see *There are no addresses yet*
       And the *Continue* button is disabled
@@ -43,9 +43,9 @@ Feature: Super admin manages import network locations
       And I press the *Add* button
     Then I see *Please enter a valid IP address, URL, or hostname* error under the *Full network address* field
 
-  Scenario: Attempting to add an address without a running Kolibri instance
+  Scenario: Attempting to add an address without a running Kalanfa instance
     Given I am on the *New address* modal
-      And <network_name> does not have a running Kolibri instance
+      And <network_name> does not have a running Kalanfa instance
     When I enter <network_address> in the *Full network address* field
       And I enter <network_name> in the *Network name* field
       And I press the *Add* button

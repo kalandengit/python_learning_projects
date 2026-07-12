@@ -1,13 +1,13 @@
 Feature: Import individual users
 
 	Background:
-		Given Kolibri is not installed on my device
-			And the Kolibri installer is downloaded to my device
-			And Kolibri version 0.15 is installed on another device in my network
+		Given Kalanfa is not installed on my device
+			And the Kalanfa installer is downloaded to my device
+			And Kalanfa version 0.15 is installed on another device in my network
 			And I have a local wi-fi connection
-		When I install Kolibri
-			And I open Kolibri in my browser
-		Then I see *Please select the default language for Kolibri*
+		When I install Kalanfa
+			And I open Kalanfa in my browser
+		Then I see *Please select the default language for Kalanfa*
 		When I click *Continue*
 		Then I see *Getting started*
 		When I select *Advanced Setup*
@@ -34,9 +34,9 @@ Feature: Import individual users
 		When I select *Import one or more user accounts from an existing facility*
 			And I click *Continue*
 		Then I see *Select network address*
-			And I see *Devices must be installed with Kolibri version 0.15.0* in the modal description
+			And I see *Devices must be installed with Kalanfa version 0.15.0* in the modal description
 			And I see radio options for devices in my network
-			And I see <Kolibri version> in the caption of each radio option
+			And I see <Kalanfa version> in the caption of each radio option
 		When I select <device>
 			And I click *Continue*
 		Then I see *Import individual user accounts*
@@ -51,7 +51,7 @@ Feature: Import individual users
 			And I see *<Full name> from <facility> successfully loaded to this device*
 			And I see the buttons *Finish* and *Import another user*
 		When I click *Finish*
-		Then I see the *Welcome to Kolibri!* modal on the *Channels* page
+		Then I see the *Welcome to Kalanfa!* modal on the *Channels* page
 			And I see that I am signed in as <username>
 
 	Scenario: Import a second user
@@ -68,7 +68,7 @@ Feature: Import individual users
 			And I see *On this device*
 			And I see a list with <Full name 1> and <Full name 2>
 		When I click *Finish*
-		Then I see the *Welcome to Kolibri* modal
+		Then I see the *Welcome to Kalanfa* modal
 			And I see that I am signed in as the first user I imported
 
 	Scenario: Change mind while importing a second user
@@ -78,7 +78,7 @@ Feature: Import individual users
 		Then I see the *Import individual user accounts* page
 			And I see a *Skip* button next to the *Import* button
 		When I click *Skip*
-		Then I see the *Welcome to Kolibri!* modal on the *Channels* page
+		Then I see the *Welcome to Kalanfa!* modal on the *Channels* page
 
 	Scenario: Import coach or admin
 		Given I am on the *Import individual user accounts* page
@@ -123,7 +123,7 @@ Feature: Import individual users
 		Then I see *Select a user*
 			And I see a bottom bar with a secondary *Skip* button
 		When I click *Skip*
-		Then I see the *Welcome to Kolibri* modal on the *Channels* page
+		Then I see the *Welcome to Kalanfa* modal on the *Channels* page
 
 	Scenario: Import coach or admin while *Require password for learners* facility setting is disabled
 		Given I am viewing *Import individual user accounts*

@@ -6,7 +6,7 @@ import cairosvg
 from PIL import Image
 
 
-# The default input size is based off the current size of the Kolibri logo SVG
+# The default input size is based off the current size of the Kalanfa logo SVG
 def convert_svg_to_image(
     svg_file_path, output_file_path, input_size=200, final_size=None, padding=None
 ):

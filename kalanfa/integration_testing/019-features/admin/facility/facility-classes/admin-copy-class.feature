@@ -2,7 +2,7 @@ Feature: Admin copies a class
   Admin users need to be able to copy classes in each facility
 
   Background:
-    Given I am signed in to Kolibri as a facility admin user
+    Given I am signed in to Kalanfa as a facility admin user
       And I am at *Facility > Classes* page
       And there is at least one already created class with enrolled learners and assigned coaches
 

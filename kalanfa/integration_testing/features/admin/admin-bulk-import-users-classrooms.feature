@@ -2,7 +2,7 @@ Feature: Admin bulk export of users and classrooms
   Admin needs to be able to import users and their classrooms
 
   Background:
-    Given I am signed in to Kolibri as a facility admin user
+    Given I am signed in to Kalanfa as a facility admin user
       And I am on *Facility > Data* page
 
   Scenario: See the CSV file format requirements

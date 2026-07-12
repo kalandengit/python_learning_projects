@@ -2,7 +2,7 @@ Feature: Learner interacts with EPUB content
   Learner needs to be able to interact with with EPUB content and use all the EPUB reader features
 
   Background:
-    Given I am signed in to Kolibri as a Learner user
+    Given I am signed in to Kalanfa as a Learner user
       And there is at least one channel imported on the device with EPUB content
       And I am on the *Browse channel* page for a channel with EPUB content
 

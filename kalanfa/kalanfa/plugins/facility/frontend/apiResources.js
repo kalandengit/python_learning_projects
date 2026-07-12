@@ -1,0 +1,22 @@
+import { Resource } from 'kalanfa/apiResource';
+import urls from 'kalanfa/urls';
+
+export const PortalResource = new Resource({
+  name: 'portal',
+  validateToken(token) {
+    const url = urls['kalanfa:core:portal_validate_token']();
+    return this.client({
+      url,
+      method: 'get',
+      params: { token },
+    });
+  },
+  registerFacility({ facility_id, token }) {
+    const url = urls['kalanfa:core:portal_register']();
+    return this.client({
+      url,
+      method: 'post',
+      data: { facility_id, token },
+    });
+  },
+});

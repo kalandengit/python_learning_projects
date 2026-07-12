@@ -88,7 +88,7 @@ VTL is based on the philosophy that "The more your tests resemble the way your s
 
 **Note:** Older tests may use vue-test-utils, but all new tests should use Vue Testing Library.
 
-To learn more about VTL, you can check its `examples page <https://testing-library.com/docs/vue-testing-library/examples>`__. You can also check out our `testing templates <testing_layout.html>`__ and our style guide to start writing new test suites in Kolibri.
+To learn more about VTL, you can check its `examples page <https://testing-library.com/docs/vue-testing-library/examples>`__. You can also check out our `testing templates <testing_layout.html>`__ and our style guide to start writing new test suites in Kalanfa.
 
 Style Guide
 -----------
@@ -169,13 +169,13 @@ When querying the DOM in tests, never use hardcoded strings or regex patterns to
 
   // ✅
   // core strings
-  import { coreStrings } from 'kolibri/uiText/commonCoreStrings';
+  import { coreStrings } from 'kalanfa/uiText/commonCoreStrings';
   const { deleteAction$ } = coreStrings;
 
   getByRole('button', { name: deleteAction$() });
 
   // feature strings
-  import { coursesStrings } from 'kolibri-common/strings/coursesStrings';
+  import { coursesStrings } from 'kalanfa-common/strings/coursesStrings';
   const { noTestDataLabel$, sparklineDistributionLabel$ } = coursesStrings;
 
   getByText(noTestDataLabel$());
@@ -183,8 +183,8 @@ When querying the DOM in tests, never use hardcoded strings or regex patterns to
 
   // when strings defined as in-component `$trs` (obsolete pattern),
   // have to use `createTranslator` in the test
-  import { createTranslator } from 'kolibri/utils/i18n';
-  import TimeDuration from 'kolibri-common/components/TimeDuration';
+  import { createTranslator } from 'kalanfa/utils/i18n';
+  import TimeDuration from 'kalanfa-common/components/TimeDuration';
 
   const { minutes$ } = createTranslator(TimeDuration.name, TimeDuration.$trs);
 

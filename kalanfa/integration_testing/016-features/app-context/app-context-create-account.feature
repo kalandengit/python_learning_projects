@@ -2,10 +2,10 @@ Feature: Create an account in app context
   New user needs to be able to create an account, if permitted by the respective facility setting.
 
   Background:
-    Given Kolibri is running in app context
+    Given Kalanfa is running in app context
       And there is one facility on the device I want to create an account on
       And that *Allow learners to create accounts* setting is activated in *Facility > Settings*
-      And that I am on the Kolibri sign-in page
+      And that I am on the Kalanfa sign-in page
 
   Scenario: Create an account on facility where password is not required
     Given that signing in without password is enabled in the *Facility Settings*

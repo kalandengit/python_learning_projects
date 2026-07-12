@@ -2,7 +2,7 @@ Feature: Admin manages deleted users
   Admin users need to be able to manage the deleted users
 
   Background:
-    Given I am signed in to Kolibri as a facility admin user
+    Given I am signed in to Kalanfa as a facility admin user
       And I am at *Facility > Users > Deleted users* page
       And there are several deleted users of different types
       And there are users who have been assigned to or enrolled in a class
@@ -23,7 +23,7 @@ Feature: Admin manages deleted users
     Then I can see that the recovered user is listed in the *Users* table
     When I go to *Facility > Classes*
     Then I can see that the user is either enrolled in or assigned to a class #depending on the user's role
-    When I sign in to Kolibri as the recovered user
+    When I sign in to Kalanfa as the recovered user
     Then I can see that all my previous data and interactions are kept in the state they were before the removal of the user
 
   Scenario: Recover multiple deleted users simultaneously
@@ -37,7 +37,7 @@ Feature: Admin manages deleted users
     Then I can see that the recovered users are listed in the *Users* table
     When I go to *Facility > Classes*
     Then I can see that the users are either enrolled in or assigned to a class (or several classes) #depending on the user's role
-    When I sign in to Kolibri as any of the recovered users
+    When I sign in to Kalanfa as any of the recovered users
     Then I can see that all my previous data and interactions are kept in the state they were before the removal of the user
 
   Scenario: Permanently delete users
@@ -53,5 +53,5 @@ Feature: Admin manages deleted users
     Then I can see that the deleted users are also not listed in the *Users* table
     When I go to *Facility > Classes*
     Then I can see that the users are not enrolled in or assigned to a class (or several classes) #depending on the user's role
-    When I attempt to sign in to Kolibri as any of the deleted users
+    When I attempt to sign in to Kalanfa as any of the deleted users
     Then I can see that this is no longer possible

@@ -5,7 +5,7 @@ Feature: Quiz notifications for multiple groups
 
   Background:
     Given I have all sessions visible in four browser windows/tabs (signed into three as learners, and in the other as <coach>)
-      And I am signed in to Kolibri as a facility or class <coach>
+      And I am signed in to Kalanfa as a facility or class <coach>
       And there are three learners enrolled in class <class> I am assigned to
       And <learner1> and <learner2> are assigned to <group1>
       And <learner3> is assigned to <group2>

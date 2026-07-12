@@ -1,0 +1,15 @@
+{
+    "name": "kalanfa-bloompub-viewer-plugin",
+    "description": "Bloompub Viewer Plugin for Kalanfa",
+    "private": true,
+    "version": "0.0.1",
+    "dependencies": {
+        "kalanfa": "workspace:*",
+        "kalanfa-common": "workspace:*",
+        "kalanfa-design-system": "catalog:",
+        "kalanfa-sandbox": "workspace:*",
+        "kalanfa-viewer": "workspace:*",
+        "lodash": "catalog:",
+        "vue": "catalog:"
+    }
+}

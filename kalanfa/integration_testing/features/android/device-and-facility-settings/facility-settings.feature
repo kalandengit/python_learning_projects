@@ -2,7 +2,7 @@ Feature: Facility settings
 	The user needs to be able to change facility settings such as changing the facility name, allowing learners to join a facility, allowing users to leave a facility and join a different facility, creating a device management PIN
 
   Background:
-    Given that the Kolibri installation was successful
+    Given that the Kalanfa installation was successful
     	And I've set up the device
     	And I am signed in
     	And I am at *Facility > Settings* page

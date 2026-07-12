@@ -2,7 +2,7 @@ Feature: Learner engages ePUB content
   Learner needs to be able to engage with ePUB content and use all the ePUB reader features
 
   Background:
-    Given I am signed in to Kolibri as a Learner user
+    Given I am signed in to Kalanfa as a Learner user
       And there is at least one channel imported on the device with ePUB content
       And I am on the *Browse channel* page for a channel with ePUB content
 

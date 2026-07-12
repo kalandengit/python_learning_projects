@@ -1,11 +1,11 @@
 Feature: Device setup
 
   Background:
-    Given that the Kolibri installation was successful
+    Given that the Kalanfa installation was successful
 
-	Scenario: Load the Kolibri app for the first time during device setup #NOT IMPLEMENTED
+	Scenario: Load the Kalanfa app for the first time during device setup #NOT IMPLEMENTED
 		When I open the app for the first time
-		Then I see a static image of the Kolibri logo
+		Then I see a static image of the Kalanfa logo
 			And I see messages under the logo
 		When I click an arrow
 		Then I can cycle through the messages
@@ -14,12 +14,12 @@ Feature: Device setup
 
 	Scenario: *On my own* setup
 		Given I am using a desktop browser
-			And Kolibri has finished loading after opening it for the first time
+			And Kalanfa has finished loading after opening it for the first time
 		When I click *Get started* #this step is not implemented yet
-		Then I see *How are you using Kolibri?*
+		Then I see *How are you using Kalanfa?*
 			And I see that the checkbox for *On my own* is selected by default
 		When I click *Continue*
-		Then I see *Please select the default language for Kolibri*
+		Then I see *Please select the default language for Kalanfa*
 			And at the top right corner I see an option to change the current language
 		When I click the button which is labeled as the currently selected language
 		Then I see the *Change language* modal
@@ -28,22 +28,22 @@ Feature: Device setup
 		Then I see the interface changed to the selected language
 		When I click *Continue*
 		Then I see the *Create super admin* page
-			And I see the Kolibri logo to the left, the language selector to the right and a label *Create super admin*
+			And I see the Kalanfa logo to the left, the language selector to the right and a label *Create super admin*
 			And I see the text *This super admin account allows you to manage all facilities, resources, and users on this device.*
 			And I see the *Full name*, *Username*, *Password* and *Re-enter password* fields*
 			And I see the *Usage and privacy* link and the text *Important: please remember this account information. Write it down if needed.*
 		When I fill in the *Full name*, *Username*, *Password* and *Re-enter password* fields
 			And I click *Continue*
-		Then I see the Kolibri loading icon
-			And I see *Setting up Kolibri*
+		Then I see the Kalanfa loading icon
+			And I see *Setting up Kalanfa*
 			And I see *This may take several minutes*
-		When Kolibri finishes loading
-		Then I see a modal *Welcome to Kolibri!*
+		When Kalanfa finishes loading
+		Then I see a modal *Welcome to Kalanfa!*
 		When I click *Continue*
 		Then I am at *Learn > Library* page
 
 	Scenario: Group learning - Full device - Create facility with default options
-		Given I am at the *How are you using Kolibri?* page
+		Given I am at the *How are you using Kalanfa?* page
 			And I select the *Group learning* option
 		When I click *Continue*
 		Then I see the *Device name* page
@@ -58,7 +58,7 @@ Feature: Device setup
 		Then I am at the *What kind of learning environment is your facility?* page
 			And I see that the *Non-formal* option is selected
 		When I click *Continue*
-		Then I am at the *Enable users to explore Kolibri without an account?* page
+		Then I am at the *Enable users to explore Kalanfa without an account?* page
 			And I see that the *Yes* option is selected
 		When I click *Continue*
 		Then I am at the *Allow learners to join this facility?* page
@@ -72,13 +72,13 @@ Feature: Device setup
 		Then I see the *Create super admin* page
 		When I fill in the *Full name*, *Username*, *Password* and *Re-enter password* fields
 			And I click *Continue*
-		Then I see the *Setting up Kolibri* page
+		Then I see the *Setting up Kalanfa* page
 		When the setup has finished
 		Then I am at the *Device > Channels* page
-			And I can see the *Welcome to Kolibri!* modal
+			And I can see the *Welcome to Kalanfa!* modal
 
 	Scenario: Group learning - Full device - Create a formal facility
-		Given I am at the *How are you using Kolibri?* page
+		Given I am at the *How are you using Kalanfa?* page
 			And I select the *Group learning* option
 		When I click *Continue*
 		Then I see the *Device name* page
@@ -94,7 +94,7 @@ Feature: Device setup
 		When I select *Formal*
 			And I click *Continue*
 		Then I am at the *Enable guest access?* page
-			And I see that the *No. Users must have an account to view resources on Kolibri* option is selected
+			And I see that the *No. Users must have an account to view resources on Kalanfa* option is selected
 		When I click *Continue*
 		Then I am at the *Allow learners to join this facility?* page
 			And I see that the *No. Admins must create all accounts* option is selected
@@ -107,10 +107,10 @@ Feature: Device setup
 		Then I see the *Create super admin* page
 		When I fill in the *Full name*, *Username*, *Password* and *Re-enter password* fields
 			And I click *Continue*
-		Then I see the *Setting up Kolibri* page
+		Then I see the *Setting up Kalanfa* page
 		When the setup has finished
 		Then I am at the *Device > Channels* page
-			And I can see the *Welcome to Kolibri!* modal
+			And I can see the *Welcome to Kalanfa!* modal
 
 	Scenario: Group learning - Full device - Import all data from an existing learning facility
 		Given I am at the *Set up the learning facility for this full device* page
@@ -148,10 +148,10 @@ Feature: Device setup
 			And I see *Responsibilities as an administrator*
 			And a the *Usage and privacy* link
 		When I click *Continue*
-		Then I see the *Setting up Kolibri* page
+		Then I see the *Setting up Kalanfa* page
 		When the setup has finished
 		Then I am at the *Device > Channels* page
-			And I can see the *Welcome to Kolibri!* modal
+			And I can see the *Welcome to Kalanfa!* modal
 
 	Scenario: Group learning - Learn-only - Join a facility
 		Given I am at the *Select a facility setup for this device* page
@@ -173,11 +173,11 @@ Feature: Device setup
 		Then I see *'<full name>' from <facility> successfully loaded to this device*
 			And I see a green check icon
 		When I click *Finish*
-		Then I see *Setting up Kolibri*
+		Then I see *Setting up Kalanfa*
 			And I see *This may take several minutes*
-			And I see the Kolibri loading icon
+			And I see the Kalanfa loading icon
 		When the setup has finished
-		Then I can see the *Welcome to Kolibri!* modal
+		Then I can see the *Welcome to Kalanfa!* modal
 		When I click *Continue*
 		Then I am at the *Learn > Library* page
 
@@ -208,26 +208,26 @@ Feature: Device setup
 			And I see *'<full name>' from <facility> successfully loaded to this device*
 			And I see an *Import another user account* link
 		When I click *Finish*
-		Then I see the *Setting up Kolibri* page
+		Then I see the *Setting up Kalanfa* page
 		When the setup has finished
-		Then I can see the *Welcome to Kolibri!* modal
+		Then I can see the *Welcome to Kalanfa!* modal
 		When I click *Continue*
 		Then I am at the *Learn > Home* page
 
 	Scenario: Group learning - Learn-only - Facility not available in *Join a facility* setup path
 		Given I selected the *Group learning* setup option
 			And I am on the *Select facility* page
-			And there is another Kolibri server running with <facility> in my network
+			And there is another Kalanfa server running with <facility> in my network
 			And the facility setting *Allow learners to join this facility?* for <facility> is disabled
 		When I try to select the facility <facility>
 		Then I see that the facility <facility> is disabled in the list
 			And I see *You don't have permission to join this facility*
 
 	Scenario: Use the device setup wizard on the smallest breakpoint
-		Given Kolibri has finished loading after opening it for the first time in a mobile device
+		Given Kalanfa has finished loading after opening it for the first time in a mobile device
 			And I see a *Get started* button
 		When I click *Get started*
-		Then I am at the *How are you using Kolibri?* page
+		Then I am at the *How are you using Kalanfa?* page
 			And I see a button with the current language at the top right
 			And I do not see a page container
 			And I see a white background
@@ -243,9 +243,9 @@ Feature: Device setup
 			And I selected the *On my own* setup path
 		Then I see the page *What language do you want to learn in*
 		When I click *Continue*
-		Then I see *Setting up Kolibri*
+		Then I see *Setting up Kalanfa*
 			And I see *This may take several minutes*
-			And I see the Kolibri loading icon
+			And I see the Kalanfa loading icon
 			And I do not see the create account form
 
 	Scenario: Different layout in the native Android app for the step *Select a facility setup for this device*

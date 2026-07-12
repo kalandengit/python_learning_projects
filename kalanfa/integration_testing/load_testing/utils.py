@@ -105,7 +105,7 @@ def get_node_by_criteria(client, channel_id, criteria):
     Fetch content node matching specific criteria.
 
     Args:
-        client: KolibriClient instance
+        client: KalanfaClient instance
         channel_id: Channel ID
         criteria: Dict with 'kind' and optional 'file_extension' or 'modality'
 
@@ -147,7 +147,7 @@ def generate_lesson_resources(client, channel_id):
     Generate lesson resources list by searching for content matching requirements.
 
     Args:
-        client: KolibriClient instance
+        client: KalanfaClient instance
         channel_id: Channel ID to search
 
     Returns:
@@ -213,7 +213,7 @@ def get_or_generate_lesson_resources(client, channel_id):
     Load lesson resources from file, or generate and save if not found.
 
     Args:
-        client: KolibriClient instance
+        client: KalanfaClient instance
         channel_id: Channel ID to search
 
     Returns:

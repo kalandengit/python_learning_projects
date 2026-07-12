@@ -2,7 +2,7 @@ Feature: Learner engages content channels
   Learner needs to engage with content at the Library page
 
   Background:
-    Given I am signed in to Kolibri as a Learner user
+    Given I am signed in to Kalanfa as a Learner user
       And there is at least one channel imported on the device
       And I am at the *Learn > Library* page
 
@@ -40,4 +40,4 @@ Feature: Learner engages content channels
 
 Examples:
   | channel        | folder    | subfolder | content_item                   |
-  | Kolibri Demo 1 | Science  | Physics  | Intro to springs and Hooke's law |
+  | Kalanfa Demo 1 | Science  | Physics  | Intro to springs and Hooke's law |

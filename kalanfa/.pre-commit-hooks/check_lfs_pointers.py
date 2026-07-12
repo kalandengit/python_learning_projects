@@ -3,7 +3,7 @@
 Pre-commit hook to ensure files designated for Git LFS are actually LFS pointers.
 
 This prevents accidentally committing binary files that should be managed by Git LFS.
-See: https://github.com/learningequality/kolibri/issues/7099
+See: https://github.com/learningequality/kalanfa/issues/7099
 
 Checks staged content (what will be committed) to verify it's an LFS pointer,
 not binary data. This works whether or not Git LFS is installed in the environment

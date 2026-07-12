@@ -80,13 +80,13 @@ modifying roles and memberships:
   additional convenience methods, such as ``add_admin``, that exist on the
   proxy models).
 - To check whether a user is a member of a ``Collection``, use
-  ``KolibriAbstractBaseUser.is_member_of``
+  ``KalanfaAbstractBaseUser.is_member_of``
 - To check whether a user has a particular kind of role for a collection or
   another user, use the ``has_role_for_collection`` and ``has_role_for_user``
-  methods of ``KolibriAbstractBaseUser``.
+  methods of ``KalanfaAbstractBaseUser``.
 - To list all role kinds a user has for a collection or another user, use the
   ``get_roles_for_collection`` and ``get_roles_for_user`` methods of
-  ``KolibriAbstractBaseUser``.
+  ``KalanfaAbstractBaseUser``.
 
 .. _my-reference-label:
 
@@ -101,7 +101,7 @@ ContentSummaryLog, and UserSessionLog -- collectively, "User Log Data").
 Hence, it is useful to encapsulate a permissions "class" that can be reused
 across models, and extended (through inheritance) if slightly different
 behavior is needed. These classes of permissions are defined as Python classes
-that inherit from kolibri.auth.permissions.base.BasePermissions, which defines
+that inherit from kalanfa.auth.permissions.base.BasePermissions, which defines
 the following overridable methods:
 
 - The following four Boolean (True/False) permission checks, corresponding to
@@ -171,7 +171,7 @@ Built-in permissions classes
 ----------------------------
 
 Some common rules are encapsulated by the permissions classes in
-``kolibri.auth.permissions.general``. These include:
+``kalanfa.auth.permissions.general``. These include:
 
 - ``IsOwn``: only allows access to the object if the object belongs to the
   requesting user (in other words, if the object has a specific field,
@@ -234,7 +234,7 @@ These methods defer to the permissions encoded in the ``permission`` object on
 the model class.
 
 
-Using Kolibri permissions with Django REST Framework
+Using Kalanfa permissions with Django REST Framework
 ----------------------------------------------------
 
 There are two classes that make it simple to leverage the permissions system
@@ -242,31 +242,31 @@ described above within a Django REST Framework ``ViewSet``, to restrict
 permissions appropriately on API endpoints, based on the currently logged-in
 user.
 
-``KolibriAuthPermissions`` is a subclass of
+``KalanfaAuthPermissions`` is a subclass of
 ``rest_framework.permissions.BasePermission`` that defers to our
-``KolibriAbstractBaseUser`` permissions interface methods for determining
+``KalanfaAbstractBaseUser`` permissions interface methods for determining
 which object-level permissions to grant to the current user:
 
 - Permissions for 'POST' are based on ``request.user.can_create``
 - Permissions for 'GET', 'OPTIONS' and 'HEAD' are based on ``request.user.can_read``
-  (Note that adding ``KolibriAuthPermissions`` only checks object-level permissions,
+  (Note that adding ``KalanfaAuthPermissions`` only checks object-level permissions,
   and does not filter queries made against a list view; see
-  ``KolibriAuthPermissionsFilter`` below)
+  ``KalanfaAuthPermissionsFilter`` below)
 - Permissions for 'PUT' and 'PATCH' are based on ``request.user.can_update``
 - Permissions for 'DELETE' are based on ``request.user.can_delete``
 
-``KolibriAuthPermissions`` is a subclass of
+``KalanfaAuthPermissions`` is a subclass of
 ``rest_framework.filters.BaseFilterBackend`` that filters list views to include
 only records for which the current user has read permissions. This only applies to
 'GET' requests.
 
-For example, to use the Kolibri permissions system to restrict permissions for an
+For example, to use the Kalanfa permissions system to restrict permissions for an
 API endpoint providing access to a ``ContentLog`` model, you would do the following::
 
-    from kolibri.auth.api import KolibriAuthPermissions, KolibriAuthPermissionsFilter
+    from kalanfa.auth.api import KalanfaAuthPermissions, KalanfaAuthPermissionsFilter
 
     class FacilityViewSet(viewsets.ModelViewSet):
-        permission_classes = (KolibriAuthPermissions,)
-        filter_backends = (KolibriAuthPermissionsFilter,)
+        permission_classes = (KalanfaAuthPermissions,)
+        filter_backends = (KalanfaAuthPermissionsFilter,)
         queryset = ContentLog.objects.all()
         serializer_class = ContentLogSerializer

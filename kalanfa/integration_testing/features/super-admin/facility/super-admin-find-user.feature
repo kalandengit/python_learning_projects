@@ -6,7 +6,7 @@ Feature: Super admin searches for users
   # Repeat the scenarios with a RTL language to make sure the orientation is correct
 
   Background:
-    Given I am signed in to Kolibri as super admin
+    Given I am signed in to Kalanfa as super admin
       And I am on *Facility > Users* page
       And there are more than 150 users in the facility
 

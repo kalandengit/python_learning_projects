@@ -1,5 +1,5 @@
 
-Kolibri Load‑Testing CLI — Quick Start
+Kalanfa Load‑Testing CLI — Quick Start
 ======================================
 
 Run from ``integration_testing/load_testing/``; entrypoint is ``loadtest.py``.
@@ -14,17 +14,17 @@ Before running load tests:
 
       pip install -r requirements/load_test.txt
 
-2. **Start Kolibri server** (NOT development server):
+2. **Start Kalanfa server** (NOT development server):
 
    .. code-block:: bash
 
       # Use port 8080 for production-like server
-      kolibri start --port=8080
+      kalanfa start --port=8080
 
    **Server state**: The server can be either:
 
-   - **New KOLIBRI_HOME/unprovisioned** - the tool will provision it for you
-   - **Existing KOLIBRI_HOME** - the tool will use existing setup
+   - **New KALANFA_HOME/unprovisioned** - the tool will provision it for you
+   - **Existing KALANFA_HOME** - the tool will use existing setup
 
    **Important**: Do NOT use ``pnpm run devserver`` - load tests must run against a
    production-like server to get accurate performance measurements. The development
@@ -42,7 +42,7 @@ See the help for available flags (e.g., users, spawn rate, duration, headless, r
 
 Full provision → manual capture → test
 --------------------------------------
-Runs the whole flow against a Kolibri server (provisioned or unprovisioned):
+Runs the whole flow against a Kalanfa server (provisioned or unprovisioned):
 
 * **Fresh server**: Provisions device → creates facility/users/class → imports QA channel → creates lesson
 * **Existing server**: Uses existing setup where possible, creates missing components
@@ -60,11 +60,11 @@ Then opens a browser for **manual capture** → saves a versioned HAR → execut
 
 Full run using an existing HAR (skip capture)
 ---------------------------------------------
-Use a pre-recorded HAR to skip the manual capture step. With a file in ``har_files/lesson_flow_kolibri_testing_high_latency.har``, for example:
+Use a pre-recorded HAR to skip the manual capture step. With a file in ``har_files/lesson_flow_kalanfa_testing_high_latency.har``, for example:
 
 .. code-block:: bash
 
-   python loadtest.py --har har_files/lesson_flow_kolibri_testing_high_latency.har
+   python loadtest.py --har har_files/lesson_flow_kalanfa_testing_high_latency.har
 
 Other flags
 -----------
@@ -87,18 +87,18 @@ HAR files capture the exact sequence of HTTP requests made during a learner less
 
 **When to use existing HAR files**:
 
-* The committed HAR file's version is ≥ your Kolibri version AND there have been no
+* The committed HAR file's version is ≥ your Kalanfa version AND there have been no
   frontend request pattern changes since that version
-* Example: ``lesson_flow_kolibri_0.18.4.har`` can be used for testing 0.18.4, 0.18.5,
+* Example: ``lesson_flow_kalanfa_0.18.4.har`` can be used for testing 0.18.4, 0.18.5,
   0.18.6, etc., as long as no frontend changes affected learner request patterns
 
 **When to create new HAR files**:
 
 * Frontend code changes that modify the pattern of HTTP requests during learner interactions
-* New Kolibri version where request patterns have changed
+* New Kalanfa version where request patterns have changed
 * Adding new content types or interaction flows to test
 
-**Versioning**: HAR files are named with the Kolibri version where they were captured
-(e.g., ``lesson_flow_kolibri_0.18.4.har``). This version acts as a "valid from" marker -
+**Versioning**: HAR files are named with the Kalanfa version where they were captured
+(e.g., ``lesson_flow_kalanfa_0.18.4.har``). This version acts as a "valid from" marker -
 the HAR can be used for that version and later versions until request patterns change.
 Committed HAR files for released versions are preserved in version control.

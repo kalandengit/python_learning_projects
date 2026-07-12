@@ -1,8 +1,8 @@
 Feature: Super admin exports entire channels or resources to local drive
-    Super admin needs to be able to export channels or resources from Kolibri server to local drives
+    Super admin needs to be able to export channels or resources from Kalanfa server to local drives
 
   Background:
-    Given I am signed in to Kolibri as super admin, or a user with device permissions to import content
+    Given I am signed in to Kalanfa as super admin, or a user with device permissions to import content
       And I am on *Device > Channels* page
       And there are <channel1> and <channel2> channels on the device
       And there is <resource> resource in the <channel2> channel
@@ -67,7 +67,7 @@ Feature: Super admin exports entire channels or resources to local drive
 
   Scenario: Review that the channel is exported
     When I open the <drive> local drive
-    Then I see the *KOLIBRI_DATA* folder on the <drive> local drive
+    Then I see the *KALANFA_DATA* folder on the <drive> local drive
       And I see the *content* subfolder inside
       And I see the *databases* and *storage* subfolders inside the *content* folder
 
@@ -75,5 +75,5 @@ Feature: Super admin exports entire channels or resources to local drive
     Given there is no local drive attached to the device
       Or I don't have permissions to write on attached drives
     When I click *Export*
-    Then I see Kolibri searching for local drives
+    Then I see Kalanfa searching for local drives
       And I see the *Could not find a writable drive connected to the server* notification

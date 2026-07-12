@@ -1,17 +1,17 @@
 Feature: Super admin imports content from Studio
-    Super admin needs to be able to import content channels on the device from Kolibri Studio
+    Super admin needs to be able to import content channels on the device from Kalanfa Studio
 
     # Use the "Khan Academy (English)" for testing because it takes a long time to load the channel listing.
 
   Background:
     Given there is no content from <channel> channel on the device
-      And I am signed in to Kolibri as super admin, or a user with device permissions to import content
-      And I am on the *Kolibri Studio channels > Select resources for import* page with the list of available channels
+      And I am signed in to Kalanfa as super admin, or a user with device permissions to import content
+      And I am on the *Kalanfa Studio channels > Select resources for import* page with the list of available channels
         Or I am on *Import from '<local_address>' > Select resources for import* page with the list of available channels
 
   Scenario: Import resources from a new content channel
     When I click *Select resources* button for the <channel> channel
-    Then I see the *Kolibri Studio* page
+    Then I see the *Kalanfa Studio* page
       And I see the "Generating channel listing. This could take a few minutes..." notification
     When the channel listing is generated
     Then I see the channel page with logo, name, and version

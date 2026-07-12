@@ -1,0 +1,19 @@
+{
+  "name": "kalanfa-app",
+  "version": "1.0.2",
+  "description": "The Kalanfa app",
+  "main": "src/index.js",
+  "author": "Learning Equality",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/learningequality/kalanfa.git",
+    "directory": "packages/kalanfa-app"
+  },
+  "license": "MIT",
+  "dependencies": {
+    "kalanfa": "workspace:*",
+    "kalanfa-logging": "workspace:*",
+    "kalanfa-module": "workspace:*",
+    "vue": "catalog:"
+  }
+}

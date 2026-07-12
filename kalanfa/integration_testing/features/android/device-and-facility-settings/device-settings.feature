@@ -2,7 +2,7 @@ Feature: Device settings
 	The user needs to be able to change settings related to external devices, default landing page, download on metered connection, storage location, auto-download and enabled pages
 
   Background:
-    Given that the Kolibri installation was successful
+    Given that the Kalanfa installation was successful
     	And I've set up the device
     	And I am signed in
     	And I am at *Device > Settings* page
@@ -13,7 +13,7 @@ Feature: Device settings
 			And I click *Save changes*
 		Then I see a *Settings have been updated* message
 		When I sign out and relaunch the app
-		Then I see that the Kolibri UI is displayed in <language> language
+		Then I see that the Kalanfa UI is displayed in <language> language
 
 	Scenario: Allow external devices to download unlisted channels
 		Given I have at least one unlisted channel
@@ -76,7 +76,7 @@ Feature: Device settings
 		When I select a path
 			And I click *Continue*
 		Then I see the *Server restart* modal
-			And I see *Changing the primary storage location will restart the server. Anyone using Kolibri on this server right now will temporarily be unable to use it.*
+			And I see *Changing the primary storage location will restart the server. Anyone using Kalanfa on this server right now will temporarily be unable to use it.*
 		When I click *Continue*
 		Then the modal window is closed
 			And the server is restarted in the background
@@ -88,7 +88,7 @@ Feature: Device settings
 		When I select a new storage location
 		Then I see the *Server restart* modal
 			And I see the *Selected: <path>*
-			And I see the *Adding a new storage location will restart the server. Anyone using Kolibri on this server right now will temporarily be unable to use it.*
+			And I see the *Adding a new storage location will restart the server. Anyone using Kalanfa on this server right now will temporarily be unable to use it.*
 			And I see a checkbox *Make this the primary storage location*
 			And below the checkbox I see *Newly downloaded resources will be added to the primary storage location*
 			But the checkbox is not displayed if it's a read-only location
@@ -103,12 +103,12 @@ Feature: Device settings
 		When I scroll down to *Other storage locations*
 			And I select *Remove storage location* from the *Options* drop-down
 		Then I see the *Remove storage location* modal
-			And I see *Removing a storage location will remove access to them on Kolibri, but will not delete the resources from your device. If you want to delete the files from your device after removing the storage location, you will need to manually do so from your device's file system.*
+			And I see *Removing a storage location will remove access to them on Kalanfa, but will not delete the resources from your device. If you want to delete the files from your device after removing the storage location, you will need to manually do so from your device's file system.*
 			And I see the available paths
 		When I select the storage location that I want to remove
 			And I click *Continue*
 		Then I see the *Server restart* modal
-			And I see *Removing a storage location will restart the server. Anyone using Kolibri on this server right now will temporarily be unable to use it.*
+			And I see *Removing a storage location will restart the server. Anyone using Kalanfa on this server right now will temporarily be unable to use it.*
 		When I click *Continue*
 		Then the modal window is closed
 			And the server is restarted in the background
@@ -166,9 +166,9 @@ Feature: Device settings
 		Then I see the *Save changes* button positioned to the left side at the bottom of the container
 
 	Scenario: Disabled features
-		Given some configuration options have been disabled due to the way Kolibri has been setup
+		Given some configuration options have been disabled due to the way Kalanfa has been setup
 		When I go to *Device > Settings*
-		Then I see the following notice: *Some configuration options have been disabled due to the way Kolibri has been setup*
+		Then I see the following notice: *Some configuration options have been disabled due to the way Kalanfa has been setup*
 			And I see that all options under *Download on metered connection*, *Auto-download* and *Enabled pages* are disabled
 			And I see that the storage location is hidden #for BCK only
 			And I see an alert describing why the options are disabled

@@ -20,7 +20,7 @@ import re
 import sys
 import urllib.request
 
-REPO = "learningequality/kolibri"
+REPO = "learningequality/kalanfa"
 API = "https://api.github.com"
 AUTHORS_PATH = pathlib.Path(__file__).resolve().parent.parent / "AUTHORS.md"
 ROW_RE = re.compile(r"^\|[^|]*\|\s*([A-Za-z0-9][A-Za-z0-9-]*)\s*\|\s*$")
@@ -34,7 +34,7 @@ def github_request(url):
         url,
         headers={
             "Accept": "application/vnd.github+json",
-            "User-Agent": "kolibri-update-contributors",
+            "User-Agent": "kalanfa-update-contributors",
         },
     )
     token = os.environ.get("GITHUB_TOKEN")

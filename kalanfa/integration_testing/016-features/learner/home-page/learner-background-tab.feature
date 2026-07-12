@@ -14,5 +14,5 @@ Feature: Learner stays logged in
   Scenario: Tab is not currently active
     When I open a new tab in the same window and go to a different web site
      And I wait 30 minutes
-     And I reopen the tab with Kolibri
+     And I reopen the tab with Kalanfa
     Then I see I am still logged in

@@ -2,7 +2,7 @@ Feature: Super admin change user interface language
   Super admin needs to be able to change the UI language from the user menu
 
   Background:
-    Given I am signed in to Kolibri as super admin user
+    Given I am signed in to Kalanfa as super admin user
 
   Scenario: Super admin changes language
     When I open the user menu
@@ -11,21 +11,21 @@ Feature: Super admin change user interface language
     When I select <language>
      And I click *Confirm* button
     Then the modal closes
-      And I see Kolibri UI in <language> language
+      And I see Kalanfa UI in <language> language
 
   Scenario: Super admin has changed their own language from <device_language> to <language> prior to logging in
     When I log in
-    Then I see Kolibri UI in <language>
+    Then I see Kalanfa UI in <language>
     When I log out
-    Then I am redirected to the sign in page and Kolibri is in <language>
-    When I open a new tab and open Kolibri
-    Then I see Kolibri UI in <language>
+    Then I am redirected to the sign in page and Kalanfa is in <language>
+    When I open a new tab and open Kalanfa
+    Then I see Kalanfa UI in <language>
     When I refresh the page
-    Then I see Kolibri UI in <language>
+    Then I see Kalanfa UI in <language>
     When I navigate between and within *Coach*, *Learn*, *Device* and *Facility* pages
-    Then I still see Kolibri UI in <language>
-    When I open a fresh Incognito or Private Browsing window and go to Kolibri's root server URL
-    Then I see Kolibri UI in <device_language>
+    Then I still see Kalanfa UI in <language>
+    When I open a fresh Incognito or Private Browsing window and go to Kalanfa's root server URL
+    Then I see Kalanfa UI in <device_language>
 
 Examples:
   | language  | device_language |

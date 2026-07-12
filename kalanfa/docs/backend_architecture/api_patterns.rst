@@ -1,7 +1,7 @@
 API Patterns
 ============
 
-This document describes common patterns and best practices for building APIs in Kolibri.
+This document describes common patterns and best practices for building APIs in Kalanfa.
 
 ValuesViewset Pattern
 ---------------------
@@ -9,7 +9,7 @@ ValuesViewset Pattern
 Overview
 ~~~~~~~~
 
-``ValuesViewset`` is the **preferred pattern for all API endpoints in Kolibri** unless there's a compelling reason to use a standard DRF viewset. It uses Django's ``.values()`` queryset method to fetch only needed fields in a single database query, avoiding the overhead of model instantiation and providing better performance.
+``ValuesViewset`` is the **preferred pattern for all API endpoints in Kalanfa** unless there's a compelling reason to use a standard DRF viewset. It uses Django's ``.values()`` queryset method to fetch only needed fields in a single database query, avoiding the overhead of model instantiation and providing better performance.
 
 **Performance benefits:**
 
@@ -39,8 +39,8 @@ Define a DRF serializer as the single source of truth for the API shape. The vie
 .. code-block:: python
 
   from rest_framework import serializers
-  from kolibri.core.api import ValuesViewset
-  from kolibri.core.auth.api import KolibriAuthPermissions
+  from kalanfa.core.api import ValuesViewset
+  from kalanfa.core.auth.api import KalanfaAuthPermissions
   from .models import Lesson
 
   class LessonSerializer(serializers.ModelSerializer):
@@ -51,7 +51,7 @@ Define a DRF serializer as the single source of truth for the API shape. The vie
   class LessonViewset(ValuesViewset):
       serializer_class = LessonSerializer
       queryset = Lesson.objects.all()
-      permission_classes = (KolibriAuthPermissions,)
+      permission_classes = (KalanfaAuthPermissions,)
 
 From this, the viewset automatically derives:
 
@@ -123,7 +123,7 @@ A plain ``SerializerMethodField`` is rejected at viewset init — the viewset ca
 
 .. code-block:: python
 
-  from kolibri.core.api import ValuesMethodField
+  from kalanfa.core.api import ValuesMethodField
 
   class UserSerializer(serializers.ModelSerializer):
       contact_label = ValuesMethodField(sources=("full_name", "email"))
@@ -270,11 +270,11 @@ Complete Example
 
   from rest_framework import serializers
   from django_filters.rest_framework import DjangoFilterBackend
-  from kolibri.core.api import ValuesViewset
-  from kolibri.core.auth.api import KolibriAuthPermissions
-  from kolibri.core.auth.api import KolibriAuthPermissionsFilter
-  from kolibri.core.auth.constants.collection_kinds import ADHOCLEARNERSGROUP
-  from kolibri.core.query import annotate_array_aggregate
+  from kalanfa.core.api import ValuesViewset
+  from kalanfa.core.auth.api import KalanfaAuthPermissions
+  from kalanfa.core.auth.api import KalanfaAuthPermissionsFilter
+  from kalanfa.core.auth.constants.collection_kinds import ADHOCLEARNERSGROUP
+  from kalanfa.core.query import annotate_array_aggregate
   from .models import Lesson, LessonAssignment
 
 
@@ -303,8 +303,8 @@ Complete Example
   class LessonViewset(ValuesViewset):
       serializer_class = LessonSerializer
       queryset = Lesson.objects.all().order_by("-date_created")
-      permission_classes = (KolibriAuthPermissions,)
-      filter_backends = (KolibriAuthPermissionsFilter, DjangoFilterBackend)
+      permission_classes = (KalanfaAuthPermissions,)
+      filter_backends = (KalanfaAuthPermissionsFilter, DjangoFilterBackend)
       filterset_fields = ("collection", "id")
       deferred_fields = ("classroom",)
 
@@ -351,7 +351,7 @@ Complete Example
 Viewset Variants
 ~~~~~~~~~~~~~~~~
 
-Kolibri provides several ValuesViewset variants:
+Kalanfa provides several ValuesViewset variants:
 
 ``BaseValuesViewset``
 ^^^^^^^^^^^^^^^^^^^^^
@@ -360,7 +360,7 @@ Base class with core functionality, no default actions. Extend this to create cu
 
 .. code-block:: python
 
-  from kolibri.core.api import BaseValuesViewset
+  from kalanfa.core.api import BaseValuesViewset
 
   class CustomViewset(BaseValuesViewset):
       # Add your own actions
@@ -373,7 +373,7 @@ Includes list and retrieve actions only:
 
 .. code-block:: python
 
-  from kolibri.core.api import ReadOnlyValuesViewset
+  from kalanfa.core.api import ReadOnlyValuesViewset
 
   class ContentNodeViewset(ReadOnlyValuesViewset):
       # Read-only API
@@ -386,7 +386,7 @@ Full CRUD operations (Create, Retrieve, Update, Delete, List):
 
 .. code-block:: python
 
-  from kolibri.core.api import ValuesViewset
+  from kalanfa.core.api import ValuesViewset
 
   class LessonViewset(ValuesViewset):
       # Full CRUD operations
@@ -487,7 +487,7 @@ Existing viewsets that use explicit ``values`` tuples and ``field_map`` dicts co
    .. code-block:: bash
 
      python integration_testing/scripts/viewset_serialization_benchmark.py \
-         kolibri.core.auth.api.FacilityUserViewSet \
+         kalanfa.core.auth.api.FacilityUserViewSet \
          -o baseline.json
 
    This saves timing, memory, query count, and a data hash to ``baseline.json``.
@@ -540,7 +540,7 @@ Existing viewsets that use explicit ``values`` tuples and ``field_map`` dicts co
    .. code-block:: bash
 
      python integration_testing/scripts/viewset_serialization_benchmark.py \
-         kolibri.core.auth.api.FacilityUserViewSet \
+         kalanfa.core.auth.api.FacilityUserViewSet \
          --compare baseline.json
 
    The script compares timing and memory against the baseline and flags regressions that exceed configurable thresholds (default: 5% timing, 10% memory). It also compares data hashes to confirm output equivalence.

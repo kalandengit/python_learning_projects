@@ -3,9 +3,9 @@
 Tech stack overview
 ===================
 
-Kolibri is a web application built primarily using `Python <https://www.python.org/>`__ on the server-side and `JavaScript <https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference>`__ on the client-side.
+Kalanfa is a web application built primarily using `Python <https://www.python.org/>`__ on the server-side and `JavaScript <https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference>`__ on the client-side.
 
-Note that since Kolibri is still in development, the APIs are subject to change, and a lot of code is still in flux.
+Note that since Kalanfa is still in development, the APIs are subject to change, and a lot of code is still in flux.
 
 Server
 ------
@@ -33,9 +33,9 @@ The frontend user interface is built using `Vue <https://vuejs.org/>`__ and uses
 Developer docs
 --------------
 
-Documentation is formatted using `reStructuredText <http://docutils.sourceforge.net/rst.html>`__ and the output is compiled by `Sphinx <http://www.sphinx-doc.org/en/stable/rest.html>`__ and hosted on `Read the Docs <http://kolibri-dev.readthedocs.io/>`__.
+Documentation is formatted using `reStructuredText <http://docutils.sourceforge.net/rst.html>`__ and the output is compiled by `Sphinx <http://www.sphinx-doc.org/en/stable/rest.html>`__ and hosted on `Read the Docs <http://kalanfa-dev.readthedocs.io/>`__.
 
-Additionally, information about the design and implementation of Kolibri might be found on Google Drive, Github, Trello, Slack, InVision, mailing lists, office whiteboards, and lurking in the fragmented collective consciousness of our team and contributors.
+Additionally, information about the design and implementation of Kalanfa might be found on Google Drive, Github, Trello, Slack, InVision, mailing lists, office whiteboards, and lurking in the fragmented collective consciousness of our team and contributors.
 
 
 Build infrastructure
@@ -53,11 +53,11 @@ Preparation of client-side resources involves:
 - Minifying and compressing code
 - Bundle resources such as fonts and images
 - Generating source maps
-- Providing mechanisms for decoupled "Kolibri plugins" to interact with each other and asynchronously load dependencies
+- Providing mechanisms for decoupled "Kalanfa plugins" to interact with each other and asynchronously load dependencies
 
 The *Makefile* contains the top-level commands for building Python distributions, in particular `wheel files <https://pythonwheels.com/>`__ (``make dist``) and `pex files <https://pex.readthedocs.io/en/latest/>`__ (``make pex``).
 
-The builds are automated using `buildkite <https://buildkite.com/learningequality>`__, whose top-level configuration lives in the Kolibri repo. Other platform distributions such as `Windows <https://github.com/learningequality/kolibri-installer-windows>`__, `Debian <https://github.com/learningequality/kolibri-installer-debian>`__, and `Android <https://github.com/learningequality/kolibri-installer-android/issues>`__ are built from the wheel files and maintained in their own repositories.
+The builds are automated using `buildkite <https://buildkite.com/learningequality>`__, whose top-level configuration lives in the Kalanfa repo. Other platform distributions such as `Windows <https://github.com/learningequality/kalanfa-installer-windows>`__, `Debian <https://github.com/learningequality/kalanfa-installer-debian>`__, and `Android <https://github.com/learningequality/kalanfa-installer-android/issues>`__ are built from the wheel files and maintained in their own repositories.
 
 Automated testing
 -----------------

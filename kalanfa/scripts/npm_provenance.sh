@@ -5,8 +5,8 @@ if [ $# -lt 1 ]; then
   echo "Usage: $0 <package-name> [version]"
   echo ""
   echo "Examples:"
-  echo "  $0 kolibri-format 1.0.1    # specific version"
-  echo "  $0 kolibri-format           # latest version"
+  echo "  $0 kalanfa-format 1.0.1    # specific version"
+  echo "  $0 kalanfa-format           # latest version"
   exit 1
 fi
 

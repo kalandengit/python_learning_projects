@@ -2,7 +2,7 @@ Feature: Learner interacts with content channels
   Learner needs to be able to interact with content at the Library page
 
   Background:
-    Given I am signed in to Kolibri as a Learner user
+    Given I am signed in to Kalanfa as a Learner user
       And there is at least one channel imported on the device
       And I am at the *Learn > Library* page
 

@@ -5,7 +5,7 @@ set -euo pipefail
 #
 # Usage:
 #   ./scripts/npm_publish.sh              # auto-detect and publish all changed packages
-#   ./scripts/npm_publish.sh kolibri-format  # publish a specific package
+#   ./scripts/npm_publish.sh kalanfa-format  # publish a specific package
 
 FILTER=""
 

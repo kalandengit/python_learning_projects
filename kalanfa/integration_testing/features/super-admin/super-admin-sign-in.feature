@@ -1,9 +1,9 @@
 Feature: Super admin signs-in
-  Super admin needs to be able to sign in to access Kolibri. If the admin account is registered correctly, they will arrive at the *Device > Channels* page upon sign-in
+  Super admin needs to be able to sign in to access Kalanfa. If the admin account is registered correctly, they will arrive at the *Device > Channels* page upon sign-in
 
   Background:
-    Given that Kolibri is not running in the app context
-      And that I am on the Kolibri sign-in page
+    Given that Kalanfa is not running in the app context
+      And that I am on the Kalanfa sign-in page
       And that there is a Super admin <username> with password <password>
 
   Scenario: Sign-in

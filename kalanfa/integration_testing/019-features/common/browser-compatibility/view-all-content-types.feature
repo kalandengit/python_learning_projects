@@ -1,7 +1,7 @@
 Feature: Browser compatibility testing of all resource types
 
   Background:
-    Given I am signed in to Kolibri
+    Given I am signed in to Kalanfa
     	And I have imported a channel with all resource types
 
   Scenario: View .mp3, .bloompub, .bloomd, .pdf, .epub, .h5p, html, .mp4, .webm, .kpub resources in all supported browsers

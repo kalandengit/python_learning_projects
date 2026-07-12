@@ -4,7 +4,7 @@
 # ///
 """
 This module defines functions to install c extensions for all the platforms into
-Kolibri.
+Kalanfa.
 
 Usage:
 > python build_tools/install_cexts.py --file "requirements/cext.txt" --cache-path ".cext_cache"
@@ -16,9 +16,9 @@ Windows and Piwheels for platforms such as ARM Linux. Please check the
 description of the function `parse_package_page` to see the platforms we skip
 downloading.
 
-When Kolibri starts, the function `prepend_cext_path` in `env.py` will calculate
+When Kalanfa starts, the function `prepend_cext_path` in `env.py` will calculate
 the c extension path based on system information and add it to sys.path so
-Kolibri can import the c extension.
+Kalanfa can import the c extension.
 
 The cache directory is mainly used to stabilize the installation of c extensions
 from Piwheels website for the builds on Buildkite. If the directory of the cache_path
@@ -39,7 +39,7 @@ from bs4 import BeautifulSoup
 
 DIST_CEXT = os.path.join(
     os.path.dirname(os.path.realpath(os.path.dirname(__file__))),
-    "kolibri",
+    "kalanfa",
     "dist",
     "cext",
 )
@@ -230,7 +230,7 @@ def parse_package_page(files, pk_version, index_url, cache_path):
     We are not going to install the packages if they are:
         * not a whl file
         * not the version specified in requirements.txt
-        * not python versions that kolibri does not support
+        * not python versions that kalanfa does not support
         * not macosx
     """
 

@@ -6,16 +6,16 @@ Virtual environments allow a developer to have an encapsulated Python environmen
 
 ## Using `pyenv virtualenv` with pyenv
 
-To create a virtualenv for the Python version used with pyenv, run `pyenv virtualenv`, specifying the Python version you want and the name of the virtualenv directory. For example, because we can make a virtual environment for Kolibri using Python 3.9.9:
+To create a virtualenv for the Python version used with pyenv, run `pyenv virtualenv`, specifying the Python version you want and the name of the virtualenv directory. For example, because we can make a virtual environment for Kalanfa using Python 3.9.9:
 
 ```sh
-$ pyenv virtualenv 3.9.9 kolibri-py3.9
+$ pyenv virtualenv 3.9.9 kalanfa-py3.9
 ```
 
 If you get 'command not found' or a similar error, and pyenv virtualenv is not installed, [please follow the installation instructions](https://github.com/pyenv/pyenv-virtualenv#installation).
 
 will create a virtualenv based on Python 3.9.9 under `$(pyenv root)/versions` in a
-folder called `kolibri-py3.9`.
+folder called `kalanfa-py3.9`.
 
 ## List existing virtualenvs
 
@@ -23,8 +23,8 @@ folder called `kolibri-py3.9`.
 
 ```sh
 $ pyenv virtualenvs
-  3.9.9/envs/kolibri-py3.9 (created from /home/youuuu/.pyenv/versions/3.9.9)
-  kolibri-py3.9 (created from /home/youuuu/.pyenv/versions/3.9.9)
+  3.9.9/envs/kalanfa-py3.9 (created from /home/youuuu/.pyenv/versions/3.9.9)
+  kalanfa-py3.9 (created from /home/youuuu/.pyenv/versions/3.9.9)
 ```
 
 There are two entries for each virtualenv, and the shorter one is just a symlink.
@@ -35,7 +35,7 @@ There are two entries for each virtualenv, and the shorter one is just a symlink
 If you want a virtual environment to always activate when you enter a certain directory, you can use the [`pyenv local`](https://github.com/pyenv/pyenv/blob/master/COMMANDS.md#pyenv-local) command.
 
 ```
-pyenv local kolibri-py3.9
+pyenv local kalanfa-py3.9
 ```
 
 Now whenever you enter the directory, the virtual environment will be activated.
@@ -43,7 +43,7 @@ Now whenever you enter the directory, the virtual environment will be activated.
 You can also activate and deactivate a pyenv virtualenv manually:
 
 ```sh
-pyenv activate kolibri-py3.9
+pyenv activate kalanfa-py3.9
 pyenv deactivate
 ```
 
@@ -52,13 +52,13 @@ pyenv deactivate
 Removing the directories in `$(pyenv root)/versions` and `$(pyenv root)/versions/{version}/envs` will delete the virtualenv, or you can run:
 
 ```sh
-pyenv uninstall kolibri-py3.9
+pyenv uninstall kalanfa-py3.9
 ```
 
 You can also delete existing virtualenvs by using `virtualenv-delete` command, e.g. you can run:
 ```sh
-pyenv virtualenv-delete kolibri-py3.9
+pyenv virtualenv-delete kalanfa-py3.9
 ```
-This will delete virtualenv called `kolibri-py3.9`.
+This will delete virtualenv called `kalanfa-py3.9`.
 
 For more information on use of virtual environments see the [pyenv-virtualenv documentation](https://github.com/pyenv/pyenv-virtualenv/blob/master/README.md#usage).

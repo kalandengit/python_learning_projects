@@ -1,8 +1,8 @@
 Feature: Coach sign-out
-  Coach needs to be able to sign out when finished using Kolibri
+  Coach needs to be able to sign out when finished using Kalanfa
 
   Background:
-    Given I am signed in to Kolibri as coach user
+    Given I am signed in to Kalanfa as coach user
 
   Scenario: Sign-out from user menu
     When I select the user menu in the top right hand corner

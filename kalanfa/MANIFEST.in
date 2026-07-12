@@ -3,49 +3,49 @@ include CONTRIBUTING.md
 include CHANGELOG.md
 include LICENSE
 include README.md
-include kolibri/VERSION
-recursive-include kolibri/locale *.mo
-recursive-include kolibri/locale *.json
-graft kolibri/core
-recursive-include kolibri/deployment *
-recursive-include kolibri/dist *
+include kalanfa/VERSION
+recursive-include kalanfa/locale *.mo
+recursive-include kalanfa/locale *.json
+graft kalanfa/core
+recursive-include kalanfa/deployment *
+recursive-include kalanfa/dist *
 
 # Exclude the unused Django GIS and Humanize app
-recursive-exclude kolibri/dist/django/contrib/gis *
-recursive-exclude kolibri/dist/django/contrib/humanize *
-# Exclude Django module locales that are not used by Kolibri
-recursive-exclude kolibri/dist/rest_framework/locale *
-recursive-exclude kolibri/dist/django_filters/locale *
-recursive-exclude kolibri/dist/mptt/locale *
-recursive-exclude kolibri/dist/django/contrib/admindocs/locale *
-recursive-exclude kolibri/dist/django/contrib/auth/locale *
-recursive-exclude kolibri/dist/django/contrib/sites/locale *
-recursive-exclude kolibri/dist/django/contrib/contenttypes/locale *
-recursive-exclude kolibri/dist/django/contrib/flatpages/locale *
-recursive-exclude kolibri/dist/django/contrib/sessions/locale *
-recursive-exclude kolibri/dist/django/contrib/admin/locale *
+recursive-exclude kalanfa/dist/django/contrib/gis *
+recursive-exclude kalanfa/dist/django/contrib/humanize *
+# Exclude Django module locales that are not used by Kalanfa
+recursive-exclude kalanfa/dist/rest_framework/locale *
+recursive-exclude kalanfa/dist/django_filters/locale *
+recursive-exclude kalanfa/dist/mptt/locale *
+recursive-exclude kalanfa/dist/django/contrib/admindocs/locale *
+recursive-exclude kalanfa/dist/django/contrib/auth/locale *
+recursive-exclude kalanfa/dist/django/contrib/sites/locale *
+recursive-exclude kalanfa/dist/django/contrib/contenttypes/locale *
+recursive-exclude kalanfa/dist/django/contrib/flatpages/locale *
+recursive-exclude kalanfa/dist/django/contrib/sessions/locale *
+recursive-exclude kalanfa/dist/django/contrib/admin/locale *
 
-graft kolibri/plugins
-recursive-include kolibri/utils *
-recursive-include kolibri/*/static *.*
-recursive-include kolibri/*/build/ *.json
-recursive-include kolibri/plugins/*/build *.json
+graft kalanfa/plugins
+recursive-include kalanfa/utils *
+recursive-include kalanfa/*/static *.*
+recursive-include kalanfa/*/build/ *.json
+recursive-include kalanfa/plugins/*/build *.json
 
-recursive-exclude kolibri/* *pyc
-recursive-exclude kolibri/* *pyo
-prune kolibri/core/frontend
-prune kolibri/core/node_modules
-prune kolibri/plugins/*/frontend
-prune kolibri/plugins/*/node_modules
-exclude kolibri/*/buildConfig.js
-exclude kolibri/plugins/*/buildConfig.js
+recursive-exclude kalanfa/* *pyc
+recursive-exclude kalanfa/* *pyo
+prune kalanfa/core/frontend
+prune kalanfa/core/node_modules
+prune kalanfa/plugins/*/frontend
+prune kalanfa/plugins/*/node_modules
+exclude kalanfa/*/buildConfig.js
+exclude kalanfa/plugins/*/buildConfig.js
 
-recursive-exclude kolibri/dist *pyc
-recursive-exclude kolibri/dist/*/__pycache__ *
+recursive-exclude kalanfa/dist *pyc
+recursive-exclude kalanfa/dist/*/__pycache__ *
 
 # Exclude all test directories
-recursive-exclude kolibri/**/tests *
-recursive-exclude kolibri/**/test *
-recursive-exclude kolibri/**/testing *
+recursive-exclude kalanfa/**/tests *
+recursive-exclude kalanfa/**/test *
+recursive-exclude kalanfa/**/testing *
 # Except the Django one which is needed by rest_framework
-recursive-include kolibri/dist/django/test *.py
+recursive-include kalanfa/dist/django/test *.py

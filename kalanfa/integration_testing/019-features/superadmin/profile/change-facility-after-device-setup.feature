@@ -1,7 +1,7 @@
 Feature: Change facility after device setup
 
 	Background:
-    Given I’ve set up my Kolibri device with the *On my own* device setup option
+    Given I’ve set up my Kalanfa device with the *On my own* device setup option
 			And I am signed in
 			And I am at the *Profile* page
 

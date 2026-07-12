@@ -2,7 +2,7 @@ Feature: Coach creates lessons
   Coach needs to be able to create lessons from existing content
 
   Background:
-    Given I am signed in to Kolibri as a coach user
+    Given I am signed in to Kalanfa as a coach user
       And I am on the *Coach - '<class>' > Plan > Lessons* page
       And there is a channel <channel> and topic <topic> on the device
 

@@ -1,7 +1,7 @@
-Feature: Kolibri users need to be able to view all the content types in all the supported browsers
+Feature: Kalanfa users need to be able to view all the content types in all the supported browsers
 
   Background:
-    Given I am signed in to Kolibri
+    Given I am signed in to Kalanfa
 
   Scenario: View the MP4 video
     When I open the MP4 video content in the following browsers and operating systems

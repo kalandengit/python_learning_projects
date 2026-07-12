@@ -53,7 +53,7 @@ Feature: Learners automatic syncing
 
 	Scenario: Learner allows metered data on first time use
 		Given I have set my device to allow download on metered connection
-			And I am about to do something that would use the metered connection for the first time in Kolibri
+			And I am about to do something that would use the metered connection for the first time in Kalanfa
 		Then I see the *Use metered data?* modal
 			And I see *You are using a metered connection. If you are on a limited data plan, you may have to pay extra charges.*
 			And I see the option *No do not use metered data* selected by default
@@ -65,7 +65,7 @@ Feature: Learners automatic syncing
 
 	Scenario: Learner disallows metered data on first time use
 		Given I have set my device to allow download on metered connection
-			And I am about to do something that would use the metered connection for the first time in Kolibri
+			And I am about to do something that would use the metered connection for the first time in Kalanfa
 		Then I see the *Use metered data?* modal
 			And I see *You are using a metered connection. If you are on a limited data plan, you may have to pay extra charges.*
 			And I see the option *No do not use metered data* selected by default
@@ -75,7 +75,7 @@ Feature: Learners automatic syncing
 		Then I see that I am not able to use the metered data #the *Other libraries* section would appear empty
 
 	Scenario: Learner can see automatic syncing updates while not using the Android app
-		Given I've closed Kolibri
+		Given I've closed Kalanfa
 			And it's still running in the background
 		When I check my device notifications
 			And there is an automatic syncing about to begin
@@ -88,7 +88,7 @@ Feature: Learners automatic syncing
 		Then I see the following notification: *Library updated*
 
 	Scenario: Learner can see that automatic syncing failed while not using the Android app
-		Given I've closed Kolibri
+		Given I've closed Kalanfa
 			And it's still running in the background
 			And the automatic syncing has failed
 		When I check my device notifications

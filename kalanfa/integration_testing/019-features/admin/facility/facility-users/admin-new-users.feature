@@ -2,7 +2,7 @@ Feature: Admin can view and manage the new users
   Admin users need to be able to view the new users, create user accounts for each role in the facility and edit the new user accounts
 
   Background:
-    Given I am signed in to Kolibri as a facility admin user
+    Given I am signed in to Kalanfa as a facility admin user
       And I am at *Facility > Users* page
       And there are several newly created users of type coach, facility coach, and admin
 

@@ -2,7 +2,7 @@ Feature: Super admin grants and revokes the super-admin and content import permi
     Super admin needs to be able to grant and revoke super admin permissions and the device permissions to import content channels on the device to other facility users
 
   Background:
-    Given I am signed in to Kolibri as super admin
+    Given I am signed in to Kalanfa as super admin
       And I am on *Device > Permissions* page
       And there is a <username> facility user who does not have device permissions
 

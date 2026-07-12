@@ -1,7 +1,7 @@
-Feature: User explores Kolibri without an an account
+Feature: User explores Kalanfa without an an account
 
   Background:
-    Given I'm a not signed in to Kolibri
+    Given I'm a not signed in to Kalanfa
     	And I am at the sign-in page
     	And the option *Allow users to explore resources without signing in* is enabled at *Device > Settings*
 

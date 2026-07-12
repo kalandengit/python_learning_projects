@@ -1,5 +1,5 @@
 """
-Centralized colored logging for Kolibri Load Testing CLI
+Centralized colored logging for Kalanfa Load Testing CLI
 
 Provides consistent colored output across all modules.
 """

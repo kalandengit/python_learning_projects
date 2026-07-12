@@ -1,4 +1,4 @@
-import kolibriFormatConfig from 'kolibri-format/eslint.config.mjs';
+import kalanfaFormatConfig from 'kalanfa-format/eslint.config.mjs';
 
 const CJS_RULES = {
   'import-x/no-commonjs': 'off',
@@ -7,20 +7,20 @@ const CJS_RULES = {
 };
 
 export default [
-  ...kolibriFormatConfig,
+  ...kalanfaFormatConfig,
 
   // Node.js-only packages — remain CommonJS until they migrate to ESM
   {
     files: [
-      'packages/browserslist-config-kolibri/**',
-      'packages/eslint-plugin-kolibri/**',
-      'packages/kolibri-build/**',
-      'packages/kolibri-format/**',
-      'packages/kolibri-glob/**',
-      'packages/kolibri-i18n/**',
-      'packages/kolibri-jest-config/**',
-      'packages/kolibri-logging/**',
-      'packages/build_kolibri_package.js',
+      'packages/browserslist-config-kalanfa/**',
+      'packages/eslint-plugin-kalanfa/**',
+      'packages/kalanfa-build/**',
+      'packages/kalanfa-format/**',
+      'packages/kalanfa-glob/**',
+      'packages/kalanfa-i18n/**',
+      'packages/kalanfa-jest-config/**',
+      'packages/kalanfa-logging/**',
+      'packages/build_kalanfa_package.js',
     ],
     rules: CJS_RULES,
   },
@@ -33,7 +33,7 @@ export default [
 
   // Auto-generated static files — too numerous to annotate individually
   {
-    files: ['kolibri/**/static/**'],
+    files: ['kalanfa/**/static/**'],
     rules: CJS_RULES,
   },
 ];

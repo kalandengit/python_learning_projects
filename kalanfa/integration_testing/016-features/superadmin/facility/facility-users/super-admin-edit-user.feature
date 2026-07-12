@@ -2,7 +2,7 @@ Feature: Super admin edits users
     Super admin needs to be able to edit user's full name and username, reset the passwords, change the user types, and delete them from the facility
 
   Background:
-    Given I am signed in to Kolibri as a super admin
+    Given I am signed in to Kalanfa as a super admin
       And I am on the *Facility > Users* page
 
   Scenario: Edit user's full name

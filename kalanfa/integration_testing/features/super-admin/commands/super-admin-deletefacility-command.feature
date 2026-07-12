@@ -4,12 +4,12 @@ Feature: Super Admin deletes facility from the command line
 # Make sure you have more than 1 facility on the device before executing the command!
 
   Background:
-    Given I have super admin account for Kolibri
+    Given I have super admin account for Kalanfa
       And there is a <facility> facility on the device
-      And I can run 'kolibri manage' commands in the Terminal or the command prompt
+      And I can run 'kalanfa manage' commands in the Terminal or the command prompt
 
   Scenario: Execute the deletefacility command and review that facility has been deleted
-    When I run the 'kolibri manage deletefacility' command in the Terminal
+    When I run the 'kalanfa manage deletefacility' command in the Terminal
     Then I see the output *Please choose a facility*
       And I see the list of the facilities on the device
     When i type the number of the facility

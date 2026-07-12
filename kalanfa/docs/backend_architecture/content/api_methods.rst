@@ -1,5 +1,5 @@
 API methods
 -----------
 
-.. automodule:: kolibri.core.content.api
+.. automodule:: kalanfa.core.content.api
     :members:

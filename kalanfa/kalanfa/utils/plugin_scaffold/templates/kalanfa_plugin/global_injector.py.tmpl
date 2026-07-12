@@ -1,0 +1,25 @@
+from kalanfa.core.hooks import FrontEndBaseSyncHook
+from kalanfa.core.webpack.hooks import WebpackBundleHook
+from kalanfa.plugins import KalanfaPluginBase
+from kalanfa.plugins.hooks import register_hook
+
+
+class {{ class_name }}(KalanfaPluginBase):
+    pass
+
+
+@register_hook
+class {{ pascal }}Asset(WebpackBundleHook):
+    bundle_id = "main"
+
+    # Expose data to the frontend bundle, read there via
+    # ``import plugin_data from 'kalanfa-plugin-data'``. Uncomment and return a
+    # JSON-serializable dict.
+    # @property
+    # def plugin_data(self):
+    #     return {}
+
+
+@register_hook
+class {{ pascal }}InclusionHook(FrontEndBaseSyncHook):
+    bundle_class = {{ pascal }}Asset

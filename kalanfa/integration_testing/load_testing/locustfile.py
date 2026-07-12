@@ -1,17 +1,17 @@
 """
-Kolibri Load Test - HAR-based Lesson Flow
+Kalanfa Load Test - HAR-based Lesson Flow
 
 This Locust test replays a recorded HAR file containing a lesson flow.
 Configuration is passed via environment variables.
 
-HAR files are portable across Kolibri versions - static file URLs are
-automatically rewritten to match the target Kolibri version.
+HAR files are portable across Kalanfa versions - static file URLs are
+automatically rewritten to match the target Kalanfa version.
 
 Usage:
-    KOLIBRI_HAR_FILE=path/to/file.har \\
-    KOLIBRI_VERSION=0.18.4 \\
-    KOLIBRI_FACILITY_ID=xyz \\
-    KOLIBRI_NUM_USERS=50 \\
+    KALANFA_HAR_FILE=path/to/file.har \\
+    KALANFA_VERSION=0.18.4 \\
+    KALANFA_FACILITY_ID=xyz \\
+    KALANFA_NUM_USERS=50 \\
     locust -f locustfile.py -u 50 -r 50 --run-time 5m
 """
 
@@ -24,24 +24,24 @@ from datetime import datetime
 from urllib.parse import unquote
 from urllib.parse import urlparse
 
-from kolibri_client import CSRFAdapter
+from kalanfa_client import CSRFAdapter
 from locust import between
 from locust import HttpUser
 from locust import task
 
 # Load configuration from environment variables
-HAR_FILE = os.environ["KOLIBRI_HAR_FILE"]
-SERVER_URL = os.environ["KOLIBRI_SERVER_URL"]
-FACILITY_ID = os.environ["KOLIBRI_FACILITY_ID"]
-CLASSROOM_ID = os.environ["KOLIBRI_CLASSROOM_ID"]
-LESSON_ID = os.environ["KOLIBRI_LESSON_ID"]
-NUM_USERS = int(os.environ.get("KOLIBRI_NUM_USERS", 50))
-KOLIBRI_VERSION = os.environ["KOLIBRI_VERSION"]
+HAR_FILE = os.environ["KALANFA_HAR_FILE"]
+SERVER_URL = os.environ["KALANFA_SERVER_URL"]
+FACILITY_ID = os.environ["KALANFA_FACILITY_ID"]
+CLASSROOM_ID = os.environ["KALANFA_CLASSROOM_ID"]
+LESSON_ID = os.environ["KALANFA_LESSON_ID"]
+NUM_USERS = int(os.environ.get("KALANFA_NUM_USERS", 50))
+KALANFA_VERSION = os.environ["KALANFA_VERSION"]
 
 # Retry configuration for 503 errors on trackprogress endpoints
 # These match frontend behavior by default but can be tuned for load testing
-MAX_RETRIES = int(os.environ.get("KOLIBRI_MAX_RETRIES", 5))
-DEFAULT_RETRY_DELAY = float(os.environ.get("KOLIBRI_RETRY_DELAY", 5.0))
+MAX_RETRIES = int(os.environ.get("KALANFA_MAX_RETRIES", 5))
+DEFAULT_RETRY_DELAY = float(os.environ.get("KALANFA_RETRY_DELAY", 5.0))
 
 
 # Load HAR file at module level (before worker processes fork)
@@ -65,8 +65,8 @@ def _load_and_parse_har(har_path):  # noqa: C901
 
     entries = har["log"]["entries"]
 
-    # Filter to requests to the Kolibri server only
-    # Extract the original server URL from the first Kolibri API request in the HAR
+    # Filter to requests to the Kalanfa server only
+    # Extract the original server URL from the first Kalanfa API request in the HAR
     original_server_url = None
     for entry in entries:
         url = entry["request"]["url"]
@@ -86,7 +86,7 @@ def _load_and_parse_har(har_path):  # noqa: C901
         method = har_request["method"].lower()
         full_url = har_request["url"]
 
-        # Filter to requests from the original Kolibri server
+        # Filter to requests from the original Kalanfa server
         if not full_url.startswith(original_server_url):
             continue
 
@@ -97,14 +97,14 @@ def _load_and_parse_har(har_path):  # noqa: C901
         # Decode URL-encoded characters (e.g., %2B → +) for easier pattern matching
         url_path = unquote(url_path)
 
-        # Replace version strings in static file filenames to match target Kolibri version
+        # Replace version strings in static file filenames to match target Kalanfa version
         # Webpack generates filenames like:
         # - JS files: filename-0.18.4.js (with dash)
         # - CSS files: filename0.19.0b1.dev0+git.27.g9908774d.css (NO dash before version)
         # Pattern matches version like: 0.18.4, 0.19.0b0.dev0+git.70.gb72619fc, etc.
         url_path = re.sub(
             r"\d+\.\d+\.\d+[a-zA-Z0-9+.]*\.(js|css)",
-            rf"{KOLIBRI_VERSION}.\1",
+            rf"{KALANFA_VERSION}.\1",
             url_path,
         )
 

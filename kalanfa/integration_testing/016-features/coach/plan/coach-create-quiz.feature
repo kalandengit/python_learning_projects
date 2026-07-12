@@ -2,7 +2,7 @@ Feature: Coach creates quizzes
   Coach needs to be able to create quizzes from existing content
 
   Background:
-    Given I am signed in to Kolibri as a coach user
+    Given I am signed in to Kalanfa as a coach user
       And I am on the *Coach - '<class>' > Plan > Quizzes* page
 
   Scenario: Create new quiz

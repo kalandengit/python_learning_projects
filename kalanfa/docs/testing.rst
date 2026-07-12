@@ -1,7 +1,7 @@
 Testing
 =======
 
-Kolibri uses comprehensive testing for both frontend and backend code. This page covers general testing principles. For specific testing guides, see:
+Kalanfa uses comprehensive testing for both frontend and backend code. This page covers general testing principles. For specific testing guides, see:
 
 - :doc:`frontend_architecture/unit_testing` - Frontend testing with Jest
 - :doc:`backend_architecture/testing` - Backend testing with pytest
@@ -39,7 +39,7 @@ TDD Example: Bug Fix
   def test_user_can_update_own_profile(self):
       """Test that user can update their own full name"""
       self.client.force_authenticate(user=self.user)
-      url = reverse('kolibri:core:facilityuser-detail', kwargs={'pk': self.user.id})
+      url = reverse('kalanfa:core:facilityuser-detail', kwargs={'pk': self.user.id})
       response = self.client.patch(url, {'full_name': 'New Name'})
       self.assertEqual(response.status_code, status.HTTP_200_OK)
       self.user.refresh_from_db()
@@ -62,7 +62,7 @@ Run the test - it should fail, confirming the bug exists.
 Run the test again - it should now pass.
 
 .. note::
-  This is a simplified example. Kolibri uses its own permission system (``KolibriAuthPermissions`` from ``kolibri.core.auth.api``) rather than standard DRF permission classes. See ``docs/backend_architecture/api_patterns.rst`` for correct patterns.
+  This is a simplified example. Kalanfa uses its own permission system (``KalanfaAuthPermissions`` from ``kalanfa.core.auth.api``) rather than standard DRF permission classes. See ``docs/backend_architecture/api_patterns.rst`` for correct patterns.
 
 **Step 3 - Refactor**: Clean up if needed while keeping tests passing
 

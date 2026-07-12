@@ -2,10 +2,10 @@ Feature: Super admin imports facility in device setup
   Super admin can import an existing facility from the local network
 
   Background:
-    Given that the Kolibri installation was successful
+    Given that the Kalanfa installation was successful
       And the server is running for the first time
       And the browser is opened at the IP address 127.0.0.1:8080
-      And there is another auto-discoverable device in the local network that is running a server with a Kolibri facility
+      And there is another auto-discoverable device in the local network that is running a server with a Kalanfa facility
       And I have selected a language in the device setup
       And I have selected *Advanced setup*
       And I have entered a *Device name*
@@ -109,11 +109,11 @@ Feature: Super admin imports facility in device setup
     When I click *Continue*
     Then I see *Import facility - 3 of 4*
 
-  Scenario: Import facility by manually adding the URL address of an existing Kolibri instance
+  Scenario: Import facility by manually adding the URL address of an existing Kalanfa instance
     Given I am on *Select network address* modal
     When I click *Add new address*
     Then I see the *New address* modal
-    When I enter the URL address of an existing Kolibri instance in the *Full network address* field
+    When I enter the URL address of an existing Kalanfa instance in the *Full network address* field
     	And I enter a name for this address in the *Name* field
     	And I click *Add*
     Then I am back at the *Select network address* modal
@@ -152,7 +152,7 @@ Feature: Super admin imports facility in device setup
       Then I see loading messages for the facility
     When it fails again
       And I click *Start over*
-    Then I see *Please select the default language for Kolibri*
+    Then I see *Please select the default language for Kalanfa*
 
   # to test this you will have to stop or disconnect the peer device
   Scenario: Loading facility fails
@@ -212,11 +212,11 @@ Feature: Super admin imports facility in device setup
     When I click *Close*
     Then I see *Responsibilities as an administrator
     When I click *Finish*
-    Then I see *Welcome to Kolibri*
+    Then I see *Welcome to Kalanfa*
 
   Scenario: Streamlined content import after importing facility
     Given I have successfully imported a facility during device setup
-      And I see *Welcome to Kolibri*
+      And I see *Welcome to Kalanfa*
       And I see a message that I should import channels to the device
       And I see a message that reports will not display properly without resources
     When I click *Continue*

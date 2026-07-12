@@ -24,7 +24,7 @@ Feature: Learner engages with an assigned quiz
       And I see the score of the quiz in percents
 
   Scenario: Learner interacts with and completes a quiz with sections
-  	Given I am signed in to Kolibri as a learner
+  	Given I am signed in to Kalanfa as a learner
   	  And I am at *Learn > Home > Classes > <class>*
   	  And there is an assigned quiz with sections
     When I click on the quiz card

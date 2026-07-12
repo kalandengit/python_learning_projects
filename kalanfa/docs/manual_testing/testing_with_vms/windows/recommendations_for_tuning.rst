@@ -1,4 +1,4 @@
-Recommendations for VM tuning prior to Kolibri installation
+Recommendations for VM tuning prior to Kalanfa installation
 -----------------------------------------------------------
 
 Manual testing is not a complex process, it usually involves a repetition of predetermined steps in a given testing scenario and recording the results, but it can be time consuming. Unless you are working with VirtualBox on a powerful host computer, VM will run more slowly. The following list of actions to take will help you tune the VM and make it as fast as possible. Apart from allocating as much RAM and processor power as your host OS can spare, you should also perform the following steps:
@@ -7,7 +7,7 @@ Manual testing is not a complex process, it usually involves a repetition of pre
 Disable Windows Update and Modules installer
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Modern.ie VMs will come with Windows Update enabled and active by default just as any regular OS. Downloading and installing the updates will require time and occupy VM resources, which will slow down your testing process. Since it is unlikely that Kolibri installation will be somehow affected by VM without the latest Microsoft patches, you should disable Windows Update altogether.
+Modern.ie VMs will come with Windows Update enabled and active by default just as any regular OS. Downloading and installing the updates will require time and occupy VM resources, which will slow down your testing process. Since it is unlikely that Kalanfa installation will be somehow affected by VM without the latest Microsoft patches, you should disable Windows Update altogether.
 
 1. Go to **Control Panel > Windows Update > Change settings** and select *Never check for updates* from the drop down menu. Press the **OK** button to save the selection.
 

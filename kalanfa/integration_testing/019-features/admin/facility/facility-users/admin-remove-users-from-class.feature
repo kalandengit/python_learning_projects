@@ -2,7 +2,7 @@ Feature: Admin removes users from class(es)
   Admin users need to be able to remove users from classes
 
   Background:
-    Given I am signed in to Kolibri as a facility admin user
+    Given I am signed in to Kalanfa as a facility admin user
       And I am at *Facility > Users* page
       And there are several created users of different types
       And there are several classes with already enrolled or assigned users

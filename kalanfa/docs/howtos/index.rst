@@ -3,7 +3,7 @@
 How To Guides
 =============
 
-These guides are step by step guides for common tasks in getting started and working on Kolibri.
+These guides are step by step guides for common tasks in getting started and working on Kalanfa.
 
 .. toctree::
   :maxdepth: 1
@@ -14,7 +14,7 @@ These guides are step by step guides for common tasks in getting started and wor
   nodeenv
   rebasing_a_pull_request
   reviewing_pull_requests
-  another_kolibri_instance
+  another_kalanfa_instance
   development_with_kds
   preview_on_mobile
   working_with_urls_and_api_endpoints

@@ -3,9 +3,9 @@ from copy import copy
 
 import pytest
 
-from kolibri.utils.env import forward_port_cgi_module
-from kolibri.utils.env import monkey_patch_base_context
-from kolibri.utils.env import monkey_patch_pkgutil
+from kalanfa.utils.env import forward_port_cgi_module
+from kalanfa.utils.env import monkey_patch_base_context
+from kalanfa.utils.env import monkey_patch_pkgutil
 
 
 @pytest.fixture(autouse=True)
@@ -50,7 +50,7 @@ def test_pkgutil_find_loader_finds_installed_package():
     Verify that pkgutil.find_loader works after monkey-patching on Python 3.14+.
     django-filter uses pkgutil.find_loader('rest_framework') at import time.
     """
-    loader = pkgutil.find_loader("kolibri")
+    loader = pkgutil.find_loader("kalanfa")
     assert loader is not None
 
 

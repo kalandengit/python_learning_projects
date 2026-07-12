@@ -2,7 +2,7 @@ Feature: Coach can filter quizzes by status and recipients
   Coaches need to be able to filter quizzes by status and recipients.
 
 	Background:
-    Given I am signed in to Kolibri as a super admin or a coach
+    Given I am signed in to Kalanfa as a super admin or a coach
       And I am at the *Coach - '<class>' > Quizzes* page
       And there are imported channels with exercises on the device
       And there are created quizzes with all three statuses (*Started*, *Not started*, *Ended*)

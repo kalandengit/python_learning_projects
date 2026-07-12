@@ -15,9 +15,9 @@ Component Reuse Hierarchy
 
 Before creating new components, check for existing ones in this order:
 
-1. **Kolibri Design System** (``kolibri-design-system``) — Always prefer KDS components first. Browse the catalog at https://design-system.learningequality.org/
-2. **Kolibri package** (``packages/kolibri/components/``) — Core application components such as ``AuthMessage``, ``CoreTable``, ``BottomAppBar``, and ``DownloadButton``
-3. **Kolibri-Common package** (``packages/kolibri-common/components/``) — Shared components used across plugins, such as ``AccordionContainer``, ``BaseToolbar``, and ``MetadataChips``
+1. **Kalanfa Design System** (``kalanfa-design-system``) — Always prefer KDS components first. Browse the catalog at https://design-system.learningequality.org/
+2. **Kalanfa package** (``packages/kalanfa/components/``) — Core application components such as ``AuthMessage``, ``CoreTable``, ``BottomAppBar``, and ``DownloadButton``
+3. **Kalanfa-Common package** (``packages/kalanfa-common/components/``) — Shared components used across plugins, such as ``AccordionContainer``, ``BaseToolbar``, and ``MetadataChips``
 
 Only create a new component if none of the above provide what you need.
 
@@ -25,9 +25,9 @@ Only create a new component if none of the above provide what you need.
 SVG Icons
 ---------
 
-Icons in Kolibri should be accessed through the ``<KIcon>`` component. The icons available can be found and searched at `Kolibri Design System <https://kolibri-design-system.netlify.app/icons/>`__.
+Icons in Kalanfa should be accessed through the ``<KIcon>`` component. The icons available can be found and searched at `Kalanfa Design System <https://kalanfa-design-system.netlify.app/icons/>`__.
 
-Each icon is associated with a token, which is passed to ``<KIcon>`` and other Kolibri Design System components which accept an ``icon`` or ``iconAfter`` prop such as ``KIconButton``.
+Each icon is associated with a token, which is passed to ``<KIcon>`` and other Kalanfa Design System components which accept an ``icon`` or ``iconAfter`` prop such as ``KIconButton``.
 
 .. code-block:: html
 

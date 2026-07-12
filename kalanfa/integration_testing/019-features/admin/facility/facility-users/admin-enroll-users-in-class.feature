@@ -2,7 +2,7 @@ Feature: Admin enrolls users in class(es)
   Admin users need to be able to enroll users in classes
 
   Background:
-    Given I am signed in to Kolibri as a facility admin user
+    Given I am signed in to Kalanfa as a facility admin user
       And I am at *Facility > Users* page
       And there are several created users
       And there are several classes

@@ -4,7 +4,7 @@
 Distribution build pipeline
 ===========================
 
-The Kolibri Package build pipeline looks like this::
+The Kalanfa Package build pipeline looks like this::
 
                         Git release branch
                                 |
@@ -17,10 +17,10 @@ The Kolibri Package build pipeline looks like this::
                /                Python dist, bundled dependencies
         Upload to PyPi        `python setup.py bdist_wheel --static`
        Installable with                 \
-     `pip install kolibri`               \
+     `pip install kalanfa`               \
                                     Upload to PyPi
                                     Installable with
-                              `pip install kolibri-static`
+                              `pip install kalanfa-static`
                                 /            |          \
                                /             |           \
                          Windows          Android        Debian
@@ -38,9 +38,9 @@ Make targets
 More on version numbers
 -----------------------
 
-.. note:: The content below is pulled from the docstring of the ``kolibri.utils.version`` module.
+.. note:: The content below is pulled from the docstring of the ``kalanfa.utils.version`` module.
 
-.. automodule:: kolibri.utils.version
+.. automodule:: kalanfa.utils.version
   :undoc-members:
   :show-inheritance:
 

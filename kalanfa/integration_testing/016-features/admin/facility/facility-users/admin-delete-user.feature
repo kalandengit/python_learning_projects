@@ -2,7 +2,7 @@ Feature: Admin deletes users
   Admin needs to be able to delete users from the facility
 
   Background:
-    Given I am signed in to Kolibri as a facility admin user
+    Given I am signed in to Kalanfa as a facility admin user
       And I am at *Facility > Users* page
 
   Scenario: Delete a user

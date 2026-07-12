@@ -4,8 +4,8 @@ Feature: Super admin imports content from Studio or local address with token
   Background:
     Given there is no content from <channel> channel on the device
       And I have the <token> token or the <id> ID for the <channel> channel
-      And I am signed in to Kolibri as super admin, or a user with device permissions to import content
-      And I am on the *Kolibri Studio channels > Select resources for import* page with the list of available channels
+      And I am signed in to Kalanfa as super admin, or a user with device permissions to import content
+      And I am on the *Kalanfa Studio channels > Select resources for import* page with the list of available channels
         Or I am on *Import from '<local_address>' > Select resources for import* page with the list of available channels
 
   Scenario: Import new content channel using the token

@@ -3,7 +3,7 @@ Feature: Guest signs up for an account
 
   Background:
     Given that *Allow learners to create accounts* setting is activated in *Facility > Settings*
-      And that I am on the Kolibri sign-in page
+      And that I am on the Kalanfa sign-in page
 
   Scenario: Sign up for an account
     When I click *Create an account* button

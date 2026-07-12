@@ -1,7 +1,7 @@
 Feature: Post-setup onboarding
 
   Background:
-    Given that the Kolibri installation was successful
+    Given that the Kalanfa installation was successful
     	And I have completed the device setup
 
 	Scenario: Finish *On my own* setup path - first user (super admin) #NOT IMPLEMENTED
@@ -15,18 +15,18 @@ Feature: Post-setup onboarding
 		When I click *Continue*
 		Then I see the following inline tip: *Your downloaded channels and learning materials will be here. You can also find and explore the libraries on devices of other people around you.*
 		When I click *Continue*
-		Then I see the following inline tip displayed over the first card of the *Kolibri content library*:: *You can explore someone else’s library when you see this symbol.*
+		Then I see the following inline tip displayed over the first card of the *Kalanfa content library*:: *You can explore someone else’s library when you see this symbol.*
 		When I click *Continue*
-		Then I see the next inline tip next to the highlighted menu bar: *Use the menu to find other ways to use Kolibri*
+		Then I see the next inline tip next to the highlighted menu bar: *Use the menu to find other ways to use Kalanfa*
 		When I click *Continue*
 		Then I see the menu expanded and an inline tip for the highlighted *Device* menu item: *You can download channels and learning materials from the Device page.*
 		When I click *Continue*
 		Then I am at the *Library* page
 			And I no longer see any inline tips
 
-	Scenario: Finish *On my own* setup path - connected to other Kolibri server on local network #NOT IMPLEMENTED
+	Scenario: Finish *On my own* setup path - connected to other Kalanfa server on local network #NOT IMPLEMENTED
 		Given I've finished the *On my own* setup path as a super admin
-			And I'm connected to another Kolibri server on the local network
+			And I'm connected to another Kalanfa server on the local network
 		When I click on a library card
 		Then I see the *Explore libraries* modal
 			And I see the following inline tip for the highlighted *Folders* tab: *Explore folders for each channel to find more learning materials.*
@@ -37,12 +37,12 @@ Feature: Post-setup onboarding
 
 	Scenario: Finish *Learn-only* setup path - Import individual user - connected to the Internet #NOT IMPLEMENTED
 		Given I've finished the *On my own* setup path as a learner
-			And I'm connected to the Internet and another Kolibri server on the local network
+			And I'm connected to the Internet and another Kalanfa server on the local network
 		When I go to the *Library* page
 		Then I see that the filter panel is hidden
 			And I see the following inline tip next to the highlighted *Library* tab: *Your downloaded channels and learning materials will be here. You can also find and explore the libraries on devices of other people around you.*
 		When I click *Continue*
-		Then I see the following inline tip displayed over the first card of the *Kolibri content library*:: *You can explore someone else’s library when you see this symbol.*
+		Then I see the following inline tip displayed over the first card of the *Kalanfa content library*:: *You can explore someone else’s library when you see this symbol.*
 		When I click *Continue*
 			And I click on the card
 		Then I see the *Explore libraries* modal
@@ -87,7 +87,7 @@ Feature: Post-setup onboarding
 		When I click *Continue*
 		Then I see the following inline tip for the highlighted *Show available resources only* toggle: *Turn this off to see learning materials that you don’t have yet.*
 		When I click *Continue*
-		Then I see the following inline tip for a highlighted card: *When you add a resource you don’t have yet to My downloads, Kolibri will automatically download it when another library around you has it.*
+		Then I see the following inline tip for a highlighted card: *When you add a resource you don’t have yet to My downloads, Kalanfa will automatically download it when another library around you has it.*
 		When I click *Continue*
 		Then I am at the content page
 			And I see the following inline tip: *See more information about this material, download it for later use, and find related materials.*

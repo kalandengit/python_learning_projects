@@ -2,7 +2,7 @@ Feature: Learner interacts with ploompub and bloomd content
   Learner needs to be able to interact with with ploompub and bloomd content and use all the content reader features
 
   Background:
-    Given I am signed in to Kolibri as a Learner user
+    Given I am signed in to Kalanfa as a Learner user
       And there is at least one channel imported on the device with ploompub and bloomd content
       And I am on the *Browse channel* page for a channel with ploompub and bloomd content
 

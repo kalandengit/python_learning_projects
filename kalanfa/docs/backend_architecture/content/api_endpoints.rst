@@ -4,19 +4,19 @@ API endpoints
 URL Namespacing
 ~~~~~~~~~~~~~~~
 
-Kolibri uses a consistent URL namespacing pattern throughout the codebase. All URLs follow the format:
+Kalanfa uses a consistent URL namespacing pattern throughout the codebase. All URLs follow the format:
 
-    >>> kolibri:<plugin_module>:<url_name>
+    >>> kalanfa:<plugin_module>:<url_name>
 
-Where ``<plugin_module>`` is either ``core`` for core Kolibri functionality (a special case, as core is not actually in a plugin module), or the full plugin module path (e.g., ``kolibri.plugins.coach``) for plugins.
+Where ``<plugin_module>`` is either ``core`` for core Kalanfa functionality (a special case, as core is not actually in a plugin module), or the full plugin module path (e.g., ``kalanfa.plugins.coach``) for plugins.
 
 For example:
 
-    >>> kolibri:core:session_list
-    >>> kolibri:core:session_detail
-    >>> kolibri:core:usernameavailable
-    >>> kolibri:kolibri.plugins.coach:lessonreport_list
-    >>> kolibri:kolibri.plugins.coach:lessonreport_detail
+    >>> kalanfa:core:session_list
+    >>> kalanfa:core:session_detail
+    >>> kalanfa:core:usernameavailable
+    >>> kalanfa:kalanfa.plugins.coach:lessonreport_list
+    >>> kalanfa:kalanfa.plugins.coach:lessonreport_detail
 
 This namespacing is used both in Django backend URL configuration and in JavaScript frontend code.
 

@@ -1,19 +1,19 @@
-Kolibri backend tasks system
+Kalanfa backend tasks system
 =============================
 
 
-Kolibri plugins and Django apps can use the backend tasks system to run time consuming processes asynchronously outside of the HTTP request-response cycle. This frees the HTTP server for client use.
+Kalanfa plugins and Django apps can use the backend tasks system to run time consuming processes asynchronously outside of the HTTP request-response cycle. This frees the HTTP server for client use.
 
-The kolibri task system is implemented as a core Django app on ``kolibri.core.tasks``.
+The kalanfa task system is implemented as a core Django app on ``kalanfa.core.tasks``.
 
-Kolibri backend tasks system flow diagram
+Kalanfa backend tasks system flow diagram
 -------------------------------------------
 
 The following diagram explains how a task travels from the frontend client to the different parts of the backend task system. It aims to give a high level understanding of the backend tasks system.
 
 You should download the following image to be able to zoom it in your image viewer. You can download by right clicking on following image and select "save image as" option.
 
-.. image:: ./kolibri_task_system.png
+.. image:: ./kalanfa_task_system.png
 .. Source: https://excalidraw.com/#json=9BxddPx20iBU_h-ObWkIM,h7ak9SCcy1fHn-4Pw6M0tg
 
 
@@ -21,13 +21,13 @@ Defining tasks via ``@register_task`` decorator
 ------------------------------------------------
 
 
-When Kolibri starts, the task backend searches for a module named ``tasks.py`` in every Django app and imports them, which results in the registration of tasks defined within.
+When Kalanfa starts, the task backend searches for a module named ``tasks.py`` in every Django app and imports them, which results in the registration of tasks defined within.
 
 When the ``tasks.py`` module gets run, functions decorated with ``@register_task`` decorator gets registered in the ``JobRegistry``.
 
-The ``@register_task`` decorator is implemented in ``kolibri.core.tasks.decorators``. It registers the decorated function as a task to the task backend system.
+The ``@register_task`` decorator is implemented in ``kalanfa.core.tasks.decorators``. It registers the decorated function as a task to the task backend system.
 
-Kolibri plugins and kolibri's Django apps can pass several arguments to the decorator based on their needs.
+Kalanfa plugins and kalanfa's Django apps can pass several arguments to the decorator based on their needs.
 
 - ``job_id (string)``: job's id.
 - ``queue (string)``: queue in which the job should be enqueued.
@@ -50,10 +50,10 @@ We will refer to below sample code in the later sections also.
 
     from rest_framework import serializers
 
-    from kolibri.core.tasks.decorators import register_task
-    from kolibri.core.tasks.job import Priority
-    from kolibri.core.tasks.permissions import IsSuperAdmin
-    from kolibri.core.tasks.validation import JobValidator
+    from kalanfa.core.tasks.decorators import register_task
+    from kalanfa.core.tasks.job import Priority
+    from kalanfa.core.tasks.permissions import IsSuperAdmin
+    from kalanfa.core.tasks.validation import JobValidator
 
     class AddValidator(JobValidator):
         a = serializers.IntegerField()
@@ -63,7 +63,7 @@ We will refer to below sample code in the later sections also.
             if data['a'] + data['b'] > 100:
                 raise serializers.ValidationError("Sum of a and b should be less than 100")
             job_data = super(AddValidator, self).validate(data)
-            job_data["extra_metadata"].update({"user": "kolibri"})
+            job_data["extra_metadata"].update({"user": "kalanfa"})
             return job_data
 
     @register_task(job_id="02", queue="maths", validator=AddValidator, priority=Priority.HIGH, cancellable=False, track_progress=True, permission_classes=[IsSuperAdmin])
@@ -75,7 +75,7 @@ Enqueuing tasks via the ``POST /api/tasks/tasks/`` API endpoint
 -----------------------------------------------------------------
 
 
-To enqueue a task that is registered with the ``@register_task`` decorator we use ``POST /api/tasks/tasks/`` endpoint method defined on ``kolibri.core.tasks.api.BaseViewSet.create``.
+To enqueue a task that is registered with the ``@register_task`` decorator we use ``POST /api/tasks/tasks/`` endpoint method defined on ``kalanfa.core.tasks.api.BaseViewSet.create``.
 
 The request payload for ``POST /api/tasks/tasks/`` API endpoint should have:
 
@@ -87,7 +87,7 @@ A valid request payload can be:
 .. code-block:: python
 
     {
-      "type": "kolibri.core.content.tasks.add",
+      "type": "kalanfa.core.content.tasks.add",
       "a": 45,
       "b": 49
     }
@@ -129,7 +129,7 @@ For example, if the validator returns a dictionary like:
           "b": req_data["b"],
       },
       "extra_metadata": {
-        "user": "kolibri"
+        "user": "kalanfa"
       }
     }
 
@@ -145,17 +145,17 @@ We can also enqueue tasks in bulk. The frontend just have to send a list of task
 
     [
       {
-        "type": "kolibri.core.content.tasks.add",
+        "type": "kalanfa.core.content.tasks.add",
         "a": 45,
         "b": 49
       },
       {
-        "type": "kolibri.core.content.tasks.add",
+        "type": "kalanfa.core.content.tasks.add",
         "a": 20,
         "b": 52
       },
       {
-        "type": "kolibri.core.content.tasks.subtract",
+        "type": "kalanfa.core.content.tasks.subtract",
         "a": 10,
         "b": 59
       }
@@ -203,7 +203,7 @@ However, if any task fails validation, all tasks in the request will be rejected
 Job execution and worker supervision
 ------------------------------------
 
-Enqueued jobs are persisted in the job storage database (``kolibri.core.tasks.storage``) and executed by a ``WorkerSupervisor`` (``kolibri.core.tasks.worker``). Each supervisor runs a job checker thread that claims the next eligible ``QUEUED`` job and dispatches it to a thread pool of worker executors. Several supervisors - in separate processes, or on separate hosts sharing a postgres database - can serve the same job storage concurrently; the claim is made exactly once because it is serialized at the database level (``SELECT ... FOR UPDATE SKIP LOCKED`` on postgres, ``BEGIN IMMEDIATE`` transactions on SQLite).
+Enqueued jobs are persisted in the job storage database (``kalanfa.core.tasks.storage``) and executed by a ``WorkerSupervisor`` (``kalanfa.core.tasks.worker``). Each supervisor runs a job checker thread that claims the next eligible ``QUEUED`` job and dispatches it to a thread pool of worker executors. Several supervisors - in separate processes, or on separate hosts sharing a postgres database - can serve the same job storage concurrently; the claim is made exactly once because it is serialized at the database level (``SELECT ... FOR UPDATE SKIP LOCKED`` on postgres, ``BEGIN IMMEDIATE`` transactions on SQLite).
 
 On Android there is no ``WorkerSupervisor``; the platform's WorkManager dispatches executions directly through ``execute_job``, passing its own ``supervisor_id``.
 

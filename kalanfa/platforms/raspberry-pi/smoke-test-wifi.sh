@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Smoke test: verify WiFi AP configuration in a built Kolibri Pi image.
+# Smoke test: verify WiFi AP configuration in a built Kalanfa Pi image.
 # Usage: sudo ./smoke-test-wifi.sh <path-to-zip-or-img>
 set -euo pipefail
 
@@ -71,7 +71,7 @@ check_file "$MNT/boot/firmware/cmdline.txt" \
 check_file "$MNT/etc/modprobe.d/rfkill_default.conf" \
   'default_state=1' 'rfkill default_state=1'
 
-NM_CONN="$MNT/etc/NetworkManager/system-connections/kolibri-hotspot.nmconnection"
+NM_CONN="$MNT/etc/NetworkManager/system-connections/kalanfa-hotspot.nmconnection"
 
 check_file "$NM_CONN" \
   'mode=ap' 'NM hotspot profile present with mode=ap'

@@ -2,13 +2,13 @@ Feature: Super admin goes through the 'Quick start' setup wizard
   Super admin can configure their device to Quick start setup
 
   Background:
-    Given that Kolibri installation was successful
+    Given that Kalanfa installation was successful
       And the server is running for the first time
       And the browser is opened at the IP address 127.0.0.1:8080
 
   Scenario: Select language
     Given that I am at the beginning of the setup wizard
-      And I see *Please select the default language for Kolibri*
+      And I see *Please select the default language for Kalanfa*
     When I click the link *Español*
     Then the wizard language changes to Spanish
     When I click *More languages*
@@ -23,7 +23,7 @@ Feature: Super admin goes through the 'Quick start' setup wizard
     Then I see *Getting started*
 
   Scenario: Select 'Quick start'
-    Given I see *How are you using Kolibri?*
+    Given I see *How are you using Kalanfa?*
     When I select *Quick start*
       And I click *Continue*
     Then I see *Create super admin account*
@@ -35,7 +35,7 @@ Feature: Super admin goes through the 'Quick start' setup wizard
     When I fill in the full name, username and password fields
       And I click *Finish*
     Then I see the *Setting up the facility...* page
-      And I see the *Welcome to Kolibri!* modal
+      And I see the *Welcome to Kalanfa!* modal
     When I click *OK*
     Then I see the *Device > Channels* page
 

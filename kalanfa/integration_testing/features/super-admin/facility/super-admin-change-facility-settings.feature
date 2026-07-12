@@ -4,7 +4,7 @@ Feature: Admin changes facility settings
   # When testing in app-context make sure to go thorough the 'app-context-manage-sign-in-options.feature' scenario too
 
   Background:
-    Given I am signed in to Kolibri as a super admin or a facility admin user
+    Given I am signed in to Kalanfa as a super admin or a facility admin user
       And I am on *Facility > Settings* page
       And there are learner and coach user accounts created in the facility
 
@@ -59,7 +59,7 @@ Feature: Admin changes facility settings
 
   Scenario: Allow content download
     Given the *Show 'download' button with resources* checkbox is unchecked
-      And Kolibri is not running in the app context
+      And Kalanfa is not running in the app context
     When I check the *Show 'download' button with resources* checkbox
       And I click the *Save changes* button
     When I go to *Learn > Channels* page

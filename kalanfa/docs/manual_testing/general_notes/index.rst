@@ -4,7 +4,7 @@ General Notes
 Accessibility (a11y) testing
 ----------------------------
 
-Inclusive design benefits all users, and we strive to make Kolibri accessible for all. Testing for accessibility can be challenging, but there are a few features you should check for before submitting your PR:
+Inclusive design benefits all users, and we strive to make Kalanfa accessible for all. Testing for accessibility can be challenging, but there are a few features you should check for before submitting your PR:
 
 * Working **keyboard navigation** - everything that user can do with mouse or by touch must also work with the `keyboard alone <http://webaim.org/techniques/keyboard/>`__.
 * Sufficient `color contrast <http://a11yproject.com/posts/what-is-color-contrast/>`__ between foreground text/elements and the background.
@@ -21,7 +21,7 @@ Cross-browser and OS testing
 
 It's vital to ensure that our app works across a wide range of browsers and operating systems, particularly older versions of Windows and Android that are common on old and cheap devices.
 
-In particular, we want to ensure that Kolibri runs on major browsers that match any of `the following criteria <http://browserl.ist/?q=%3E+1%25%2C+last+2+versions%2C+ie+%3E%3D+9%2C+Firefox+ESR>`__:
+In particular, we want to ensure that Kalanfa runs on major browsers that match any of `the following criteria <http://browserl.ist/?q=%3E+1%25%2C+last+2+versions%2C+ie+%3E%3D+9%2C+Firefox+ESR>`__:
 
  * within the last two versions
  * IE 11+
@@ -73,7 +73,7 @@ Chrome's Developer Tools have functionality to simulate a variety of network con
 
 Within the Chrome Dev Tools, navigate to the Network panel. Select a connection from the drop-down to apply network throttling and latency manipulation. When a Throttle is enabled the panel indicator will show a warning icon. This is to remind you that throttling is enabled when you are in other panels.
 
-For Kolibri, our target audience's network condition can be mimicked by setting connectivity to Regular 3G (100ms, 750kb/s, 250 kb/s).
+For Kalanfa, our target audience's network condition can be mimicked by setting connectivity to Regular 3G (100ms, 750kb/s, 250 kb/s).
 
 
 Performance testing with Django Silk
@@ -93,53 +93,53 @@ In order to do this, a management command is available
 
 .. code-block:: bash
 
-    kolibri manage generateuserdata
+    kalanfa manage generateuserdata
 
 This will generate user data for each channel on the system.  To see available options, use
 
 .. code-block:: bash
 
-    kolibri manage help generateuserdata
+    kalanfa manage help generateuserdata
 
 
-Examples for Kolibri with imported channels
+Examples for Kalanfa with imported channels
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-The command ``kolibri manage generateuserdata`` (without any arguments) creates 1 facility, with 2 classes, and 20 users each class.  It will then create sample data up to maximum of 2 channels. Then it will create 5 lessons per class, 2 exams, and randomize the number of interactions per channel for learners.
+The command ``kalanfa manage generateuserdata`` (without any arguments) creates 1 facility, with 2 classes, and 20 users each class.  It will then create sample data up to maximum of 2 channels. Then it will create 5 lessons per class, 2 exams, and randomize the number of interactions per channel for learners.
 
 Create 2 facilities, with 2 classes per facility, with 20 learners per class.
 
 .. code-block:: bash
 
-    kolibri manage generateuserdata --facilities 2 --classes 2 --users 20
+    kalanfa manage generateuserdata --facilities 2 --classes 2 --users 20
 
 Same as above, but prepend their names with "VM1" - useful for testing P2P syncing features.
 
 .. code-block:: bash
 
-    kolibri manage generateuserdata --facilities 2 --classes 2 --users 20 --device-name VM1
+    kalanfa manage generateuserdata --facilities 2 --classes 2 --users 20 --device-name VM1
 
 Create 2 facilities, with 2 classes per facility, with 20 learners per class, 2 interactions per learner.
 
 .. code-block:: bash
 
-    kolibri manage generateuserdata --facilities 2 --classes 2 --users 20 --num-content-items 2
+    kalanfa manage generateuserdata --facilities 2 --classes 2 --users 20 --num-content-items 2
 
 
-Examples for a fresh Kolibri install (no imported channels)
+Examples for a fresh Kalanfa install (no imported channels)
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-For a fresh Kolibri installation, use this to automatically create superusers and skip on-boarding (setup wizard).  The superuser username is ``superuser`` and password is ``password``.
+For a fresh Kalanfa installation, use this to automatically create superusers and skip on-boarding (setup wizard).  The superuser username is ``superuser`` and password is ``password``.
 
 .. code-block:: bash
 
-    kolibri manage generateuserdata --no-onboarding
+    kalanfa manage generateuserdata --no-onboarding
 
 Create 2 facilities, with 2 classes per facility, with 20 learners per class.
 
 .. code-block:: bash
 
-    kolibri manage generateuserdata --facilities 2 --classes 2 --users 20 --no-onboarding
+    kalanfa manage generateuserdata --facilities 2 --classes 2 --users 20 --no-onboarding
 
 
 Notes
@@ -157,13 +157,13 @@ Collecting client and server errors using Sentry
 
 `Sentry <https://docs.sentry.io/>`__ clients are available for both backend and frontend error reporting. This can be particularly useful to have running on beta and demo servers in order to catch errors "in the wild".
 
-This behaviour is activated by installing the `Kolibri Sentry Plugin <https://github.com/learningequality/kolibri-sentry-plugin>`__. Once installed, the options below become available for configuration.
+This behaviour is activated by installing the `Kalanfa Sentry Plugin <https://github.com/learningequality/kalanfa-sentry-plugin>`__. Once installed, the options below become available for configuration.
 
 .. code-block:: bash
 
-    pip install kolibri-sentry-plugin  # might need to run with sudo
+    pip install kalanfa-sentry-plugin  # might need to run with sudo
 
-If you're running Kolibri using a pex file, you'll need to make sure that the pex inherits a Python path with `kolibri_sentry_plugin` available. To do this without inheriting the full system path, run the pex from an active virtual environment with `PEX_INHERIT_PATH=1 python kolibri.pex`.
+If you're running Kalanfa using a pex file, you'll need to make sure that the pex inherits a Python path with `kalanfa_sentry_plugin` available. To do this without inheriting the full system path, run the pex from an active virtual environment with `PEX_INHERIT_PATH=1 python kalanfa.pex`.
 
 To set up error reporting, you'll need a `Sentry DSN <https://docs.sentry.io/error-reporting/quickstart>`__. These are available from your project settings at ``https://sentry.io/settings/[org_name]/[project_name]/keys/``
 
@@ -177,10 +177,10 @@ If using options.ini, under a ``Debug`` header you can use these options:
 
 Or if using environment variables:
 
- * ``KOLIBRI_DEBUG_SENTRY_BACKEND_DSN``
- * ``KOLIBRI_DEBUG_SENTRY_FRONTEND_DSN``
- * ``KOLIBRI_DEBUG_SENTRY_ENVIRONMENT`` (optional)
+ * ``KALANFA_DEBUG_SENTRY_BACKEND_DSN``
+ * ``KALANFA_DEBUG_SENTRY_FRONTEND_DSN``
+ * ``KALANFA_DEBUG_SENTRY_ENVIRONMENT`` (optional)
 
-The 'environment' corresponds to a particular installation of Kolibri that we want to track over time - for example, ``demo-server``, ``beta-server``, or ``i18n-server``.
+The 'environment' corresponds to a particular installation of Kalanfa that we want to track over time - for example, ``demo-server``, ``beta-server``, or ``i18n-server``.
 
 Other information is provided automatically such as the current user, browser info, and locale.

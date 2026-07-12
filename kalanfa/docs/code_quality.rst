@@ -1,7 +1,7 @@
 Code Quality
 ============
 
-These principles guide how we write and review code in Kolibri. They apply across the full stack — Python, JavaScript, Vue, and infrastructure — and reflect patterns that have proven valuable in practice.
+These principles guide how we write and review code in Kalanfa. They apply across the full stack — Python, JavaScript, Vue, and infrastructure — and reflect patterns that have proven valuable in practice.
 
 For language-specific conventions, see :doc:`frontend_architecture/conventions` and the coding conventions section in the project's ``AGENTS.md``.
 
@@ -11,9 +11,9 @@ Every concern lives at exactly one layer
 
 If a behavior like validation, retry, error handling, or permission checking is implemented at one layer, do not reimplement it at another. Choose the layer that owns the concern and trust it. Redundant implementations create conflicting behavior and obscure which layer is actually in control.
 
-In Kolibri, this means:
+In Kalanfa, this means:
 
-- Permission checks belong in ``KolibriAuthPermissions`` and ``RoleBasedPermissions`` on models — not duplicated in frontend route guards and API views
+- Permission checks belong in ``KalanfaAuthPermissions`` and ``RoleBasedPermissions`` on models — not duplicated in frontend route guards and API views
 - Validation logic belongs in serializers or model ``clean()`` methods — not scattered across both the viewset and the serializer
 - Do not introduce global or shared mutable state to coordinate between modules. If two components need the same data, pass it explicitly or put it behind a single owner (e.g., a composable with module-level refs)
 
@@ -37,7 +37,7 @@ Interfaces stay small
 
 Every public method needs justification. If something can be private, it must be. Push implementation details behind the interface boundary.
 
-In Kolibri:
+In Kalanfa:
 
 - Keep the ``values`` tuple in ``ValuesViewset`` minimal — only fetch fields that are actually needed
 - Composables should return a focused public API — not expose every internal ref
@@ -49,7 +49,7 @@ Tests assert behavior, not implementation
 
 Test inputs and outputs. Mock only at hard boundaries: network, filesystem, external services. Do not mock internal modules or classes to isolate units — test them through the real call chain. If refactoring working code breaks a test, the test was wrong, not the code.
 
-In Kolibri:
+In Kalanfa:
 
 - Frontend tests use `Vue Testing Library <https://testing-library.com/docs/vue-testing-library/intro>`__ which encourages testing from the user's perspective — query by text, role, and label rather than component internals
 - Backend tests call API endpoints through Django's test client and assert on response data, not on internal method calls
@@ -69,7 +69,7 @@ Do not store what can be computed
 
 Do not add fields to data structures that are derivable from other fields in the same structure. Expose derived values as methods or computed properties.
 
-In Kolibri:
+In Kalanfa:
 
 - Use ``computed()`` in Vue composables for derived state rather than maintaining separate refs that must be kept in sync
 - Use ``annotate_queryset`` in ``ValuesViewset`` for computed database fields rather than post-processing in Python
@@ -81,7 +81,7 @@ At system boundaries, generate shared representations
 
 When your code must mirror an external schema, API, or type definition, prefer generating the local representation from a shared source of truth (OpenAPI specs, database introspection, protobuf definitions, etc.). Do not manually duplicate type definitions, DTOs, or validation logic across boundaries.
 
-In Kolibri, error constants in ``kolibri/core/error_constants.py`` are mirrored in frontend constants — if adding a new error constant, it must be added to both sides. If no generation tool exists, add a comment identifying the external source so reviewers can verify sync.
+In Kalanfa, error constants in ``kalanfa/core/error_constants.py`` are mirrored in frontend constants — if adding a new error constant, it must be added to both sides. If no generation tool exists, add a comment identifying the external source so reviewers can verify sync.
 
 
 Let errors propagate
@@ -91,7 +91,7 @@ Do not wrap every call in try/catch blocks that just log and rethrow, or that ca
 
 If something that "cannot happen" happens, crash — a dead program does less damage than a crippled one continuing to run on corrupted state. Only catch an exception if you have a specific recovery action for that specific failure mode.
 
-In Kolibri, Django REST Framework's exception handling will catch unhandled exceptions and return appropriate error responses — there is no need to wrap every view method in a try/except.
+In Kalanfa, Django REST Framework's exception handling will catch unhandled exceptions and return appropriate error responses — there is no need to wrap every view method in a try/except.
 
 
 Tell, don't ask
@@ -99,7 +99,7 @@ Tell, don't ask
 
 Do not reach into an object, inspect its internal state, make a decision based on that state, and then update the object. That pattern scatters the object's logic across its callers and makes the real rules invisible. Instead, tell the object what you want done and let it manage its own state.
 
-In Kolibri:
+In Kalanfa:
 
 - Use ``RoleBasedPermissions`` declaratively on models rather than checking roles manually in views
 - Composables should expose actions (``fetchChannels()``) rather than forcing callers to manipulate internal refs directly
@@ -119,7 +119,7 @@ Prefer composition over inheritance
 
 Do not use class inheritance to share behavior between types. Inheritance couples the child to the parent's implementation — when the parent changes, the child breaks silently.
 
-In Kolibri:
+In Kalanfa:
 
 - Vue composables are preferred over mixins for sharing component logic — composables use explicit composition rather than implicit merging
 - Use interfaces or protocols to define shared behavior contracts, delegation to reuse implementation
@@ -131,7 +131,7 @@ Externalize values that change independently of code
 
 Do not hardcode credentials, feature flags, environment-specific URLs, port numbers, logging levels, or business-rule thresholds as constants or literals in source code. Extract them to configuration that is loaded at startup.
 
-In Kolibri, runtime configuration is managed through ``kolibri.utils.conf.OPTIONS`` and Django settings modules (``kolibri/deployment/default/settings/``). Plugin options use ``options.py`` files. Wrap configuration access behind a consistent API so code does not depend on how or where configuration is stored.
+In Kalanfa, runtime configuration is managed through ``kalanfa.utils.conf.OPTIONS`` and Django settings modules (``kalanfa/deployment/default/settings/``). Plugin options use ``options.py`` files. Wrap configuration access behind a consistent API so code does not depend on how or where configuration is stored.
 
 
 Follow existing naming conventions and project vocabulary
@@ -139,7 +139,7 @@ Follow existing naming conventions and project vocabulary
 
 Match the naming style of the language (``snake_case`` in Python, ``camelCase`` in JavaScript) and the conventions already established in the codebase. Use the same terms the project already uses for domain concepts — do not introduce synonyms.
 
-In Kolibri:
+In Kalanfa:
 
 - A group of learners is a ``Collection``, not a "group" or "class" (``Classroom`` is a specific kind of ``Collection``)
 - Content items are ``ContentNode`` objects, not "resources" or "materials"

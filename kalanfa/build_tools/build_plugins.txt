@@ -1,2 +1,2 @@
-kolibri.core
-kolibri.plugins.*
+kalanfa.core
+kalanfa.plugins.*

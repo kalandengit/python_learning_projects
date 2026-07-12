@@ -4,9 +4,9 @@ Concepts and Definitions
 Facility
 --------
 
-All user data (accounts, logs, ratings, etc) in Kolibri are associated with a
+All user data (accounts, logs, ratings, etc) in Kalanfa are associated with a
 particular "Facility". A Facility is a grouping of users who are physically
-co-located, and who generally access Kolibri from the same server on a local
+co-located, and who generally access Kalanfa from the same server on a local
 network, for example in a school, library, or community center. Collectively,
 all the data associated with a particular Facility are referred to as a
 "Facility Dataset".
@@ -14,7 +14,7 @@ all the data associated with a particular Facility are referred to as a
 Users
 -----
 
-Kolibri's users are instances of the ``FacilityUser`` model, which derives from Django's ``AbstractBaseUser``. A user
+Kalanfa's users are instances of the ``FacilityUser`` model, which derives from Django's ``AbstractBaseUser``. A user
 ``FacilityUser`` is associated with a particular ``Facility``, and the user's
 account and data may be synchronized across multiple devices.
 A ``FacilityUser`` may be made into a superuser, with permissions to modify any data
@@ -89,7 +89,7 @@ A user can be assigned certain roles for different collection types:
 Role-Based Permissions
 ----------------------
 
-As a lot of Facility Data in Kolibri is associated with a particular
+As a lot of Facility Data in Kalanfa is associated with a particular
 ``FacilityUser``, for many objects we can concisely define a requesting user's
 permissions in terms of his or her roles for the object's associated User. For
 example, if a ``ContentLog`` represents a particular ``FacilityUser``'s
@@ -110,7 +110,7 @@ for Class A.
 Permission Levels
 -----------------
 
-As we are constructing a RESTful API for accessing data within Kolibri, the
+As we are constructing a RESTful API for accessing data within Kalanfa, the
 core actions for which we need to define permissions are the CRUD operations
 (Create, Read, Update, Delete). As Create, Update, and Delete permissions
 often go hand in hand, we can collectively refer to them as "Write

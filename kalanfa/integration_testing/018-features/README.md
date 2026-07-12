@@ -1,7 +1,7 @@
 
-# Style guide for Kolibri `.feature` files
+# Style guide for Kalanfa `.feature` files
 
-The purpose of this document is to compile and keep the record of our internal conventions used to write and format the `.feature` files for testing Kolibri.
+The purpose of this document is to compile and keep the record of our internal conventions used to write and format the `.feature` files for testing Kalanfa.
 
 Style guide is a `Work-In-Progress` as we keep adding the testing scenarios and refining our strategies.
 
@@ -33,7 +33,7 @@ Feature name and description (the first part of the content inside the `.feature
 
 - Enclose strings of **all** the UI elements (buttons, menu options, headings, modal titles, etc.) inside `**` chars.
 - Capitalize just the first letter (even when they appear fully capitalized in the UI, for readability purposes).
-- Use the `*Plugin name > Tab name*` convention for indicating the current or position or the desired destination of the user in Kolibri. Examples: `*Coach > Groups*`, `*Learn > Recommended*`, `*Facility > Settings*`, `*Device > Info*`, etc.
+- Use the `*Plugin name > Tab name*` convention for indicating the current or position or the desired destination of the user in Kalanfa. Examples: `*Coach > Groups*`, `*Learn > Recommended*`, `*Facility > Settings*`, `*Device > Info*`, etc.
 
 
 ## Some useful BDD resources

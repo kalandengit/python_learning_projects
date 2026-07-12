@@ -24,10 +24,10 @@ catalogs:
     core-js:
       specifier: ^3.47.0
       version: 3.47.0
-    kolibri-constants:
+    kalanfa-constants:
       specifier: 0.2.16
       version: 0.2.16
-    kolibri-design-system:
+    kalanfa-design-system:
       specifier: 5.7.0
       version: 5.7.0
     lodash:
@@ -77,9 +77,9 @@ importers:
       babel-jest:
         specifier: ^30.3.0
         version: 30.3.0(@babel/core@7.29.7)
-      browserslist-config-kolibri:
+      browserslist-config-kalanfa:
         specifier: workspace:*
-        version: link:packages/browserslist-config-kolibri
+        version: link:packages/browserslist-config-kalanfa
       concurrently:
         specifier: ^8.0.1
         version: 8.2.2
@@ -92,30 +92,30 @@ importers:
       jest-serializer-vue:
         specifier: ^3.1.0
         version: 3.1.0
-      kolibri:
+      kalanfa:
         specifier: workspace:*
-        version: link:packages/kolibri
-      kolibri-build:
+        version: link:packages/kalanfa
+      kalanfa-build:
         specifier: workspace:*
-        version: link:packages/kolibri-build
-      kolibri-common:
+        version: link:packages/kalanfa-build
+      kalanfa-common:
         specifier: workspace:*
-        version: link:packages/kolibri-common
-      kolibri-format:
+        version: link:packages/kalanfa-common
+      kalanfa-format:
         specifier: workspace:*
-        version: link:packages/kolibri-format
-      kolibri-glob:
+        version: link:packages/kalanfa-format
+      kalanfa-glob:
         specifier: workspace:*
-        version: link:packages/kolibri-glob
-      kolibri-i18n:
+        version: link:packages/kalanfa-glob
+      kalanfa-i18n:
         specifier: workspace:*
-        version: link:packages/kolibri-i18n
-      kolibri-logging:
+        version: link:packages/kalanfa-i18n
+      kalanfa-logging:
         specifier: workspace:*
-        version: link:packages/kolibri-logging
-      kolibri-plugin-data:
+        version: link:packages/kalanfa-logging
+      kalanfa-plugin-data:
         specifier: workspace:*
-        version: link:packages/kolibri-plugin-data
+        version: link:packages/kalanfa-plugin-data
       rewire:
         specifier: ^6.0.0
         version: 6.0.0
@@ -133,7 +133,7 @@ importers:
         specifier: '*'
         version: 2.3.3
 
-  kolibri/core:
+  kalanfa/core:
     dependencies:
       '@babel/core':
         specifier: ^7.29.7
@@ -147,24 +147,24 @@ importers:
       babel-loader:
         specifier: ^10.1.1
         version: 10.1.1(@babel/core@7.29.7)(webpack@5.106.2)
-      browserslist-config-kolibri:
+      browserslist-config-kalanfa:
         specifier: workspace:*
-        version: link:../../packages/browserslist-config-kolibri
+        version: link:../../packages/browserslist-config-kalanfa
       core-js:
         specifier: 'catalog:'
         version: 3.47.0
-      kolibri:
+      kalanfa:
         specifier: workspace:*
-        version: link:../../packages/kolibri
-      kolibri-common:
+        version: link:../../packages/kalanfa
+      kalanfa-common:
         specifier: workspace:*
-        version: link:../../packages/kolibri-common
-      kolibri-logging:
+        version: link:../../packages/kalanfa-common
+      kalanfa-logging:
         specifier: workspace:*
-        version: link:../../packages/kolibri-logging
-      kolibri-plugin-data:
+        version: link:../../packages/kalanfa-logging
+      kalanfa-plugin-data:
         specifier: workspace:*
-        version: link:../../packages/kolibri-plugin-data
+        version: link:../../packages/kalanfa-plugin-data
       lodash:
         specifier: 'catalog:'
         version: 4.17.23
@@ -172,23 +172,23 @@ importers:
         specifier: 'catalog:'
         version: 2.7.16
 
-  kolibri/plugins/bloompub_viewer:
+  kalanfa/plugins/bloompub_viewer:
     dependencies:
-      kolibri:
+      kalanfa:
         specifier: workspace:*
-        version: link:../../../packages/kolibri
-      kolibri-common:
+        version: link:../../../packages/kalanfa
+      kalanfa-common:
         specifier: workspace:*
-        version: link:../../../packages/kolibri-common
-      kolibri-design-system:
+        version: link:../../../packages/kalanfa-common
+      kalanfa-design-system:
         specifier: 'catalog:'
         version: 5.7.0
-      kolibri-sandbox:
+      kalanfa-sandbox:
         specifier: workspace:*
-        version: link:../../../packages/kolibri-sandbox
-      kolibri-viewer:
+        version: link:../../../packages/kalanfa-sandbox
+      kalanfa-viewer:
         specifier: workspace:*
-        version: link:../../../packages/kolibri-viewer
+        version: link:../../../packages/kalanfa-viewer
       lodash:
         specifier: 'catalog:'
         version: 4.17.23
@@ -196,7 +196,7 @@ importers:
         specifier: 'catalog:'
         version: 2.7.16
 
-  kolibri/plugins/coach:
+  kalanfa/plugins/coach:
     dependencies:
       '@vueuse/core':
         specifier: 'catalog:'
@@ -204,27 +204,27 @@ importers:
       csv-generator-client:
         specifier: ^2.1.1
         version: 2.1.1
-      kolibri:
+      kalanfa:
         specifier: workspace:*
-        version: link:../../../packages/kolibri
-      kolibri-app:
+        version: link:../../../packages/kalanfa
+      kalanfa-app:
         specifier: workspace:*
-        version: link:../../../packages/kolibri-app
-      kolibri-common:
+        version: link:../../../packages/kalanfa-app
+      kalanfa-common:
         specifier: workspace:*
-        version: link:../../../packages/kolibri-common
-      kolibri-constants:
+        version: link:../../../packages/kalanfa-common
+      kalanfa-constants:
         specifier: 'catalog:'
         version: 0.2.16
-      kolibri-design-system:
+      kalanfa-design-system:
         specifier: 'catalog:'
         version: 5.7.0
-      kolibri-logging:
+      kalanfa-logging:
         specifier: workspace:*
-        version: link:../../../packages/kolibri-logging
-      kolibri-plugin-data:
+        version: link:../../../packages/kalanfa-logging
+      kalanfa-plugin-data:
         specifier: workspace:*
-        version: link:../../../packages/kolibri-plugin-data
+        version: link:../../../packages/kalanfa-plugin-data
       lockr:
         specifier: 0.8.5
         version: 0.8.5
@@ -257,17 +257,17 @@ importers:
         specifier: 'catalog:'
         version: 1.3.6(vue-template-compiler@2.7.16)(vue@2.7.16)
 
-  kolibri/plugins/demo_server:
+  kalanfa/plugins/demo_server:
     dependencies:
-      kolibri:
+      kalanfa:
         specifier: workspace:*
-        version: link:../../../packages/kolibri
-      kolibri-common:
+        version: link:../../../packages/kalanfa
+      kalanfa-common:
         specifier: workspace:*
-        version: link:../../../packages/kolibri-common
-      kolibri-module:
+        version: link:../../../packages/kalanfa-common
+      kalanfa-module:
         specifier: workspace:*
-        version: link:../../../packages/kolibri-module
+        version: link:../../../packages/kalanfa-module
       lodash:
         specifier: 'catalog:'
         version: 4.17.23
@@ -275,7 +275,7 @@ importers:
         specifier: 'catalog:'
         version: 2.7.16
 
-  kolibri/plugins/device:
+  kalanfa/plugins/device:
     dependencies:
       '@vueuse/core':
         specifier: 'catalog:'
@@ -283,24 +283,24 @@ importers:
       js-cookie:
         specifier: ^3.0.5
         version: 3.0.5
-      kolibri:
+      kalanfa:
         specifier: workspace:*
-        version: link:../../../packages/kolibri
-      kolibri-app:
+        version: link:../../../packages/kalanfa
+      kalanfa-app:
         specifier: workspace:*
-        version: link:../../../packages/kolibri-app
-      kolibri-common:
+        version: link:../../../packages/kalanfa-app
+      kalanfa-common:
         specifier: workspace:*
-        version: link:../../../packages/kolibri-common
-      kolibri-design-system:
+        version: link:../../../packages/kalanfa-common
+      kalanfa-design-system:
         specifier: 'catalog:'
         version: 5.7.0
-      kolibri-logging:
+      kalanfa-logging:
         specifier: workspace:*
-        version: link:../../../packages/kolibri-logging
-      kolibri-plugin-data:
+        version: link:../../../packages/kalanfa-logging
+      kalanfa-plugin-data:
         specifier: workspace:*
-        version: link:../../../packages/kolibri-plugin-data
+        version: link:../../../packages/kalanfa-plugin-data
       lodash:
         specifier: 'catalog:'
         version: 4.17.23
@@ -330,7 +330,7 @@ importers:
         specifier: 'catalog:'
         version: 1.3.6(vue-template-compiler@2.7.16)(vue@2.7.16)
 
-  kolibri/plugins/epub_viewer:
+  kalanfa/plugins/epub_viewer:
     dependencies:
       browserify-zlib:
         specifier: ^0.2.0
@@ -341,18 +341,18 @@ importers:
       event-emitter:
         specifier: ^0.3.5
         version: 0.3.5
-      kolibri:
+      kalanfa:
         specifier: workspace:*
-        version: link:../../../packages/kolibri
-      kolibri-common:
+        version: link:../../../packages/kalanfa
+      kalanfa-common:
         specifier: workspace:*
-        version: link:../../../packages/kolibri-common
-      kolibri-design-system:
+        version: link:../../../packages/kalanfa-common
+      kalanfa-design-system:
         specifier: 'catalog:'
         version: 5.7.0
-      kolibri-viewer:
+      kalanfa-viewer:
         specifier: workspace:*
-        version: link:../../../packages/kolibri-viewer
+        version: link:../../../packages/kalanfa-viewer
       lockr:
         specifier: 0.8.5
         version: 0.8.5
@@ -394,7 +394,7 @@ importers:
         specifier: 'catalog:'
         version: 1.3.6(vue-template-compiler@2.7.16)(vue@2.7.16)
 
-  kolibri/plugins/facility:
+  kalanfa/plugins/facility:
     dependencies:
       '@vueuse/core':
         specifier: 'catalog:'
@@ -405,24 +405,24 @@ importers:
       fuse.js:
         specifier: ^7.1.0
         version: 7.1.0
-      kolibri:
+      kalanfa:
         specifier: workspace:*
-        version: link:../../../packages/kolibri
-      kolibri-app:
+        version: link:../../../packages/kalanfa
+      kalanfa-app:
         specifier: workspace:*
-        version: link:../../../packages/kolibri-app
-      kolibri-common:
+        version: link:../../../packages/kalanfa-app
+      kalanfa-common:
         specifier: workspace:*
-        version: link:../../../packages/kolibri-common
-      kolibri-design-system:
+        version: link:../../../packages/kalanfa-common
+      kalanfa-design-system:
         specifier: 'catalog:'
         version: 5.7.0
-      kolibri-logging:
+      kalanfa-logging:
         specifier: workspace:*
-        version: link:../../../packages/kolibri-logging
-      kolibri-plugin-data:
+        version: link:../../../packages/kalanfa-logging
+      kalanfa-plugin-data:
         specifier: workspace:*
-        version: link:../../../packages/kolibri-plugin-data
+        version: link:../../../packages/kalanfa-plugin-data
       lodash:
         specifier: 'catalog:'
         version: 4.17.23
@@ -446,23 +446,23 @@ importers:
         specifier: 'catalog:'
         version: 5.9.0(vue-template-compiler@2.7.16)(vue@2.7.16)
 
-  kolibri/plugins/html5_viewer:
+  kalanfa/plugins/html5_viewer:
     dependencies:
-      kolibri:
+      kalanfa:
         specifier: workspace:*
-        version: link:../../../packages/kolibri
-      kolibri-common:
+        version: link:../../../packages/kalanfa
+      kalanfa-common:
         specifier: workspace:*
-        version: link:../../../packages/kolibri-common
-      kolibri-design-system:
+        version: link:../../../packages/kalanfa-common
+      kalanfa-design-system:
         specifier: 'catalog:'
         version: 5.7.0
-      kolibri-sandbox:
+      kalanfa-sandbox:
         specifier: workspace:*
-        version: link:../../../packages/kolibri-sandbox
-      kolibri-viewer:
+        version: link:../../../packages/kalanfa-sandbox
+      kalanfa-viewer:
         specifier: workspace:*
-        version: link:../../../packages/kolibri-viewer
+        version: link:../../../packages/kalanfa-viewer
       lodash:
         specifier: 'catalog:'
         version: 4.17.23
@@ -470,7 +470,7 @@ importers:
         specifier: 'catalog:'
         version: 2.7.16
 
-  kolibri/plugins/learn:
+  kalanfa/plugins/learn:
     dependencies:
       '@vueuse/core':
         specifier: 'catalog:'
@@ -481,33 +481,33 @@ importers:
       frame-throttle:
         specifier: ^3.0.0
         version: 3.0.0
-      kolibri:
+      kalanfa:
         specifier: workspace:*
-        version: link:../../../packages/kolibri
-      kolibri-app:
+        version: link:../../../packages/kalanfa
+      kalanfa-app:
         specifier: workspace:*
-        version: link:../../../packages/kolibri-app
-      kolibri-common:
+        version: link:../../../packages/kalanfa-app
+      kalanfa-common:
         specifier: workspace:*
-        version: link:../../../packages/kolibri-common
-      kolibri-constants:
+        version: link:../../../packages/kalanfa-common
+      kalanfa-constants:
         specifier: 'catalog:'
         version: 0.2.16
-      kolibri-design-system:
+      kalanfa-design-system:
         specifier: 'catalog:'
         version: 5.7.0
-      kolibri-logging:
+      kalanfa-logging:
         specifier: workspace:*
-        version: link:../../../packages/kolibri-logging
-      kolibri-plugin-data:
+        version: link:../../../packages/kalanfa-logging
+      kalanfa-plugin-data:
         specifier: workspace:*
-        version: link:../../../packages/kolibri-plugin-data
-      kolibri-sandbox:
+        version: link:../../../packages/kalanfa-plugin-data
+      kalanfa-sandbox:
         specifier: workspace:*
-        version: link:../../../packages/kolibri-sandbox
-      kolibri-viewer:
+        version: link:../../../packages/kalanfa-sandbox
+      kalanfa-viewer:
         specifier: workspace:*
-        version: link:../../../packages/kolibri-viewer
+        version: link:../../../packages/kalanfa-viewer
       lodash:
         specifier: 'catalog:'
         version: 4.17.23
@@ -534,7 +534,7 @@ importers:
         specifier: ^1.0.2
         version: 1.0.2
 
-  kolibri/plugins/media_player:
+  kalanfa/plugins/media_player:
     dependencies:
       '@babel/runtime':
         specifier: ^7.29.7
@@ -551,18 +551,18 @@ importers:
       keycode:
         specifier: ^2.2.1
         version: 2.2.1
-      kolibri:
+      kalanfa:
         specifier: workspace:*
-        version: link:../../../packages/kolibri
-      kolibri-common:
+        version: link:../../../packages/kalanfa
+      kalanfa-common:
         specifier: workspace:*
-        version: link:../../../packages/kolibri-common
-      kolibri-design-system:
+        version: link:../../../packages/kalanfa-common
+      kalanfa-design-system:
         specifier: 'catalog:'
         version: 5.7.0
-      kolibri-viewer:
+      kalanfa-viewer:
         specifier: workspace:*
-        version: link:../../../packages/kolibri-viewer
+        version: link:../../../packages/kalanfa-viewer
       lockr:
         specifier: 0.8.5
         version: 0.8.5
@@ -582,7 +582,7 @@ importers:
         specifier: 'catalog:'
         version: 3.6.2(vue@2.7.16)
 
-  kolibri/plugins/pdf_viewer:
+  kalanfa/plugins/pdf_viewer:
     dependencies:
       dommatrix:
         specifier: ^1.0.3
@@ -593,21 +593,21 @@ importers:
       intersection-observer:
         specifier: 0.12.2
         version: 0.12.2
-      kolibri:
+      kalanfa:
         specifier: workspace:*
-        version: link:../../../packages/kolibri
-      kolibri-common:
+        version: link:../../../packages/kalanfa
+      kalanfa-common:
         specifier: workspace:*
-        version: link:../../../packages/kolibri-common
-      kolibri-design-system:
+        version: link:../../../packages/kalanfa-common
+      kalanfa-design-system:
         specifier: 'catalog:'
         version: 5.7.0
-      kolibri-logging:
+      kalanfa-logging:
         specifier: workspace:*
-        version: link:../../../packages/kolibri-logging
-      kolibri-viewer:
+        version: link:../../../packages/kalanfa-logging
+      kalanfa-viewer:
         specifier: workspace:*
-        version: link:../../../packages/kolibri-viewer
+        version: link:../../../packages/kalanfa-viewer
       lodash:
         specifier: 'catalog:'
         version: 4.17.23
@@ -637,7 +637,7 @@ importers:
         specifier: 'catalog:'
         version: 5.9.0(vue-template-compiler@2.7.16)(vue@2.7.16)
 
-  kolibri/plugins/perseus_viewer:
+  kalanfa/plugins/perseus_viewer:
     dependencies:
       '@khanacademy/kas':
         specifier: ^2.2.3
@@ -753,24 +753,24 @@ importers:
       jquery:
         specifier: ^2.1.1
         version: 2.2.4
-      kolibri:
+      kalanfa:
         specifier: workspace:*
-        version: link:../../../packages/kolibri
-      kolibri-common:
+        version: link:../../../packages/kalanfa
+      kalanfa-common:
         specifier: workspace:*
-        version: link:../../../packages/kolibri-common
-      kolibri-design-system:
+        version: link:../../../packages/kalanfa-common
+      kalanfa-design-system:
         specifier: 'catalog:'
         version: 5.7.0
-      kolibri-logging:
+      kalanfa-logging:
         specifier: workspace:*
-        version: link:../../../packages/kolibri-logging
-      kolibri-viewer:
+        version: link:../../../packages/kalanfa-logging
+      kalanfa-viewer:
         specifier: workspace:*
-        version: link:../../../packages/kolibri-viewer
-      kolibri-zip:
+        version: link:../../../packages/kalanfa-viewer
+      kalanfa-zip:
         specifier: workspace:*
-        version: link:../../../packages/kolibri-zip
+        version: link:../../../packages/kalanfa-zip
       lodash:
         specifier: 'catalog:'
         version: 4.17.23
@@ -818,26 +818,26 @@ importers:
         specifier: ^5.9.3
         version: 5.9.3
 
-  kolibri/plugins/policies:
+  kalanfa/plugins/policies:
     dependencies:
       '@vueuse/core':
         specifier: 'catalog:'
         version: 11.3.0(vue@2.7.16)
-      kolibri:
+      kalanfa:
         specifier: workspace:*
-        version: link:../../../packages/kolibri
-      kolibri-app:
+        version: link:../../../packages/kalanfa
+      kalanfa-app:
         specifier: workspace:*
-        version: link:../../../packages/kolibri-app
-      kolibri-common:
+        version: link:../../../packages/kalanfa-app
+      kalanfa-common:
         specifier: workspace:*
-        version: link:../../../packages/kolibri-common
-      kolibri-design-system:
+        version: link:../../../packages/kalanfa-common
+      kalanfa-design-system:
         specifier: 'catalog:'
         version: 5.7.0
-      kolibri-plugin-data:
+      kalanfa-plugin-data:
         specifier: workspace:*
-        version: link:../../../packages/kolibri-plugin-data
+        version: link:../../../packages/kalanfa-plugin-data
       lodash:
         specifier: 'catalog:'
         version: 4.17.23
@@ -848,29 +848,29 @@ importers:
         specifier: 'catalog:'
         version: 3.6.2(vue@2.7.16)
 
-  kolibri/plugins/qti_viewer:
+  kalanfa/plugins/qti_viewer:
     dependencies:
       '@vueuse/core':
         specifier: 'catalog:'
         version: 11.3.0(vue@2.7.16)
-      kolibri:
+      kalanfa:
         specifier: workspace:*
-        version: link:../../../packages/kolibri
-      kolibri-common:
+        version: link:../../../packages/kalanfa
+      kalanfa-common:
         specifier: workspace:*
-        version: link:../../../packages/kolibri-common
-      kolibri-design-system:
+        version: link:../../../packages/kalanfa-common
+      kalanfa-design-system:
         specifier: 'catalog:'
         version: 5.7.0
-      kolibri-logging:
+      kalanfa-logging:
         specifier: workspace:*
-        version: link:../../../packages/kolibri-logging
-      kolibri-viewer:
+        version: link:../../../packages/kalanfa-logging
+      kalanfa-viewer:
         specifier: workspace:*
-        version: link:../../../packages/kolibri-viewer
-      kolibri-zip:
+        version: link:../../../packages/kalanfa-viewer
+      kalanfa-zip:
         specifier: workspace:*
-        version: link:../../../packages/kolibri-zip
+        version: link:../../../packages/kalanfa-zip
       lodash:
         specifier: 'catalog:'
         version: 4.17.23
@@ -882,23 +882,23 @@ importers:
         specifier: 'catalog:'
         version: 5.9.0(vue-template-compiler@2.7.16)(vue@2.7.16)
 
-  kolibri/plugins/safe_html5_viewer:
+  kalanfa/plugins/safe_html5_viewer:
     dependencies:
-      kolibri:
+      kalanfa:
         specifier: workspace:*
-        version: link:../../../packages/kolibri
-      kolibri-common:
+        version: link:../../../packages/kalanfa
+      kalanfa-common:
         specifier: workspace:*
-        version: link:../../../packages/kolibri-common
-      kolibri-design-system:
+        version: link:../../../packages/kalanfa-common
+      kalanfa-design-system:
         specifier: 'catalog:'
         version: 5.7.0
-      kolibri-viewer:
+      kalanfa-viewer:
         specifier: workspace:*
-        version: link:../../../packages/kolibri-viewer
-      kolibri-zip:
+        version: link:../../../packages/kalanfa-viewer
+      kalanfa-zip:
         specifier: workspace:*
-        version: link:../../../packages/kolibri-zip
+        version: link:../../../packages/kalanfa-zip
       lodash:
         specifier: 'catalog:'
         version: 4.17.23
@@ -910,29 +910,29 @@ importers:
         specifier: 'catalog:'
         version: 5.9.0(vue-template-compiler@2.7.16)(vue@2.7.16)
 
-  kolibri/plugins/setup_wizard:
+  kalanfa/plugins/setup_wizard:
     dependencies:
       '@vueuse/core':
         specifier: 'catalog:'
         version: 11.3.0(vue@2.7.16)
-      kolibri:
+      kalanfa:
         specifier: workspace:*
-        version: link:../../../packages/kolibri
-      kolibri-app:
+        version: link:../../../packages/kalanfa
+      kalanfa-app:
         specifier: workspace:*
-        version: link:../../../packages/kolibri-app
-      kolibri-common:
+        version: link:../../../packages/kalanfa-app
+      kalanfa-common:
         specifier: workspace:*
-        version: link:../../../packages/kolibri-common
-      kolibri-design-system:
+        version: link:../../../packages/kalanfa-common
+      kalanfa-design-system:
         specifier: 'catalog:'
         version: 5.7.0
-      kolibri-logging:
+      kalanfa-logging:
         specifier: workspace:*
-        version: link:../../../packages/kolibri-logging
-      kolibri-plugin-data:
+        version: link:../../../packages/kalanfa-logging
+      kalanfa-plugin-data:
         specifier: workspace:*
-        version: link:../../../packages/kolibri-plugin-data
+        version: link:../../../packages/kalanfa-plugin-data
       lockr:
         specifier: 0.8.5
         version: 0.8.5
@@ -962,23 +962,23 @@ importers:
         specifier: 'catalog:'
         version: 1.3.6(vue-template-compiler@2.7.16)(vue@2.7.16)
 
-  kolibri/plugins/slideshow_viewer:
+  kalanfa/plugins/slideshow_viewer:
     dependencies:
       hooper:
         specifier: ^0.3.4
         version: 0.3.4
-      kolibri:
+      kalanfa:
         specifier: workspace:*
-        version: link:../../../packages/kolibri
-      kolibri-common:
+        version: link:../../../packages/kalanfa
+      kalanfa-common:
         specifier: workspace:*
-        version: link:../../../packages/kolibri-common
-      kolibri-design-system:
+        version: link:../../../packages/kalanfa-common
+      kalanfa-design-system:
         specifier: 'catalog:'
         version: 5.7.0
-      kolibri-viewer:
+      kalanfa-viewer:
         specifier: workspace:*
-        version: link:../../../packages/kolibri-viewer
+        version: link:../../../packages/kalanfa-viewer
       lodash:
         specifier: 'catalog:'
         version: 4.17.23
@@ -989,26 +989,26 @@ importers:
         specifier: 'catalog:'
         version: 2.7.16
 
-  kolibri/plugins/user_auth:
+  kalanfa/plugins/user_auth:
     dependencies:
       '@vueuse/core':
         specifier: 'catalog:'
         version: 11.3.0(vue@2.7.16)
-      kolibri:
+      kalanfa:
         specifier: workspace:*
-        version: link:../../../packages/kolibri
-      kolibri-app:
+        version: link:../../../packages/kalanfa
+      kalanfa-app:
         specifier: workspace:*
-        version: link:../../../packages/kolibri-app
-      kolibri-common:
+        version: link:../../../packages/kalanfa-app
+      kalanfa-common:
         specifier: workspace:*
-        version: link:../../../packages/kolibri-common
-      kolibri-design-system:
+        version: link:../../../packages/kalanfa-common
+      kalanfa-design-system:
         specifier: 'catalog:'
         version: 5.7.0
-      kolibri-plugin-data:
+      kalanfa-plugin-data:
         specifier: workspace:*
-        version: link:../../../packages/kolibri-plugin-data
+        version: link:../../../packages/kalanfa-plugin-data
       lockr:
         specifier: 0.8.5
         version: 0.8.5
@@ -1038,21 +1038,21 @@ importers:
         specifier: 'catalog:'
         version: 1.3.6(vue-template-compiler@2.7.16)(vue@2.7.16)
 
-  kolibri/plugins/user_profile:
+  kalanfa/plugins/user_profile:
     dependencies:
       '@vueuse/core':
         specifier: 'catalog:'
         version: 11.3.0(vue@2.7.16)
-      kolibri:
+      kalanfa:
         specifier: workspace:*
-        version: link:../../../packages/kolibri
-      kolibri-app:
+        version: link:../../../packages/kalanfa
+      kalanfa-app:
         specifier: workspace:*
-        version: link:../../../packages/kolibri-app
-      kolibri-common:
+        version: link:../../../packages/kalanfa-app
+      kalanfa-common:
         specifier: workspace:*
-        version: link:../../../packages/kolibri-common
-      kolibri-design-system:
+        version: link:../../../packages/kalanfa-common
+      kalanfa-design-system:
         specifier: 'catalog:'
         version: 5.7.0
       lodash:
@@ -1081,9 +1081,9 @@ importers:
         specifier: 'catalog:'
         version: 1.3.6(vue-template-compiler@2.7.16)(vue@2.7.16)
 
-  packages/browserslist-config-kolibri: {}
+  packages/browserslist-config-kalanfa: {}
 
-  packages/eslint-plugin-kolibri:
+  packages/eslint-plugin-kalanfa:
     dependencies:
       eslint-plugin-vue:
         specifier: ^9.33.0
@@ -1101,14 +1101,14 @@ importers:
       eslint:
         specifier: ^9.39.0
         version: 9.39.4(jiti@2.6.1)
-      kolibri:
+      kalanfa:
         specifier: workspace:*
-        version: link:../kolibri
+        version: link:../kalanfa
       vue-eslint-parser:
         specifier: ^9.4.3
         version: 9.4.3(eslint@9.39.4(jiti@2.6.1))
 
-  packages/kolibri:
+  packages/kalanfa:
     dependencies:
       '@vueuse/core':
         specifier: 'catalog:'
@@ -1128,18 +1128,18 @@ importers:
       intl:
         specifier: ^1.2.4
         version: 1.2.5
-      kolibri-constants:
+      kalanfa-constants:
         specifier: 'catalog:'
         version: 0.2.16
-      kolibri-design-system:
+      kalanfa-design-system:
         specifier: 'catalog:'
         version: 5.7.0
-      kolibri-logging:
+      kalanfa-logging:
         specifier: workspace:*
-        version: link:../kolibri-logging
-      kolibri-plugin-data:
+        version: link:../kalanfa-logging
+      kalanfa-plugin-data:
         specifier: workspace:*
-        version: link:../kolibri-plugin-data
+        version: link:../kalanfa-plugin-data
       lockr:
         specifier: 0.8.5
         version: 0.8.5
@@ -1190,22 +1190,22 @@ importers:
         specifier: 'catalog:'
         version: 2.5.1
 
-  packages/kolibri-app:
+  packages/kalanfa-app:
     dependencies:
-      kolibri:
+      kalanfa:
         specifier: workspace:*
-        version: link:../kolibri
-      kolibri-logging:
+        version: link:../kalanfa
+      kalanfa-logging:
         specifier: workspace:*
-        version: link:../kolibri-logging
-      kolibri-module:
+        version: link:../kalanfa-logging
+      kalanfa-module:
         specifier: workspace:*
-        version: link:../kolibri-module
+        version: link:../kalanfa-module
       vue:
         specifier: 'catalog:'
         version: 2.7.16
 
-  packages/kolibri-build:
+  packages/kalanfa-build:
     dependencies:
       '@csstools/postcss-cascade-layers':
         specifier: 6.0.0
@@ -1216,9 +1216,9 @@ importers:
       autoprefixer:
         specifier: 10.4.23
         version: 10.4.23(postcss@8.5.6)
-      browserslist-config-kolibri:
+      browserslist-config-kalanfa:
         specifier: workspace:*
-        version: link:../browserslist-config-kolibri
+        version: link:../browserslist-config-kalanfa
       commander:
         specifier: ^15.0.0
         version: 15.0.0
@@ -1231,15 +1231,15 @@ importers:
       enhanced-resolve:
         specifier: ^5.20.1
         version: 5.20.1
-      kolibri:
+      kalanfa:
         specifier: workspace:*
-        version: link:../kolibri
-      kolibri-glob:
+        version: link:../kalanfa
+      kalanfa-glob:
         specifier: workspace:*
-        version: link:../kolibri-glob
-      kolibri-logging:
+        version: link:../kalanfa-glob
+      kalanfa-logging:
         specifier: workspace:*
-        version: link:../kolibri-logging
+        version: link:../kalanfa-logging
       launch-editor-middleware:
         specifier: ^2.12.0
         version: 2.12.0
@@ -1304,7 +1304,7 @@ importers:
         specifier: ^6.0.1
         version: 6.0.1
 
-  packages/kolibri-common:
+  packages/kalanfa-common:
     dependencies:
       '@shopify/draggable':
         specifier: 1.0.0-beta.8
@@ -1330,18 +1330,18 @@ importers:
       knuth-shuffle-seeded:
         specifier: ^1.0.6
         version: 1.0.6
-      kolibri:
+      kalanfa:
         specifier: workspace:*
-        version: link:../kolibri
-      kolibri-constants:
+        version: link:../kalanfa
+      kalanfa-constants:
         specifier: 'catalog:'
         version: 0.2.16
-      kolibri-design-system:
+      kalanfa-design-system:
         specifier: 'catalog:'
         version: 5.7.0
-      kolibri-logging:
+      kalanfa-logging:
         specifier: workspace:*
-        version: link:../kolibri-logging
+        version: link:../kalanfa-logging
       lockr:
         specifier: 0.8.5
         version: 0.8.5
@@ -1383,7 +1383,7 @@ importers:
         specifier: 'catalog:'
         version: 1.3.6(vue-template-compiler@2.7.16)(vue@2.7.16)
 
-  packages/kolibri-format:
+  packages/kalanfa-format:
     dependencies:
       '@eslint/js':
         specifier: ^9.39.0
@@ -1415,9 +1415,9 @@ importers:
       eslint-plugin-jsdoc:
         specifier: ^62.9.0
         version: 62.9.0(eslint@9.39.4(jiti@2.6.1))
-      eslint-plugin-kolibri:
+      eslint-plugin-kalanfa:
         specifier: workspace:*
-        version: link:../eslint-plugin-kolibri
+        version: link:../eslint-plugin-kalanfa
       eslint-plugin-n:
         specifier: ^17.24.0
         version: 17.24.0(eslint@9.39.4(jiti@2.6.1))(typescript@5.9.3)
@@ -1436,12 +1436,12 @@ importers:
       globals:
         specifier: ^17.6.0
         version: 17.6.0
-      kolibri-glob:
+      kalanfa-glob:
         specifier: workspace:*
-        version: link:../kolibri-glob
-      kolibri-logging:
+        version: link:../kalanfa-glob
+      kalanfa-logging:
         specifier: workspace:*
-        version: link:../kolibri-logging
+        version: link:../kalanfa-logging
       minimatch:
         specifier: ^10.2.5
         version: 10.2.5
@@ -1488,13 +1488,13 @@ importers:
         specifier: 5.3.2
         version: 5.3.2(stylelint@15.11.0(typescript@5.9.3))
 
-  packages/kolibri-glob:
+  packages/kalanfa-glob:
     dependencies:
       fast-glob:
         specifier: ^3.3.3
         version: 3.3.3
 
-  packages/kolibri-i18n:
+  packages/kalanfa-i18n:
     dependencies:
       ast-traverse:
         specifier: ^0.1.1
@@ -1520,18 +1520,18 @@ importers:
       ini:
         specifier: ^6.0.0
         version: 6.0.0
-      kolibri-build:
+      kalanfa-build:
         specifier: workspace:*
-        version: link:../kolibri-build
-      kolibri-format:
+        version: link:../kalanfa-build
+      kalanfa-format:
         specifier: workspace:*
-        version: link:../kolibri-format
-      kolibri-glob:
+        version: link:../kalanfa-format
+      kalanfa-glob:
         specifier: workspace:*
-        version: link:../kolibri-glob
-      kolibri-logging:
+        version: link:../kalanfa-glob
+      kalanfa-logging:
         specifier: workspace:*
-        version: link:../kolibri-logging
+        version: link:../kalanfa-logging
       lodash:
         specifier: 'catalog:'
         version: 4.17.23
@@ -1551,14 +1551,14 @@ importers:
         specifier: ^5.102.0
         version: 5.104.1(webpack-cli@7.0.2)
     devDependencies:
-      kolibri:
+      kalanfa:
         specifier: workspace:*
-        version: link:../kolibri
+        version: link:../kalanfa
       rewire:
         specifier: ^6.0.0
         version: 6.0.0
 
-  packages/kolibri-jest-config:
+  packages/kalanfa-jest-config:
     dependencies:
       '@babel/core':
         specifier: ^7.29.7
@@ -1605,15 +1605,15 @@ importers:
       jest-serializer-vue:
         specifier: ^3.1.0
         version: 3.1.0
-      kolibri:
+      kalanfa:
         specifier: workspace:*
-        version: link:../kolibri
-      kolibri-design-system:
+        version: link:../kalanfa
+      kalanfa-design-system:
         specifier: 'catalog:'
         version: 5.7.0
-      kolibri-logging:
+      kalanfa-logging:
         specifier: workspace:*
-        version: link:../kolibri-logging
+        version: link:../kalanfa-logging
       regenerator-runtime:
         specifier: ^0.14.1
         version: 0.14.1
@@ -1637,7 +1637,7 @@ importers:
         specifier: ^3.3.4
         version: 3.3.4(@jest/globals@30.4.1)
 
-  packages/kolibri-logging:
+  packages/kalanfa-logging:
     dependencies:
       chalk:
         specifier: ^4.1.2
@@ -1646,15 +1646,15 @@ importers:
         specifier: ^1.9.1
         version: 1.9.2
 
-  packages/kolibri-module:
+  packages/kalanfa-module:
     dependencies:
-      kolibri:
+      kalanfa:
         specifier: workspace:*
-        version: link:../kolibri
+        version: link:../kalanfa
 
-  packages/kolibri-plugin-data: {}
+  packages/kalanfa-plugin-data: {}
 
-  packages/kolibri-sandbox:
+  packages/kalanfa-sandbox:
     dependencies:
       core-js:
         specifier: '3.47'
@@ -1671,9 +1671,9 @@ importers:
       iso8601-duration:
         specifier: ^2.1.3
         version: 2.1.3
-      kolibri-zip:
+      kalanfa-zip:
         specifier: workspace:*
-        version: link:../kolibri-zip
+        version: link:../kalanfa-zip
       lodash:
         specifier: 'catalog:'
         version: 4.17.23
@@ -1730,13 +1730,13 @@ importers:
         specifier: ^7.0.2
         version: 7.0.2(webpack-dev-server@5.2.5)(webpack@5.104.1)
 
-  packages/kolibri-viewer:
+  packages/kalanfa-viewer:
     dependencies:
-      kolibri-module:
+      kalanfa-module:
         specifier: workspace:*
-        version: link:../kolibri-module
+        version: link:../kalanfa-module
 
-  packages/kolibri-zip:
+  packages/kalanfa-zip:
     dependencies:
       '@zip.js/zip.js':
         specifier: ^2.8.11
@@ -1761,30 +1761,30 @@ importers:
         specifier: 'catalog:'
         version: 2.5.1
 
-  python_packages/kolibri-sentry-plugin:
+  python_packages/kalanfa-sentry-plugin:
     dependencies:
       '@sentry/vue':
         specifier: ^10.19.0
         version: 10.61.0(vue@2.7.16)
-      browserslist-config-kolibri:
+      browserslist-config-kalanfa:
         specifier: workspace:*
-        version: link:../../packages/browserslist-config-kolibri
-      kolibri:
+        version: link:../../packages/browserslist-config-kalanfa
+      kalanfa:
         specifier: workspace:*
-        version: link:../../packages/kolibri
-      kolibri-plugin-data:
+        version: link:../../packages/kalanfa
+      kalanfa-plugin-data:
         specifier: workspace:*
-        version: link:../../packages/kolibri-plugin-data
+        version: link:../../packages/kalanfa-plugin-data
       vue:
         specifier: 'catalog:'
         version: 2.7.16
     devDependencies:
-      kolibri-build:
+      kalanfa-build:
         specifier: workspace:*
-        version: link:../../packages/kolibri-build
-      kolibri-format:
+        version: link:../../packages/kalanfa-build
+      kalanfa-format:
         specifier: workspace:*
-        version: link:../../packages/kolibri-format
+        version: link:../../packages/kalanfa-format
 
 packages:
 
@@ -7252,10 +7252,10 @@ packages:
   knuth-shuffle-seeded@1.0.6:
     resolution: {integrity: sha512-9pFH0SplrfyKyojCLxZfMcvkhf5hH0d+UwR9nTVJ/DDQJGuzcXjTwB7TP7sDfehSudlGGaOLblmEWqv04ERVWg==}
 
-  kolibri-constants@0.2.16:
+  kalanfa-constants@0.2.16:
     resolution: {integrity: sha512-z2tH+Sl8vBX1Y7O3BYTfwQs33Ozp6QRKZIHhl66A8sZkxUVBFFKOR+SgGOt0U0Q7pT/PH4yfCZ5mu6u8J641zQ==}
 
-  kolibri-design-system@5.7.0:
+  kalanfa-design-system@5.7.0:
     resolution: {integrity: sha512-+ol8VBIfTbSbLGmSvtGehZUhEFejWJDAzGNujRL62DHs9NhDjpmjBGehvk/y7BV13FwxFR4tOFhW9RxnYx7eBg==}
 
   launch-editor-middleware@2.12.0:
@@ -16823,9 +16823,9 @@ snapshots:
     dependencies:
       seed-random: 2.2.0
 
-  kolibri-constants@0.2.16: {}
+  kalanfa-constants@0.2.16: {}
 
-  kolibri-design-system@5.7.0:
+  kalanfa-design-system@5.7.0:
     dependencies:
       aphrodite: https://codeload.github.com/learningequality/aphrodite/tar.gz/fdc8d7be8912a5cf17f74ff10f124013c52c3e32
       autosize: 3.0.21

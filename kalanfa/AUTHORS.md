@@ -1,8 +1,8 @@
 # Contributors
 
-Kolibri is copyright Learning Equality and other contributors, and is released under the MIT License.
+Kalanfa is copyright Learning Equality and other contributors, and is released under the MIT License.
 
-If you have contributed to Kolibri, feel free to add your name and Github account to this list:
+If you have contributed to Kalanfa, feel free to add your name and Github account to this list:
 
 | Name | Github user |
 |--|-------------|

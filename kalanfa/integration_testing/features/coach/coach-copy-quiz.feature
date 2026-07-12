@@ -2,7 +2,7 @@ Feature: Coach copies quiz
    Coaches need to be able to copy quizzes to the same or a different class, and assign it to different groups or an entire class
 
   Background:
-    Given I am signed in to Kolibri as coach user
+    Given I am signed in to Kalanfa as coach user
       And I am on *Coach - '<class>' > Plan > Quizzes* page
       And I see the quiz <quiz>
 

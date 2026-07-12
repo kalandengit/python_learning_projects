@@ -9,13 +9,13 @@ Usage:
     python integration_testing/scripts/viewset_serialization_benchmark.py VIEWSET_PATH [options]
 
 Examples:
-    # Baseline run (uses existing data from KOLIBRI_HOME)
-    python .../viewset_serialization_benchmark.py kolibri.core.auth.api.FacilityUserViewSet \\
-        --inherit-kolibri-home -o baseline.json
+    # Baseline run (uses existing data from KALANFA_HOME)
+    python .../viewset_serialization_benchmark.py kalanfa.core.auth.api.FacilityUserViewSet \\
+        --inherit-kalanfa-home -o baseline.json
 
     # Comparison run
-    python .../viewset_serialization_benchmark.py kolibri.core.auth.api.FacilityUserViewSet \\
-        --inherit-kolibri-home --compare baseline.json
+    python .../viewset_serialization_benchmark.py kalanfa.core.auth.api.FacilityUserViewSet \\
+        --inherit-kalanfa-home --compare baseline.json
 """
 
 import argparse
@@ -34,8 +34,8 @@ import tracemalloc
 from datetime import datetime
 from unittest.mock import MagicMock
 
-# Must import kolibri before Django to apply compat patches (e.g. cgi module on Python 3.13+)
-from kolibri.utils.main import initialize  # isort: skip
+# Must import kalanfa before Django to apply compat patches (e.g. cgi module on Python 3.13+)
+from kalanfa.utils.main import initialize  # isort: skip
 
 from django.conf import settings
 from django.db import connection
@@ -53,7 +53,7 @@ def parse_args():
         "viewset",
         nargs="?",
         default=None,
-        help="Dotted import path (e.g. kolibri.core.auth.api.FacilityUserViewSet)",
+        help="Dotted import path (e.g. kalanfa.core.auth.api.FacilityUserViewSet)",
     )
     parser.add_argument(
         "--synthetic",
@@ -104,9 +104,9 @@ def parse_args():
         help="Acceptable memory regression %% (default: 10.0)",
     )
     parser.add_argument(
-        "--inherit-kolibri-home",
+        "--inherit-kalanfa-home",
         action="store_true",
-        help="Use KOLIBRI_HOME from environment instead of /tmp/kolibri_benchmark",
+        help="Use KALANFA_HOME from environment instead of /tmp/kalanfa_benchmark",
     )
     parser.add_argument(
         "--quiet",
@@ -116,15 +116,15 @@ def parse_args():
     return parser.parse_args()
 
 
-def setup_kolibri(inherit_kolibri_home=False):
-    if not inherit_kolibri_home:
-        os.environ.setdefault("KOLIBRI_HOME", "/tmp/kolibri_benchmark")
+def setup_kalanfa(inherit_kalanfa_home=False):
+    if not inherit_kalanfa_home:
+        os.environ.setdefault("KALANFA_HOME", "/tmp/kalanfa_benchmark")
 
     initialize()
 
 
 def import_viewset_class(dotted_path):
-    from kolibri.core.api import BaseValuesViewset
+    from kalanfa.core.api import BaseValuesViewset
 
     module_path, _, class_name = dotted_path.rpartition(".")
     if not module_path:
@@ -168,7 +168,7 @@ def get_queryset_for_viewset(viewset_class):
     # Try to find a real authenticated user for viewsets that filter/consolidate
     # by request.user (e.g. LearnerLessonViewset, PinnedDeviceViewSet).
     try:
-        from kolibri.core.auth.models import FacilityUser
+        from kalanfa.core.auth.models import FacilityUser
 
         user = FacilityUser.objects.first()
     except Exception:
@@ -199,9 +199,9 @@ def get_queryset_for_viewset(viewset_class):
 def _build_synthetic_viewset():
     """Build a viewset class with a serializer exercising all serialization paths."""
 
-    from kolibri.core.api import BaseValuesViewset
-    from kolibri.core.api import ListModelMixin
-    from kolibri.core.api import ValuesMethodField
+    from kalanfa.core.api import BaseValuesViewset
+    from kalanfa.core.api import ListModelMixin
+    from kalanfa.core.api import ValuesMethodField
 
     class TagSerializer(drf_serializers.Serializer):
         id = drf_serializers.CharField()
@@ -700,7 +700,7 @@ def print_comparison(baseline, current, verdict):
 
 def _run_synthetic(args):
     """Run benchmark with synthetic viewset at multiple data sizes."""
-    setup_kolibri(inherit_kolibri_home=args.inherit_kolibri_home)
+    setup_kalanfa(inherit_kalanfa_home=args.inherit_kalanfa_home)
 
     viewset_class = _build_synthetic_viewset()
     sizes_report = {}
@@ -796,7 +796,7 @@ def _compare_synthetic(baseline, current, args):
 
 def _run_real_viewset(args):
     """Run benchmark against a real viewset with database data."""
-    setup_kolibri(inherit_kolibri_home=args.inherit_kolibri_home)
+    setup_kalanfa(inherit_kalanfa_home=args.inherit_kalanfa_home)
 
     viewset_class = import_viewset_class(args.viewset)
 
@@ -806,7 +806,7 @@ def _run_real_viewset(args):
     if record_count == 0:
         logger.warning(
             "No records found for %s. "
-            "Use --inherit-kolibri-home with a populated KOLIBRI_HOME.",
+            "Use --inherit-kalanfa-home with a populated KALANFA_HOME.",
             viewset_class.__name__,
         )
 

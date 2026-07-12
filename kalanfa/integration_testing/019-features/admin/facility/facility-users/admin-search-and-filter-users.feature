@@ -6,7 +6,7 @@ Feature: Admin can search for a user or filter the users
   # Repeat the scenarios with a RTL language to make sure the orientation is correct
 
   Background:
-    Given I am signed in to Kolibri as a facility admin user
+    Given I am signed in to Kalanfa as a facility admin user
       And I am at the *Facility > Users* page
       And there are more than 150 users of different type in the facility
 

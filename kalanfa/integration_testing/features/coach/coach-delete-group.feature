@@ -4,7 +4,7 @@ Feature: Coach deletes group
   Background:
     Given there are learners in the selected class
       And there is at least one group created and learners assigned to it
-      And I am signed in to Kolibri as a coach user
+      And I am signed in to Kalanfa as a coach user
       And I am on the *Coach - '<class>' > Plan > Groups* page
 
   Scenario: Coach deletes the group

@@ -5,7 +5,7 @@ Feature: Quiz notifications
 
   Background:
     Given I have all sessions visible in four browser windows/tabs (signed into three as <learner>, and in the other as <coach>)
-      And I am signed in to Kolibri as a <class coach> or <coach>
+      And I am signed in to Kalanfa as a <class coach> or <coach>
       And there three <learner> users enrolled in class <class> I am assigned to
       And the <learners> are not assigned to any groups
       And I have a Quiz <quiz> assigned to the entire class

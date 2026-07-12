@@ -3,7 +3,7 @@ Frontend code conventions
 
 Establishing code conventions is important in order to keep a more consistent codebase. Therefore the goal for the tools and principles below is to help ensure any committed code is properly aligned with the conventions.
 
-For design conventions, see the `Kolibri Design System <https://design-system.learningequality.org/>`__.
+For design conventions, see the `Kalanfa Design System <https://design-system.learningequality.org/>`__.
 
 Linting and auto formatting
 ---------------------------
@@ -51,7 +51,7 @@ Styling anti-patterns
 RTL-friendly styling quick reference
 ------------------------------------
 
-Kolibri supports right-to-left (RTL) languages like Arabic and Hebrew. Follow these guidelines to ensure your styles work in both directions:
+Kalanfa supports right-to-left (RTL) languages like Arabic and Hebrew. Follow these guidelines to ensure your styles work in both directions:
 
 **Do:**
 
