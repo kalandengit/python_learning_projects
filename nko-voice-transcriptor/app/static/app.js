@@ -64,11 +64,28 @@ for (const btn of document.querySelectorAll("#auth-form button")) {
 }
 
 // ---- Recording -------------------------------------------------------------
-let recorder = null, chunks = [], timerId = null, startedAt = 0;
-const recordBtn = $("record-btn");
+// State machine: idle → recording ⇄ standby(paused) → stop → upload
+let recorder = null, chunks = [], timerId = null, elapsedMs = 0, lastTick = 0;
+const startBtn = $("start-btn"), standbyBtn = $("standby-btn"), stopBtn = $("stop-btn");
 
-recordBtn.addEventListener("click", async () => {
-  if (recorder && recorder.state === "recording") { recorder.stop(); return; }
+function setRecUI(state) {
+  startBtn.disabled = state !== "idle";
+  standbyBtn.disabled = state === "idle";
+  stopBtn.disabled = state === "idle";
+  standbyBtn.textContent = state === "standby" ? "▶ Resume" : "❚❚ Stand by";
+  startBtn.classList.toggle("recording", state === "recording");
+  $("record-state").textContent =
+    state === "recording" ? "recording…" : state === "standby" ? "on stand-by" : "";
+}
+
+function tickTimer() {
+  const now = Date.now();
+  if (recorder && recorder.state === "recording") elapsedMs += now - lastTick;
+  lastTick = now;
+  $("record-timer").textContent = `${Math.floor(elapsedMs / 1000)}s`;
+}
+
+startBtn.addEventListener("click", async () => {
   $("app-error").textContent = "";
   let stream;
   try {
@@ -78,24 +95,37 @@ recordBtn.addEventListener("click", async () => {
     return;
   }
   chunks = [];
+  elapsedMs = 0;
+  lastTick = Date.now();
   recorder = new MediaRecorder(stream);
   recorder.ondataavailable = (e) => chunks.push(e.data);
   recorder.onstop = async () => {
     stream.getTracks().forEach((t) => t.stop());
     clearInterval(timerId);
     $("record-timer").textContent = "";
-    recordBtn.textContent = "● Start recording";
-    recordBtn.classList.remove("recording");
+    setRecUI("idle");
     const blob = new Blob(chunks, { type: recorder.mimeType || "audio/webm" });
     await sendAudio(blob, "recording.webm");
   };
   recorder.start();
-  startedAt = Date.now();
-  recordBtn.textContent = "■ Stop";
-  recordBtn.classList.add("recording");
-  timerId = setInterval(() => {
-    $("record-timer").textContent = `${Math.floor((Date.now() - startedAt) / 1000)}s`;
-  }, 500);
+  setRecUI("recording");
+  timerId = setInterval(tickTimer, 250);
+});
+
+standbyBtn.addEventListener("click", () => {
+  if (!recorder) return;
+  if (recorder.state === "recording") {
+    recorder.pause();
+    setRecUI("standby");
+  } else if (recorder.state === "paused") {
+    lastTick = Date.now();
+    recorder.resume();
+    setRecUI("recording");
+  }
+});
+
+stopBtn.addEventListener("click", () => {
+  if (recorder && recorder.state !== "inactive") recorder.stop();
 });
 
 $("file-input").addEventListener("change", async (e) => {
@@ -106,7 +136,7 @@ $("file-input").addEventListener("change", async (e) => {
 
 async function sendAudio(blob, filename) {
   $("app-error").textContent = "";
-  recordBtn.disabled = true;
+  startBtn.disabled = true;
   try {
     const form = new FormData();
     form.append("audio", blob, filename);
@@ -118,12 +148,38 @@ async function sendAudio(blob, filename) {
   } catch (err) {
     $("app-error").textContent = err.message;
   } finally {
-    recordBtn.disabled = false;
+    startBtn.disabled = false;
   }
 }
 
-$("copy-btn").addEventListener("click", () => {
-  navigator.clipboard?.writeText($("result-nko").textContent);
+// ---- Copy / paste ------------------------------------------------------------
+async function copyToClipboard(btn, text) {
+  if (!text) return;
+  const original = btn.textContent;
+  try {
+    await navigator.clipboard.writeText(text);
+    btn.textContent = "✓ Copied";
+  } catch {
+    btn.textContent = "✗ Copy blocked";
+  }
+  setTimeout(() => { btn.textContent = original; }, 1500);
+}
+
+$("copy-nko-btn").addEventListener("click", (e) =>
+  copyToClipboard(e.target, $("result-nko").textContent));
+$("copy-latin-btn").addEventListener("click", (e) =>
+  copyToClipboard(e.target, $("result-latin").textContent));
+$("copy-text-btn").addEventListener("click", (e) =>
+  copyToClipboard(e.target, $("text-output").textContent));
+
+$("paste-btn").addEventListener("click", async () => {
+  try {
+    const text = await navigator.clipboard.readText();
+    if (text) $("text-input").value = text.slice(0, 500);
+  } catch {
+    $("app-error").textContent =
+      "Clipboard read blocked by the browser — paste with Ctrl+V / ⌘V instead.";
+  }
 });
 
 // ---- Text transliteration --------------------------------------------------
@@ -133,6 +189,7 @@ $("text-btn").addEventListener("click", async () => {
   try {
     const out = await api("/api/transliterate", { method: "POST", body: { text } });
     $("text-output").textContent = out.text_nko;
+    $("copy-text-btn").classList.remove("hidden");
   } catch (err) {
     $("app-error").textContent = err.message;
   }

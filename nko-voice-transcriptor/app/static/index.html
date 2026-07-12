@@ -38,8 +38,11 @@
   <section id="app-panel" class="card hidden">
     <h2>Record</h2>
     <div class="row">
-      <button id="record-btn" class="record">● Start recording</button>
+      <button id="start-btn" class="record">● Start</button>
+      <button id="standby-btn" class="secondary" disabled>❚❚ Stand by</button>
+      <button id="stop-btn" class="secondary" disabled>■ Stop</button>
       <span id="record-timer" aria-live="polite"></span>
+      <span id="record-state" class="hint" aria-live="polite"></span>
     </div>
     <p class="hint">…or upload an audio file:</p>
     <input type="file" id="file-input" accept="audio/*">
@@ -50,15 +53,20 @@
       <p class="nko-text" id="result-nko" dir="rtl" lang="nqo"></p>
       <h3>Latin (Bambara)</h3>
       <p id="result-latin" lang="bm"></p>
-      <button id="copy-btn" class="secondary">Copy N'Ko</button>
+      <div class="row">
+        <button id="copy-nko-btn" class="secondary">⧉ Copy N'Ko</button>
+        <button id="copy-latin-btn" class="secondary">⧉ Copy Latin</button>
+      </div>
     </div>
 
     <h2>Try text directly</h2>
     <div class="row">
       <input id="text-input" placeholder="e.g. i ni ce" maxlength="500">
+      <button id="paste-btn" class="secondary" title="Paste from clipboard">⎘ Paste</button>
       <button id="text-btn" class="secondary">→ ߒߞߏ</button>
     </div>
     <p class="nko-text" id="text-output" dir="rtl" lang="nqo"></p>
+    <button id="copy-text-btn" class="secondary hidden">⧉ Copy N'Ko</button>
 
     <h2>History</h2>
     <ul id="history"></ul>
