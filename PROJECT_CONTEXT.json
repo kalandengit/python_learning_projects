@@ -1,0 +1,212 @@
+{
+  "metadata": {
+    "name": "python_learning_projects",
+    "repository": "https://github.com/kalandengit/python_learning_projects",
+    "owner": "kalandengit",
+    "actual_purpose": "Claude Code skills authoring and distribution repository (plugin marketplace 'kalandengit-skills')",
+    "name_note": "INFERRED: repo name is historical; contains no Python code, only skill Markdown, JSON manifests, and bash installers",
+    "exported_at": "2026-07-12",
+    "exported_from_branch": "claude/project-knowledge-exporter-skills-15hrzl",
+    "generator": "/export_project skill",
+    "fact_labels": "Values are observed from the repo unless prefixed with 'INFERRED:'"
+  },
+  "architecture": {
+    "style": "content-distribution repo; no runtime services",
+    "distribution_channels": [
+      {
+        "channel": "in-repo auto-discovery",
+        "path": ".claude/skills/<skill>/SKILL.md",
+        "reach": "any Claude Code session opened on this repo, including web",
+        "canonical": true
+      },
+      {
+        "channel": "plugin marketplace",
+        "paths": [".claude-plugin/marketplace.json", "claude-skills/.claude-plugin/marketplace.json"],
+        "install": "/plugin marketplace add kalandengit/python_learning_projects; /plugin install <plugin>@kalandengit-skills",
+        "reach": "all Claude Code projects of a user, local and web"
+      },
+      {
+        "channel": "standalone copies + installers",
+        "paths": ["skills/<skill>/", "scripts/install-<plugin>.sh"],
+        "reach": "~/.claude personal skills, per-repo installs, claude.ai chat zip upload"
+      }
+    ],
+    "publishable_bundle": {
+      "path": "claude-skills/",
+      "publisher": "scripts/publish-claude-skills.sh <remote-url>",
+      "behavior": "copies bundle to temp dir, git init, force-push main to a pre-created empty repo"
+    }
+  },
+  "technologies": {
+    "languages": ["Markdown (skill definitions)", "JSON (manifests)", "Bash (installers)"],
+    "platforms": ["Claude Code (CLI/web/desktop)", "claude.ai chats (zip-uploaded skills)"],
+    "schemas": [
+      "https://json.schemastore.org/claude-code-marketplace.json",
+      "https://json.schemastore.org/claude-code-plugin-manifest.json"
+    ],
+    "no_build_no_ci": "no CI workflows, Docker, package manifests, or tests exist"
+  },
+  "modules": [
+    {
+      "name": "it-prompt-specialist",
+      "kind": "skill",
+      "command": "/it-prompt-specialist",
+      "purpose": "Senior multidisciplinary IT expert lens; secure-by-default, best practices, trade-offs, depth adapted to user level; includes French context section",
+      "author_frontmatter": "OpenAI (adapted from a ChatGPT prompt)",
+      "version": "1.0.0"
+    },
+    {
+      "name": "planning-first",
+      "kind": "skill",
+      "command": "/planning-first",
+      "purpose": "Plan-before-code gate: requirement analysis, architecture proposal, numbered plan, files preview, explicit approval STOP, incremental implementation, re-plan on requirement change",
+      "author_frontmatter": "OpenAI (adapted from a ChatGPT prompt)",
+      "version": "1.0.0"
+    },
+    {
+      "name": "project-knowledge-exporter",
+      "kind": "skill",
+      "command": "/project-knowledge-exporter",
+      "purpose": "Investigate the repo with real tools, then generate 5-file knowledge package (PROJECT_BLUEPRINT.md, PROJECT_CONTEXT.json, PROJECT_REBUILD_PROMPT.md, DECISION_LOG.md, DEVELOPMENT_STATE.md), labeling facts vs inferences, no source dumps",
+      "author_frontmatter": "kalandengit",
+      "version": "1.0.0"
+    },
+    {
+      "name": "export_project",
+      "kind": "skill (alias)",
+      "command": "/export_project",
+      "purpose": "Byte-identical body to project-knowledge-exporter; separate frontmatter to expose the short command",
+      "wrapped_by_plugin": "export-project (hyphenated plugin name)",
+      "version": "1.0.0"
+    },
+    {
+      "name": "installers",
+      "kind": "bash scripts",
+      "files": [
+        "scripts/install-it-prompt-specialist.sh",
+        "scripts/install-planning-first.sh",
+        "scripts/install-project-knowledge-exporter.sh",
+        "scripts/install-export-project.sh"
+      ],
+      "behavior": "write .claude/skills/<skill>/SKILL.md into target repo; insert/update managed CLAUDE.md block between '<!-- BEGIN <skill> (managed) -->' markers via awk; optional COMMIT=1 PUSH=1 branch workflow; idempotent",
+      "variants": "older two embed SKILL.md as heredoc; newer two curl from raw.githubusercontent.com (RAW_URL overridable)"
+    },
+    {
+      "name": "publish-claude-skills",
+      "kind": "bash script",
+      "file": "scripts/publish-claude-skills.sh",
+      "behavior": "publishes claude-skills/ bundle to a standalone GitHub repo (force-push main from temp clone)"
+    }
+  ],
+  "entities": [
+    {
+      "name": "Skill",
+      "definition": "SKILL.md with YAML frontmatter (name, description, optional when_to_use, version, author) + Markdown behavior body",
+      "naming": "lowercase; hyphens conventional; underscores verified working (export_project)"
+    },
+    {
+      "name": "Plugin",
+      "definition": "directory with .claude-plugin/plugin.json wrapping >=1 skill under skills/<skill>/",
+      "naming": "always hyphenated, even when wrapped skill uses underscore"
+    },
+    {
+      "name": "Marketplace",
+      "definition": "marketplace.json with name, owner, plugins[] (source = relative path)",
+      "instances": ["repo root (sources ./claude-skills/plugins/...)", "claude-skills bundle (sources ./plugins/...)"]
+    },
+    {
+      "name": "Alias skill",
+      "definition": "skill byte-identical in body to another, differing only in frontmatter, to expose an extra command name"
+    }
+  ],
+  "apis": [],
+  "workflows": [
+    {
+      "name": "add a new skill",
+      "steps": [
+        "author canonical .claude/skills/<skill>/SKILL.md",
+        "verify Claude Code discovers it (session skill list) before propagating",
+        "copy to skills/<skill>/ and write README.md (install + usage)",
+        "create claude-skills/plugins/<plugin>/{.claude-plugin/plugin.json, skills/<skill>/SKILL.md}",
+        "register plugin in BOTH marketplace.json files",
+        "write scripts/install-<plugin>.sh (managed CLAUDE.md block pattern)",
+        "add CLAUDE.md section (+ managed markers) and update claude-skills/README.md (table, install commands, layout)",
+        "validate all JSON with json.load; bash -n the installer; diff the 3 SKILL.md copies",
+        "commit on claude/* branch, push, open PR to main"
+      ]
+    },
+    {
+      "name": "install for all projects (end user)",
+      "steps": [
+        "/plugin marketplace add kalandengit/python_learning_projects",
+        "/plugin install <plugin>@kalandengit-skills",
+        "invoke /<skill-command> in any project"
+      ]
+    },
+    {
+      "name": "install into one repo (end user)",
+      "steps": [
+        "run scripts/install-<plugin>.sh in target repo (optionally COMMIT=1 PUSH=1)",
+        "script writes SKILL.md + managed CLAUDE.md block, optionally commits on branch add-<plugin>-skill"
+      ]
+    },
+    {
+      "name": "publish standalone marketplace repo",
+      "steps": [
+        "create empty GitHub repo (no README)",
+        "./scripts/publish-claude-skills.sh <remote-url>",
+        "users then: /plugin marketplace add kalandengit/claude-skills"
+      ]
+    }
+  ],
+  "business_rules": [
+    "IF a new skill is added THEN it must appear in .claude/skills/, skills/ (+README), claude-skills/plugins/ (+plugin.json), both marketplace.json files, an installer script, CLAUDE.md, and claude-skills/README.md",
+    "IF the three SKILL.md copies of a skill differ THEN it is a bug; .claude/skills/ copy is canonical",
+    "IF JSON changed THEN validate parse before commit",
+    "IF a skill name deviates from hyphen convention THEN verify auto-discovery empirically before propagating",
+    "IF changing main THEN go through a PR from a feature branch"
+  ],
+  "dependencies": [
+    {"name": "Claude Code skill/plugin/marketplace system", "why": "the entire distribution mechanism"},
+    {"name": "bash + curl + git + awk", "why": "installers and publisher"},
+    {"name": "raw.githubusercontent.com", "why": "newer installers fetch SKILL.md from main at runtime"}
+  ],
+  "coding_conventions": [
+    "SKILL.md: YAML frontmatter then '---'-separated Markdown sections; imperative behavioral instructions",
+    "plugin.json/marketplace.json: $schema first key, 2-space indent",
+    "installers: set -euo pipefail; env-flag config (BRANCH/COMMIT/PUSH/RAW_URL); managed-block markers '<!-- BEGIN <skill> (managed) -->'; idempotent re-runs",
+    "skills/<skill>/README.md: what-it-does, install variants (personal/project/marketplace), usage, MIT license footer",
+    "branches: claude/<topic>; PR-based merges to main"
+  ],
+  "deployment": {
+    "runtime": "none",
+    "release": "merge to main (raw URLs and marketplace references point at main)",
+    "optional": "publish claude-skills/ bundle to standalone repo via scripts/publish-claude-skills.sh"
+  },
+  "roadmap": {
+    "short_term": ["INFERRED: resolve GPLv3-vs-MIT license conflict", "INFERRED: replace placeholder root README.md", "publish claude-skills standalone repo (script ready, repo not yet observed to exist)"],
+    "mid_term": ["INFERRED: add CI check that the 3 copies of each SKILL.md stay identical and JSON stays valid", "INFERRED: converge installers on the fetch-from-raw pattern"],
+    "long_term": ["INFERRED: more skills following the established 6-location pattern"]
+  },
+  "known_limitations": [
+    "no CI: JSON validity and copy-sync are enforced only by discipline",
+    "newer installers require network access to raw.githubusercontent.com",
+    "claude.ai chat variant of the skills cannot explore a repo; it analyzes attached/connected files only",
+    "publish-claude-skills.sh force-pushes main of the target repo"
+  ],
+  "technical_debt": [
+    "root LICENSE is GPLv3 while claude-skills/LICENSE, all plugin.json files, and skill READMEs say MIT — contradictory licensing",
+    "plugin.json repository fields and claude-skills/README.md reference https://github.com/kalandengit/claude-skills which is not yet published",
+    "root README.md is a one-line placeholder",
+    "Python-oriented .gitignore in a repo with no Python",
+    "3-way SKILL.md duplication with no sync automation",
+    "two installer generations (embedded heredoc vs raw-URL fetch)"
+  ],
+  "engineering_decisions": [
+    {"decision": "triple-copy distribution (in-repo, standalone, plugin bundle)", "why": "each channel reaches a different Claude surface; web sessions cannot use ~/.claude"},
+    {"decision": "repo root is itself a marketplace pointing into ./claude-skills/plugins", "why": "installable immediately without publishing a second repo"},
+    {"decision": "alias skill (export_project) instead of renaming project-knowledge-exporter", "why": "keep the descriptive name and its auto-activation description while adding a short memorable command; underscore verified working in-session"},
+    {"decision": "managed CLAUDE.md blocks with BEGIN/END markers", "why": "installers can update their section idempotently without touching user content"},
+    {"decision": "newer installers fetch SKILL.md from raw URL", "why": "single source of truth, avoids embedded-copy drift (trade-off: needs network)"}
+  ]
+}
