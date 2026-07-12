@@ -1,0 +1,45 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{% block titre %}{{ ECOLE.nom }}{% endblock %} — {{ ECOLE.nom }}</title>
+  <link rel="stylesheet" href="{% static 'css/app.css' %}">
+</head>
+<body>
+  <header class="barre">
+    <a class="marque" href="{% url 'core:tableau_de_bord' %}">
+      {{ ECOLE.nom }} · {{ ECOLE.ville }} {{ ECOLE.annee }}
+    </a>
+    <nav>
+      {% if user.is_authenticated %}
+        <span class="utilisateur">{{ user.get_username }}</span>
+        {% if user.is_staff %}<a href="{% url 'admin:index' %}">Administration</a>{% endif %}
+        <form action="{% url 'logout' %}" method="post" class="inline">
+          {% csrf_token %}
+          <button type="submit" class="lien-bouton">Déconnexion</button>
+        </form>
+      {% else %}
+        <a href="{% url 'login' %}">Connexion</a>
+      {% endif %}
+    </nav>
+  </header>
+
+  {% if messages %}
+    <ul class="messages">
+      {% for message in messages %}
+        <li class="{{ message.tags }}">{{ message }}</li>
+      {% endfor %}
+    </ul>
+  {% endif %}
+
+  <main class="contenu">
+    {% block contenu %}{% endblock %}
+  </main>
+
+  <footer class="pied">
+    <small>{{ ECOLE.nom }} — {{ ECOLE.ville }} · PROJET_SCHOOL_MOUMA_BKO_{{ ECOLE.annee }}</small>
+  </footer>
+</body>
+</html>

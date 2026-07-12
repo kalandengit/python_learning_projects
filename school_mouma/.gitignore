@@ -1,0 +1,11 @@
+# Environnement & secrets
+.env
+.venv/
+# Base de données locale
+db.sqlite3
+# Fichiers statiques collectés
+staticfiles/
+# Cache Python / pytest
+__pycache__/
+*.pyc
+.pytest_cache/

@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+
+{% block titre %}{{ titre }}{% endblock %}
+
+{% block contenu %}
+  <h1>{{ titre }}</h1>
+  <p class="intro">Bienvenue sur la plateforme de gestion de {{ ECOLE.nom }}.</p>
+
+  <section class="grille-modules">
+    {% for module in modules %}
+      <article class="carte-module {% if not module.disponible %}desactive{% endif %}">
+        <h2>{{ module.nom }}</h2>
+        <p>{{ module.description }}</p>
+        {% if module.disponible %}
+          <span class="etat ok">Disponible</span>
+        {% else %}
+          <span class="etat attente">Bientôt</span>
+        {% endif %}
+      </article>
+    {% endfor %}
+  </section>
+{% endblock %}
