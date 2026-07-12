@@ -1,0 +1,162 @@
+{
+  "meta": {
+    "type": "reverse_master_prompt",
+    "version": "1.0.0",
+    "date": "2026-07-12",
+    "language": "fr",
+    "markdown_twin": "MASTER_PROMPT.md",
+    "purpose": "Prompt directeur reconstitué : donné à un assistant IA ou à une équipe, il permet de régénérer, poursuivre ou auditer l'intégralité du projet (business + produit + technique)."
+  },
+  "role": {
+    "persona": "Équipe fondatrice complète : CTO (architecte Django/Vue senior, sécurité), CEO (stratégie EdTech Afrique de l'Ouest), CPO (produit éducatif francophone)",
+    "working_language": "français",
+    "method": "analyse -> plan numéroté -> validation utilisateur -> implémentation incrémentale vérifiée (tests + démarrage réel)"
+  },
+  "project": {
+    "codename": "PROJET_SCHOOL_MOUMA_BKO_2026",
+    "product_name": "Kalanfa",
+    "description": "Plateforme SaaS multi-établissements de gestion scolaire et d'apprentissage hors-ligne d'abord",
+    "upstream": {
+      "name": "Kolibri",
+      "org": "Learning Equality",
+      "repo": "https://github.com/learningequality/kolibri",
+      "license": "MIT",
+      "obligations": "Conserver LICENSE, ATTRIBUTION.md et fichiers UPSTREAM_KOLIBRI_* ; fork indépendant non affilié"
+    },
+    "pilot_customer": {
+      "name": "École MOUMA",
+      "city": "Bamako",
+      "country": "Mali",
+      "cycles": ["Montessori/maternelle", "Collège"],
+      "target_year": 2026
+    },
+    "locale": { "language": "fr", "currency": "XOF", "timezone": "Africa/Bamako" }
+  },
+  "business_plan": {
+    "problem": "Écoles privées d'Afrique de l'Ouest francophone : gestion papier/tableurs (inscriptions, notes, bulletins, frais, suivi pédagogique), impayés mal suivis, bulletins lents, pas de suivi Montessori structuré, connectivité Internet chère et intermittente rendant les SaaS cloud-only inutilisables.",
+    "solution": [
+      "Gestion d'établissement : inscriptions, notes/bulletins (moyennes pondérées, rang), frais FCFA avec impayés, fiches de poste, présences",
+      "Apprentissage numérique hors-ligne hérité de Kolibri : chaînes de contenus, leçons, quiz, tableaux de bord enseignant, distribution USB/pair-à-pair",
+      "Suivi Montessori : observations sur 5 domaines, niveaux d'acquisition, synthèse de progression par enfant"
+    ],
+    "differentiator": "Hors-ligne d'abord + multi-tenant + modules francophones (bulletins à la malienne) : aucun concurrent local ne combine les trois",
+    "market": {
+      "primary_target": "Écoles privées maternelle -> collège au Mali (Bamako d'abord)",
+      "expansion": ["Sénégal", "Côte d'Ivoire", "Burkina Faso", "Guinée", "Niger"],
+      "buyer": "Directeur / promoteur d'école",
+      "users": ["direction", "enseignants", "comptable", "parents", "élèves"],
+      "competitors_observed": ["Novacole", "GestionÉcole", "Wacni", "Sicolo", "Logesco", "EduGest", "MyScol"],
+      "competitor_gap": "Tous font de la gestion sans plateforme d'apprentissage hors-ligne intégrée"
+    },
+    "revenue_model": {
+      "note": "Hypothèses à valider terrain",
+      "subscriptions": [
+        { "plan": "Essentiel", "scope": "gestion (inscriptions, notes, bulletins, frais)", "indicative_price": "~150000 FCFA/an jusqu'à 300 élèves" },
+        { "plan": "Pro", "scope": "Essentiel + contenus hors-ligne + suivi Montessori", "indicative_price": "~300000 FCFA/an" },
+        { "plan": "Réseau", "scope": "multi-campus", "indicative_price": "négocié" }
+      ],
+      "services": ["installation serveur local hors-ligne", "formation", "migration de données", "personnalisation des bulletins"],
+      "payments": ["Orange Money", "Moov", "virement"],
+      "collections": "relances automatiques des impayés"
+    },
+    "go_to_market": [
+      "Pilote École MOUMA (rentrée 2026) puis étude de cas chiffrée",
+      "Bouche-à-oreille promoteurs + associations d'écoles privées de Bamako",
+      "Démonstrations hors-ligne (la démo tourne sans Internet)",
+      "Partenariats contenus pédagogiques francophones et programmes ministériels de numérisation"
+    ],
+    "risks": [
+      { "risk": "Connectivité/électricité", "mitigation": "hors-ligne d'abord, serveur local basse consommation, synchronisation différée" },
+      { "risk": "Capacité à payer", "mitigation": "tarifs FCFA par palier, facturation à la rentrée" },
+      { "risk": "Maintenance du fork Kolibri", "mitigation": "vendoring discipliné, périmètre de divergence documenté" },
+      { "risk": "Adoption enseignants", "mitigation": "UI simple en français, formation incluse, saisie minimale" },
+      { "risk": "Réglementation données élèves", "mitigation": "minimisation, chiffrement, hébergement local possible" }
+    ],
+    "kpis": [
+      "écoles actives", "élèves gérés", "taux de bulletins générés dans les délais",
+      "taux de recouvrement des frais", "rétention annuelle des écoles",
+      "NPS directeurs", "sessions d'apprentissage hors-ligne par élève"
+    ]
+  },
+  "product": {
+    "roles": ["super-admin plateforme", "admin établissement", "coach/enseignant", "apprenant/élève", "parent (portail lecture)"],
+    "modules": [
+      { "id": "inscriptions", "name": "Inscriptions / fiches de renseignement", "features": ["état civil, sexe, naissance, nationalité, adresse", "santé : groupe sanguin, allergies, contact d'urgence, observations", "scolarité antérieure, certificat de transfert, extrait de naissance", "statut boursier / réduction %", "tuteurs (père/mère/tuteur, profession, contacts) liés aux dossiers"] },
+      { "id": "notes_bulletins", "name": "Notes & bulletins", "features": ["notes /20 par matière, coefficients, périodes (trimestres)", "bulletin : moyenne pondérée par matière, moyenne générale, rang, effectif", "export PDF (à venir)"] },
+      { "id": "frais", "name": "Frais de scolarité (FCFA)", "features": ["échéanciers par élève", "paiements partiels : mode (espèces, Orange Money), référence de reçu", "endpoint des impayés"] },
+      { "id": "montessori", "name": "Suivi Montessori", "features": ["observations datées par éducateur", "domaines : Vie pratique, Sensoriel, Langage, Mathématiques, Culture", "niveaux : Présenté -> En cours -> Acquis -> Maîtrisé", "synthèse de progression par enfant et par domaine"] },
+      { "id": "fiches_poste", "name": "Fiches de poste", "features": ["intitulé, missions, responsabilités, compétences, titulaire"] },
+      { "id": "presences", "name": "Présences", "features": ["app attendance héritée du cœur Kolibri : sessions d'appel par classe, registres"] },
+      { "id": "apprentissage", "name": "Apprentissage (héritage Kolibri)", "features": ["chaînes de contenus, leçons, quiz/examens", "rapports coach", "synchronisation pair-à-pair / USB"] }
+    ]
+  },
+  "technical": {
+    "stack": {
+      "backend": "Python / Django 3.2 + Django REST Framework + morango (sync)",
+      "frontend": "Vue 2, monorepo pnpm, webpack",
+      "database": "SQLite par défaut, PostgreSQL possible",
+      "origin": "fork Kolibri intégralement renommé kolibri->kalanfa"
+    },
+    "multi_tenancy": {
+      "tenant": "Facility Kolibri = établissement",
+      "isolation": "chaque queryset API filtré sur la facility de l'utilisateur ; création force la facility du demandeur ; accès inter-écoles -> 404",
+      "onboarding_command": "kalanfa manage createschool --nom <école> --admin <user> --motdepasse <mdp> --preset formal"
+    },
+    "plugin_ecole": {
+      "module": "kalanfa.plugins.ecole",
+      "api_mount": "/ecole/api/",
+      "url_namespace": "kalanfa:kalanfa.plugins.ecole",
+      "structure": "coquille plugin (api_urls, settings) + app Django ordinaire imbriquée 'gestion' (label ecole_gestion) portant modèles/migrations/commandes/tests",
+      "models": ["DossierEleve", "Tuteur", "DossierTuteur (jonction)", "Periode", "Note", "EcheanceFrais", "Paiement", "ObservationMontessori", "FichePoste"],
+      "model_conventions": "UUID pk, FK facility, horodatage création/modification ; modèles Django ordinaires non synchronisés morango (sync ajoutable plus tard)",
+      "special_endpoints": ["/ecole/api/notes/bulletin/?eleve=&periode=", "/ecole/api/frais/impayes/", "/ecole/api/observations/progression/?enfant="]
+    },
+    "known_pitfalls": [
+      { "issue": "setuptools-scm exige un tag git", "fix": "SETUPTOOLS_SCM_PRETEND_VERSION_FOR_KALANFA=0.1.0 pip install -e . --no-deps ; dépendances = groupe 'base' de pyproject.toml" },
+      { "issue": "renommage kolibri->kalanfa", "fix": "~930 chemins + ~3078 fichiers textes, toutes casses ; préserver LICENSE, ATTRIBUTION.md, UPSTREAM_KOLIBRI_* (attribution MIT)" },
+      { "issue": "paquets npm externes kolibri-constants / kolibri-design-system inexistants sous le nom kalanfa", "fix": "alias pnpm catalog 'kalanfa-x: npm:kolibri-x@version' + packageExtension injectant browserslist-config-kolibri dans kolibri-design-system" },
+      { "issue": "labels d'app pointés des plugins Kalanfa cassent les migrations des champs relationnels", "fix": "modèles dans une app Django ordinaire enregistrée via le module settings du plugin ; pas de ManyToManyField automatique (jonction explicite)" },
+      { "issue": "découverte des plugins au build frontend", "fix": "lancer pnpm build avec le venv Python actif (le build shelle vers 'python')" },
+      { "issue": "usernames Kolibri", "fix": "lettres/chiffres/underscores uniquement (pas de points)" }
+    ],
+    "security": [
+      "auth session Kolibri + RBAC par rôle et par facility",
+      "écriture réservée admin/coach de l'établissement",
+      "validation DRF sur toutes les entrées",
+      "secrets hors dépôt ; mot de passe onboarding >= 8 caractères",
+      "télémétrie upstream à neutraliser en production"
+    ]
+  },
+  "status": {
+    "as_of": "2026-07-12",
+    "branch": "claude/school-management-clone-uicab0",
+    "done_verified": [
+      "fork Kolibri vendorisé + renommage intégral kolibri->kalanfa",
+      "build frontend : 29 bundles sans erreur",
+      "serveur démarré : page de connexion française, HTTP 200",
+      "device provisionné : facility 'École MOUMA' (preset formal, fr-fr)",
+      "commande createschool opérationnelle (2e école test créée)",
+      "plugin ecole complet, migrations appliquées",
+      "7 tests API verts : isolement multi-tenant, restrictions de rôle, bulletin (13.8/20, rang 2)",
+      "API en ligne : /ecole/api/ -> 403 anonyme"
+    ],
+    "todo": [
+      "UI Vue des modules école (actuellement API-only)",
+      "PDF bulletins et reçus",
+      "portail parents",
+      "intégration Orange Money",
+      "import des documents réels (fiches, maquette de bulletin, fiches de poste) pour aligner les champs",
+      "facturation SaaS et console super-admin",
+      "déploiement production (Docker/VPS ou serveur local école)",
+      "neutralisation télémétrie + sauvegardes"
+    ]
+  },
+  "engineering_rules": [
+    "Planning-first : analyser, proposer architecture + plan numéroté, attendre validation, implémenter par jalons courts",
+    "Vérifier réellement chaque jalon : migrations + tests + démarrage HTTP réel, pas seulement 'ça compile'",
+    "Sécurisé par défaut ; français d'abord ; hors-ligne d'abord (dégradation propre sans Internet)",
+    "Git : petits commits explicites ; jamais de secrets/DB/venv dans le dépôt ; pousser sur la branche de travail désignée",
+    "Respect de la licence MIT upstream : ne jamais supprimer l'attribution Learning Equality"
+  ],
+  "final_instruction": "Si le dépôt existe : faire l'état des lieux puis reprendre la feuille de route (status.todo). Sinon : reconstruire dans l'ordre — fork+rebrand (technical.known_pitfalls), boot vérifié, multi-tenant, plugin ecole, puis UI/PDF/paiements — en respectant engineering_rules à chaque étape."
+}
