@@ -12,6 +12,7 @@ from rest_framework import permissions
 from rest_framework import viewsets
 from rest_framework.decorators import action
 from rest_framework.response import Response
+from rest_framework.views import APIView
 
 from kalanfa.core.auth.constants import role_kinds
 from kalanfa.core.auth.models import FacilityUser
@@ -230,3 +231,94 @@ class ObservationMontessoriViewSet(EcoleBaseViewSet):
 class FichePosteViewSet(EcoleBaseViewSet):
     queryset = FichePoste.objects.all().select_related("titulaire")
     serializer_class = FichePosteSerializer
+
+
+class AnnonceMessagerieView(APIView):
+    """
+    Publie une annonce sur tous les canaux configurés : le canal
+    « annonces » Mattermost de l'établissement et, si configuré, le
+    webhook Slack. Réservé au staff (admin/coach).
+
+    POST /ecole/api/messagerie/annonce/  {"texte": "..."}
+    """
+
+    permission_classes = (EstMembreEtablissement,)
+
+    def post(self, request):
+        from .connecteurs import ConnecteurError
+        from .connecteurs import SlackConnector
+        from .messagerie import MattermostClient
+        from .messagerie import MessagerieError
+
+        if not _is_staff_for_facility(request.user):
+            return Response({"detail": "Réservé au staff."}, status=403)
+        texte = (request.data.get("texte") or "").strip()
+        if not texte:
+            return Response({"detail": "Paramètre requis : texte"}, status=400)
+        facility = _user_facility(request.user)
+
+        publie_sur, erreurs = [], []
+        if MattermostClient.est_configure():
+            try:
+                MattermostClient().annoncer(facility, texte)
+                publie_sur.append("mattermost")
+            except MessagerieError as exc:
+                erreurs.append(f"mattermost: {exc}")
+        if SlackConnector.est_configure():
+            try:
+                SlackConnector().envoyer(f"[{facility.name}] {texte}")
+                publie_sur.append("slack")
+            except ConnecteurError as exc:
+                erreurs.append(f"slack: {exc}")
+
+        if not publie_sur and not erreurs:
+            return Response(
+                {"detail": "Aucune messagerie configurée (Mattermost ou Slack)."},
+                status=502,
+            )
+        if not publie_sur:
+            return Response({"detail": " ; ".join(erreurs)}, status=502)
+        return Response(
+            {"publie": True, "canaux": publie_sur, "erreurs": erreurs}, status=201
+        )
+
+
+class WhatsAppMessageView(APIView):
+    """
+    Envoie un message WhatsApp (API Cloud Meta) à un numéro — par exemple
+    le téléphone d'un tuteur pour un rappel d'échéance. Réservé au staff.
+
+    POST /ecole/api/messagerie/whatsapp/
+      {"telephone": "+22376000000", "texte": "..."}                 (fenêtre 24 h)
+      {"telephone": "...", "template": "rappel_frais",
+       "parametres": ["Awa", "25000"]}                              (notification sortante)
+    """
+
+    permission_classes = (EstMembreEtablissement,)
+
+    def post(self, request):
+        from .connecteurs import ConnecteurError
+        from .connecteurs import WhatsAppConnector
+
+        if not _is_staff_for_facility(request.user):
+            return Response({"detail": "Réservé au staff."}, status=403)
+        telephone = (request.data.get("telephone") or "").strip()
+        texte = (request.data.get("texte") or "").strip()
+        template = (request.data.get("template") or "").strip()
+        if not telephone or not (texte or template):
+            return Response(
+                {"detail": "Paramètres requis : telephone et texte ou template"},
+                status=400,
+            )
+        try:
+            connecteur = WhatsAppConnector()
+            if template:
+                resultat = connecteur.envoyer_template(
+                    telephone, template,
+                    parametres=request.data.get("parametres") or [],
+                )
+            else:
+                resultat = connecteur.envoyer_texte(telephone, texte)
+        except ConnecteurError as exc:
+            return Response({"detail": str(exc)}, status=502)
+        return Response({"envoye": True, "reponse": resultat}, status=201)

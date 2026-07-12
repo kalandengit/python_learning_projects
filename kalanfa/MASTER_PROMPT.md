@@ -1,6 +1,6 @@
 # MASTER PROMPT — KALANFA / PROJET_SCHOOL_MOUMA_BKO_2026
 
-> **Version 2.1.0 — auditée et mise à jour le 12 juillet 2026.**  
+> **Version 2.2.0 — auditée et mise à jour le 12 juillet 2026.**  
 > Source structurée synchronisée : `MASTER_PROMPT.json`.
 
 ## 0. Règles de preuve
@@ -170,6 +170,47 @@ Le module Kalanfa doit inclure un **espace parent sécurisé, mobile-first et mu
 - l'interface fonctionne sur smartphone d'entrée de gamme ;
 - les dernières données consultées restent lisibles pendant une coupure courte ;
 - toutes les règles d'accès sont couvertes par des tests multi-tenant.
+
+## 7 bis. Messagerie & connecteurs (v2.2.0 — repository_verified)
+
+Kalanfa intègre une messagerie de type Slack et deux connecteurs externes
+(décision documentée dans `docs/adr/ADR-006-messagerie.md`) :
+
+### Mattermost (messagerie interne auto-hébergée)
+
+- **Mattermost Team Edition** (licence MIT, binaire unique + PostgreSQL,
+  ~2 Go de RAM ≈ 1000 utilisateurs) retenu après comparaison avec Zulip
+  (Django mais 5 services), Rocket.Chat (MongoDB) et Matrix (AGPL,
+  fédération hors besoin).
+- Déploiement : `deployment/messagerie/docker-compose.yml`, français par
+  défaut, création d'équipes fermée.
+- **1 équipe par établissement (invitation seule) = isolement tenant** ;
+  canaux par défaut : annonces (ouvert), enseignants, direction (privés).
+- Provisionnement idempotent :
+  `kalanfa manage provisionmessagerie --etablissement "École MOUMA"`.
+- Configuration : `KALANFA_MATTERMOST_URL`, `KALANFA_MATTERMOST_TOKEN`.
+
+### Connecteur Slack
+
+- Relais des annonces vers un espace Slack existant via **incoming
+  webhook** (`KALANFA_SLACK_WEBHOOK_URL`), sans app OAuth.
+- `POST /ecole/api/messagerie/annonce/` publie **en éventail** sur tous
+  les canaux configurés (Mattermost et/ou Slack), staff uniquement.
+
+### Connecteur WhatsApp
+
+- **API Cloud WhatsApp Business (Meta Graph v20)** pour joindre les
+  parents sur le canal dominant à Bamako.
+- `POST /ecole/api/messagerie/whatsapp/` (staff) : texte libre dans la
+  fenêtre de 24 h, ou **template pré-approuvé** (`rappel_frais`, absence…)
+  hors fenêtre — contrainte Meta incontournable.
+- Normalisation automatique des numéros (+223 76 00 00 00 → 22376000000).
+- Configuration : `KALANFA_WHATSAPP_TOKEN`, `KALANFA_WHATSAPP_PHONE_ID` ;
+  l'onboarding Meta Business (numéro vérifié, templates approuvés) est un
+  chantier du déploiement pilote (P4).
+
+Preuves : 29 tests mockés verts (messagerie, connecteurs, contrôle
+d'accès, isolement) ; aucun secret dans le dépôt.
 
 ## 8. Architecture technique
 

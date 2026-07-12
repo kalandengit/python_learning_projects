@@ -1,12 +1,12 @@
 {
   "meta": {
     "type": "reverse_master_prompt",
-    "version": "2.1.0",
+    "version": "2.2.0",
     "date": "2026-07-12",
     "language": "fr",
     "markdown_twin": "MASTER_PROMPT.md",
     "purpose": "Prompt directeur reconstitué : donné à un assistant IA ou à une équipe, il permet de régénérer, poursuivre ou auditer l'intégralité du projet (business + produit + technique).",
-    "revision": "Audit, mise à jour externe, intégration des sources métier fournies et ajout du tableau de bord parents (synchronisé avec le MD v2.1.0)",
+    "revision": "Audit v2.1.0 + v2.2.0 : messagerie Mattermost intégrée (ADR-006) et connecteurs Slack / WhatsApp",
     "source_of_truth": "Le JSON est la source structurée; le Markdown en est la représentation humaine synchronisée.",
     "evidence_labels": {
       "reported_status": "Statut repris des fichiers source, non réexécuté pendant cette révision.",
@@ -344,6 +344,23 @@
           "rapports coach",
           "synchronisation pair-à-pair / USB"
         ]
+      },
+      {
+        "id": "messagerie",
+        "name": "Messagerie & connecteurs (Mattermost, Slack, WhatsApp)",
+        "status": "repository_verified (tests mockés) ; exploitation serveur à valider au pilote",
+        "features": [
+          "Mattermost Team Edition (MIT) auto-hébergé : deployment/messagerie/docker-compose.yml, français par défaut",
+          "1 équipe par établissement (invitation seule) = isolement tenant ; canaux annonces/enseignants/direction",
+          "provisionnement idempotent : kalanfa manage provisionmessagerie --etablissement <nom>",
+          "annonces staff : POST /ecole/api/messagerie/annonce/",
+          "configuration par KALANFA_MATTERMOST_URL / KALANFA_MATTERMOST_TOKEN (secrets hors dépôt)",
+          "décision et alternatives documentées : docs/adr/ADR-006-messagerie.md",
+          "connecteur Slack : relais des annonces vers un espace Slack via incoming webhook (KALANFA_SLACK_WEBHOOK_URL)",
+          "annonce en éventail : POST /ecole/api/messagerie/annonce/ publie sur Mattermost ET Slack selon la configuration",
+          "connecteur WhatsApp (API Cloud Meta) : POST /ecole/api/messagerie/whatsapp/ — texte libre (fenêtre 24 h) ou template pré-approuvé (rappels d'impayés, absences) vers les téléphones des tuteurs (KALANFA_WHATSAPP_TOKEN / KALANFA_WHATSAPP_PHONE_ID)",
+          "normalisation des numéros maliens (+223...) ; 29 tests mockés au total sur messagerie + connecteurs"
+        ]
       }
     ],
     "principles": [
@@ -519,7 +536,7 @@
       "ADR-003 stratégie de synchronisation des données métiers",
       "ADR-004 génération et archivage des PDF",
       "ADR-005 intégration paiements et rapprochement",
-      "ADR-006 notifications SMS",
+      "ADR-006 notifications SMS et messagerie instantanée (messagerie : décidée, voir docs/adr/ADR-006-messagerie.md)",
       "ADR-007 données sensibles, santé et conservation",
       "ADR-008 politique de mise à jour du fork Kolibri"
     ],
@@ -673,6 +690,18 @@
         "status": "externally_verified",
         "finding": "Le Mali dispose de la loi n°2013-015 du 21 mai 2013 sur la protection des données personnelles, signalée comme modifiée en 2017.",
         "impact": "Conduire une revue juridique locale et intégrer information, finalités, minimisation, droits, conservation, sécurité, données de santé et transferts."
+      },
+      {
+        "topic": "Messagerie",
+        "status": "externally_verified",
+        "finding": "Comparaison Mattermost / Zulip / Rocket.Chat / Matrix (2026-07-12) : Mattermost Team Edition est MIT, binaire unique + PostgreSQL, ~2 Go RAM pour ~1000 utilisateurs, UX la plus proche de Slack, API REST v4 ; Zulip (Django) exige 5 services et plus de RAM.",
+        "impact": "Mattermost retenu comme messagerie intégrée (ADR-006) ; SSO OpenID Connect en évolution possible."
+      },
+      {
+        "topic": "Connecteurs",
+        "status": "repository_verified",
+        "finding": "Connecteurs Slack (incoming webhook) et WhatsApp Business Cloud API (Meta Graph v20) implémentés et testés avec API mockées ; WhatsApp exige des templates pré-approuvés hors fenêtre de 24 h.",
+        "impact": "Annonces multi-canaux et rappels parents via WhatsApp ; l'onboarding Meta Business (numéro, templates) est un chantier de déploiement pilote."
       }
     ],
     "sources": [
@@ -704,6 +733,12 @@
         "id": "EXT-APDP",
         "title": "Autorité de Protection des Données à caractère Personnel du Mali",
         "url": "https://apdp.ml/",
+        "accessed": "2026-07-12"
+      },
+      {
+        "id": "EXT-MATTERMOST",
+        "title": "Mattermost — Editions and Offerings / licence MIT Team Edition",
+        "url": "https://docs.mattermost.com/product-overview/editions-and-offerings.html",
         "accessed": "2026-07-12"
       }
     ]
