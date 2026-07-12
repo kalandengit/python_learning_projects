@@ -2,18 +2,19 @@
 
 from __future__ import annotations
 
-from fastapi import APIRouter, Depends, HTTPException, Request, UploadFile, status
+from fastapi import APIRouter, Depends, Form, HTTPException, Request, UploadFile, status
 from sqlalchemy.orm import Session
 
 from app.asr import ASREngine, AudioValidationError
 from app.asr.base import validate_audio, wav_duration_seconds
 from app.config import Settings, get_settings
 from app.db import get_db
+from app.languages import display_name
 from app.limits import limiter
 from app.logging_conf import get_logger
 from app.models import Transcription, User
 from app.nko import transliterate
-from app.schemas import TranscriptionOut, TransliterateIn, TransliterateOut
+from app.schemas import LanguageOut, TranscriptionOut, TransliterateIn, TransliterateOut
 from app.security import get_current_user
 
 logger = get_logger(__name__)
@@ -24,16 +25,34 @@ def get_asr_engine(request: Request) -> ASREngine:
     return request.app.state.asr_engine
 
 
+@router.get("/languages", response_model=list[LanguageOut])
+def list_languages(settings: Settings = Depends(get_settings)):
+    """Source languages this deployment offers, default first."""
+    codes = settings.language_list
+    ordered = [settings.default_language] + [c for c in codes if c != settings.default_language]
+    return [
+        LanguageOut(code=c, name=display_name(c), default=(c == settings.default_language))
+        for c in ordered
+    ]
+
+
 @router.post("/transcribe", response_model=TranscriptionOut)
 @limiter.limit("30/minute")
 async def transcribe_audio(
     request: Request,
     audio: UploadFile,
+    language: str | None = Form(default=None),
     user: User = Depends(get_current_user),
     db: Session = Depends(get_db),
     settings: Settings = Depends(get_settings),
     engine: ASREngine = Depends(get_asr_engine),
 ):
+    lang = language or settings.default_language
+    if lang not in settings.language_list:
+        raise HTTPException(
+            status.HTTP_422_UNPROCESSABLE_ENTITY,
+            f"Unsupported language {lang!r}; offered: {', '.join(settings.language_list)}",
+        )
     data = await audio.read()
     try:
         audio_format = validate_audio(data, audio.content_type, settings)
@@ -44,7 +63,7 @@ async def transcribe_audio(
             raise AudioValidationError(
                 f"Audio longer than {settings.max_audio_seconds}s limit"
             )
-        result = engine.transcribe(data, audio_format)
+        result = engine.transcribe(data, audio_format, language=lang)
     except AudioValidationError as exc:
         raise HTTPException(status.HTTP_422_UNPROCESSABLE_ENTITY, str(exc)) from exc
     except RuntimeError as exc:

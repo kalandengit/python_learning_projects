@@ -11,19 +11,33 @@ import hashlib
 
 from app.asr.base import ASREngine, ASRResult
 
-_PHRASES = (
-    "i ni ce",                     # hello / thank you
-    "n bɛ taa sugu la",            # I am going to the market
-    "an ka bamanankan kalan",      # let's learn Bambara
-    "aw ni sɔgɔma",                # good morning (to several people)
-    "dɔɔnin dɔɔnin kɔnɔnin bɛ a ɲaga da",  # little by little the bird builds its nest
-)
+_PHRASES: dict[str, tuple[str, ...]] = {
+    "bam": (
+        "i ni ce",                     # hello / thank you
+        "n bɛ taa sugu la",            # I am going to the market
+        "an ka bamanankan kalan",      # let's learn Bambara
+        "aw ni sɔgɔma",                # good morning (to several people)
+        "dɔɔnin dɔɔnin kɔnɔnin bɛ a ɲaga da",  # little by little the bird builds its nest
+    ),
+    "dyu": (
+        "i ni sɔgɔma",                 # good morning
+        "an bɛ julakan fɔ",            # we speak Dyula
+        "i ka kɛnɛ wa",                # how are you
+    ),
+    "emk": (
+        "i ni ke",                     # thank you
+        "an ye maninkakan karan na",   # we are learning Maninka
+        "tana ma si",                  # good morning (peaceful night?)
+    ),
+}
+_FALLBACK = _PHRASES["bam"]
 
 
 class MockASREngine(ASREngine):
     name = "mock"
 
-    def transcribe(self, audio: bytes, audio_format: str) -> ASRResult:
+    def transcribe(self, audio: bytes, audio_format: str, language: str = "bam") -> ASRResult:
+        phrases = _PHRASES.get(language, _FALLBACK)
         digest = hashlib.sha256(audio).digest()
-        phrase = _PHRASES[digest[0] % len(_PHRASES)]
-        return ASRResult(text_latin=phrase, engine=self.name)
+        phrase = phrases[digest[0] % len(phrases)]
+        return ASRResult(text_latin=phrase, engine=self.name, language=language)

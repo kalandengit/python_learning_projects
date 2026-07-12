@@ -32,33 +32,40 @@ class MMSASREngine(ASREngine):
         self._lock = threading.Lock()
         self._model = None
         self._processor = None
+        self._current_lang: str | None = None
 
-    def _load(self) -> None:
+    def _load(self, language: str) -> None:
+        """Load the model once, then hot-swap the per-language MMS adapter."""
         with self._lock:
-            if self._model is not None:
-                return
-            try:
-                from transformers import AutoProcessor, Wav2Vec2ForCTC
-            except ImportError as exc:  # pragma: no cover - env without torch
-                raise RuntimeError(
-                    "MMS engine requires optional deps: pip install torch torchaudio transformers"
-                ) from exc
-            logger.info(
-                "event=mms_load_start model=%s lang=%s",
-                self._settings.mms_model_id,
-                self._settings.mms_target_lang,
-            )
-            processor = AutoProcessor.from_pretrained(
-                self._settings.mms_model_id, target_lang=self._settings.mms_target_lang
-            )
-            model = Wav2Vec2ForCTC.from_pretrained(
-                self._settings.mms_model_id,
-                target_lang=self._settings.mms_target_lang,
-                ignore_mismatched_sizes=True,
-            )
-            model.eval()
-            self._processor, self._model = processor, model
-            logger.info("event=mms_load_done")
+            if self._model is None:
+                try:
+                    from transformers import AutoProcessor, Wav2Vec2ForCTC
+                except ImportError as exc:  # pragma: no cover - env without torch
+                    raise RuntimeError(
+                        "MMS engine requires optional deps: "
+                        "pip install torch torchaudio transformers"
+                    ) from exc
+                logger.info(
+                    "event=mms_load_start model=%s lang=%s",
+                    self._settings.mms_model_id,
+                    language,
+                )
+                self._processor = AutoProcessor.from_pretrained(
+                    self._settings.mms_model_id, target_lang=language
+                )
+                self._model = Wav2Vec2ForCTC.from_pretrained(
+                    self._settings.mms_model_id,
+                    target_lang=language,
+                    ignore_mismatched_sizes=True,
+                )
+                self._model.eval()
+                self._current_lang = language
+                logger.info("event=mms_load_done lang=%s", language)
+            elif self._current_lang != language:
+                logger.info("event=mms_adapter_switch lang=%s", language)
+                self._processor.tokenizer.set_target_lang(language)
+                self._model.load_adapter(language)
+                self._current_lang = language
 
     def _decode_audio(self, audio: bytes):
         """Decode container bytes to a 16 kHz mono float tensor."""
@@ -82,8 +89,8 @@ class MMSASREngine(ASREngine):
             )
         return waveform.squeeze(0).to(torch.float32)
 
-    def transcribe(self, audio: bytes, audio_format: str) -> ASRResult:
-        self._load()
+    def transcribe(self, audio: bytes, audio_format: str, language: str = "bam") -> ASRResult:
+        self._load(language)
         import torch
 
         waveform = self._decode_audio(audio)
@@ -94,4 +101,4 @@ class MMSASREngine(ASREngine):
             logits = self._model(**inputs).logits
         ids = torch.argmax(logits, dim=-1)[0]
         text = self._processor.decode(ids)
-        return ASRResult(text_latin=text.strip(), engine=self.name)
+        return ASRResult(text_latin=text.strip(), engine=self.name, language=language)

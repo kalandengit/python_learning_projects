@@ -39,7 +39,31 @@ const $ = (id) => document.getElementById(id);
 const authPanel = $("auth-panel"), appPanel = $("app-panel");
 
 function showAuth() { authPanel.classList.remove("hidden"); appPanel.classList.add("hidden"); }
-function showApp() { authPanel.classList.add("hidden"); appPanel.classList.remove("hidden"); refreshHistory(); }
+function showApp() {
+  authPanel.classList.add("hidden");
+  appPanel.classList.remove("hidden");
+  loadLanguages();
+  refreshHistory();
+}
+
+// ---- Source languages --------------------------------------------------------
+let languagesLoaded = false;
+async function loadLanguages() {
+  if (languagesLoaded) return;
+  try {
+    const langs = await api("/api/languages");
+    const sel = $("language-select");
+    sel.replaceChildren();
+    for (const lang of langs) {
+      const opt = document.createElement("option");
+      opt.value = lang.code;
+      opt.textContent = lang.name;
+      if (lang.default) opt.selected = true;
+      sel.append(opt);
+    }
+    languagesLoaded = true;
+  } catch { /* dropdown stays empty; server default applies */ }
+}
 
 // ---- Auth ------------------------------------------------------------------
 $("auth-form").addEventListener("submit", (e) => e.preventDefault());
@@ -140,6 +164,8 @@ async function sendAudio(blob, filename) {
   try {
     const form = new FormData();
     form.append("audio", blob, filename);
+    const lang = $("language-select").value;
+    if (lang) form.append("language", lang);
     const rec = await api("/api/transcribe", { method: "POST", form });
     $("result").classList.remove("hidden");
     $("result-nko").textContent = rec.text_nko;
@@ -209,7 +235,7 @@ async function refreshHistory() {
       nko.textContent = row.text_nko;
       const meta = document.createElement("span");
       meta.className = "meta";
-      meta.textContent = new Date(row.created_at).toLocaleString();
+      meta.textContent = `${row.language} · ${new Date(row.created_at).toLocaleString()}`;
       const del = document.createElement("button");
       del.className = "secondary";
       del.textContent = "✕";

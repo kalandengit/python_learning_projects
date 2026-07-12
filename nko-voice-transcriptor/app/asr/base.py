@@ -113,8 +113,8 @@ class ASREngine(abc.ABC):
     name: str = "abstract"
 
     @abc.abstractmethod
-    def transcribe(self, audio: bytes, audio_format: str) -> ASRResult:
-        """Transcribe audio bytes to Bambara Latin text."""
+    def transcribe(self, audio: bytes, audio_format: str, language: str = "bam") -> ASRResult:
+        """Transcribe audio bytes to Manding Latin text in the given language."""
 
 
 def get_engine(settings: Settings) -> ASREngine:

@@ -19,10 +19,28 @@ Two ASR engines ship behind one interface (`NKO_ASR_ENGINE`):
 | `mms` | Meta **MMS** (`facebook/mms-1b-all`) with the Bambara `bam` adapter | production — real speech recognition |
 
 The Latin→N'Ko **transliteration engine** (`app/nko/`) is deterministic and
-fully unit-tested: the seven Bambara vowels, coda-nasal → nasalization mark
+fully unit-tested: the seven Manding vowels, coda-nasal → nasalization mark
 (߲), the syllabic-N pronoun (ߒ), digraphs (`ny`, `gb`, `rr`), N'Ko digits and
 punctuation. Design choices and known limitations are documented in
 `app/nko/tables.py`.
+
+### Source languages
+
+Not only Bambara — pick a source language per recording from the UI. Offered
+languages are configurable via `NKO_LANGUAGES` (default: all six Manding
+varieties with MMS adapters, Bambara first):
+
+| Code | Language |
+|---|---|
+| `bam` | Bambara (Bamanankan) — default |
+| `dyu` | Dyula (Jula) |
+| `emk` | Maninka, Eastern (Malinké) |
+| `mku` | Maninka, Konyanka |
+| `msc` | Maninka, Sankaran |
+| `mwk` | Maninkakan, Kita |
+
+The MMS engine hot-swaps the per-language adapter; the same N'Ko
+transliteration rules apply across the Manding varieties.
 
 ## Quick start (development)
 
@@ -71,6 +89,7 @@ ruff check app tests
 | Method | Path | Auth | Purpose |
 |---|---|---|---|
 | GET | `/api/health` | – | liveness + engine info |
+| GET | `/api/languages` | – | offered source languages |
 | POST | `/api/auth/register` | – | create account |
 | POST | `/api/auth/login` | – | get JWT access token |
 | POST | `/api/transcribe` | Bearer | audio → `{text_latin, text_nko}` (stored) |

@@ -54,6 +54,12 @@ class TransliterateOut(BaseModel):
     text_nko: str
 
 
+class LanguageOut(BaseModel):
+    code: str
+    name: str
+    default: bool
+
+
 class HealthOut(BaseModel):
     status: str
     version: str
