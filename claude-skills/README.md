@@ -13,6 +13,7 @@ including Claude Code on the web, where personal `~/.claude` skills don't load.
 | **planning-first** | Forces a plan-first workflow — analyze requirements, propose an architecture, present an execution plan + files preview, and get explicit approval **before** writing any code or files. |
 | **it-prompt-specialist** | A senior multidisciplinary IT expert lens across software, cloud, security, AI/ML, networking, embedded, game dev, and project management. |
 | **project-knowledge-exporter** | Analyzes an entire project and generates a durable, LLM-portable knowledge package — blueprint, structured context JSON, rebuild prompt, decision log, and development-state report — for handoff and reconstruction. |
+| **export-project** | The `/export_project` command — alias of project-knowledge-exporter with identical behavior, for a shorter, memorable invocation. |
 
 ## Install (plugin marketplace — recommended)
 
@@ -23,6 +24,7 @@ In any Claude Code session:
 /plugin install planning-first@kalandengit-skills
 /plugin install it-prompt-specialist@kalandengit-skills
 /plugin install project-knowledge-exporter@kalandengit-skills
+/plugin install export-project@kalandengit-skills
 ```
 
 Refresh later with `/plugin marketplace update`. Invoke a skill explicitly with
@@ -52,6 +54,9 @@ plugins/
     project-knowledge-exporter/
         .claude-plugin/plugin.json
         skills/project-knowledge-exporter/SKILL.md
+    export-project/
+        .claude-plugin/plugin.json
+        skills/export_project/SKILL.md      # invocable as /export_project
 ```
 
 ## License

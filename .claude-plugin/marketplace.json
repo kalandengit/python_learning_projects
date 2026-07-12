@@ -23,6 +23,11 @@
       "name": "project-knowledge-exporter",
       "source": "./claude-skills/plugins/project-knowledge-exporter",
       "description": "Analyzes an entire project and generates a durable, LLM-portable knowledge package (blueprint, context JSON, rebuild prompt, decision log, development state) for handoff and reconstruction."
+    },
+    {
+      "name": "export-project",
+      "source": "./claude-skills/plugins/export-project",
+      "description": "The /export_project command — alias of project-knowledge-exporter: generates the full project knowledge package (blueprint, context JSON, rebuild prompt, decision log, development state)."
     }
   ]
 }

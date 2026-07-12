@@ -58,3 +58,21 @@ Invoke it explicitly with `/project-knowledge-exporter` when you want to force
 this lens.
 <!-- END project-knowledge-exporter (managed) -->
 
+<!-- BEGIN export_project (managed) -->
+## Skill: export_project
+
+This repository ships the **export_project** Claude Code skill at
+`.claude/skills/export_project/` — the `/export_project` command, alias of
+project-knowledge-exporter. Claude Code discovers it automatically in any
+session opened on this repo (including Claude Code on the web, where personal
+`~/.claude` skills are not available).
+
+When the user runs `/export_project` or asks to export/snapshot/hand off the
+project, apply that skill: first **investigate the repo** (tree,
+README/CLAUDE.md, manifests, Docker/CI, source, models, APIs, tests, git
+history), then generate the five knowledge files — `PROJECT_BLUEPRINT.md`,
+`PROJECT_CONTEXT.json`, `PROJECT_REBUILD_PROMPT.md`, `DECISION_LOG.md`, and
+`DEVELOPMENT_STATE.md` — grounded in what you found, labeling observed facts
+vs. inferences and avoiding large source dumps.
+<!-- END export_project (managed) -->
+
