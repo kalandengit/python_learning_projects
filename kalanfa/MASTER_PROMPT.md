@@ -1,215 +1,309 @@
 # MASTER PROMPT — KALANFA / PROJET_SCHOOL_MOUMA_BKO_2026
 
-> **Reverse master prompt.** Ce document reconstitue, sous forme de prompt
-> directeur, la totalité du projet : vision business, plan d'affaires,
-> produit, architecture technique, état d'avancement et règles
-> d'ingénierie. Donné tel quel à un assistant IA (ou à une équipe), il
-> permet de régénérer, poursuivre ou auditer le projet à l'identique.
-> Version JSON structurée : [`MASTER_PROMPT.json`](./MASTER_PROMPT.json).
+> **Version 2.1.0 — auditée et mise à jour le 12 juillet 2026.**  
+> Source structurée synchronisée : `MASTER_PROMPT.json`.
 
----
+## 0. Règles de preuve
 
-## 1. RÔLE À ENDOSSER
+- **reported_status** : statut repris des fichiers initiaux, non réexécuté pendant cette révision.
+- **externally_verified** : information confirmée par une source publique le 12 juillet 2026.
+- **source_to_import** : source fournie, mais contenu détaillé non extractible dans l'environnement actuel.
+- **recommendation** : amélioration proposée à valider.
+- **repository_verified** : résultat reproduit dans le dépôt par commande, test, build ou démarrage.
 
-Agis comme une équipe fondatrice complète : **CTO** (architecte logiciel
-senior, Django/Vue, sécurité), **CEO** (stratégie EdTech Afrique de
-l'Ouest) et **CPO** (produit éducatif francophone). Travaille en
-français, méthodiquement : analyse → plan numéroté → validation →
-implémentation incrémentale vérifiée (tests + démarrage réel).
+Ne jamais présenter un statut historique comme une vérification nouvelle. Ne jamais inventer le contenu d'un fichier ou d'une vidéo non lu.
 
-## 2. IDENTITÉ DU PROJET
+## 1. Rôle et méthode
+
+Agis comme une équipe fondatrice complète : CTO Django/Vue et sécurité, CEO EdTech Afrique de l'Ouest et CPO produit éducatif francophone.
+
+Méthode : inventaire des preuves → rapport d'écart → plan numéroté → décision explicite pour les changements risqués → implémentation incrémentale → vérification reproductible.
+
+## 2. Identité du projet
 
 - **Nom de code** : PROJET_SCHOOL_MOUMA_BKO_2026
-- **Produit** : **Kalanfa** — plateforme SaaS multi-établissements de
-  gestion scolaire et d'apprentissage **hors-ligne d'abord**
-- **Origine technique** : fork rebaptisé de **Kolibri** (Learning
-  Equality, licence MIT — attribution conservée dans `LICENSE` et
-  `ATTRIBUTION.md` ; fork indépendant, non affilié)
-- **Premier client / tenant pilote** : **École MOUMA**, Bamako, Mali
-  (cycles Montessori/maternelle + Collège), rentrée 2026
-- **Langue produit** : français ; **devise** : XOF (FCFA) ;
-  fuseau : Africa/Bamako
+- **Produit** : Kalanfa
+- **Description** : Plateforme SaaS multi-établissements de gestion scolaire et d'apprentissage hors-ligne d'abord
+- **Pilote** : École MOUMA, Bamako, Mali, rentrée 2026
+- **Langue / devise / fuseau** : français, XOF, Africa/Bamako
+- **Origine** : fork indépendant de Kolibri, licence MIT, attribution Learning Equality conservée
 
-## 3. BUSINESS PLAN
+## 3. Mise à jour externe
 
-### 3.1 Problème
-Les écoles privées d'Afrique de l'Ouest francophone gèrent inscriptions,
-notes, bulletins, frais et suivi pédagogique sur papier ou tableurs :
-pertes de données, impayés mal suivis, bulletins lents à produire,
-aucun suivi Montessori structuré. La connectivité Internet est chère et
-intermittente — les SaaS classiques « cloud-only » y échouent.
+- Kolibri stable public : **0.19.4**, publié le 26 mai 2026.
+- Orange Money Web Payment est annoncé disponible au Mali pour les marchands.
+- Orange propose une API SMS Business au Mali.
+- La protection des données repose notamment sur la loi malienne n°2013-015 du 21 mai 2013, signalée comme modifiée en 2017.
 
-### 3.2 Solution
-Une plateforme unique qui combine :
-1. **Gestion d'établissement** (inscriptions, notes/bulletins avec
-   moyennes pondérées et rang, frais en FCFA avec suivi des impayés,
-   fiches de poste, présences) ;
-2. **Apprentissage numérique hors-ligne** hérité de Kolibri
-   (bibliothèque de contenus par chaînes, leçons, quiz, tableaux de bord
-   enseignant, distribution par USB/pair-à-pair) ;
-3. **Suivi Montessori** par observations (5 domaines, niveaux
-   d'acquisition, synthèse de progression par enfant).
+Conséquence : comparer le fork à Kolibri 0.19.4, traiter Orange Money comme un chantier marchand et conformité, et conduire une revue juridique locale des données scolaires, familiales et de santé.
 
-**Différenciateur clé** : hors-ligne d'abord + multi-tenant + modules
-francophones (bulletins à la malienne) — aucun concurrent local ne
-combine les trois.
+## 4. Sources métier fournies
 
-### 3.3 Marché
-- **Cible primaire** : écoles privées maternelle→collège au Mali
-  (Bamako d'abord), puis Sénégal, Côte d'Ivoire, Burkina, Guinée, Niger.
-- **Acheteur** : directeur/promoteur d'école ; **utilisateurs** :
-  direction, enseignants, comptable, parents, élèves.
-- **Concurrents observés** : Novacole, GestionÉcole, Wacni, Sicolo,
-  Logesco, EduGest, MyScol — tous « gestion » sans plateforme
-  d'apprentissage hors-ligne intégrée.
+Les dossiers Drive sont identifiés, mais leurs fichiers internes doivent être importés ou partagés individuellement avant de figer le schéma.
 
-### 3.4 Modèle économique (hypothèses à valider terrain)
-- **Abonnement SaaS par établissement et par an**, indexé sur
-  l'effectif :
-  - *Essentiel* : gestion (inscriptions, notes, bulletins, frais) —
-    ~150 000 FCFA/an jusqu'à 300 élèves ;
-  - *Pro* : + contenus hors-ligne & suivi Montessori —
-    ~300 000 FCFA/an ;
-  - *Réseau* : multi-campus, tarif négocié.
-- **Services** : installation locale (serveur école hors-ligne),
-  formation, migration des données, personnalisation des bulletins.
-- **Encaissement** : Orange Money / Moov / virement ; relances
-  automatiques des impayés.
+| Source | Intitulé observé | Usage prévu |
+|---|---|---|
+| Livrets / Collège | NOS LIVRETS | évaluations, livrets, modèles PDF |
+| Dossiers parents | Dossiers Parents site web Jannah shams MEA | portail parent, inscription, documents |
+| Fiche de renseignement / projet d'école | PARCOURS FORMATION | données élève, admission, projet d'établissement |
+| Montessori | 3-4 : Montessori | activités, progressions, observations |
+| Fiches de poste | 8-1.1: Fiches de poste | postes, missions, responsabilités, compétences |
 
-### 3.5 Go-to-market
-1. Pilote École MOUMA (rentrée 2026) → étude de cas chiffrée ;
-2. Bouche-à-oreille des promoteurs d'écoles + associations d'écoles
-   privées de Bamako ;
-3. Démonstrations hors-ligne (la démo tourne sans Internet — argument
-   massue) ;
-4. Partenariats : fournisseurs de contenus pédagogiques francophones,
-   programmes ministériels de numérisation.
+Vidéos partiellement identifiées : **Montessori 0 à 3 ans** et **Montessori 3 à 6 ans**. Les quatre vidéos doivent être transcrites et transformées en référentiel versionné avant développement final du module.
 
-### 3.6 Risques principaux
-| Risque | Mitigation |
-|---|---|
-| Connectivité/électricité | hors-ligne d'abord, serveur local basse conso, sync différée |
-| Capacité à payer | tarifs FCFA par palier, facturation à la rentrée |
-| Maintenance du fork Kolibri | vendoring discipliné, périmètre de divergence documenté |
-| Adoption enseignants | UI simple en français, formation incluse, saisie minimale |
-| Réglementation données élèves | minimisation, chiffrement, hébergement local possible |
+## 5. Business plan révisé
 
-### 3.7 KPIs
-Écoles actives, élèves gérés, taux de bulletins générés dans les délais,
-taux de recouvrement des frais, rétention annuelle des écoles, NPS
-directeurs, sessions d'apprentissage hors-ligne par élève.
+### Problème et solution
 
-## 4. PRODUIT & APPLICATION
+Kalanfa combine gestion scolaire, apprentissage hors-ligne Kolibri, suivi Montessori, production documentaire et recouvrement. Le différenciateur est une **hypothèse à valider**, pas une affirmation absolue de marché.
 
-### 4.1 Rôles
-`super-admin plateforme` (nous), `admin établissement` (direction),
-`coach/enseignant`, `apprenant/élève`, `parent` (portail lecture :
-bulletins, frais, progression).
+### Validation terrain
 
-### 4.2 Modules
-1. **Inscriptions** — fiche de renseignement complète : état civil,
-   sexe, naissance, nationalité, adresse, santé (groupe sanguin,
-   allergies, contact d'urgence), scolarité antérieure et documents,
-   statut boursier/réduction ; tuteurs (père/mère/tuteur, profession,
-   contacts) liés aux dossiers.
-2. **Notes & bulletins** — notes /20 par matière avec coefficients et
-   périodes (trimestres) ; bulletin calculé : moyenne pondérée par
-   matière, moyenne générale, **rang**, effectif ; export PDF (à venir).
-3. **Frais de scolarité (FCFA)** — échéanciers par élève, paiements
-   partiels avec mode (espèces, Orange Money) et référence de reçu,
-   endpoint des **impayés**.
-4. **Montessori** — observations datées par éducateur : domaine
-   (Vie pratique, Sensoriel, Langage, Mathématiques, Culture), activité,
-   niveau (Présenté → En cours → Acquis → Maîtrisé), synthèse de
-   progression par enfant et par domaine.
-5. **Fiches de poste** — intitulé, missions, responsabilités,
-   compétences, titulaire.
-6. **Présences** — app `attendance` héritée du cœur (sessions d'appel
-   par classe, registres).
-7. **Apprentissage** — tout Kolibri : chaînes de contenus, leçons,
-   quiz/examens, rapports coach, sync pair-à-pair.
+- Mener 15 à 20 entretiens avec directions, comptables, enseignants et parents à Bamako.
+- Documenter le processus actuel de l'inscription au bulletin et du paiement au recouvrement.
+- Tester séparément prix logiciel, installation locale, migration, formation et support.
+- Établir une ligne de base du temps de production des bulletins, du taux d'impayés et des erreurs.
+- Obtenir deux lettres d'intention supplémentaires avant une expansion multi-écoles.
+- Mesurer le coût total d'exploitation d'un serveur local et les besoins d'assistance.
 
-### 4.3 Architecture technique
-- **Base** : fork Kolibri renommé — Python/Django 3.2 + DRF + morango
-  (sync) + Vue 2 (frontend, monorepo pnpm), SQLite par défaut,
-  PostgreSQL possible.
-- **Multi-tenant** : la **Facility** Kolibri = l'établissement. Plugin
-  `kalanfa.plugins.ecole` : chaque queryset API est filtré sur la
-  facility de l'utilisateur ; la création force la facility du
-  demandeur ; accès inter-écoles → 404. Commande d'onboarding :
-  `kalanfa manage createschool --nom … --admin … --motdepasse … --preset formal`.
-- **Structure du plugin** : coquille plugin (URLs API sous
-  `/ecole/api/`, namespace `kalanfa:kalanfa.plugins.ecole`) + app
-  Django ordinaire imbriquée `gestion` (label `ecole_gestion`) portant
-  modèles/migrations/commandes/tests.
-- **Modèles** (UUID pk, FK facility, horodatage) : DossierEleve,
-  Tuteur, DossierTuteur (jonction), Periode, Note, EcheanceFrais,
-  Paiement, ObservationMontessori, FichePoste.
-- **Endpoints spéciaux** : `notes/bulletin/?eleve=&periode=`,
-  `frais/impayes/`, `observations/progression/?enfant=`.
+### Économie unitaire à mesurer
 
-### 4.4 Pièges connus (indispensables pour reproduire)
-1. **Version** : setuptools-scm exige un tag git — installer avec
-   `SETUPTOOLS_SCM_PRETEND_VERSION_FOR_KALANFA=0.1.0 pip install -e . --no-deps`,
-   dépendances = groupe `base` du `pyproject.toml`.
-2. **Renommage total kolibri→kalanfa** : ~930 chemins + ~3 078 fichiers
-   textes, toutes casses ; préserver `LICENSE`, `ATTRIBUTION.md`,
-   `UPSTREAM_KOLIBRI_*` (attribution MIT).
-3. **Paquets npm externes** : `kolibri-constants` et
-   `kolibri-design-system` n'existent pas sous le nom kalanfa —
-   alias pnpm `kalanfa-x: npm:kolibri-x@version` dans le catalog ;
-   packageExtension injectant `browserslist-config-kolibri` dans KDS.
-4. **Labels d'app pointés** : la machinerie de plugins Kalanfa donne
-   `app_label = chemin.du.module`, ce qui casse les migrations des
-   champs relationnels → mettre les modèles dans une app Django
-   ordinaire enregistrée via le module `settings` du plugin ; pas de
-   ManyToManyField automatique (jonction explicite).
-5. **Build frontend** : `pnpm build` doit tourner avec le venv Python
-   actif (la découverte des plugins shelle vers `python`).
-6. **Usernames** : lettres/chiffres/underscores uniquement (pas de
-   points).
+- coût d'acquisition par école
+- coût et durée d'installation
+- heures de formation
+- tickets de support par 100 utilisateurs
+- marge brute par plan
+- délai de recouvrement
+- taux de renouvellement
+- coût serveur, sauvegarde et synchronisation
 
-### 4.5 Sécurité
-Auth session Kolibri + RBAC par rôle et par facility ; écriture réservée
-admin/coach de l'établissement ; validation DRF ; secrets hors dépôt ;
-mots de passe ≥ 8 caractères à l'onboarding ; télémétrie upstream à
-neutraliser en production.
+## 6. Produit
 
-## 5. ÉTAT D'AVANCEMENT (2026-07-12)
+### Principes
 
-**Fait et vérifié** (branche `claude/school-management-clone-uicab0`) :
-fork vendorisé + renommage intégral ; build frontend 29 bundles sans
-erreur ; serveur démarré (page de connexion française, HTTP 200) ;
-device provisionné avec la facility « École MOUMA » (preset formal,
-fr-fr) ; commande `createschool` opérationnelle (2e école test créée) ;
-plugin `ecole` complet avec migrations appliquées et **7 tests API
-verts** (isolement multi-tenant, restrictions de rôle, calcul du
-bulletin 13,8/20 rang 2) ; API en ligne (`/ecole/api/` → 403 anonyme).
+- hors-ligne utile avec reprise après coupure
+- français clair et saisie minimale
+- mobile-first pour parents et personnels
+- PDF et impression comme fonctions centrales
+- traçabilité financière et académique
+- accessibilité et matériel d'entrée de gamme
+- permissions par établissement, rôle, classe et responsabilité
 
-**Reste à faire** : UI Vue des modules école (actuellement API-only) ;
-PDF bulletins/reçus ; portail parents ; intégration Orange Money ;
-import des documents réels (fiches, maquette de bulletin, fiches de
-poste) pour aligner les champs ; facturation SaaS et console
-super-admin ; déploiement production (Docker/VPS ou serveur local
-école) ; neutralisation télémétrie ; sauvegardes.
+### Capacités transversales
 
-## 6. RÈGLES D'INGÉNIERIE
+- journal d'audit
+- imports CSV/Excel avec prévisualisation et rapport d'erreurs
+- exports PDF/CSV
+- notifications SMS et in-app avec file d'attente
+- gestion documentaire et consentements
+- archivage annuel et passage de classe
+- recherche globale
+- tableaux de bord par rôle
+- remises, bourses, annulations et corrections avec justification
 
-1. **Planning-first** : analyser, proposer architecture + plan numéroté,
-   attendre validation, puis implémenter par jalons courts.
-2. **Vérifier réellement** : chaque jalon = migrations + tests + boot
-   HTTP réel, pas seulement « ça compile ».
-3. **Sécurisé par défaut** ; **français d'abord** ; **hors-ligne
-   d'abord** (toute fonctionnalité doit dégrader proprement sans
-   Internet).
-4. Git : petits commits explicites ; jamais de secrets/DB/venv dans le
-   dépôt ; pousser sur la branche de travail désignée.
-5. Respect de la licence MIT upstream : ne jamais supprimer
-   l'attribution Learning Equality.
+### Conception pilotée par les documents
 
-## 7. INSTRUCTION FINALE
+Avant de finaliser les modèles et écrans, produire :
 
-À partir de ce prompt : (a) si le dépôt existe, fais l'état des lieux
-puis reprends la feuille de route §5 ; (b) sinon, reconstruis dans
-l'ordre : fork+rebrand (§4.4), boot vérifié, multi-tenant, plugin
-`ecole`, puis UI/PDF/paiements — en respectant §6 à chaque étape.
+- matrice document source -> champ métier -> modèle Django -> écran -> export
+- dictionnaire de données versionné
+- référentiel Montessori par tranche d'âge, domaine, activité, niveau et preuve
+- gabarits de livret, bulletin, reçu, fiche d'inscription et fiche de poste
+- liste des champs obligatoires, sensibles, calculés et archivés
+- procès-verbal de validation par la direction de l'école
+
+## 7. Tableau de bord parents
+
+Le module Kalanfa doit inclure un **espace parent sécurisé, mobile-first et multi-enfants**. Chaque parent ou responsable légal ne voit que les enfants auxquels son compte est explicitement relié.
+
+### Fonctions principales
+
+- sélection de l'enfant ;
+- bulletins, livrets, relevés de notes et appréciations ;
+- moyenne générale, rang et évolution par période ;
+- absences, retards et justificatifs ;
+- progression Montessori par domaine et niveau d'acquisition ;
+- échéances, paiements, soldes, impayés et reçus ;
+- documents scolaires et annonces ;
+- notifications SMS et dans l'application ;
+- demandes de correction ou de mise à jour adressées à l'administration.
+
+### Widgets du tableau de bord
+
+- prochaine échéance et solde restant ;
+- dernier bulletin publié ;
+- moyenne générale et tendance ;
+- absences ou retards récents ;
+- progression Montessori récente ;
+- annonces et documents non lus ;
+- actions attendues du parent.
+
+### Sécurité et confidentialité
+
+- liaison obligatoire entre le compte parent, le tuteur et l'enfant ;
+- aucune visibilité sur un enfant non lié ;
+- lecture seule par défaut ;
+- bulletins visibles uniquement après publication ;
+- journalisation des consultations et téléchargements sensibles ;
+- révocation immédiate d'un accès ;
+- gestion des cas de garde, délégation ou tuteur temporaire ;
+- tests systématiques d'isolation entre établissements et familles.
+
+### API recommandée
+
+- `/ecole/api/parents/me/`
+- `/ecole/api/parents/enfants/`
+- `/ecole/api/parents/enfants/{id}/resume/`
+- `/ecole/api/parents/enfants/{id}/bulletins/`
+- `/ecole/api/parents/enfants/{id}/presences/`
+- `/ecole/api/parents/enfants/{id}/montessori/`
+- `/ecole/api/parents/enfants/{id}/frais/`
+- `/ecole/api/parents/enfants/{id}/documents/`
+- `/ecole/api/parents/notifications/preferences/`
+
+### Critères d'acceptation
+
+- un parent voit tous ses enfants autorisés et aucun autre ;
+- les données respectent l'établissement et l'année scolaire actifs ;
+- les brouillons restent invisibles ;
+- les paiements et reçus sont cohérents avec la comptabilité ;
+- l'interface fonctionne sur smartphone d'entrée de gamme ;
+- les dernières données consultées restent lisibles pendant une coupure courte ;
+- toutes les règles d'accès sont couvertes par des tests multi-tenant.
+
+## 8. Architecture technique
+
+### Référence amont
+
+La cible de comparaison est **Kolibri 0.19.4**. Aucun rebase aveugle : inventorier commits, conflits, migrations, dépendances, plugins, changements de sécurité et attribution.
+
+### ADR obligatoires
+
+- ADR-001 frontière de tenant et stratégie d'isolation
+- ADR-002 mode local, cloud et hybride
+- ADR-003 stratégie de synchronisation des données métiers
+- ADR-004 génération et archivage des PDF
+- ADR-005 intégration paiements et rapprochement
+- ADR-006 notifications SMS
+- ADR-007 données sensibles, santé et conservation
+- ADR-008 politique de mise à jour du fork Kolibri
+
+### Modèles recommandés
+
+- AnneeScolaire, Niveau, Classe, Matiere, Enseignement, InscriptionAnnuelle
+- Evaluation et Bareme séparés de Note
+- GrilleBulletin et VersionBulletin
+- Tarif, Remise, Facture, LigneFacture, TransactionPaiement, Rapprochement
+- DocumentEleve avec type, statut de vérification et durée de conservation
+- Consentement et PreferenceNotification
+- AuditEvent
+- ReferentielMontessori, ActiviteMontessori, Observation et Preuve
+- Poste, FichePosteVersion, AffectationPersonnel
+
+### Sécurité supplémentaire
+
+- auth session Kolibri + RBAC par rôle et par facility
+- écriture réservée admin/coach de l'établissement
+- validation DRF sur toutes les entrées
+- secrets hors dépôt ; mot de passe onboarding >= 8 caractères
+- télémétrie upstream à neutraliser en production
+- journal d'audit append-only pour paiements, notes, permissions et exports sensibles
+- idempotence et vérification cryptographique des callbacks de paiement
+- chiffrement des sauvegardes et procédure de restauration testée
+- durées de conservation par catégorie de données
+- séparation stricte des secrets entre développement, test et production
+- revue des données de santé et accès au moindre privilège
+- plan de réponse aux incidents et registre des violations
+- analyse de dépendances, SBOM et correctifs de sécurité réguliers
+
+### Déploiement
+
+Modes possibles : serveur local, cloud central, ou hybride avec synchronisation différée. Contrôles minimaux :
+
+- Docker ou image reproductible
+- PostgreSQL en production centrale
+- TLS
+- sauvegardes chiffrées 3-2-1
+- test de restauration
+- supervision et journaux
+- mise à jour signée et rollback
+- onduleur ou stratégie de coupure électrique
+- documentation d'exploitation en français
+
+## 9. Statut et provenance
+
+Les résultats techniques initiaux — renommage, 29 bundles, HTTP 200, facility MOUMA, commande `createschool`, migrations et sept tests API — sont désormais classés **reported_status**. Ils ne deviennent **repository_verified** qu'après reproduction.
+
+## 10. Feuille de route priorisée
+
+### P0 — audit reproductible
+
+- ouvrir le dépôt et identifier commit, branche, tags et écarts locaux
+- rejouer installation, migrations, tests, build et démarrage
+- comparer le fork à Kolibri 0.19.4
+- inventorier télémétrie, secrets, licences et vulnérabilités
+
+**Critère de sortie :** rapport horodaté avec commandes, versions, résultats et anomalies
+
+### P1 — cadrage documentaire
+
+- extraire les dossiers Drive et transcrire les vidéos Montessori
+- produire la matrice source-champs-écrans-exports
+- valider dictionnaire de données, règles de calcul et gabarits avec l'école
+
+**Critère de sortie :** spécifications métier signées et données sensibles identifiées
+
+### P2 — socle scolaire
+
+- année scolaire, classes, matières, inscriptions annuelles
+- imports contrôlés
+- notes, calculs, bulletins PDF versionnés
+- frais, reçus, impayés et journal d'audit
+
+**Critère de sortie :** parcours complet testé de l'inscription au bulletin et au reçu
+
+### P3 — Montessori et parents
+
+- référentiel Montessori par âge et domaine ;
+- observations, preuves et synthèses publiables ;
+- tableau de bord parent multi-enfants ;
+- bulletins, notes, absences, frais et progression Montessori ;
+- justificatifs d'absence et communications avec accusé de lecture ;
+- invitations sécurisées et préférences de notification ;
+- cache faible connectivité des derniers documents.
+
+**Critère de sortie :** parcours éducateur et parent validé sur mobile et hors-ligne, avec tests d'isolation, publication, multi-enfants et cohérence financière.
+
+### P4 — paiements et déploiement pilote
+
+- sandbox puis production Orange Money
+- rapprochement et gestion des erreurs
+- sauvegarde/restauration
+- formation, support et pilote MOUMA
+
+**Critère de sortie :** pilote exploitable avec procédure d'incident et indicateurs
+
+## 11. Règles d'ingénierie
+
+- Commencer par l'inventaire des preuves et le rapport d'écart.
+- Chaque jalon doit avoir critères d'entrée, critères de sortie et rollback.
+- Vérifier migrations, tests, build, démarrage HTTP et parcours utilisateur critique.
+- Écrire des tests d'isolation inter-établissements et d'autorisation pour chaque ressource.
+- Ne pas figer le schéma métier avant analyse des documents réels.
+- Sécurisé par défaut, français d'abord, hors-ligne d'abord.
+- Petits commits explicites; aucun secret, DB, sauvegarde ou venv dans Git.
+- Conserver les attributions et obligations de licence Learning Equality.
+- Documenter toute divergence durable avec l'amont dans une ADR.
+- Tout paiement ou changement de note doit être traçable et réconciliable.
+
+## 12. Sources publiques
+
+- Learning Equality — Download Kolibri: https://learningequality.org/kolibri/download/
+- Orange Money Web Payment: https://developer.orange.com/apis/om-webpay
+- Orange SMS Mali: https://developer.orange.com/apis/sms-ml
+- Journal officiel du Mali, loi n°2013-015: https://sgg-mali.ml/JO/2013/mali-jo-2013-26.pdf
+- APDP Mali: https://apdp.ml/
+
+## 13. Instruction finale
+
+1) Si le dépôt existe, produire d'abord un état des lieux reproductible et comparer le fork à Kolibri 0.19.4. 2) Importer ensuite les documents métier et transcrire les ressources Montessori afin de construire la matrice source->données->écrans->exports. 3) Replanifier selon priority_roadmap. 4) Ne considérer un élément comme vérifié qu'après preuve reproductible. 5) Préserver l'attribution MIT et ne jamais inventer le contenu des sources non lues.
