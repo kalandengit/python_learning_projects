@@ -18,6 +18,10 @@ body {
 }
 header, main, footer { width: min(720px, 94vw); margin: 0 auto; }
 header { padding: 1.5rem 0 0.5rem; }
+.header-row { justify-content: space-between; align-items: center; }
+.ui-lang { margin: 0; font-size: .85rem; color: var(--muted); }
+.history-head { justify-content: space-between; align-items: baseline; }
+#history-search { flex: 1; }
 h1 { font-size: 1.5rem; margin: 0; }
 .nko-glyph { color: var(--accent); font-size: 1.8rem; margin-inline-end: .3rem; }
 .subtitle { color: var(--muted); margin: .2rem 0 0; }

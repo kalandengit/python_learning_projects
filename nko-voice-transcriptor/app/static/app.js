@@ -98,8 +98,9 @@ function setRecUI(state) {
   stopBtn.disabled = state === "idle";
   standbyBtn.textContent = state === "standby" ? "▶ Resume" : "❚❚ Stand by";
   startBtn.classList.toggle("recording", state === "recording");
+  const T = window.NKO_I18N.t;
   $("record-state").textContent =
-    state === "recording" ? "recording…" : state === "standby" ? "on stand-by" : "";
+    state === "recording" ? T("recording") : state === "standby" ? T("on_standby") : "";
 }
 
 function tickTimer() {
@@ -191,7 +192,7 @@ async function sendAudio(blob, filename) {
 // ---- Editing the generated text ---------------------------------------------
 $("result-nko").addEventListener("input", () => {
   $("save-nko-btn").disabled = currentResultId === null;
-  $("save-state").textContent = "unsaved";
+  $("save-state").textContent = window.NKO_I18N.t("unsaved");
 });
 
 $("save-nko-btn").addEventListener("click", async () => {
@@ -202,7 +203,7 @@ $("save-nko-btn").addEventListener("click", async () => {
       body: { text_nko: $("result-nko").value },
     });
     $("save-nko-btn").disabled = true;
-    $("save-state").textContent = "✓ saved";
+    $("save-state").textContent = window.NKO_I18N.t("saved");
     refreshHistory();
   } catch (err) {
     $("save-state").textContent = err.message;
@@ -446,43 +447,92 @@ $("keyboard-toggle").addEventListener("click", () => {
   $("keyboard-toggle").setAttribute("aria-expanded", String(shown));
 });
 
-// ---- History ---------------------------------------------------------------
-async function refreshHistory() {
+// ---- History management -----------------------------------------------------
+const HISTORY_PAGE = 10;
+let historyOffset = 0;
+let historyQuery = "";
+
+function renderHistoryRow(row) {
+  const li = document.createElement("li");
+  const nko = document.createElement("span");
+  nko.className = "nko";
+  nko.dir = "rtl";
+  nko.textContent = row.text_nko;
+  const meta = document.createElement("span");
+  meta.className = "meta";
+  meta.textContent = `${row.language} · ${new Date(row.created_at).toLocaleString()}`;
+  const edit = document.createElement("button");
+  edit.className = "secondary";
+  edit.textContent = "✎";
+  edit.title = "Edit";
+  edit.addEventListener("click", () => {
+    loadResult(row);
+    $("result").scrollIntoView({ behavior: "smooth", block: "center" });
+  });
+  const del = document.createElement("button");
+  del.className = "secondary";
+  del.textContent = "✕";
+  del.title = "Delete";
+  del.addEventListener("click", async () => {
+    await api(`/api/history/${row.id}`, { method: "DELETE" });
+    if (currentResultId === row.id) currentResultId = null;
+    refreshHistory();
+  });
+  li.append(nko, meta, edit, del);
+  return li;
+}
+
+async function updateHistoryCount() {
   try {
-    const rows = await api("/api/history?limit=20");
+    const { count } = await api("/api/history/count");
+    $("history-count").textContent = window.NKO_I18N.t("saved_count").replace("{n}", count);
+  } catch { /* non-critical */ }
+}
+
+async function loadHistory(reset) {
+  if (reset) {
+    historyOffset = 0;
+    $("history").replaceChildren();
+  }
+  try {
+    const params = new URLSearchParams({ limit: HISTORY_PAGE, offset: historyOffset });
+    if (historyQuery) params.set("q", historyQuery);
+    const rows = await api(`/api/history?${params}`);
     const ul = $("history");
-    ul.replaceChildren();
-    for (const row of rows) {
-      const li = document.createElement("li");
-      const nko = document.createElement("span");
-      nko.className = "nko";
-      nko.dir = "rtl";
-      nko.textContent = row.text_nko;
-      const meta = document.createElement("span");
-      meta.className = "meta";
-      meta.textContent = `${row.language} · ${new Date(row.created_at).toLocaleString()}`;
-      const edit = document.createElement("button");
-      edit.className = "secondary";
-      edit.textContent = "✎";
-      edit.title = "Edit";
-      edit.addEventListener("click", () => {
-        loadResult(row);
-        $("result").scrollIntoView({ behavior: "smooth", block: "center" });
-      });
-      const del = document.createElement("button");
-      del.className = "secondary";
-      del.textContent = "✕";
-      del.title = "Delete";
-      del.addEventListener("click", async () => {
-        await api(`/api/history/${row.id}`, { method: "DELETE" });
-        if (currentResultId === row.id) currentResultId = null;
-        refreshHistory();
-      });
-      li.append(nko, meta, edit, del);
-      ul.append(li);
-    }
+    for (const row of rows) ul.append(renderHistoryRow(row));
+    historyOffset += rows.length;
+    $("history-more-btn").classList.toggle("hidden", rows.length < HISTORY_PAGE);
+    $("history-empty").classList.toggle("hidden", ul.childElementCount > 0);
+    updateHistoryCount();
   } catch { /* history is non-critical; errors surface elsewhere */ }
 }
 
+// refreshHistory() reloads from the top (used after create/edit/delete).
+function refreshHistory() { return loadHistory(true); }
+
+let searchTimer = null;
+$("history-search").addEventListener("input", (e) => {
+  clearTimeout(searchTimer);
+  searchTimer = setTimeout(() => {
+    historyQuery = e.target.value.trim();
+    loadHistory(true);
+  }, 250);
+});
+
+$("history-more-btn").addEventListener("click", () => loadHistory(false));
+
+$("history-clear-btn").addEventListener("click", async () => {
+  const n = $("history-count").textContent;
+  if (!window.confirm(`${window.NKO_I18N.t("clear_all")} — ${n}?`)) return;
+  try {
+    await api("/api/history", { method: "DELETE" });
+    currentResultId = null;
+    loadHistory(true);
+  } catch (err) {
+    $("app-error").textContent = err.message;
+  }
+});
+
 // ---- Boot ------------------------------------------------------------------
+window.NKO_I18N.initUiLanguage();
 if (getToken()) showApp(); else showAuth();

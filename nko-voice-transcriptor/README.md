@@ -55,6 +55,24 @@ uvicorn app.main:app --reload
 
 Register a user in the UI, allow microphone access, record, and read the N'Ko.
 
+### Interface languages
+
+The UI is localized — pick the interface language from the header dropdown:
+**English, French, Arabic, and N'Ko**. Arabic and N'Ko render right-to-left
+(the whole layout flips), and the choice is remembered across visits. This is
+independent of the *source* (spoken) language.
+
+Adding another interface language is a one-place change: add an entry to the
+`I18N` object in `app/static/i18n.js` (with a `_name` and `_dir`) — the
+dropdown is generated from that object, so no HTML edit is needed. The N'Ko
+strings are a best-effort starter set and would benefit from native review.
+
+### History management
+
+The History section supports **search** (matches N'Ko or Latin), a live
+**count**, **Load more** pagination, per-entry **edit (✎)** and **delete (✕)**,
+and **Clear all** (with confirmation). All scoped to the signed-in user.
+
 ### Editing & export
 
 - **Edit the result** — the generated N'Ko is an editable field; correct it and
@@ -104,6 +122,8 @@ ruff check app tests
 |---|---|---|---|
 | GET | `/api/health` | – | liveness + engine info |
 | GET | `/api/languages` | – | offered source languages |
+| GET | `/api/history/count` | Bearer | number of own transcriptions |
+| DELETE | `/api/history` | Bearer | clear all own transcriptions |
 | POST | `/api/auth/register` | – | create account |
 | POST | `/api/auth/login` | – | get JWT access token |
 | POST | `/api/transcribe` | Bearer | audio → `{text_latin, text_nko}` (stored) |
