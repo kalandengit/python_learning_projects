@@ -18,6 +18,8 @@ import abc
 import struct
 from dataclasses import dataclass
 
+from fastapi import UploadFile
+
 from app.config import Settings
 
 # Magic-byte signatures for the container formats browsers actually produce.
@@ -47,6 +49,16 @@ ALLOWED_CONTENT_TYPES = frozenset(
 
 class AudioValidationError(ValueError):
     """Uploaded audio failed validation (type, size, or content)."""
+
+
+async def read_upload_limited(upload: UploadFile, max_bytes: int) -> bytes:
+    """Read an upload without ever buffering more than the configured limit."""
+    data = await upload.read(max_bytes + 1)
+    if len(data) > max_bytes:
+        raise AudioValidationError(
+            f"Audio exceeds the {max_bytes // (1024 * 1024)} MiB limit"
+        )
+    return data
 
 
 @dataclass(frozen=True)

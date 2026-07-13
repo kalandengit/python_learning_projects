@@ -71,10 +71,16 @@ def create_app() -> FastAPI:
         response.headers["X-Content-Type-Options"] = "nosniff"
         response.headers["X-Frame-Options"] = "DENY"
         response.headers["Referrer-Policy"] = "no-referrer"
+        response.headers["Permissions-Policy"] = "microphone=(self)"
+        response.headers["Cross-Origin-Opener-Policy"] = "same-origin"
+        if request.url.path.startswith(("/api/auth", "/api/history", "/api/transcribe")):
+            response.headers["Cache-Control"] = "no-store"
         response.headers["Content-Security-Policy"] = (
             "default-src 'self'; img-src 'self' data:; media-src 'self' blob:; "
             "style-src 'self' 'unsafe-inline'; connect-src 'self'"
         )
+        if settings.environment == "production":
+            response.headers["Strict-Transport-Security"] = "max-age=31536000"
         return response
 
     app.include_router(health.router)

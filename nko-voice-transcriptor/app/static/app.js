@@ -46,6 +46,14 @@ function showApp() {
   refreshHistory();
 }
 
+$("logout-btn").addEventListener("click", () => {
+  clearToken();
+  currentResultId = null;
+  $("result").classList.add("hidden");
+  showAuth();
+  $("username").focus();
+});
+
 // ---- Source languages --------------------------------------------------------
 let languagesLoaded = false;
 async function loadLanguages() {
@@ -365,8 +373,12 @@ const KEY_ROWS = [
   // consonants
   ["ߓ", "ߔ", "ߕ", "ߖ", "ߗ", "ߘ", "ߙ", "ߚ", "ߛ", "ߜ"],
   ["ߝ", "ߞ", "ߟ", "ߡ", "ߢ", "ߣ", "ߤ", "ߥ", "ߦ", "ߒ"],
-  // combining marks (shown on a dotted circle) + apostrophe/gemination
-  ["◌߲", "◌߭", "ߑ"],
+  // combining tone marks (◌ = dotted-circle placeholder) — high, low,
+  // rising, long-descending, long-high, long-low, long-rising. These carry
+  // the tone/length that Latin ASR cannot supply, so they are typed by hand.
+  ["◌߫", "◌߬", "◌߭", "◌߮", "◌߯", "◌߰", "◌߱"],
+  // nasalization, double-dot, gemination/apostrophe
+  ["◌߲", "◌߳", "ߑ"],
   // digits ߀–߉
   ["߀", "߁", "߂", "߃", "߄", "߅", "߆", "߇", "߈", "߉"],
   // punctuation

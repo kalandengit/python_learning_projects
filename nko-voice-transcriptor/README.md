@@ -46,7 +46,7 @@ transliteration rules apply across the Manding varieties.
 
 ```bash
 cd nko-voice-transcriptor
-pip install -r requirements.txt
+pip install -r requirements-dev.txt
 cp .env.example .env
 python -c "import secrets; print('NKO_SECRET_KEY=' + secrets.token_urlsafe(48))" >> .env
 uvicorn app.main:app --reload
@@ -79,9 +79,12 @@ and **Clear all** (with confirmation). All scoped to the signed-in user.
   **Save** to persist the correction (`PATCH /api/history/{id}`). Any history
   entry can be reopened in the editor with ✎.
 - **On-screen N'Ko keyboard** — a ⌨ toggle opens a virtual keyboard (vowels,
-  consonants, combining nasal/tone marks, N'Ko digits ߀–߉, punctuation, space,
-  backspace) that types into whichever N'Ko field is focused — handy for
-  corrections without an N'Ko system keyboard.
+  consonants, the seven combining **tone marks** plus nasalization/double-dot,
+  N'Ko digits ߀–߉, punctuation, space, backspace) that types into whichever
+  N'Ko field is focused. Because standard Latin Manding input carries no tone,
+  the tone diacritics let a writer complete the orthography by hand on the
+  editable output — the correction path for the transliterator's tone
+  limitation.
 - **Download** the generated text as **TXT**, **PNG** (canvas-rendered N'Ko,
   RTL, with a Latin caption), or **PDF** (via the browser's Save-as-PDF print
   dialog, using the system N'Ko font). All client-side — no external libraries,
@@ -116,6 +119,14 @@ python -m pytest tests/ -v   # 61 tests: transliteration, ASR, API, auth, securi
 ruff check app tests
 ```
 
+## Version 1.1.0
+
+- Uploads are read with a strict memory bound and rejected as soon as they exceed
+  `NKO_MAX_UPLOAD_BYTES`.
+- Malformed JWT subject values now return `401` instead of causing a server error.
+- Development-only packages moved to `requirements-dev.txt`, keeping production
+  images smaller and reducing their dependency surface.
+
 ## API
 
 | Method | Path | Auth | Purpose |
@@ -140,3 +151,5 @@ client. For guaranteed rendering everywhere, self-host
 in `app/static/fonts/` and add an `@font-face` rule in `styles.css`.
 
 See `ARCHITECTURE.md` for design details and `SECURITY.md` for the threat model.
+For standards, keyboards, learning material, and the transliteration caveat, see
+`NKO_RESOURCES.md`.

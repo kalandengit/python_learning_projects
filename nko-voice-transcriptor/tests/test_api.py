@@ -1,5 +1,8 @@
 """End-to-end API tests (mock ASR engine, in-memory SQLite)."""
 
+import jwt
+
+from app.config import get_settings
 from tests.test_asr import make_wav
 
 
@@ -16,6 +19,15 @@ class TestHealth:
         assert r.headers["X-Content-Type-Options"] == "nosniff"
         assert r.headers["X-Frame-Options"] == "DENY"
         assert "Content-Security-Policy" in r.headers
+        assert r.headers["Permissions-Policy"] == "microphone=(self)"
+        assert r.headers["Cross-Origin-Opener-Policy"] == "same-origin"
+
+    def test_sensitive_routes_disable_caching(self, client):
+        r = client.post(
+            "/api/auth/login",
+            json={"username": "missing", "password": "not-a-real-password9"},
+        )
+        assert r.headers["Cache-Control"] == "no-store"
 
     def test_index_served(self, client):
         r = client.get("/")
@@ -54,6 +66,25 @@ class TestAuth:
             json={"username": "nobody-here", "password": "wrong-password-99"},
         )
         assert r.status_code == 401  # no username enumeration
+        assert r.json()["detail"] == "Invalid credentials"
+
+    def test_unknown_user_login_spends_argon2_work(self, client, monkeypatch):
+        # The unknown-user path must run a dummy Argon2 verify so its timing
+        # matches a real wrong-password check (no enumeration by response time).
+        import app.routes.auth as auth_mod
+
+        called = {"dummy": False}
+        real = auth_mod.verify_dummy
+        monkeypatch.setattr(
+            auth_mod, "verify_dummy",
+            lambda pw: (called.__setitem__("dummy", True), real(pw))[1],
+        )
+        r = client.post(
+            "/api/auth/login",
+            json={"username": "ghost-user-xyz", "password": "wrong-password-99"},
+        )
+        assert r.status_code == 401
+        assert called["dummy"] is True
 
     def test_weak_password_rejected(self, client):
         r = client.post(
@@ -126,6 +157,20 @@ class TestTranscribe:
         r = client.post(
             "/api/transcribe",
             headers={"Authorization": "Bearer not.a.jwt"},
+            files={"audio": ("a.wav", make_wav(), "audio/wav")},
+        )
+        assert r.status_code == 401
+
+    def test_non_numeric_token_subject_401(self, client):
+        settings = get_settings()
+        token = jwt.encode(
+            {"sub": "not-a-user-id", "type": "access", "exp": 4_102_444_800},
+            settings.secret_key,
+            algorithm="HS256",
+        )
+        r = client.post(
+            "/api/transcribe",
+            headers={"Authorization": f"Bearer {token}"},
             files={"audio": ("a.wav", make_wav(), "audio/wav")},
         )
         assert r.status_code == 401

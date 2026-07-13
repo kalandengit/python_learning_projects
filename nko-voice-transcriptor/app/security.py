@@ -7,6 +7,7 @@
 
 from __future__ import annotations
 
+import contextlib
 from datetime import UTC, datetime, timedelta
 
 import jwt
@@ -24,6 +25,12 @@ _bearer = HTTPBearer(auto_error=False)
 
 ALGORITHM = "HS256"
 
+# Precomputed Argon2 hash of a throwaway value. Verifying against it for a
+# non-existent user makes the failure path spend the same work as a real
+# wrong-password check, so login timing does not reveal whether a username
+# exists (defence against user enumeration via response time).
+_DUMMY_HASH = _hasher.hash("nko-timing-uniform-dummy-password")
+
 
 def hash_password(password: str) -> str:
     return _hasher.hash(password)
@@ -36,6 +43,12 @@ def verify_password(password: str, password_hash: str) -> bool:
         return False
     except Exception:
         return False
+
+
+def verify_dummy(password: str) -> None:
+    """Spend one Argon2 verification to equalize timing for absent users."""
+    with contextlib.suppress(Exception):
+        _hasher.verify(_DUMMY_HASH, password)
 
 
 def create_access_token(user_id: int) -> str:
@@ -75,7 +88,11 @@ def get_current_user(
         raise unauthorized from None
     if payload.get("type") != "access":
         raise unauthorized
-    user = db.get(User, int(payload["sub"]))
+    try:
+        user_id = int(payload["sub"])
+    except (TypeError, ValueError):
+        raise unauthorized from None
+    user = db.get(User, user_id)
     if user is None:
         raise unauthorized
     return user

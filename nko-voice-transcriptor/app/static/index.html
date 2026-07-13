@@ -7,6 +7,7 @@
 <link rel="stylesheet" href="/static/styles.css">
 </head>
 <body>
+<a class="skip-link" href="#main-content">Skip to content</a>
 <header>
   <div class="row header-row">
     <h1><span class="nko-glyph">ߒߞߏ</span> <span data-i18n="app_title">N'KO Voice Transcriptor</span></h1>
@@ -18,7 +19,7 @@
   <p class="subtitle" data-i18n="subtitle">Speak Manding — read N'Ko</p>
 </header>
 
-<main>
+<main id="main-content">
   <!-- Auth panel -->
   <section id="auth-panel" class="card">
     <h2 data-i18n="sign_in">Sign in</h2>
@@ -41,7 +42,14 @@
 
   <!-- Recorder panel -->
   <section id="app-panel" class="card hidden">
-    <h2 data-i18n="record">Record</h2>
+    <div class="workspace-head">
+      <div>
+        <p class="eyebrow" data-i18n="workspace">Workspace</p>
+        <h2 data-i18n="record">Record</h2>
+      </div>
+      <button id="logout-btn" class="secondary quiet" data-i18n="log_out">Log out</button>
+    </div>
+    <div class="tool-section capture-section">
     <div class="row">
       <label class="inline"><span data-i18n="source_language">Language</span>
         <select id="language-select" title="Source language"></select>
@@ -57,8 +65,9 @@
     <p class="hint" data-i18n="or_upload">…or upload an audio file:</p>
     <input type="file" id="file-input" accept="audio/*">
     <p id="app-error" class="error" role="alert"></p>
+    </div>
 
-    <div id="result" class="hidden">
+    <div id="result" class="tool-section result-section hidden">
       <h3><span data-i18n="nko">N'Ko</span> <span class="hint" data-i18n="editable_hint">— editable, click to correct</span></h3>
       <textarea class="nko-text" id="result-nko" dir="rtl" lang="nqo" rows="2"
                 spellcheck="false"></textarea>
@@ -78,6 +87,7 @@
       </div>
     </div>
 
+    <div class="tool-section">
     <h2 data-i18n="try_text">Try text directly</h2>
     <div class="row">
       <input id="text-input" placeholder="e.g. i ni ce" maxlength="500">
@@ -93,8 +103,10 @@
       <button id="keyboard-toggle" class="secondary" aria-expanded="false" data-i18n="nko_keyboard">⌨ N'Ko keyboard</button>
     </div>
     <div id="keyboard" class="keyboard hidden" role="group" aria-label="N'Ko keyboard"></div>
+    </div>
 
     <!-- History management -->
+    <div class="tool-section history-section">
     <div class="row history-head">
       <h2 data-i18n="history">History</h2>
       <span id="history-count" class="hint"></span>
@@ -107,6 +119,7 @@
     <div class="row">
       <button id="history-more-btn" class="secondary hidden" data-i18n="load_more">Load more</button>
       <span id="history-empty" class="hint hidden" data-i18n="no_history">No history yet.</span>
+    </div>
     </div>
   </section>
 </main>

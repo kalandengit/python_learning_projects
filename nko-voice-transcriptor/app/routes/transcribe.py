@@ -6,7 +6,7 @@ from fastapi import APIRouter, Depends, Form, HTTPException, Request, UploadFile
 from sqlalchemy.orm import Session
 
 from app.asr import ASREngine, AudioValidationError
-from app.asr.base import validate_audio, wav_duration_seconds
+from app.asr.base import read_upload_limited, validate_audio, wav_duration_seconds
 from app.config import Settings, get_settings
 from app.db import get_db
 from app.languages import display_name
@@ -53,8 +53,8 @@ async def transcribe_audio(
             status.HTTP_422_UNPROCESSABLE_ENTITY,
             f"Unsupported language {lang!r}; offered: {', '.join(settings.language_list)}",
         )
-    data = await audio.read()
     try:
+        data = await read_upload_limited(audio, settings.max_upload_bytes)
         audio_format = validate_audio(data, audio.content_type, settings)
         # WAV duration is checkable without ML deps; other containers are
         # enforced inside the MMS decode path.
