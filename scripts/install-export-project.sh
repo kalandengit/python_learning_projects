@@ -58,10 +58,9 @@ $BEGIN
 ## Skill: export_project
 
 This repository ships the **export_project** Claude Code skill at
-\`.claude/skills/export_project/\` — the \`/export_project\` command, alias of
-project-knowledge-exporter. Claude Code discovers it automatically in any
-session opened on this repo (including Claude Code on the web, where personal
-\`~/.claude\` skills are not available).
+\`.claude/skills/export_project/\`, invoked with \`/export_project\`. Claude Code
+discovers it automatically in any session opened on this repo (including Claude
+Code on the web, where personal \`~/.claude\` skills are not available).
 
 When the user runs \`/export_project\` or asks to export/snapshot/hand off the
 project, apply that skill: first **investigate the repo** (tree,

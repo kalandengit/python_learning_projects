@@ -7,10 +7,9 @@
 # Claude Code sessions and projects — not just this repo.
 #
 # Skills installed:
-#   - it-prompt-specialist         (/it-prompt-specialist)
-#   - planning-first               (/planning-first)
-#   - project-knowledge-exporter   (/project-knowledge-exporter)
-#   - export_project               (/export_project)
+#   - it-prompt-specialist   (/it-prompt-specialist)
+#   - planning-first         (/planning-first)
+#   - export_project         (/export_project)
 #
 # Source of the SKILL.md files:
 #   - If run from inside this repo, the local skills/<name>/SKILL.md is used.
@@ -34,7 +33,6 @@ RAW_BASE="${RAW_BASE:-https://raw.githubusercontent.com/kalandengit/python_learn
 SKILLS=(
   it-prompt-specialist
   planning-first
-  project-knowledge-exporter
   export_project
 )
 # -----------------------------------------------------------------------------
@@ -87,5 +85,4 @@ echo "For web + every project, add the plugin marketplace instead (run inside Cl
 echo "    /plugin marketplace add kalandengit/python_learning_projects"
 echo "    /plugin install it-prompt-specialist@kalandengit-skills"
 echo "    /plugin install planning-first@kalandengit-skills"
-echo "    /plugin install project-knowledge-exporter@kalandengit-skills"
 echo "    /plugin install export-project@kalandengit-skills"

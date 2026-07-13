@@ -1,9 +1,7 @@
 # export_project
 
 The **`/export_project`** command for [Claude Code](https://claude.com/claude-code)
-and Claude chats. It is the command alias of
-[`project-knowledge-exporter`](../project-knowledge-exporter/) — identical
-behavior, invocable as `/export_project`.
+and Claude chats.
 
 Running it turns the current project into a durable, LLM-portable **Project
 Knowledge Package**: Claude first investigates the repository (tree,

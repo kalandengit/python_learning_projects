@@ -3,7 +3,7 @@
   "name": "export-project",
   "displayName": "Export Project",
   "version": "1.0.0",
-  "description": "The /export_project command: analyzes the current project and generates a durable, LLM-portable knowledge package (blueprint, structured context JSON, rebuild prompt, decision log, development state). Command alias of project-knowledge-exporter.",
+  "description": "The /export_project command: analyzes the current project and generates a durable, LLM-portable knowledge package (blueprint, structured context JSON, rebuild prompt, decision log, development state) for handoff and reconstruction.",
   "author": {
     "name": "kalandengit"
   },

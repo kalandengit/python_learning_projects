@@ -1,16 +1,12 @@
 ---
 name: export_project
-description: Export a complete, durable, LLM-portable Project Knowledge Package for the current project — PROJECT_BLUEPRINT.md, PROJECT_CONTEXT.json, PROJECT_REBUILD_PROMPT.md, DECISION_LOG.md, and DEVELOPMENT_STATE.md — after actively investigating the repository. Command alias of project-knowledge-exporter. Use when the user runs /export_project or asks to export, snapshot, hand off, or preserve a project so another LLM or team can understand, maintain, extend, or rebuild it.
+description: Export a complete, durable, LLM-portable Project Knowledge Package for the current project — PROJECT_BLUEPRINT.md, PROJECT_CONTEXT.json, PROJECT_REBUILD_PROMPT.md, DECISION_LOG.md, and DEVELOPMENT_STATE.md — after actively investigating the repository. Use when the user runs /export_project or asks to export, snapshot, hand off, document, or preserve a project so another LLM or team can understand, maintain, extend, or rebuild it even if the original repo and history are lost.
 when_to_use: The user runs /export_project, or asks to "export this project", "export project knowledge", "snapshot this codebase", "make a handoff/rebuild package", or "document this whole project so another LLM could rebuild it".
 version: 1.0.0
 author: kalandengit
 ---
 
-# Export Project (Project Knowledge Exporter)
-
-> This skill is the `/export_project` command form of **project-knowledge-exporter**.
-> Both share identical behavior; this copy exists so the workflow is invocable as
-> `/export_project` everywhere. If both are installed, treat them as one skill.
+# Export Project
 
 ## Purpose
 
