@@ -54,13 +54,22 @@
     <p id="app-error" class="error" role="alert"></p>
 
     <div id="result" class="hidden">
-      <h3>N'Ko</h3>
-      <p class="nko-text" id="result-nko" dir="rtl" lang="nqo"></p>
+      <h3>N'Ko <span class="hint">— editable, click to correct</span></h3>
+      <textarea class="nko-text" id="result-nko" dir="rtl" lang="nqo" rows="2"
+                spellcheck="false"></textarea>
       <h3>Latin (Bambara)</h3>
       <p id="result-latin" lang="bm"></p>
       <div class="row">
+        <button id="save-nko-btn" class="secondary" disabled>💾 Save edit</button>
         <button id="copy-nko-btn" class="secondary">⧉ Copy N'Ko</button>
         <button id="copy-latin-btn" class="secondary">⧉ Copy Latin</button>
+        <span id="save-state" class="hint" aria-live="polite"></span>
+      </div>
+      <div class="row">
+        <span class="hint">Download:</span>
+        <button id="dl-txt-btn" class="secondary">⤓ TXT</button>
+        <button id="dl-png-btn" class="secondary">⤓ PNG</button>
+        <button id="dl-pdf-btn" class="secondary">⤓ PDF</button>
       </div>
     </div>
 
@@ -70,8 +79,15 @@
       <button id="paste-btn" class="secondary" title="Paste from clipboard">⎘ Paste</button>
       <button id="text-btn" class="secondary">→ ߒߞߏ</button>
     </div>
-    <p class="nko-text" id="text-output" dir="rtl" lang="nqo"></p>
+    <textarea class="nko-text" id="text-output" dir="rtl" lang="nqo" rows="2"
+              spellcheck="false" placeholder="ߒߞߏ…"></textarea>
     <button id="copy-text-btn" class="secondary hidden">⧉ Copy N'Ko</button>
+
+    <!-- On-screen N'Ko keyboard -->
+    <div class="row">
+      <button id="keyboard-toggle" class="secondary" aria-expanded="false">⌨ N'Ko keyboard</button>
+    </div>
+    <div id="keyboard" class="keyboard hidden" role="group" aria-label="N'Ko keyboard"></div>
 
     <h2>History</h2>
     <ul id="history"></ul>
@@ -79,9 +95,15 @@
 </main>
 
 <footer>
-  <p>Bambara → N'Ko (script of Solomana Kanté). Recognition quality depends on
+  <p>Manding → N'Ko (script of Solomana Kanté). Recognition quality depends on
      the configured ASR engine.</p>
 </footer>
+
+<!-- Print-only area used for "Download PDF" (browser Save as PDF) -->
+<div id="print-area" aria-hidden="true">
+  <div id="print-nko" dir="rtl" lang="nqo"></div>
+  <div id="print-latin" lang="bm"></div>
+</div>
 
 <script src="/static/app.js"></script>
 </body>

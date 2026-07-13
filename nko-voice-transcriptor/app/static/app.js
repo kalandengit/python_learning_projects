@@ -158,6 +158,18 @@ $("file-input").addEventListener("change", async (e) => {
   e.target.value = "";
 });
 
+// The transcription record currently loaded in the editor (null = unsaved text)
+let currentResultId = null;
+
+function loadResult(rec) {
+  currentResultId = rec.id ?? null;
+  $("result").classList.remove("hidden");
+  $("result-nko").value = rec.text_nko;
+  $("result-latin").textContent = rec.text_latin ?? "";
+  $("save-nko-btn").disabled = true;   // nothing edited yet
+  $("save-state").textContent = "";
+}
+
 async function sendAudio(blob, filename) {
   $("app-error").textContent = "";
   startBtn.disabled = true;
@@ -167,9 +179,7 @@ async function sendAudio(blob, filename) {
     const lang = $("language-select").value;
     if (lang) form.append("language", lang);
     const rec = await api("/api/transcribe", { method: "POST", form });
-    $("result").classList.remove("hidden");
-    $("result-nko").textContent = rec.text_nko;
-    $("result-latin").textContent = rec.text_latin;
+    loadResult(rec);
     refreshHistory();
   } catch (err) {
     $("app-error").textContent = err.message;
@@ -177,6 +187,27 @@ async function sendAudio(blob, filename) {
     startBtn.disabled = false;
   }
 }
+
+// ---- Editing the generated text ---------------------------------------------
+$("result-nko").addEventListener("input", () => {
+  $("save-nko-btn").disabled = currentResultId === null;
+  $("save-state").textContent = "unsaved";
+});
+
+$("save-nko-btn").addEventListener("click", async () => {
+  if (currentResultId === null) return;
+  try {
+    await api(`/api/history/${currentResultId}`, {
+      method: "PATCH",
+      body: { text_nko: $("result-nko").value },
+    });
+    $("save-nko-btn").disabled = true;
+    $("save-state").textContent = "✓ saved";
+    refreshHistory();
+  } catch (err) {
+    $("save-state").textContent = err.message;
+  }
+});
 
 // ---- Copy / paste ------------------------------------------------------------
 async function copyToClipboard(btn, text) {
@@ -192,11 +223,11 @@ async function copyToClipboard(btn, text) {
 }
 
 $("copy-nko-btn").addEventListener("click", (e) =>
-  copyToClipboard(e.target, $("result-nko").textContent));
+  copyToClipboard(e.target, $("result-nko").value));
 $("copy-latin-btn").addEventListener("click", (e) =>
   copyToClipboard(e.target, $("result-latin").textContent));
 $("copy-text-btn").addEventListener("click", (e) =>
-  copyToClipboard(e.target, $("text-output").textContent));
+  copyToClipboard(e.target, $("text-output").value));
 
 $("paste-btn").addEventListener("click", async () => {
   try {
@@ -214,11 +245,205 @@ $("text-btn").addEventListener("click", async () => {
   if (!text) return;
   try {
     const out = await api("/api/transliterate", { method: "POST", body: { text } });
-    $("text-output").textContent = out.text_nko;
+    $("text-output").value = out.text_nko;
     $("copy-text-btn").classList.remove("hidden");
   } catch (err) {
     $("app-error").textContent = err.message;
   }
+});
+
+// ---- Download (TXT / PNG / PDF) ---------------------------------------------
+// Inspired by transcription/keyboard tools (Google Input Tools, online N'Ko
+// editors): let the user take the generated text away in a portable format.
+function currentTexts() {
+  return { nko: $("result-nko").value, latin: $("result-latin").textContent };
+}
+
+function downloadBlob(filename, blob) {
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement("a");
+  a.href = url;
+  a.download = filename;
+  document.body.append(a);
+  a.click();
+  a.remove();
+  setTimeout(() => URL.revokeObjectURL(url), 1000);
+}
+
+function stamp() {
+  return new Date().toISOString().slice(0, 19).replace(/[:T]/g, "-");
+}
+
+$("dl-txt-btn").addEventListener("click", () => {
+  const { nko, latin } = currentTexts();
+  if (!nko) return;
+  const body = `N'Ko:\n${nko}\n\nLatin (Manding):\n${latin}\n`;
+  downloadBlob(`nko-${stamp()}.txt`, new Blob([body], { type: "text/plain;charset=utf-8" }));
+});
+
+$("dl-png-btn").addEventListener("click", () => {
+  const { nko, latin } = currentTexts();
+  if (!nko) return;
+  renderPng(nko, latin);
+});
+
+function renderPng(nko, latin) {
+  const scale = 2;                 // crisp on hi-dpi
+  const pad = 40, fontPx = 54, latinPx = 24, lineH = fontPx * 1.6;
+  const maxW = 900;
+  const canvas = document.createElement("canvas");
+  const ctx = canvas.getContext("2d");
+  ctx.font = `${fontPx}px "Noto Sans NKo","Ebrima","Kigelia",sans-serif`;
+  ctx.direction = "rtl";
+  // Word-wrap the N'Ko text to fit maxW.
+  const words = nko.split(/\s+/).filter(Boolean);
+  const lines = [];
+  let line = "";
+  for (const w of words) {
+    const trial = line ? `${line} ${w}` : w;
+    if (ctx.measureText(trial).width > maxW - 2 * pad && line) {
+      lines.push(line);
+      line = w;
+    } else {
+      line = trial;
+    }
+  }
+  if (line) lines.push(line);
+  if (!lines.length) lines.push(nko);
+
+  const height = pad * 2 + lines.length * lineH + (latin ? latinPx + 20 : 0);
+  canvas.width = maxW * scale;
+  canvas.height = height * scale;
+  ctx.scale(scale, scale);
+  // Background
+  ctx.fillStyle = "#fbf7ee";
+  ctx.fillRect(0, 0, maxW, height);
+  // N'Ko lines, right-aligned RTL
+  ctx.fillStyle = "#1c2128";
+  ctx.font = `${fontPx}px "Noto Sans NKo","Ebrima","Kigelia",sans-serif`;
+  ctx.direction = "rtl";
+  ctx.textAlign = "right";
+  ctx.textBaseline = "top";
+  lines.forEach((l, i) => ctx.fillText(l, maxW - pad, pad + i * lineH));
+  // Latin caption, left-aligned
+  if (latin) {
+    ctx.fillStyle = "#5a646e";
+    ctx.direction = "ltr";
+    ctx.textAlign = "left";
+    ctx.font = `${latinPx}px system-ui,sans-serif`;
+    ctx.fillText(latin, pad, pad + lines.length * lineH);
+  }
+  canvas.toBlob((blob) => {
+    if (blob) downloadBlob(`nko-${stamp()}.png`, blob);
+  }, "image/png");
+}
+
+$("dl-pdf-btn").addEventListener("click", () => {
+  const { nko, latin } = currentTexts();
+  if (!nko) return;
+  // Portable, dependency-free PDF: populate a print-only area and open the
+  // browser's print dialog, where the user chooses "Save as PDF". Uses the
+  // system N'Ko font so glyphs render without embedding.
+  $("print-nko").textContent = nko;
+  $("print-latin").textContent = latin;
+  window.print();
+});
+
+// ---- On-screen N'Ko keyboard ------------------------------------------------
+// Layout by Unicode. Rows: vowels, consonants, marks/digits, controls.
+// Editable N'Ko fields the keyboard can type into:
+const NKO_FIELDS = ["result-nko", "text-output", "text-input"];
+let activeField = $("text-output");
+for (const id of NKO_FIELDS) {
+  $(id).addEventListener("focus", (e) => { activeField = e.target; });
+}
+
+const KEY_ROWS = [
+  // vowels: a e ɛ i o ɔ u
+  ["ߊ", "ߋ", "ߍ", "ߌ", "ߏ", "ߐ", "ߎ"],
+  // consonants
+  ["ߓ", "ߔ", "ߕ", "ߖ", "ߗ", "ߘ", "ߙ", "ߚ", "ߛ", "ߜ"],
+  ["ߝ", "ߞ", "ߟ", "ߡ", "ߢ", "ߣ", "ߤ", "ߥ", "ߦ", "ߒ"],
+  // combining marks (shown on a dotted circle) + apostrophe/gemination
+  ["◌߲", "◌߭", "ߑ"],
+  // digits ߀–߉
+  ["߀", "߁", "߂", "߃", "߄", "߅", "߆", "߇", "߈", "߉"],
+  // punctuation
+  ["߸", "؟", "߹"],
+];
+// Special control keys, each: [label, action]
+const CONTROL_KEYS = [
+  ["␣ space", "space"],
+  ["⌫", "backspace"],
+];
+
+function insertIntoField(field, text) {
+  const start = field.selectionStart ?? field.value.length;
+  const end = field.selectionEnd ?? field.value.length;
+  field.setRangeText(text, start, end, "end");
+  field.dispatchEvent(new Event("input", { bubbles: true }));
+}
+
+function backspaceField(field) {
+  const start = field.selectionStart ?? field.value.length;
+  const end = field.selectionEnd ?? field.value.length;
+  if (start === end && start > 0) {
+    field.setRangeText("", start - 1, end, "end");
+  } else {
+    field.setRangeText("", start, end, "end");
+  }
+  field.dispatchEvent(new Event("input", { bubbles: true }));
+}
+
+function keyPress(char) {
+  const field = NKO_FIELDS.includes(activeField?.id) ? activeField : $("text-output");
+  field.focus();
+  // combining marks are shown with a leading dotted circle placeholder
+  insertIntoField(field, char.replace("◌", ""));
+}
+
+function buildKeyboard() {
+  const kb = $("keyboard");
+  if (kb.childElementCount) return;
+  for (const row of KEY_ROWS) {
+    const div = document.createElement("div");
+    div.className = "kb-row";
+    for (const key of row) {
+      const b = document.createElement("button");
+      b.type = "button";
+      b.className = "kb-key";
+      b.textContent = key;
+      // Don't steal focus from the target field on mousedown.
+      b.addEventListener("mousedown", (e) => e.preventDefault());
+      b.addEventListener("click", () => keyPress(key));
+      div.append(b);
+    }
+    kb.append(div);
+  }
+  const ctrl = document.createElement("div");
+  ctrl.className = "kb-row";
+  for (const [label, action] of CONTROL_KEYS) {
+    const b = document.createElement("button");
+    b.type = "button";
+    b.className = "kb-key kb-ctrl";
+    b.textContent = label;
+    b.addEventListener("mousedown", (e) => e.preventDefault());
+    b.addEventListener("click", () => {
+      const field = NKO_FIELDS.includes(activeField?.id) ? activeField : $("text-output");
+      field.focus();
+      if (action === "space") insertIntoField(field, " ");
+      else if (action === "backspace") backspaceField(field);
+    });
+    ctrl.append(b);
+  }
+  kb.append(ctrl);
+}
+
+$("keyboard-toggle").addEventListener("click", () => {
+  buildKeyboard();
+  const kb = $("keyboard");
+  const shown = kb.classList.toggle("hidden") === false;
+  $("keyboard-toggle").setAttribute("aria-expanded", String(shown));
 });
 
 // ---- History ---------------------------------------------------------------
@@ -236,15 +461,24 @@ async function refreshHistory() {
       const meta = document.createElement("span");
       meta.className = "meta";
       meta.textContent = `${row.language} · ${new Date(row.created_at).toLocaleString()}`;
+      const edit = document.createElement("button");
+      edit.className = "secondary";
+      edit.textContent = "✎";
+      edit.title = "Edit";
+      edit.addEventListener("click", () => {
+        loadResult(row);
+        $("result").scrollIntoView({ behavior: "smooth", block: "center" });
+      });
       const del = document.createElement("button");
       del.className = "secondary";
       del.textContent = "✕";
       del.title = "Delete";
       del.addEventListener("click", async () => {
         await api(`/api/history/${row.id}`, { method: "DELETE" });
+        if (currentResultId === row.id) currentResultId = null;
         refreshHistory();
       });
-      li.append(nko, meta, del);
+      li.append(nko, meta, edit, del);
       ul.append(li);
     }
   } catch { /* history is non-critical; errors surface elsewhere */ }

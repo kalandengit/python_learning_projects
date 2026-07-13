@@ -168,12 +168,60 @@ class TestHistory:
             files={"audio": ("a.wav", make_wav(), "audio/wav")},
         )
         row_id = r.json()["id"]
-        # user B registers and tries to read/delete it
+        # user B registers and tries to read/edit/delete it
         creds = {"username": "mallory", "password": "s3cure-passphrase!"}
         client.post("/api/auth/register", json=creds)
         tok = client.post("/api/auth/login", json=creds).json()["access_token"]
         b_headers = {"Authorization": f"Bearer {tok}"}
         assert all(t["id"] != row_id for t in client.get("/api/history", headers=b_headers).json())
+        assert client.patch(
+            f"/api/history/{row_id}", headers=b_headers, json={"text_nko": "ߤߊߞߍ"}
+        ).status_code == 404
         assert client.delete(f"/api/history/{row_id}", headers=b_headers).status_code == 404
         # owner can delete
         assert client.delete(f"/api/history/{row_id}", headers=auth_headers).status_code == 204
+
+
+class TestEditTranscription:
+    def _create(self, client, headers):
+        return client.post(
+            "/api/transcribe",
+            headers=headers,
+            files={"audio": ("a.wav", make_wav(), "audio/wav")},
+        ).json()["id"]
+
+    def test_edit_saves_corrected_nko(self, client, auth_headers):
+        row_id = self._create(client, auth_headers)
+        corrected = "ߒ ߓߍ ߕߊ߭"
+        r = client.patch(
+            f"/api/history/{row_id}", headers=auth_headers, json={"text_nko": corrected}
+        )
+        assert r.status_code == 200
+        assert r.json()["text_nko"] == corrected
+        # persisted
+        rows = client.get("/api/history", headers=auth_headers).json()
+        assert next(t for t in rows if t["id"] == row_id)["text_nko"] == corrected
+
+    def test_edit_requires_auth(self, client, auth_headers):
+        row_id = self._create(client, auth_headers)
+        assert client.patch(f"/api/history/{row_id}", json={"text_nko": "x"}).status_code == 401
+
+    def test_edit_missing_row_404(self, client, auth_headers):
+        assert client.patch(
+            "/api/history/999999", headers=auth_headers, json={"text_nko": "x"}
+        ).status_code == 404
+
+    def test_edit_allows_empty_string(self, client, auth_headers):
+        row_id = self._create(client, auth_headers)
+        r = client.patch(
+            f"/api/history/{row_id}", headers=auth_headers, json={"text_nko": ""}
+        )
+        assert r.status_code == 200
+        assert r.json()["text_nko"] == ""
+
+    def test_edit_rejects_oversize(self, client, auth_headers):
+        row_id = self._create(client, auth_headers)
+        r = client.patch(
+            f"/api/history/{row_id}", headers=auth_headers, json={"text_nko": "ߊ" * 20_001}
+        )
+        assert r.status_code == 422

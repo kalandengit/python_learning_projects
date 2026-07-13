@@ -55,6 +55,22 @@ button:disabled { opacity: .5; cursor: not-allowed; }
   background: rgb(212 160 23 / 8%); border-radius: 8px; padding: .6rem .9rem;
   min-height: 2.2rem; overflow-wrap: anywhere;
 }
+textarea.nko-text {
+  width: 100%; display: block; border: 1px solid var(--muted); color: var(--ink);
+  resize: vertical; box-sizing: border-box;
+}
+textarea.nko-text:focus { outline: 2px solid var(--accent); border-color: var(--accent); }
+
+/* On-screen N'Ko keyboard */
+.keyboard { margin: .6rem 0 1rem; display: flex; flex-direction: column; gap: .4rem; }
+.kb-row { display: flex; flex-wrap: wrap; gap: .35rem; }
+.kb-key {
+  min-width: 2.4rem; padding: .5rem; font-size: 1.4rem; line-height: 1;
+  background: var(--card); color: var(--ink); border: 1px solid var(--muted);
+  border-radius: 8px; font-family: "Noto Sans NKo", "Ebrima", sans-serif;
+}
+.kb-key:hover { border-color: var(--accent); }
+.kb-key.kb-ctrl { font-size: 1rem; font-family: system-ui, sans-serif; flex: 1; }
 #history { list-style: none; padding: 0; }
 #history li {
   border-top: 1px solid rgb(138 148 158 / 25%); padding: .6rem 0;
@@ -64,3 +80,18 @@ button:disabled { opacity: .5; cursor: not-allowed; }
 #history .meta { color: var(--muted); font-size: .8rem; white-space: nowrap; }
 #history button { padding: .15rem .5rem; font-size: .8rem; }
 footer { color: var(--muted); font-size: .85rem; padding: 1rem 0 2rem; }
+
+/* Print-only area for "Download PDF" (browser Save as PDF) */
+#print-area { display: none; }
+@media print {
+  body > *:not(#print-area) { display: none !important; }
+  #print-area {
+    display: block; padding: 2rem;
+    font-family: "Noto Sans NKo", "Ebrima", "Kigelia", sans-serif;
+  }
+  #print-nko { direction: rtl; text-align: right; font-size: 2rem; line-height: 1.9; }
+  #print-latin {
+    direction: ltr; text-align: left; margin-top: 1.5rem;
+    font-family: system-ui, sans-serif; font-size: 1rem; color: #333;
+  }
+}

@@ -55,6 +55,20 @@ uvicorn app.main:app --reload
 
 Register a user in the UI, allow microphone access, record, and read the N'Ko.
 
+### Editing & export
+
+- **Edit the result** — the generated N'Ko is an editable field; correct it and
+  **Save** to persist the correction (`PATCH /api/history/{id}`). Any history
+  entry can be reopened in the editor with ✎.
+- **On-screen N'Ko keyboard** — a ⌨ toggle opens a virtual keyboard (vowels,
+  consonants, combining nasal/tone marks, N'Ko digits ߀–߉, punctuation, space,
+  backspace) that types into whichever N'Ko field is focused — handy for
+  corrections without an N'Ko system keyboard.
+- **Download** the generated text as **TXT**, **PNG** (canvas-rendered N'Ko,
+  RTL, with a Latin caption), or **PDF** (via the browser's Save-as-PDF print
+  dialog, using the system N'Ko font). All client-side — no external libraries,
+  CSP-safe.
+
 ## Real speech recognition (MMS)
 
 ```bash
@@ -95,6 +109,7 @@ ruff check app tests
 | POST | `/api/transcribe` | Bearer | audio → `{text_latin, text_nko}` (stored) |
 | POST | `/api/transliterate` | – | text-only Latin → N'Ko (stateless) |
 | GET | `/api/history` | Bearer | own transcriptions (paginated) |
+| PATCH | `/api/history/{id}` | Bearer | edit/save the N'Ko text of own transcription |
 | DELETE | `/api/history/{id}` | Bearer | delete own transcription |
 
 ## Display

@@ -45,6 +45,12 @@ class TranscriptionOut(BaseModel):
     model_config = {"from_attributes": True}
 
 
+class TranscriptionUpdate(BaseModel):
+    """User edit of a saved transcription's N'Ko text."""
+
+    text_nko: str = Field(min_length=0, max_length=20_000)
+
+
 class TransliterateIn(BaseModel):
     text: str = Field(min_length=1, max_length=20_000)
 
