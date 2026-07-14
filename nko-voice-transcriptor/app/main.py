@@ -17,9 +17,10 @@ from app import __version__
 from app.asr import get_engine
 from app.config import get_settings
 from app.db import init_db
+from app.dictionary import get_dictionary
 from app.limits import limiter
 from app.logging_conf import configure_logging, get_logger
-from app.routes import auth, health, history, transcribe
+from app.routes import auth, dictionary, health, history, transcribe
 
 logger = get_logger(__name__)
 
@@ -32,11 +33,13 @@ async def lifespan(app: FastAPI):
     configure_logging()
     init_db()
     app.state.asr_engine = get_engine(settings)
+    dictionary = get_dictionary()  # load lexicon once at startup
     logger.info(
-        "event=startup version=%s asr_engine=%s env=%s",
+        "event=startup version=%s asr_engine=%s env=%s lexicon_entries=%d",
         __version__,
         settings.asr_engine,
         settings.environment,
+        len(dictionary),
     )
     yield
 
@@ -87,6 +90,7 @@ def create_app() -> FastAPI:
     app.include_router(auth.router)
     app.include_router(transcribe.router)
     app.include_router(history.router)
+    app.include_router(dictionary.router)
 
     app.mount("/static", StaticFiles(directory=STATIC_DIR), name="static")
 

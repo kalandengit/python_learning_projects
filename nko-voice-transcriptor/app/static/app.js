@@ -459,6 +459,53 @@ $("keyboard-toggle").addEventListener("click", () => {
   $("keyboard-toggle").setAttribute("aria-expanded", String(shown));
 });
 
+// ---- Dictionary lookup ------------------------------------------------------
+// French ↔ N'Ko lexicon search. Clicking a result inserts its N'Ko into the
+// active N'Ko field, so the dictionary doubles as a spelling aid for editing.
+async function runDictionary() {
+  const q = $("dict-input").value.trim();
+  const dir = $("dict-dir").value;
+  const ul = $("dict-results");
+  ul.replaceChildren();
+  $("dict-empty").classList.add("hidden");
+  if (!q) return;
+  let res;
+  try {
+    res = await api(`/api/dictionary?q=${encodeURIComponent(q)}&dir=${dir}&limit=25`);
+  } catch (err) {
+    $("app-error").textContent = err.message;
+    return;
+  }
+  if (!res.entries.length) {
+    $("dict-empty").classList.remove("hidden");
+    return;
+  }
+  for (const e of res.entries) {
+    const li = document.createElement("li");
+    const fr = document.createElement("span");
+    fr.className = "dict-fr";
+    fr.textContent = e.cat ? `${e.fr}` : e.fr;
+    const nko = document.createElement("span");
+    nko.className = "dict-nko nko";
+    nko.dir = "rtl";
+    nko.textContent = e.nko;
+    const insert = document.createElement("button");
+    insert.className = "secondary";
+    insert.textContent = "→ ߒߞߏ";
+    insert.title = "Insert N'Ko";
+    insert.addEventListener("click", () => {
+      const field = NKO_FIELDS.includes(activeField?.id) ? activeField : $("text-output");
+      field.focus();
+      insertIntoField(field, e.nko);
+    });
+    li.append(fr, nko, insert);
+    ul.append(li);
+  }
+}
+$("dict-btn").addEventListener("click", runDictionary);
+$("dict-input").addEventListener("keydown", (e) => { if (e.key === "Enter") runDictionary(); });
+$("dict-dir").addEventListener("change", () => { if ($("dict-input").value.trim()) runDictionary(); });
+
 // ---- History management -----------------------------------------------------
 const HISTORY_PAGE = 10;
 let historyOffset = 0;

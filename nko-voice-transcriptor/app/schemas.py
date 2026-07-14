@@ -66,6 +66,19 @@ class LanguageOut(BaseModel):
     default: bool
 
 
+class DictionaryEntry(BaseModel):
+    fr: str
+    nko: str
+    cat: str = ""
+
+
+class DictionaryResult(BaseModel):
+    query: str
+    direction: str
+    count: int
+    entries: list[DictionaryEntry]
+
+
 class HealthOut(BaseModel):
     status: str
     version: str

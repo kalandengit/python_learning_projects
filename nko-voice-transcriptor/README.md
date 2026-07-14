@@ -67,6 +67,18 @@ Adding another interface language is a one-place change: add an entry to the
 dropdown is generated from that object, so no HTML edit is needed. The N'Ko
 strings are a best-effort starter set and would benefit from native review.
 
+### Dictionary
+
+A **N'Ko ↔ French dictionary** search is built in. Type a French word to get
+its N'Ko equivalents (accent-insensitive), or switch direction to look up N'Ko;
+click **→ ߒߞߏ** on a result to drop it into the editor. The repo ships a small
+**attributed sample** lexicon; point `NKO_LEXICON_PATH` at a full JSON lexicon
+(`{"entries": [{"fr","nko","cat"}, …]}`) to use the complete dataset.
+
+Data is derived from the **NKo Wuruki / N'Ko Institute** French–N'Ko lexicon
+(<https://www.nkowuruki.net/lexique-nkofr.html>). Verify your redistribution
+rights before shipping the full dataset; only the sample is included here.
+
 ### History management
 
 The History section supports **search** (matches N'Ko or Latin), a live
@@ -135,6 +147,7 @@ ruff check app tests
 | GET | `/api/languages` | – | offered source languages |
 | GET | `/api/history/count` | Bearer | number of own transcriptions |
 | DELETE | `/api/history` | Bearer | clear all own transcriptions |
+| GET | `/api/dictionary` | – | N'Ko ↔ French lexicon lookup (`q`, `dir=fr\|nko`) |
 | POST | `/api/auth/register` | – | create account |
 | POST | `/api/auth/login` | – | get JWT access token |
 | POST | `/api/transcribe` | Bearer | audio → `{text_latin, text_nko}` (stored) |

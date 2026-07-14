@@ -33,6 +33,9 @@ class Settings(BaseSettings):
     max_upload_bytes: int = 10 * 1024 * 1024
     max_audio_seconds: int = 120
 
+    # Optional path to a full N'Ko–French lexicon JSON. Empty = bundled sample.
+    lexicon_path: str = ""
+
     access_token_minutes: int = 60
 
     cors_origins: str = ""

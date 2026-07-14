@@ -20,6 +20,21 @@ kept for provenance under [`docs/nko-research/`](docs/nko-research/).
 - [Keyman N'Ko keyboard](https://keyman.com/keyboards/nko) — cross-platform
   N'Ko input.
 
+## Lexicons and dictionaries
+
+- [NKo Wuruki — Lexique N'Ko/Français](https://www.nkowuruki.net/lexique-nkofr.html) —
+  a large French↔N'Ko lexicon (≈47,840 entries) with grammatical category
+  markers. **Used by this app's dictionary feature** (bundled sample only;
+  supply the full data via `NKO_LEXICON_PATH`). Attribution: NKo Wuruki /
+  N'Ko Institute, Conakry. Confirm redistribution rights before shipping the
+  full dataset.
+- [NKo Wuruki — Nkotronic](https://www.nkowuruki.net/nkotronic.html) — an N'Ko
+  assistant (ask in French or N'Ko).
+- [NKo Wuruki — N'Ko fonts](https://www.nkowuruki.net/nko-fonts.html) —
+  downloadable N'Ko fonts (useful for the self-hosted-font improvement below).
+- [Vydrine, "Sur le Dictionnaire N'Ko" (Mandenkan)](https://llacan.cnrs.fr/PDF/Mandenkan31/vydrin31.pdf) —
+  scholarly analysis of the N'Ko dictionary tradition.
+
 ## Learning and community material
 
 - [An ka taa](https://www.ankataa.com/) — Manding and N'Ko lessons from a

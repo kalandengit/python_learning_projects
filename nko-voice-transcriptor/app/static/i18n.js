@@ -26,6 +26,7 @@ const I18N = {
     load_more: "Load more", no_history: "No history yet.",
     footer: "Manding → N'Ko (script of Solomana Kanté). Recognition quality depends on the configured ASR engine.",
     recording: "recording…", on_standby: "on stand-by", unsaved: "unsaved", saved: "✓ saved", saved_count: "{n} saved",
+    dictionary_title: "Dictionary", dict_placeholder: "Search a word…", search: "🔍 Search", dict_none: "No match.", dict_credit: "Lexicon: NKo Wuruki / N'Ko Institute (sample).",
   },
   fr: {
     _name: "Français", _dir: "ltr",
@@ -47,6 +48,7 @@ const I18N = {
     load_more: "Charger plus", no_history: "Aucun historique.",
     footer: "Mandingue → N'Ko (écriture de Solomana Kanté). La qualité de reconnaissance dépend du moteur ASR configuré.",
     recording: "enregistrement…", on_standby: "en pause", unsaved: "non enregistré", saved: "✓ enregistré", saved_count: "{n} enregistré(s)",
+    dictionary_title: "Dictionnaire", dict_placeholder: "Chercher un mot…", search: "🔍 Rechercher", dict_none: "Aucun résultat.", dict_credit: "Lexique : NKo Wuruki / Institut N'Ko (échantillon).",
   },
   ar: {
     _name: "العربية", _dir: "rtl",
@@ -68,6 +70,7 @@ const I18N = {
     load_more: "تحميل المزيد", no_history: "لا يوجد سجل بعد.",
     footer: "ماندينغ → النكو (خط سليمانا كانتي). تعتمد جودة التعرّف على محرك ASR المُهيّأ.",
     recording: "جارٍ التسجيل…", on_standby: "متوقّف مؤقتًا", unsaved: "غير محفوظ", saved: "✓ تم الحفظ", saved_count: "{n} محفوظ",
+    dictionary_title: "قاموس", dict_placeholder: "ابحث عن كلمة…", search: "🔍 بحث", dict_none: "لا نتائج.", dict_credit: "المعجم: NKo Wuruki / معهد النكو (عيّنة).",
   },
   nqo: {
     _name: "ߒߞߏ", _dir: "rtl",
@@ -89,6 +92,7 @@ const I18N = {
     load_more: "ߘߏ ߟߊߘߏ߲߬", no_history: "ߞߘߐߞߏ ߕߍ߫ ߝߟߐ.",
     footer: "ߡߊ߲ߘߋ߲ߞߊ߲ → ߒߞߏ (ߛߟߏߡߊߣߊ ߞߊ߲ߕߍ ߟߊ߫ ߛߓߍߛߎ߲). ߞߊ߲ ߘߐ߬ߓߐ ߢߌߡߊ ߦߋ߫ ߛߊ߬ ASR ߡߊߛߌ߲.",
     recording: "ߞߊ߲ ߡߌߣߍ ߠߊ߫…", on_standby: "ߟߐߦߌߘߊ ߟߊ߫", unsaved: "ߡߊ ߡߊߙߊ", saved: "✓ ߡߊߙߊߣߍ߲", saved_count: "{n} ߡߊߙߊߣߍ߲",
+    dictionary_title: "ߘߌߞߛߌߦߐߣߍߙ", dict_placeholder: "ߞߏ ߘߏ ߢߌߣߌ߲ߞߊ…", search: "🔍 ߢߌߣߌ߲ߞߊ", dict_none: "ߝߏߦߌ߬ ߡߊ߫ ߛߐ߬ߘߐ߲߬.", dict_credit: "ߟߍߞߌߛߌ: NKo Wuruki / N'Ko Institute.",
   },
 };
 

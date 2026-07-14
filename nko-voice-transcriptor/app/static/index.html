@@ -105,6 +105,22 @@
     <div id="keyboard" class="keyboard hidden" role="group" aria-label="N'Ko keyboard"></div>
     </div>
 
+    <!-- Dictionary lookup -->
+    <div class="tool-section dictionary-section">
+      <h2 data-i18n="dictionary_title">Dictionary</h2>
+      <div class="row">
+        <input id="dict-input" data-i18n-placeholder="dict_placeholder" placeholder="Search a word…" maxlength="100">
+        <select id="dict-dir" title="Direction">
+          <option value="fr">FR → ߒߞߏ</option>
+          <option value="nko">ߒߞߏ → FR</option>
+        </select>
+        <button id="dict-btn" class="secondary" data-i18n="search">🔍 Search</button>
+      </div>
+      <ul id="dict-results"></ul>
+      <p id="dict-empty" class="hint hidden" data-i18n="dict_none">No match.</p>
+      <p class="hint" data-i18n="dict_credit">Lexicon: NKo Wuruki / N'Ko Institute (sample).</p>
+    </div>
+
     <!-- History management -->
     <div class="tool-section history-section">
     <div class="row history-head">

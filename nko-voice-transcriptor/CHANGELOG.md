@@ -1,5 +1,24 @@
 # Changelog
 
+## 1.4.0 - 2026-07-14
+
+### Features
+
+- **N'Ko ↔ French dictionary lookup.** New `GET /api/dictionary` endpoint and
+  a UI section search the lexicon in either direction (French headword,
+  accent-insensitive, or the N'Ko side), ranked exact → prefix → substring. A
+  result can be inserted straight into the N'Ko editor, so the dictionary
+  doubles as a spelling aid for corrections.
+- Lexicon data is loaded once at startup from `NKO_LEXICON_PATH`, defaulting
+  to a bundled **attributed sample** (`app/data/lexicon-sample.json`).
+
+### Attribution
+
+- Dictionary data is derived from the NKo Wuruki / N'Ko Institute
+  French–N'Ko lexicon (https://www.nkowuruki.net/lexique-nkofr.html). Only a
+  sample ships in-repo; supply the full dataset you are licensed to use via
+  `NKO_LEXICON_PATH`. See `NKO_RESOURCES.md`.
+
 ## 1.3.0 - 2026-07-13
 
 ### Features

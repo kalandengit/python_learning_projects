@@ -34,6 +34,15 @@ header { padding: 2.4rem 0 1rem; }
 .ui-lang { margin: 0; font-size: .85rem; color: var(--muted); }
 .history-head { justify-content: space-between; align-items: baseline; }
 #history-search { flex: 1; }
+#dict-input { flex: 1; }
+#dict-results { list-style: none; padding: 0; margin: .5rem 0; }
+#dict-results li {
+  border-top: 1px solid rgb(138 148 158 / 25%); padding: .5rem 0;
+  display: flex; justify-content: space-between; gap: .8rem; align-items: baseline;
+}
+.dict-fr { flex: 1; }
+.dict-nko { font-size: 1.4rem; font-family: "Noto Sans NKo", "Ebrima", sans-serif; }
+#dict-results button { padding: .15rem .5rem; font-size: .9rem; }
 h1 { font-size: clamp(1.45rem, 3vw, 2rem); margin: 0; letter-spacing: -.025em; }
 .nko-glyph { color: var(--accent); font-size: 1.25em; margin-inline-end: .35rem; }
 .subtitle { color: var(--muted); margin: .2rem 0 0; }
