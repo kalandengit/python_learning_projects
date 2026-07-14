@@ -6,8 +6,10 @@ Transcriptor web UI from a server you specify. It exists so you can install a
 recording) natively.
 
 > The APK has **no backend of its own** — it needs a running N'Ko Voice
-> Transcriptor server (`uvicorn app.main:app`). On first launch it asks for the
-> server URL; use the ⋮ menu → **Set server URL** to change it later.
+> Transcriptor server (`uvicorn app.main:app`). On **first launch** it asks for
+> the server URL, and if the server is **unreachable** it shows a "Server
+> unreachable" dialog with **Retry** / **Change URL**. Use the ⋮ menu →
+> **Set server URL** to change it at any time.
 
 - `versionName` **1.7.0**, `versionCode` 10700 (see `app/build.gradle`).
 - `minSdk` 26, `targetSdk`/`compileSdk` 34, no AndroidX.

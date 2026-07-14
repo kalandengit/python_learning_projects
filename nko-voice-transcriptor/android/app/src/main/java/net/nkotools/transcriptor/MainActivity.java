@@ -11,6 +11,8 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.webkit.PermissionRequest;
 import android.webkit.WebChromeClient;
+import android.webkit.WebResourceError;
+import android.webkit.WebResourceRequest;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
@@ -32,6 +34,7 @@ public class MainActivity extends Activity {
     private static final int MENU_SET_URL = 1;
 
     private WebView web;
+    private boolean connectionFailed = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,7 +48,19 @@ public class MainActivity extends Activity {
         settings.setDomStorageEnabled(true);
         settings.setMediaPlaybackRequiresUserGesture(false);
 
-        web.setWebViewClient(new WebViewClient());
+        web.setWebViewClient(new WebViewClient() {
+            @Override
+            public void onReceivedError(WebView view, WebResourceRequest request,
+                                        WebResourceError error) {
+                // Only care about the main page failing to load (not favicons,
+                // sub-resources, etc.). Typical causes: server down, wrong URL,
+                // no network, DNS failure.
+                if (request.isForMainFrame()) {
+                    connectionFailed = true;
+                    showConnectionError(String.valueOf(error.getDescription()));
+                }
+            }
+        });
         web.setWebChromeClient(new WebChromeClient() {
             @Override
             public void onPermissionRequest(final PermissionRequest request) {
@@ -58,18 +73,26 @@ public class MainActivity extends Activity {
             requestPermissions(new String[]{Manifest.permission.RECORD_AUDIO}, REQ_MIC);
         }
 
-        String url = prefs().getString(KEY_URL, null);
-        if (url == null || url.isEmpty()) {
-            promptForUrl();
-        } else {
-            web.loadUrl(url);
-        }
+        // First launch (no saved URL) → ask for the server. Otherwise load it;
+        // if the server is unreachable, onReceivedError re-opens the prompt.
+        loadSavedOrPrompt();
     }
 
     private SharedPreferences prefs() {
         return getSharedPreferences(PREFS, Context.MODE_PRIVATE);
     }
 
+    private void loadSavedOrPrompt() {
+        String url = prefs().getString(KEY_URL, null);
+        if (url == null || url.isEmpty()) {
+            promptForUrl();
+        } else {
+            connectionFailed = false;
+            web.loadUrl(url);
+        }
+    }
+
+    /** Prompt for (or edit) the backend server URL, then load it. */
     private void promptForUrl() {
         final EditText input = new EditText(this);
         input.setHint("https://your-server:8000");
@@ -86,8 +109,21 @@ public class MainActivity extends Activity {
                         url = "http://" + url;
                     }
                     prefs().edit().putString(KEY_URL, url).apply();
+                    connectionFailed = false;
                     web.loadUrl(url);
                 })
+                .show();
+    }
+
+    /** Shown when the configured server can't be reached: retry or change URL. */
+    private void showConnectionError(String detail) {
+        String url = prefs().getString(KEY_URL, DEFAULT_URL);
+        new AlertDialog.Builder(this)
+                .setTitle(R.string.conn_error_title)
+                .setMessage(getString(R.string.conn_error_message, url, detail))
+                .setCancelable(false)
+                .setPositiveButton(R.string.retry, (d, w) -> loadSavedOrPrompt())
+                .setNegativeButton(R.string.change_url, (d, w) -> promptForUrl())
                 .show();
     }
 
