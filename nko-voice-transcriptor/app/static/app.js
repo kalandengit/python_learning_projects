@@ -367,22 +367,26 @@ for (const id of NKO_FIELDS) {
   $(id).addEventListener("focus", (e) => { activeField = e.target; });
 }
 
+// Full N'Ko block coverage (U+07C0–U+07FF). See docs/NKO_UNICODE_BLOCK.md.
 const KEY_ROWS = [
-  // vowels: a e ɛ i o ɔ u
-  ["ߊ", "ߋ", "ߍ", "ߌ", "ߏ", "ߐ", "ߎ"],
+  // vowels: a ee i e u oo o
+  ["ߊ", "ߋ", "ߌ", "ߍ", "ߎ", "ߏ", "ߐ"],
   // consonants
   ["ߓ", "ߔ", "ߕ", "ߖ", "ߗ", "ߘ", "ߙ", "ߚ", "ߛ", "ߜ"],
   ["ߝ", "ߞ", "ߟ", "ߡ", "ߢ", "ߣ", "ߤ", "ߥ", "ߦ", "ߒ"],
-  // combining tone marks (◌ = dotted-circle placeholder) — high, low,
-  // rising, long-descending, long-high, long-low, long-rising. These carry
-  // the tone/length that Latin ASR cannot supply, so they are typed by hand.
+  // less common / archaic letters: na woloso, nya woloso, jona ja/cha/ra,
+  // dagbasinna
+  ["ߠ", "ߧ", "ߨ", "ߩ", "ߪ", "ߑ"],
+  // combining tone marks (◌ = dotted-circle placeholder) — short high, low,
+  // rising; long descending, high, low, rising. These carry the tone/length
+  // that Latin ASR cannot supply, so they are typed by hand.
   ["◌߫", "◌߬", "◌߭", "◌߮", "◌߯", "◌߰", "◌߱"],
-  // nasalization, double-dot, gemination/apostrophe
-  ["◌߲", "◌߳", "ߑ"],
+  // nasalization, double-dot, dantayalan (combining)
+  ["◌߲", "◌߳", "◌߽"],
   // digits ߀–߉
   ["߀", "߁", "߂", "߃", "߄", "߅", "߆", "߇", "߈", "߉"],
-  // punctuation
-  ["߸", "؟", "߹"],
+  // apostrophes, symbols and punctuation
+  ["ߴ", "ߵ", "ߺ", "߶", "߷", "߸", "߹", "؟"],
 ];
 // Special control keys, each: [label, action]
 const CONTROL_KEYS = [

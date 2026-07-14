@@ -1,5 +1,26 @@
 # Changelog
 
+## 1.5.0 - 2026-07-14
+
+### N'Ko Unicode completeness
+
+- Add `app/nko/block.py`: the canonical N'Ko Unicode block (U+07C0–U+07FF),
+  62 assigned characters generated from the Unicode Character Database, as the
+  single source of truth for what counts as valid N'Ko.
+- Extend the on-screen keyboard to full block coverage: the previously missing
+  letters (NA WOLOSO ߠ, NYA WOLOSO ߧ, JONA JA/CHA/RA ߨߩߪ), the DANTAYALAN
+  combining mark, the high/low tone apostrophes (ߴ ߵ), and the N'Ko symbols
+  and punctuation. All 33 letters are now typeable.
+- Add `docs/NKO_UNICODE_BLOCK.md` — the full reference table, with links to
+  the authoritative Unicode chart and specialist references.
+
+### Tests
+
+- `tests/test_nko_unicode.py`: the committed block table must match
+  `unicodedata` exactly; every keyboard glyph must be an assigned N'Ko
+  codepoint; the keyboard must cover all 33 letters and the 7 tone marks; the
+  transliterator must only emit assigned N'Ko (or ASCII punctuation).
+
 ## 1.4.0 - 2026-07-14
 
 ### Features

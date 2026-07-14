@@ -7,6 +7,12 @@ kept for provenance under [`docs/nko-research/`](docs/nko-research/).
 
 ## Technical references
 
+- [Unicode chart U+07C0 (PDF)](https://www.unicode.org/charts/PDF/U07C0.pdf) —
+  the official N'Ko code chart. See also `docs/NKO_UNICODE_BLOCK.md` for the
+  full generated table.
+- [UnicodePlus — Nkoo](https://unicodeplus.com/script/Nkoo) and
+  [Unicodepedia — N'Ko](https://www.unicodepedia.com/groups/nko) — browsable
+  character references.
 - [Unicode N'Ko block chart](https://www.unicode.org/charts/PDF/U07C0.pdf) —
   encoded characters in U+07C0–U+07FF.
 - [Unicode Core Specification, African scripts](https://www.unicode.org/versions/Unicode16.0.0/core-spec/chapter-19/) —
