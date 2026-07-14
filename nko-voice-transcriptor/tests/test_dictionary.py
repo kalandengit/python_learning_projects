@@ -46,12 +46,18 @@ class TestSearchNko:
         assert "maisonnette" in frs  # ߓߏ߲ߘߋ߲ contains ߓߏ߲
 
 
-class TestBundledSample:
-    def test_sample_loads(self):
+class TestBundledLexicon:
+    def test_full_lexicon_is_default(self):
+        # With no NKO_LEXICON_PATH set, the bundled full French–N'Ko lexicon
+        # loads (tens of thousands of entries), not just the small sample.
         d = get_dictionary()
-        assert len(d) > 100
-        # a common word from the sample
+        assert len(d) > 10_000
         assert d.search_fr("eau", 5)
+
+    def test_common_words_present(self):
+        d = get_dictionary()
+        for word in ("maison", "eau", "paix", "bonjour"):
+            assert d.search_fr(word, 1), f"{word!r} missing from lexicon"
 
 
 class TestEndpoint:

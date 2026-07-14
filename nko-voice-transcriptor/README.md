@@ -71,9 +71,10 @@ strings are a best-effort starter set and would benefit from native review.
 
 A **N'Ko ↔ French dictionary** search is built in. Type a French word to get
 its N'Ko equivalents (accent-insensitive), or switch direction to look up N'Ko;
-click **→ ߒߞߏ** on a result to drop it into the editor. The repo ships a small
-**attributed sample** lexicon; point `NKO_LEXICON_PATH` at a full JSON lexicon
-(`{"entries": [{"fr","nko","cat"}, …]}`) to use the complete dataset.
+click **→ ߒߞߏ** on a result to drop it into the editor. The repo bundles the
+**full French→N'Ko lexicon** (~47,800 entries) at `app/data/lexicon-fr-nko.json`
+and loads it by default; set `NKO_LEXICON_PATH` to substitute your own JSON
+(`{"entries": [{"fr","nko","cat"}, …]}`).
 
 Data is derived from the **NKo Wuruki / N'Ko Institute** French–N'Ko lexicon
 (<https://www.nkowuruki.net/lexique-nkofr.html>). Verify your redistribution

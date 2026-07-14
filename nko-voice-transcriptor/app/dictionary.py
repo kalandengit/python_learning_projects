@@ -1,9 +1,13 @@
 """N'Ko ↔ French dictionary lookup.
 
 Data originates from the NKo Wuruki / N'Ko Institute lexicon
-(https://www.nkowuruki.net/lexique-nkofr.html). The repository bundles only a
-small **attributed sample** (``app/data/lexicon-sample.json``); a deployment
-can point ``NKO_LEXICON_PATH`` at the full dataset it is licensed to use.
+(https://www.nkowuruki.net/lexique-nkofr.html) — see ``app/data/NOTICE.md``.
+Lexicon selection, in priority order:
+
+1. ``NKO_LEXICON_PATH`` if set (bring your own),
+2. the bundled full French–N'Ko lexicon ``app/data/lexicon-fr-nko.json``
+   (~47,800 entries),
+3. the small ``app/data/lexicon-sample.json`` fallback.
 
 Lookup is in-memory and case/accent-insensitive on the French side. Matches
 are ranked exact → prefix → substring so the most relevant entries surface
@@ -23,7 +27,9 @@ from app.logging_conf import get_logger
 
 logger = get_logger(__name__)
 
-_SAMPLE_PATH = Path(__file__).parent / "data" / "lexicon-sample.json"
+_DATA_DIR = Path(__file__).parent / "data"
+_FULL_PATH = _DATA_DIR / "lexicon-fr-nko.json"
+_SAMPLE_PATH = _DATA_DIR / "lexicon-sample.json"
 
 
 @dataclass(frozen=True)
@@ -96,13 +102,21 @@ def _load_entries(path: Path) -> list[Entry]:
     return out
 
 
+def _resolve_lexicon_path() -> Path:
+    settings = get_settings()
+    if settings.lexicon_path:
+        path = Path(settings.lexicon_path)
+        if path.exists():
+            return path
+        logger.warning("event=lexicon_missing path=%s falling_back", path)
+    if _FULL_PATH.exists():
+        return _FULL_PATH
+    return _SAMPLE_PATH
+
+
 @lru_cache(maxsize=1)
 def get_dictionary() -> Dictionary:
-    settings = get_settings()
-    path = Path(settings.lexicon_path) if settings.lexicon_path else _SAMPLE_PATH
-    if not path.exists():
-        logger.warning("event=lexicon_missing path=%s falling_back_to_sample", path)
-        path = _SAMPLE_PATH
+    path = _resolve_lexicon_path()
     entries = _load_entries(path)
-    logger.info("event=lexicon_loaded entries=%d path=%s", len(entries), path)
+    logger.info("event=lexicon_loaded entries=%d path=%s", len(entries), path.name)
     return Dictionary(entries)

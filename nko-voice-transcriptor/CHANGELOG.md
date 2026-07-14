@@ -1,5 +1,21 @@
 # Changelog
 
+## 1.7.0 - 2026-07-14
+
+### Dictionary
+
+- **Populated the dictionary with the full French→N'Ko lexicon** (~47,800
+  entries) from NKo Wuruki / N'Ko Institute, bundled as
+  `app/data/lexicon-fr-nko.json`. The loader now defaults to it (override with
+  `NKO_LEXICON_PATH`; the small sample is the last-resort fallback).
+- Added `app/data/NOTICE.md` crediting the source and stating the
+  redistribution caveat.
+
+### Tests
+
+- Assert the bundled full lexicon (>10k entries) is the default and that
+  common words (maison, eau, paix, bonjour) resolve.
+
 ## 1.6.0 - 2026-07-14
 
 ### Learning aid
