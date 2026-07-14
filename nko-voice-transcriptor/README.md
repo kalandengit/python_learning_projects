@@ -114,6 +114,28 @@ First transcription downloads the model (~4 GB, cached). MMS quality for
 Bambara is usable but far from perfect — low-resource ASR is an open research
 problem; treat output as a draft to correct, not ground truth.
 
+## Deploy on Ubuntu LTS (24.04 / 26.04)
+
+One-shot, idempotent script — installs Python, Nginx, a hardened `systemd`
+service (Gunicorn + Uvicorn workers), optional PostgreSQL, UFW, and optional
+Let's Encrypt TLS. Copy‑paste on a fresh server (run as root):
+
+```bash
+sudo bash -c "$(curl -fsSL https://raw.githubusercontent.com/kalandengit/python_learning_projects/claude/nko-voice-transcriptor-b3u9zg/nko-voice-transcriptor/deploy/deploy-ubuntu.sh)"
+```
+
+With a domain, HTTPS and PostgreSQL:
+
+```bash
+sudo DOMAIN=nko.example.com ENABLE_TLS=1 [email protected] USE_POSTGRES=1 \
+  bash -c "$(curl -fsSL https://raw.githubusercontent.com/kalandengit/python_learning_projects/claude/nko-voice-transcriptor-b3u9zg/nko-voice-transcriptor/deploy/deploy-ubuntu.sh)"
+```
+
+Knobs (all optional env vars): `DOMAIN`, `ENABLE_TLS`, `EMAIL`, `USE_POSTGRES`,
+`ASR_ENGINE` (`mock`/`mms`), `APP_PORT`, `WORKERS`, `REPO_REF`. See
+`deploy/deploy-ubuntu.sh`. After the PR merges, deploy `main` with
+`sudo REPO_REF=main ...`.
+
 ## Production (Docker)
 
 ```bash
