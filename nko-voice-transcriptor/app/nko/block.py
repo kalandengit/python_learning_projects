@@ -105,3 +105,54 @@ def symbols() -> list[str]:
             out.append(c)
     return out
 
+
+# --- Romanization (standard N'Ko Latin/phonetic values, for learning) --------
+# Latin/phonetic value of each N'Ko letter, keyed by codepoint. Matches the
+# Manding Latin orthography used by the transliterator (ɛ ɔ ɲ). ``dagbasinna``
+# has no phonetic value of its own (it marks length/gemination).
+LATIN_VALUES: dict[int, str] = {
+    0x07CA: "a", 0x07CB: "e", 0x07CC: "i", 0x07CD: "ɛ", 0x07CE: "u",
+    0x07CF: "o", 0x07D0: "ɔ", 0x07D1: "", 0x07D2: "n", 0x07D3: "b",
+    0x07D4: "p", 0x07D5: "t", 0x07D6: "j", 0x07D7: "c", 0x07D8: "d",
+    0x07D9: "r", 0x07DA: "rr", 0x07DB: "s", 0x07DC: "gb", 0x07DD: "f",
+    0x07DE: "k", 0x07DF: "l", 0x07E0: "n", 0x07E1: "m", 0x07E2: "ɲ",
+    0x07E3: "n", 0x07E4: "h", 0x07E5: "w", 0x07E6: "y", 0x07E7: "ɲ",
+    0x07E8: "j", 0x07E9: "c", 0x07EA: "r",
+}
+# Digits romanize to their Western value.
+LATIN_VALUES.update({0x07C0 + d: str(d) for d in range(10)})
+
+
+def romanize(ch: str) -> str:
+    """Latin/phonetic value of a N'Ko character, or '' if it has none."""
+    return LATIN_VALUES.get(ord(ch), "")
+
+
+def _kind(name: str, cat: str) -> str:
+    if "DIGIT" in name:
+        return "digit"
+    if cat.startswith("M"):
+        return "mark"
+    if "LETTER" in name:
+        return "letter"
+    return "symbol"
+
+
+def short_name(name: str) -> str:
+    """The letter/character name without the ``NKO`` / ``LETTER`` prefixes."""
+    return name.replace("NKO ", "").replace("LETTER ", "").title()
+
+
+def alphabet() -> list[dict]:
+    """Ordered teaching view of the whole block: glyph, name, Latin, kind."""
+    return [
+        {
+            "cp": f"U+{cp:04X}",
+            "char": ch,
+            "name": short_name(name),
+            "latin": romanize(ch),
+            "kind": _kind(name, cat),
+        }
+        for cp, ch, name, cat in NKO_CHARACTERS
+    ]
+

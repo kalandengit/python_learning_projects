@@ -1,5 +1,22 @@
 # Changelog
 
+## 1.6.0 - 2026-07-14
+
+### Learning aid
+
+- Add standard **Latin/phonetic values** for every N'Ko letter and digit in
+  `app/nko/block.py` (`romanize()`), plus an ordered `alphabet()` teaching view
+  (glyph, name, Latin, kind).
+- New public `GET /api/alphabet` returns the full block as a teaching table.
+- On-screen keyboard keys now show a **tooltip** with each character's Latin
+  value and name (e.g. "b · Ba", "gb · Gba", "ɲ · Nya"), loaded once from
+  `/api/alphabet` — the keyboard doubles as an alphabet reference.
+
+### Tests
+
+- Romanization covers all 33 letters (dagbasinna intentionally blank);
+  `/api/alphabet` returns 62 entries with Latin values for letters.
+
 ## 1.5.0 - 2026-07-14
 
 ### N'Ko Unicode completeness

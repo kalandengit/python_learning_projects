@@ -419,6 +419,26 @@ function keyPress(char) {
   insertIntoField(field, char.replace("◌", ""));
 }
 
+// Char → "latin · Name" tooltip, loaded once from /api/alphabet so the
+// keyboard doubles as an alphabet learning aid.
+let alphabetMap = null;
+async function loadAlphabet() {
+  if (alphabetMap) return alphabetMap;
+  alphabetMap = {};
+  try {
+    const rows = await api("/api/alphabet");
+    for (const r of rows) {
+      alphabetMap[r.char] = r.latin ? `${r.latin} · ${r.name}` : r.name;
+    }
+  } catch { /* tooltips are optional */ }
+  return alphabetMap;
+}
+
+function keyTitle(key) {
+  const ch = key.replace("◌", "");
+  return (alphabetMap && alphabetMap[ch]) || "";
+}
+
 function buildKeyboard() {
   const kb = $("keyboard");
   if (kb.childElementCount) return;
@@ -430,6 +450,7 @@ function buildKeyboard() {
       b.type = "button";
       b.className = "kb-key";
       b.textContent = key;
+      b.title = keyTitle(key);       // e.g. "b · Ba", "ɲ · Nya"
       // Don't steal focus from the target field on mousedown.
       b.addEventListener("mousedown", (e) => e.preventDefault());
       b.addEventListener("click", () => keyPress(key));
@@ -456,7 +477,8 @@ function buildKeyboard() {
   kb.append(ctrl);
 }
 
-$("keyboard-toggle").addEventListener("click", () => {
+$("keyboard-toggle").addEventListener("click", async () => {
+  await loadAlphabet();
   buildKeyboard();
   const kb = $("keyboard");
   const shown = kb.classList.toggle("hidden") === false;

@@ -65,6 +65,43 @@ class TestKeyboardLayout:
             assert chr(cp) in keyboard
 
 
+class TestRomanization:
+    def test_every_letter_has_latin_except_dagbasinna(self):
+        for ch in block.letters():
+            latin = block.romanize(ch)
+            if ord(ch) == 0x07D1:  # dagbasinna: length mark, no phonetic value
+                assert latin == ""
+            else:
+                assert latin, f"letter U+{ord(ch):04X} missing romanization"
+
+    def test_known_values(self):
+        assert block.romanize("ߓ") == "b"
+        assert block.romanize("ߜ") == "gb"
+        assert block.romanize("ߢ") == "ɲ"
+        assert block.romanize("߅") == "5"
+
+    def test_alphabet_view(self):
+        alpha = block.alphabet()
+        assert len(alpha) == 62
+        kinds = {e["kind"] for e in alpha}
+        assert kinds == {"letter", "digit", "mark", "symbol"}
+        ba = next(e for e in alpha if e["char"] == "ߓ")
+        assert ba["latin"] == "b" and ba["name"] == "Ba" and ba["cp"] == "U+07D3"
+
+
+class TestAlphabetEndpoint:
+    def test_public_and_complete(self, client):
+        r = client.get("/api/alphabet")
+        assert r.status_code == 200
+        rows = r.json()
+        assert len(rows) == 62
+        assert all(0x07C0 <= int(row["cp"][2:], 16) <= 0x07FF for row in rows)
+        # letters carry a Latin value
+        letters = [row for row in rows if row["kind"] == "letter"]
+        assert len(letters) == 33
+        assert any(row["latin"] == "gb" for row in letters)
+
+
 class TestTransliteratorStaysInBlock:
     def test_output_only_nko_or_ascii_punct(self):
         words = "bamanankan i ni ce mɔgɔ dun nyama an ka kalan 2026 mun?"

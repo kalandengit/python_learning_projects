@@ -66,6 +66,14 @@ class LanguageOut(BaseModel):
     default: bool
 
 
+class AlphabetEntry(BaseModel):
+    cp: str
+    char: str
+    name: str
+    latin: str
+    kind: str
+
+
 class DictionaryEntry(BaseModel):
     fr: str
     nko: str
