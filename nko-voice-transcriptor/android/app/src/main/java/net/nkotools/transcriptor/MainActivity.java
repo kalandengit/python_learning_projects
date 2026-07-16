@@ -5,7 +5,9 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -16,6 +18,7 @@ import android.webkit.WebResourceRequest;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
+import android.webkit.ValueCallback;
 import android.widget.EditText;
 
 /**
@@ -31,9 +34,12 @@ public class MainActivity extends Activity {
     private static final String KEY_URL = "server_url";
     private static final String DEFAULT_URL = "http://10.0.2.2:8000";
     private static final int REQ_MIC = 101;
+    private static final int REQ_FILE = 102;
     private static final int MENU_SET_URL = 1;
 
     private WebView web;
+    private PermissionRequest pendingMicRequest;
+    private ValueCallback<Uri[]> pendingFileCallback;
     private boolean connectionFailed = false;
 
     @Override
@@ -64,18 +70,83 @@ public class MainActivity extends Activity {
         web.setWebChromeClient(new WebChromeClient() {
             @Override
             public void onPermissionRequest(final PermissionRequest request) {
-                runOnUiThread(() -> request.grant(request.getResources()));
+                runOnUiThread(() -> handleWebPermissionRequest(request));
+            }
+
+            @Override
+            public void onPermissionRequestCanceled(PermissionRequest request) {
+                if (request == pendingMicRequest) pendingMicRequest = null;
+            }
+
+            @Override
+            public boolean onShowFileChooser(WebView view, ValueCallback<Uri[]> callback,
+                                             FileChooserParams params) {
+                if (pendingFileCallback != null) pendingFileCallback.onReceiveValue(null);
+                pendingFileCallback = callback;
+                Intent intent = params.createIntent();
+                intent.setType("audio/*");
+                intent.addCategory(Intent.CATEGORY_OPENABLE);
+                try {
+                    startActivityForResult(intent, REQ_FILE);
+                    return true;
+                } catch (RuntimeException error) {
+                    pendingFileCallback = null;
+                    callback.onReceiveValue(null);
+                    return false;
+                }
             }
         });
-
-        if (checkSelfPermission(Manifest.permission.RECORD_AUDIO)
-                != PackageManager.PERMISSION_GRANTED) {
-            requestPermissions(new String[]{Manifest.permission.RECORD_AUDIO}, REQ_MIC);
-        }
 
         // First launch (no saved URL) → ask for the server. Otherwise load it;
         // if the server is unreachable, onReceivedError re-opens the prompt.
         loadSavedOrPrompt();
+    }
+
+    /** Grant only microphone capture, and only after Android permission succeeds. */
+    private void handleWebPermissionRequest(PermissionRequest request) {
+        boolean asksForAudio = false;
+        for (String resource : request.getResources()) {
+            if (PermissionRequest.RESOURCE_AUDIO_CAPTURE.equals(resource)) {
+                asksForAudio = true;
+                break;
+            }
+        }
+        if (!asksForAudio) {
+            request.deny();
+            return;
+        }
+        if (checkSelfPermission(Manifest.permission.RECORD_AUDIO)
+                == PackageManager.PERMISSION_GRANTED) {
+            request.grant(new String[]{PermissionRequest.RESOURCE_AUDIO_CAPTURE});
+            return;
+        }
+        if (pendingMicRequest != null) pendingMicRequest.deny();
+        pendingMicRequest = request;
+        requestPermissions(new String[]{Manifest.permission.RECORD_AUDIO}, REQ_MIC);
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, String[] permissions,
+                                           int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        if (requestCode != REQ_MIC || pendingMicRequest == null) return;
+        if (grantResults.length > 0
+                && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+            pendingMicRequest.grant(
+                    new String[]{PermissionRequest.RESOURCE_AUDIO_CAPTURE});
+        } else {
+            pendingMicRequest.deny();
+        }
+        pendingMicRequest = null;
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode != REQ_FILE || pendingFileCallback == null) return;
+        Uri[] result = WebChromeClient.FileChooserParams.parseResult(resultCode, data);
+        pendingFileCallback.onReceiveValue(result);
+        pendingFileCallback = null;
     }
 
     private SharedPreferences prefs() {

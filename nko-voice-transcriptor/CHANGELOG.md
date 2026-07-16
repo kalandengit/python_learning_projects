@@ -1,5 +1,15 @@
 # Changelog
 
+## 1.8.1 - 2026-07-17
+
+- Fixed Android WebView microphone access by waiting for the runtime
+  `RECORD_AUDIO` result before granting audio capture to the web page.
+- Restricted the WebView bridge to microphone capture instead of granting every
+  requested browser resource.
+- Added Android's document picker bridge for importing audio files without
+  requesting broad storage access.
+- Clarified that registration automatically signs the new account in.
+
 ## 1.8.0 - 2026-07-16
 
 ### Languages and clients

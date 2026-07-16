@@ -8,7 +8,7 @@ window.NKO_LANGUAGE_PACK = {
     _name: "Français", _dir: "ltr", app_title: "Transcripteur vocal N'Ko",
     ui_language: "Interface", subtitle: "Parlez le mandingue — lisez le N'Ko",
     sign_in: "Connexion", username: "Nom d'utilisateur", password: "Mot de passe",
-    log_in: "Se connecter", register: "S'inscrire", log_out: "Déconnexion",
+    log_in: "Se connecter", register: "S'inscrire", log_out: "Déconnexion", register_help: "Nouvel utilisateur : choisissez un identifiant et un mot de passe d'au moins 10 caractères, puis appuyez sur S'inscrire. La connexion sera automatique.",
     workspace: "Espace de transcription", record: "Enregistrer", source_language: "Langue",
     start: "● Démarrer", standby: "❚❚ Pause", resume: "▶ Reprendre", stop: "■ Arrêter",
     or_upload: "…ou importez un fichier audio :", nko: "N'Ko",
@@ -32,7 +32,7 @@ window.NKO_LANGUAGE_PACK = {
     _name: "Bamanankan", _dir: "ltr", app_title: "N'Ko kumakan sɛbɛnnikɛlan",
     ui_language: "Kankurunkan", subtitle: "Mandingekan fɔ — N'Ko kalan",
     sign_in: "Don", username: "Baarakɛla tɔgɔ", password: "Gundo kumakan",
-    log_in: "I ka don", register: "I tɔgɔ sɛbɛn", log_out: "I ka bɔ",
+    log_in: "I ka don", register: "I tɔgɔ sɛbɛn", log_out: "I ka bɔ", register_help: "Baarakɛla kura: i tɔgɔ ni gundo kumakan sɛbɛn (sɛbɛnni 10 walima ka tɛmɛ), ka I tɔgɔ sɛbɛn digi. I bɛ don o yɔrɔnin bɛɛ.",
     workspace: "Kumakan sɛbɛn yɔrɔ", record: "Kumakan ta", source_language: "Kan",
     start: "● A daminɛ", standby: "❚❚ A jɔ", resume: "▶ A daminɛ kokura", stop: "■ A lajɔ",
     or_upload: "…walima, kumakan filen bila yan :", nko: "N'Ko",
@@ -55,7 +55,7 @@ window.NKO_LANGUAGE_PACK = {
   en: {
     _name: "English", _dir: "ltr", app_title: "N'Ko Voice Transcriptor", ui_language: "Interface",
     subtitle: "Speak Manding — read N'Ko", sign_in: "Sign in", username: "Username", password: "Password",
-    log_in: "Log in", register: "Register", log_out: "Log out", workspace: "Transcription workspace",
+    log_in: "Log in", register: "Register", log_out: "Log out", register_help: "New user: choose a username and a password of at least 10 characters, then press Register. You will be signed in automatically.", workspace: "Transcription workspace",
     record: "Record", source_language: "Language", start: "● Start", standby: "❚❚ Pause", resume: "▶ Resume", stop: "■ Stop",
     or_upload: "…or upload an audio file:", nko: "N'Ko", editable_hint: "— editable, click to correct", latin: "Latin (Manding)",
     save_edit: "💾 Save edit", copy_nko: "⧉ Copy N'Ko", copy_latin: "⧉ Copy Latin", copied: "✓ Copied", copy_blocked: "✗ Copy blocked",
@@ -71,7 +71,7 @@ window.NKO_LANGUAGE_PACK = {
   },
   ru: {
     _name: "Русский", _dir: "ltr", app_title: "Голосовой транскриптор N'Ko", ui_language: "Интерфейс", subtitle: "Говорите на манден — читайте на N'Ko",
-    sign_in: "Вход", username: "Имя пользователя", password: "Пароль", log_in: "Войти", register: "Регистрация", log_out: "Выйти",
+    sign_in: "Вход", username: "Имя пользователя", password: "Пароль", log_in: "Войти", register: "Регистрация", log_out: "Выйти", register_help: "Новый пользователь: укажите имя и пароль не короче 10 символов, затем нажмите «Регистрация». Вход выполнится автоматически.",
     workspace: "Рабочая область транскрипции", record: "Запись", source_language: "Язык", start: "● Начать", standby: "❚❚ Пауза", resume: "▶ Продолжить", stop: "■ Остановить",
     or_upload: "…или загрузите аудиофайл:", nko: "N'Ko", editable_hint: "— можно редактировать", latin: "Латиница (манден)", save_edit: "💾 Сохранить",
     copy_nko: "⧉ Копировать N'Ko", copy_latin: "⧉ Копировать латиницу", copied: "✓ Скопировано", copy_blocked: "✗ Копирование запрещено", download: "Скачать:",
@@ -84,7 +84,7 @@ window.NKO_LANGUAGE_PACK = {
   },
   zh: {
     _name: "中文", _dir: "ltr", app_title: "N'Ko 语音转写器", ui_language: "界面语言", subtitle: "说曼丁语 — 阅读 N'Ko",
-    sign_in: "登录", username: "用户名", password: "密码", log_in: "登录", register: "注册", log_out: "退出登录", workspace: "转写工作区",
+    sign_in: "登录", username: "用户名", password: "密码", log_in: "登录", register: "注册", log_out: "退出登录", register_help: "新用户：输入用户名和至少 10 个字符的密码，然后点“注册”。系统会自动登录。", workspace: "转写工作区",
     record: "录音", source_language: "语言", start: "● 开始", standby: "❚❚ 暂停", resume: "▶ 继续", stop: "■ 停止", or_upload: "…或上传音频文件：",
     nko: "N'Ko", editable_hint: "— 可编辑，点击修正", latin: "拉丁字母（曼丁语）", save_edit: "💾 保存修改", copy_nko: "⧉ 复制 N'Ko", copy_latin: "⧉ 复制拉丁文字",
     copied: "✓ 已复制", copy_blocked: "✗ 无法复制", download: "下载：", try_text: "直接输入文字", paste: "⎘ 粘贴", nko_keyboard: "⌨ N'Ko 键盘",
@@ -96,7 +96,7 @@ window.NKO_LANGUAGE_PACK = {
   },
   ar: {
     _name: "العربية", _dir: "rtl", app_title: "مُفرّغ صوت N'Ko", ui_language: "لغة الواجهة", subtitle: "تحدّث بالماندينغ — واقرأ بالنكو",
-    sign_in: "تسجيل الدخول", username: "اسم المستخدم", password: "كلمة المرور", log_in: "دخول", register: "إنشاء حساب", log_out: "تسجيل الخروج",
+    sign_in: "تسجيل الدخول", username: "اسم المستخدم", password: "كلمة المرور", log_in: "دخول", register: "إنشاء حساب", log_out: "تسجيل الخروج", register_help: "مستخدم جديد: اختر اسمًا وكلمة مرور من 10 أحرف على الأقل، ثم اضغط إنشاء حساب. سيتم تسجيل دخولك تلقائيًا.",
     workspace: "مساحة التفريغ", record: "تسجيل", source_language: "اللغة", start: "● ابدأ", standby: "❚❚ إيقاف مؤقت", resume: "▶ متابعة", stop: "■ إيقاف",
     or_upload: "…أو ارفع ملفًا صوتيًا:", nko: "النكو", editable_hint: "— قابل للتعديل، انقر للتصحيح", latin: "اللاتينية (ماندينغ)", save_edit: "💾 حفظ التعديل",
     copy_nko: "⧉ نسخ النكو", copy_latin: "⧉ نسخ اللاتينية", copied: "✓ تم النسخ", copy_blocked: "✗ تعذر النسخ", download: "تنزيل:", try_text: "جرّب النص مباشرة",
@@ -110,7 +110,7 @@ window.NKO_LANGUAGE_PACK = {
   },
   nqo: {
     _name: "ߒߞߏ", _dir: "rtl", app_title: "ߒߞߏ ߞߊ߲ ߛߓߍߟߌ߲", ui_language: "ߞߊ߲", subtitle: "ߡߊ߲ߘߋ߲ ߞߊ߲ ߝߐ߫ — ߒߞߏ ߞߊ߬ߙߊ߲߬",
-    sign_in: "ߘߏ߲߬ߠߌ߲", username: "ߟߊ߬ߓߊ߯ߙߊ߬ߟߊ ߕߐ߮", password: "ߜߎ߲ߘߎߞߎߡߊ", log_in: "ߘߏ߲߬", register: "ߕߐ߮ ߛߓߍ߫", log_out: "ߓߐ߫",
+    sign_in: "ߘߏ߲߬ߠߌ߲", username: "ߟߊ߬ߓߊ߯ߙߊ߬ߟߊ ߕߐ߮", password: "ߜߎ߲ߘߎߞߎߡߊ", log_in: "ߘߏ߲߬", register: "ߕߐ߮ ߛߓߍ߫", log_out: "ߓߐ߫", register_help: "ߟߊߓߊ߯ߙߊߟߊ ߞߎߘߊ: ߌ ߕߐ߮ ߣߌ߫ ߜߎ߲ߘߎߞߎߡߊ ߛߓߍ߫، ߞߊ߬ ߕߐ߮ ߛߓߍ߫ ߘߌ߯. ߌ ߘߌ߫ ߘߏ߲߬ ߊ߬ߟߋ ߡߊ߬.",
     workspace: "ߞߊ߲ ߛߓߍߟߌ߲ ߞߍߦߌߙߊ", record: "ߞߊ߲ ߡߌ߬ߘߊ߬", source_language: "ߞߊ߲", start: "● ߘߊߡߌ߬ߣߊ߬", standby: "❚❚ ߟߊߞߏߟߏ߲", resume: "▶ ߘߊߡߌ߬ߣߊ߬ ߞߏ߫", stop: "■ ߟߊ߬ߟߐ߬",
     or_upload: "…ߥߟߊ߫ ߞߊ߲ ߞߐߕߐ߮ ߟߊߦߟߍ߬:", nko: "ߒߞߏ", editable_hint: "— ߊ߬ ߘߌ߫ ߛߋ߫ ߟߊߛߊ߬ߦߌ߬ ߟߊ߫", latin: "ߟߊߕߍ߲ (ߡߊ߲ߘߋ߲)", save_edit: "💾 ߊ߬ ߟߊߡߊߙߊ߫",
     copy_nko: "⧉ ߒߞߏ ߓߊߖߎߡߊ߫", copy_latin: "⧉ ߟߊߕߍ߲ ߓߊߖߎߡߊ߫", copied: "✓ ߊ߬ ߓߊߖߎߡߊ߫ ߘߊ߫", copy_blocked: "✗ ߓߊߖߎߡߊߟߌ ߡߊ߫ ߛߐ߲߬", download: "ߟߊߖߌ߲߰:",
