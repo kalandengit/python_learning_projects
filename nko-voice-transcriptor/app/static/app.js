@@ -174,10 +174,17 @@ function loadResult(rec) {
   currentResultId = rec.id ?? null;
   $("result").classList.remove("hidden");
   $("result-nko").value = rec.text_nko;
+  $("result-nko").readOnly = true;
   $("result-latin").textContent = rec.text_latin ?? "";
   $("save-nko-btn").disabled = true;   // nothing edited yet
   $("save-state").textContent = "";
 }
+
+$("edit-nko-btn").addEventListener("click", () => {
+  $("result-nko").readOnly = false;
+  $("result-nko").focus();
+  $("save-state").textContent = window.NKO_I18N.t("editing");
+});
 
 async function sendAudio(blob, filename) {
   $("app-error").textContent = "";
@@ -212,6 +219,7 @@ $("save-nko-btn").addEventListener("click", async () => {
     });
     $("save-nko-btn").disabled = true;
     $("save-state").textContent = window.NKO_I18N.t("saved");
+    $("result-nko").readOnly = true;
     refreshHistory();
   } catch (err) {
     $("save-state").textContent = err.message;

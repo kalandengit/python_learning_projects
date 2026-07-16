@@ -9,6 +9,8 @@
 - Added Android's document picker bridge for importing audio files without
   requesting broad storage access.
 - Clarified that registration automatically signs the new account in.
+- Added an explicit translated Edit result button and accidental-edit protection
+  for generated N'Ko text.
 
 ## 1.8.0 - 2026-07-16
 

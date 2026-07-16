@@ -44,3 +44,12 @@ def test_bambara_catalog_uses_standard_language_tag():
     catalog = _catalogs()["bm"]
     assert 'Bamanankan' in catalog
     assert "Daɲɛgafe" in catalog
+
+
+def test_result_editor_has_explicit_edit_and_save_controls():
+    html = (STATIC / "index.html").read_text(encoding="utf-8")
+    app = (STATIC / "app.js").read_text(encoding="utf-8")
+    assert 'id="edit-nko-btn"' in html
+    assert 'id="save-nko-btn"' in html
+    assert '$("result-nko").readOnly = true' in app
+    assert '$("result-nko").readOnly = false' in app
