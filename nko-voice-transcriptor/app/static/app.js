@@ -43,6 +43,7 @@ function showApp() {
   authPanel.classList.add("hidden");
   appPanel.classList.remove("hidden");
   loadLanguages();
+  loadDictLanguages();
   refreshHistory();
 }
 
@@ -486,18 +487,39 @@ $("keyboard-toggle").addEventListener("click", async () => {
 });
 
 // ---- Dictionary lookup ------------------------------------------------------
-// French ↔ N'Ko lexicon search. Clicking a result inserts its N'Ko into the
-// active N'Ko field, so the dictionary doubles as a spelling aid for editing.
+// Multi-language ↔ N'Ko lookup via the language-pack module. Clicking a result
+// inserts its N'Ko into the active N'Ko field, so it doubles as a spelling aid.
+let dictLangsLoaded = false;
+async function loadDictLanguages() {
+  if (dictLangsLoaded) return;
+  try {
+    const langs = await api("/api/langpack/languages");
+    const sel = $("dict-lang");
+    sel.replaceChildren();
+    for (const l of langs) {
+      const opt = document.createElement("option");
+      opt.value = l.code;
+      // mark seed packs so users know coverage is partial
+      opt.textContent = l.partial ? `${l.name} (${l.count})` : l.name;
+      if (l.code === "fr") opt.selected = true;
+      sel.append(opt);
+    }
+    dictLangsLoaded = true;
+  } catch { /* leave empty; defaults to fr server-side */ }
+}
+
 async function runDictionary() {
   const q = $("dict-input").value.trim();
   const dir = $("dict-dir").value;
+  const lang = $("dict-lang").value || "fr";
   const ul = $("dict-results");
   ul.replaceChildren();
   $("dict-empty").classList.add("hidden");
   if (!q) return;
   let res;
   try {
-    res = await api(`/api/dictionary?q=${encodeURIComponent(q)}&dir=${dir}&limit=25`);
+    res = await api(
+      `/api/langpack/lookup?q=${encodeURIComponent(q)}&lang=${lang}&dir=${dir}&limit=25`);
   } catch (err) {
     $("app-error").textContent = err.message;
     return;
@@ -510,7 +532,7 @@ async function runDictionary() {
     const li = document.createElement("li");
     const fr = document.createElement("span");
     fr.className = "dict-fr";
-    fr.textContent = e.cat ? `${e.fr}` : e.fr;
+    fr.textContent = e.term;
     const nko = document.createElement("span");
     nko.className = "dict-nko nko";
     nko.dir = "rtl";
@@ -531,6 +553,7 @@ async function runDictionary() {
 $("dict-btn").addEventListener("click", runDictionary);
 $("dict-input").addEventListener("keydown", (e) => { if (e.key === "Enter") runDictionary(); });
 $("dict-dir").addEventListener("change", () => { if ($("dict-input").value.trim()) runDictionary(); });
+$("dict-lang").addEventListener("change", () => { if ($("dict-input").value.trim()) runDictionary(); });
 
 // ---- History management -----------------------------------------------------
 const HISTORY_PAGE = 10;

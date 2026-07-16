@@ -1,5 +1,28 @@
 # Changelog
 
+## 1.8.0 - 2026-07-14
+
+### Language packs
+
+- New **`app.langpack` module** (separate from the ASR source-language list):
+  a pluggable registry of language→N'Ko packs served at
+  `GET /api/langpack/languages` and `GET /api/langpack/lookup`.
+- **Bambara pack (`bm`)** — full coverage (~47,800), derived from the French
+  lexicon by romanizing every N'Ko entry to Bambara Latin (tone marks dropped,
+  nasalization → n). Deterministic, not fabricated.
+- **Curated seed packs** for **English, Russian, Chinese, Arabic** (~90 common
+  words each), hand-translated and attached to authentic N'Ko from the lexicon;
+  clearly marked `partial`. Regenerate via `scripts/build_seed_langpacks.py`;
+  complete from a translation source you supply.
+- Dictionary UI gains a **language selector** (French, Bambara, English,
+  Russian, Chinese, Arabic) so you can search in your language and get N'Ko.
+
+### Tests
+
+- `tests/test_langpack.py`: registry lists all packs, French/Bambara are full
+  and the rest partial, "water" resolves to the same N'Ko across languages,
+  Bambara terms are Latin, endpoints + validation.
+
 ## 1.7.0 - 2026-07-14
 
 ### Dictionary

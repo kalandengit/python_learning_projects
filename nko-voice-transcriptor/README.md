@@ -172,6 +172,8 @@ ruff check app tests
 | DELETE | `/api/history` | Bearer | clear all own transcriptions |
 | GET | `/api/dictionary` | – | N'Ko ↔ French lexicon lookup (`q`, `dir=fr\|nko`) |
 | GET | `/api/alphabet` | – | full N'Ko block: glyph, name, Latin value |
+| GET | `/api/langpack/languages` | – | available language packs |
+| GET | `/api/langpack/lookup` | – | language → N'Ko lookup (`q`, `lang`, `dir`) |
 | POST | `/api/auth/register` | – | create account |
 | POST | `/api/auth/login` | – | get JWT access token |
 | POST | `/api/transcribe` | Bearer | audio → `{text_latin, text_nko}` (stored) |

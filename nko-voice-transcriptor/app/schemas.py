@@ -87,6 +87,27 @@ class DictionaryResult(BaseModel):
     entries: list[DictionaryEntry]
 
 
+class LangPackLanguage(BaseModel):
+    code: str
+    name: str
+    partial: bool
+    count: int
+
+
+class LangPackEntry(BaseModel):
+    term: str
+    nko: str
+    cat: str = ""
+
+
+class LangPackResult(BaseModel):
+    query: str
+    lang: str
+    direction: str
+    count: int
+    entries: list[LangPackEntry]
+
+
 class HealthOut(BaseModel):
     status: str
     version: str
