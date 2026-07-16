@@ -12,6 +12,7 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.webkit.PermissionRequest;
+import android.webkit.JavascriptInterface;
 import android.webkit.WebChromeClient;
 import android.webkit.WebResourceError;
 import android.webkit.WebResourceRequest;
@@ -53,6 +54,7 @@ public class MainActivity extends Activity {
         settings.setJavaScriptEnabled(true);
         settings.setDomStorageEnabled(true);
         settings.setMediaPlaybackRequiresUserGesture(false);
+        web.addJavascriptInterface(new ShareBridge(this), "NkoAndroid");
 
         web.setWebViewClient(new WebViewClient() {
             @Override
@@ -151,6 +153,27 @@ public class MainActivity extends Activity {
 
     private SharedPreferences prefs() {
         return getSharedPreferences(PREFS, Context.MODE_PRIVATE);
+    }
+
+    /** Minimal native bridge used only to open Android's standard share sheet. */
+    private static final class ShareBridge {
+        private final Activity activity;
+
+        ShareBridge(Activity activity) {
+            this.activity = activity;
+        }
+
+        @JavascriptInterface
+        public void share(String text) {
+            if (text == null || text.isBlank()) return;
+            String safeText = text.length() > 20_000 ? text.substring(0, 20_000) : text;
+            activity.runOnUiThread(() -> {
+                Intent send = new Intent(Intent.ACTION_SEND);
+                send.setType("text/plain");
+                send.putExtra(Intent.EXTRA_TEXT, safeText);
+                activity.startActivity(Intent.createChooser(send, "Share N'Ko transcript"));
+            });
+        }
     }
 
     private void loadSavedOrPrompt() {

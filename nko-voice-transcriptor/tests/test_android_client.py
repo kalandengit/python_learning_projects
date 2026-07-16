@@ -43,3 +43,20 @@ def test_android_file_upload_uses_document_picker_without_storage_permission():
     assert 'setType("audio/*")' in activity
     assert "FileChooserParams.parseResult" in activity
     assert "READ_EXTERNAL_STORAGE" not in manifest
+
+
+def test_android_share_bridge_opens_native_share_sheet():
+    activity = (
+        ANDROID
+        / "src"
+        / "main"
+        / "java"
+        / "net"
+        / "nkotools"
+        / "transcriptor"
+        / "MainActivity.java"
+    ).read_text(encoding="utf-8")
+    assert 'addJavascriptInterface(new ShareBridge(this), "NkoAndroid")' in activity
+    assert "Intent.ACTION_SEND" in activity
+    assert "Intent.createChooser" in activity
+    assert "@JavascriptInterface" in activity

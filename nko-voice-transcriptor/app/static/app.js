@@ -246,6 +246,21 @@ $("copy-latin-btn").addEventListener("click", (e) =>
 $("copy-text-btn").addEventListener("click", (e) =>
   copyToClipboard(e.target, $("text-output").value));
 
+$("share-btn").addEventListener("click", async () => {
+  const nko = $("result-nko").value;
+  const latin = $("result-latin").textContent;
+  if (!nko && !latin) return;
+  const text = `N'Ko:\n${nko}\n\nLatin (Manding):\n${latin}`;
+  if (window.NkoAndroid?.share) {
+    window.NkoAndroid.share(text);
+  } else if (navigator.share) {
+    try { await navigator.share({ title: "N'Ko transcript", text }); } catch { /* cancelled */ }
+  } else {
+    await navigator.clipboard.writeText(text);
+    $("save-state").textContent = window.NKO_I18N.t("share_copied");
+  }
+});
+
 $("paste-btn").addEventListener("click", async () => {
   try {
     const text = await navigator.clipboard.readText();

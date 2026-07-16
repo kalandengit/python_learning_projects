@@ -25,6 +25,14 @@ class Settings(BaseSettings):
     asr_engine: Literal["mock", "mms"] = "mock"
     mms_model_id: str = "facebook/mms-1b-all"
 
+    # Optional OpenAI-compatible text cleanup after speech recognition.
+    # Credentials are server-side only and are never returned to the app.
+    llm_provider: Literal["none", "openai", "groq", "custom"] = "none"
+    llm_api_key: str = ""
+    llm_model: str = ""
+    llm_base_url: str = ""
+    llm_timeout_seconds: int = 20
+
     # Comma-separated ISO 639-3 codes offered as source languages. Each must
     # be a Manding language covered by both MMS and the N'Ko transliterator.
     languages: str = "bam,dyu,emk,mku,msc,mwk"
@@ -60,6 +68,16 @@ class Settings(BaseSettings):
     def default_language_supported(self) -> Settings:
         if self.default_language not in self.language_list:
             raise ValueError("NKO_DEFAULT_LANGUAGE must be one of NKO_LANGUAGES")
+        return self
+
+    @model_validator(mode="after")
+    def llm_configuration_valid(self) -> Settings:
+        if self.llm_provider != "none" and not self.llm_api_key:
+            raise ValueError("NKO_LLM_API_KEY is required when NKO_LLM_PROVIDER is enabled")
+        if self.llm_provider == "custom" and not self.llm_base_url:
+            raise ValueError("NKO_LLM_BASE_URL is required for the custom provider")
+        if self.llm_base_url and not self.llm_base_url.startswith(("https://", "http://")):
+            raise ValueError("NKO_LLM_BASE_URL must use HTTPS or HTTP")
         return self
 
 

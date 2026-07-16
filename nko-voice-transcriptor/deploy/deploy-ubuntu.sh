@@ -41,6 +41,10 @@ ENABLE_TLS="${ENABLE_TLS:-0}"            # 1 + DOMAIN + EMAIL → Let's Encrypt
 EMAIL="${EMAIL:-}"                        # for certbot registration
 USE_POSTGRES="${USE_POSTGRES:-0}"       # 1 = provision local PostgreSQL
 ASR_ENGINE="${ASR_ENGINE:-mock}"        # mock | mms (mms pulls ~2GB torch stack)
+LLM_PROVIDER="${LLM_PROVIDER:-none}"    # none | openai | groq | custom
+LLM_API_KEY="${LLM_API_KEY:-}"          # required when provider is enabled
+LLM_MODEL="${LLM_MODEL:-}"              # blank = provider default
+LLM_BASE_URL="${LLM_BASE_URL:-}"        # required for custom; OpenAI-compatible API
 SETUP_FIREWALL="${SETUP_FIREWALL:-1}"   # 1 = configure UFW (OpenSSH + Nginx)
 
 SERVICE_NAME="nko-transcriptor"
@@ -53,6 +57,7 @@ die()  { printf '\033[1;31mXX %s\033[0m\n' "$*" >&2; exit 1; }
 
 [ "$(id -u)" -eq 0 ] || die "Please run as root (use: sudo $0)"
 command -v systemctl >/dev/null || die "systemd is required (Ubuntu Server LTS)."
+[ "$LLM_PROVIDER" = "none" ] || [ -n "$LLM_API_KEY" ] || die "LLM_API_KEY is required for LLM_PROVIDER=$LLM_PROVIDER."
 
 if [ "$ENABLE_TLS" = "1" ]; then
   [ -n "$DOMAIN" ] || die "ENABLE_TLS=1 requires DOMAIN."
@@ -146,6 +151,10 @@ cat > "$ENV_FILE" <<EOF
 NKO_SECRET_KEY=${SECRET}
 NKO_DATABASE_URL=${DB_URL}
 NKO_ASR_ENGINE=${ASR_ENGINE}
+NKO_LLM_PROVIDER=${LLM_PROVIDER}
+NKO_LLM_API_KEY=${LLM_API_KEY}
+NKO_LLM_MODEL=${LLM_MODEL}
+NKO_LLM_BASE_URL=${LLM_BASE_URL}
 NKO_ENVIRONMENT=production
 NKO_CORS_ORIGINS=${CORS_ORIGINS}
 EOF
@@ -278,6 +287,7 @@ echo "  Service       : systemctl status ${SERVICE_NAME}"
 echo "  Logs          : journalctl -u ${SERVICE_NAME} -f"
 echo "  Env / secrets : ${ENV_FILE}"
 echo "  ASR engine    : ${ASR_ENGINE}"
+echo "  LLM cleanup   : ${LLM_PROVIDER}"
 echo "  Database      : $([ "$USE_POSTGRES" = 1 ] && echo PostgreSQL || echo 'SQLite (single-node)')"
 echo
 echo "  Update later  : sudo REPO_REF=main $0"

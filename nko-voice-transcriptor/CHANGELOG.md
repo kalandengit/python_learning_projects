@@ -11,6 +11,8 @@
 - Clarified that registration automatically signs the new account in.
 - Added an explicit translated Edit result button and accidental-edit protection
   for generated N'Ko text.
+- Added Share transcript with Android's native app chooser, Web Share API, and
+  clipboard fallback.
 
 ## 1.8.0 - 2026-07-16
 

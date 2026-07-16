@@ -11,6 +11,7 @@ from app.config import Settings, get_settings
 from app.db import get_db
 from app.languages import display_name
 from app.limits import limiter
+from app.llm import improve_transcript
 from app.logging_conf import get_logger
 from app.models import Transcription, User
 from app.nko import transliterate
@@ -73,10 +74,11 @@ async def transcribe_audio(
             status.HTTP_503_SERVICE_UNAVAILABLE, "Speech recognition engine unavailable"
         ) from exc
 
-    text_nko = transliterate(result.text_latin)
+    text_latin = improve_transcript(result.text_latin, lang, settings)
+    text_nko = transliterate(text_latin)
     record = Transcription(
         user_id=user.id,
-        text_latin=result.text_latin,
+        text_latin=text_latin,
         text_nko=text_nko,
         engine=result.engine,
         language=result.language,
