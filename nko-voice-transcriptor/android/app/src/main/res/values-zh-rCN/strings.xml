@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">N\'Ko 转写器</string><string name="set_url">设置服务器地址</string>
+    <string name="url_title">N\'Ko 服务器地址</string><string name="url_message">请输入 N\'Ko Voice Transcriptor 服务器地址。</string>
+    <string name="load">加载</string><string name="conn_error_title">无法连接服务器</string>
+    <string name="conn_error_message">无法连接：\n%1$s\n\n%2$s\n\n请检查服务器后重试。</string>
+    <string name="retry">重试</string><string name="change_url">更改地址</string>
+</resources>

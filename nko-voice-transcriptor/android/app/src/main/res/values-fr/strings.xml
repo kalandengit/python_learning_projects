@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Transcripteur N\'Ko</string><string name="set_url">Définir l\'URL du serveur</string>
+    <string name="url_title">URL du serveur N\'Ko</string><string name="url_message">Saisissez l\'adresse du serveur N\'Ko Voice Transcriptor.</string>
+    <string name="load">Charger</string><string name="conn_error_title">Serveur inaccessible</string>
+    <string name="conn_error_message">Connexion impossible à :\n%1$s\n\n%2$s\n\nVérifiez le serveur puis réessayez.</string>
+    <string name="retry">Réessayer</string><string name="change_url">Changer l\'URL</string>
+</resources>

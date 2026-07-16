@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">N\'Ko Transcriptor</string>
+    <string name="set_url">Set server URL</string>
+    <string name="url_title">N\'Ko server URL</string>
+    <string name="url_message">Enter the address where the N\'Ko Voice Transcriptor server is running (e.g. http://10.0.2.2:8000 for an emulator, or your machine\'s LAN IP).</string>
+    <string name="load">Load</string>
+    <string name="conn_error_title">Server unreachable</string>
+    <string name="conn_error_message">Could not connect to:\n%1$s\n\n%2$s\n\nMake sure the N\'Ko Voice Transcriptor server is running and reachable from this device, then retry or change the URL.</string>
+    <string name="retry">Retry</string>
+    <string name="change_url">Change URL</string>
+</resources>

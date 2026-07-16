@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Транскриптор N\'Ko</string><string name="set_url">Задать URL сервера</string>
+    <string name="url_title">URL сервера N\'Ko</string><string name="url_message">Введите адрес сервера N\'Ko Voice Transcriptor.</string>
+    <string name="load">Загрузить</string><string name="conn_error_title">Сервер недоступен</string>
+    <string name="conn_error_message">Не удалось подключиться к:\n%1$s\n\n%2$s\n\nПроверьте сервер и повторите попытку.</string>
+    <string name="retry">Повторить</string><string name="change_url">Изменить URL</string>
+</resources>
