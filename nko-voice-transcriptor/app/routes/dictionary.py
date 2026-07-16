@@ -11,6 +11,14 @@ from app.schemas import DictionaryEntry, DictionaryResult
 router = APIRouter(prefix="/api/dictionary", tags=["dictionary"])
 
 
+@router.get("/practice", response_model=list[DictionaryEntry])
+@limiter.limit("30/minute")
+def practice(request: Request, limit: int = Query(default=10, ge=1, le=25)):
+    """Return short French/N'Ko pairs for the self-evaluation practice UI."""
+    entries = get_dictionary().practice(limit)
+    return [DictionaryEntry(fr=e.fr, nko=e.nko, cat=e.cat) for e in entries]
+
+
 @router.get("", response_model=DictionaryResult)
 @limiter.limit("60/minute")
 def lookup(

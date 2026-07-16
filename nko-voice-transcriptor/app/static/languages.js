@@ -24,6 +24,8 @@ window.NKO_LANGUAGE_PACK = {
     dict_credit: "Lexique : NKo Wuruki / Institut N'Ko.", microphone_denied: "Accès au microphone refusé — vous pouvez importer un fichier.",
     session_expired: "Session expirée — reconnectez-vous.", request_failed: "Échec de la requête",
     clipboard_denied: "Lecture du presse-papiers bloquée — utilisez Ctrl+V / ⌘V.",
+    practice_title: "Dictée N'Ko", practice_help: "Écoutez le mot français, écrivez-le en N'Ko, puis validez.",
+    new_prompt: "Nouveau mot", listen: "🔊 Écouter", validate: "Valider", correct: "✓ Correct", try_again: "Réessayez :",
     footer: "Mandingue → N'Ko (écriture de Solomana Kanté). La qualité dépend du moteur de reconnaissance configuré."
   },
   bm: {
@@ -46,6 +48,8 @@ window.NKO_LANGUAGE_PACK = {
     dict_credit: "Daɲɛgafe : NKo Wuruki / N'Ko Institute.", microphone_denied: "Mikoro ma sɔn — i bɛ se ka kumakan filen bila yan.",
     session_expired: "Don waati banna — i ka don kokura.", request_failed: "Ɲinini ma se ka kɛ",
     clipboard_denied: "Kopi yɔrɔ kalan ma sɔn — Ctrl+V / ⌘V kɛ.",
+    practice_title: "N'Ko sɛbɛnni kalan", practice_help: "Faransikan daɲɛ lamɛn, a sɛbɛn N'Ko la, ka a lajɛ.",
+    new_prompt: "Daɲɛ kura", listen: "🔊 A lamɛn", validate: "A lajɛ", correct: "✓ A tiɲɛnen don", try_again: "A lajɛ kokura :",
     footer: "Mandingekan → N'Ko (Solomana Kanté ka sɛbɛnni). Tiɲɛni ka ɲi ka bɛn kumakan dɔnni min bɛ baarala."
   },
   en: {
@@ -61,6 +65,8 @@ window.NKO_LANGUAGE_PACK = {
     dict_placeholder: "Search for a word…", search: "🔍 Search", dict_none: "No match.", dict_credit: "Lexicon: NKo Wuruki / N'Ko Institute.",
     microphone_denied: "Microphone access denied — you can upload a file instead.", session_expired: "Session expired — please log in again.",
     request_failed: "Request failed", clipboard_denied: "Clipboard read blocked — paste with Ctrl+V / ⌘V.",
+    practice_title: "N'Ko dictation practice", practice_help: "Listen to the French word, type it in N'Ko, then validate.",
+    new_prompt: "New word", listen: "🔊 Listen", validate: "Validate", correct: "✓ Correct", try_again: "Try again:",
     footer: "Manding → N'Ko (script of Solomana Kanté). Quality depends on the configured speech-recognition engine."
   },
   ru: {
@@ -73,7 +79,8 @@ window.NKO_LANGUAGE_PACK = {
     load_more: "Загрузить ещё", no_history: "История пуста.", recording: "идёт запись…", on_standby: "пауза", unsaved: "не сохранено", saved: "✓ сохранено", saved_count: "Сохранено: {n}",
     dictionary_title: "Словарь", dict_placeholder: "Найти слово…", search: "🔍 Найти", dict_none: "Совпадений нет.", dict_credit: "Словарь: NKo Wuruki / Институт N'Ko.",
     microphone_denied: "Доступ к микрофону запрещён — загрузите аудиофайл.", session_expired: "Сеанс истёк — войдите снова.", request_failed: "Ошибка запроса",
-    clipboard_denied: "Чтение буфера обмена запрещено — используйте Ctrl+V / ⌘V.", footer: "Манден → N'Ko (письмо Соломаны Канте). Качество зависит от настроенного распознавания речи."
+    clipboard_denied: "Чтение буфера обмена запрещено — используйте Ctrl+V / ⌘V.", practice_title: "Диктант N'Ko", practice_help: "Прослушайте французское слово, напишите его на N'Ko и проверьте.",
+    new_prompt: "Новое слово", listen: "🔊 Слушать", validate: "Проверить", correct: "✓ Верно", try_again: "Попробуйте ещё:", footer: "Манден → N'Ko (письмо Соломаны Канте). Качество зависит от настроенного распознавания речи."
   },
   zh: {
     _name: "中文", _dir: "ltr", app_title: "N'Ko 语音转写器", ui_language: "界面语言", subtitle: "说曼丁语 — 阅读 N'Ko",
@@ -84,7 +91,8 @@ window.NKO_LANGUAGE_PACK = {
     history: "历史记录", search_history: "搜索…", clear_all: "🗑 全部清除", load_more: "加载更多", no_history: "暂无历史记录。", recording: "正在录音…", on_standby: "已暂停",
     unsaved: "未保存", saved: "✓ 已保存", saved_count: "已保存 {n} 条", dictionary_title: "词典", dict_placeholder: "搜索词语…", search: "🔍 搜索", dict_none: "无匹配结果。",
     dict_credit: "词典：NKo Wuruki / N'Ko 研究所。", microphone_denied: "麦克风访问被拒绝 — 您可以上传音频文件。", session_expired: "会话已过期 — 请重新登录。",
-    request_failed: "请求失败", clipboard_denied: "无法读取剪贴板 — 请使用 Ctrl+V / ⌘V。", footer: "曼丁语 → N'Ko（索洛马纳·坎特创制的文字）。质量取决于所配置的语音识别引擎。"
+    request_failed: "请求失败", clipboard_denied: "无法读取剪贴板 — 请使用 Ctrl+V / ⌘V。", practice_title: "N'Ko 听写练习", practice_help: "听法语单词，用 N'Ko 写出并检查。",
+    new_prompt: "新单词", listen: "🔊 收听", validate: "检查", correct: "✓ 正确", try_again: "再试一次：", footer: "曼丁语 → N'Ko（索洛马纳·坎特创制的文字）。质量取决于所配置的语音识别引擎。"
   },
   ar: {
     _name: "العربية", _dir: "rtl", app_title: "مُفرّغ صوت N'Ko", ui_language: "لغة الواجهة", subtitle: "تحدّث بالماندينغ — واقرأ بالنكو",
@@ -96,6 +104,8 @@ window.NKO_LANGUAGE_PACK = {
     recording: "جارٍ التسجيل…", on_standby: "متوقف مؤقتًا", unsaved: "غير محفوظ", saved: "✓ تم الحفظ", saved_count: "{n} محفوظ", dictionary_title: "قاموس",
     dict_placeholder: "ابحث عن كلمة…", search: "🔍 بحث", dict_none: "لا نتائج.", dict_credit: "المعجم: NKo Wuruki / معهد النكو.", microphone_denied: "رُفض الوصول إلى الميكروفون — يمكنك رفع ملف صوتي.",
     session_expired: "انتهت الجلسة — سجّل الدخول مجددًا.", request_failed: "فشل الطلب", clipboard_denied: "تعذرت قراءة الحافظة — استخدم Ctrl+V / ⌘V.",
+    practice_title: "تمرين إملاء النكو", practice_help: "استمع إلى الكلمة الفرنسية، واكتبها بالنكو، ثم تحقق.",
+    new_prompt: "كلمة جديدة", listen: "🔊 استماع", validate: "تحقق", correct: "✓ صحيح", try_again: "حاول مجددًا:",
     footer: "الماندينغ ← النكو (خط سليمانا كانتي). تعتمد الجودة على محرك التعرّف على الكلام المُعدّ."
   },
   nqo: {
@@ -107,6 +117,7 @@ window.NKO_LANGUAGE_PACK = {
     try_text: "ߛߓߍߟߌ߲ ߟߊߞߘߐߓߐ߫", paste: "⎘ ߊ߬ ߣߐ߯", nko_keyboard: "⌨ ߒߞߏ ߞߏߘߏ߲", history: "ߞߐߕߐ߮", search_history: "ߢߌߣߌ߲…", clear_all: "🗑 ߓߍ߯ ߖߏ߬ߛߌ߬", load_more: "ߜߘߍ߫ ߟߎ߬ ߦߌ߬ߘߊ߬", no_history: "ߞߐߕߐ߮ ߕߍ߫.",
     recording: "ߞߊ߲ ߡߌ߬ߘߊ߬ߟߌ…", on_standby: "ߊ߬ ߟߐ߬ ߘߊ߫", unsaved: "ߊ߬ ߡߊ߫ ߡߊߙߊ߬", saved: "✓ ߊ߬ ߡߊߙߊ߫ ߘߊ߫", saved_count: "{n} ߡߊߙߊ߫ ߘߊ߫", dictionary_title: "ߞߎߡߘߊߞߎ߲", dict_placeholder: "ߞߎߡߊ߫ ߢߌߣߌ߲…", search: "🔍 ߢߌߣߌ߲", dict_none: "ߝߏߦߌ߬ ߡߊ߫ ߛߐ߬ߘߐ߲߬.",
     dict_credit: "ߞߎߡߘߊߞߎ߲: NKo Wuruki / N'Ko Institute.", microphone_denied: "ߞߊ߲ߡߌߘߊߟߊ߲ ߡߊ߫ ߛߐ߲߬ — ߞߊ߲ ߞߐߕߐ߮ ߟߊߦߟߍ߬.", session_expired: "ߘߏ߲߬ߠߌ߲ ߕߎ߬ߡߊ ߓߊ߲߫ ߘߊ߫ — ߌ ߘߏ߲߬ ߞߏ߫.", request_failed: "ߢߌߣߌ߲ߠߌ߲ ߡߊ߫ ߛߎߘߎ߲߫",
-    clipboard_denied: "ߓߊߖߎߡߊ ߦߙߐ ߞߊ߬ߙߊ߲ ߡߊ߫ ߛߐ߲߬ — Ctrl+V / ⌘V ߞߍ߫.", footer: "ߡߊ߲ߘߋ߲ → ߒߞߏ (ߛߏ߬ߟߏ߬ߡߊ߬ߣߊ߫ ߞߊ߲ߕߍ߫ ߟߊ߫ ߛߓߍߟߌ߲). ߞߊ߲ ߘߐ߲ߠߌ߲ ߞߍߢߊ ߟߋ߬ ߦߋ߫ ߊ߬ ߟߊ߫."
+    clipboard_denied: "ߓߊߖߎߡߊ ߦߙߐ ߞߊ߬ߙߊ߲ ߡߊ߫ ߛߐ߲߬ — Ctrl+V / ⌘V ߞߍ߫.", practice_title: "ߒߞߏ ߛߓߍߟߌ߲ ߞߊ߬ߙߊ߲", practice_help: "ߝߙߊ߲ߛߌ ߞߎߡߊ ߟߊߡߍ߲߫، ߊ߬ ߛߓߍ߫ ߒߞߏ ߟߊ߫، ߞߊ߬ ߊ߬ ߟߊߞߘߐߓߐ߫.",
+    new_prompt: "ߞߎߡߊ߫ ߞߎߘߊ", listen: "🔊 ߊ߬ ߟߊߡߍ߲߫", validate: "ߊ߬ ߟߊߞߘߐߓߐ߫", correct: "✓ ߊ߬ ߕߌߢߍߣߍ߲߫", try_again: "ߊ߬ ߟߊߞߘߐߓߐ߫ ߞߏ߫ :", footer: "ߡߊ߲ߘߋ߲ → ߒߞߏ (ߛߏ߬ߟߏ߬ߡߊ߬ߣߊ߫ ߞߊ߲ߕߍ߫ ߟߊ߫ ߛߓߍߟߌ߲). ߞߊ߲ ߘߐ߲ߠߌ߲ ߞߍߢߊ ߟߋ߬ ߦߋ߫ ߊ߬ ߟߊ߫."
   }
 };

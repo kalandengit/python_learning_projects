@@ -17,6 +17,7 @@ first. This is a read-only feature: no user data is involved.
 from __future__ import annotations
 
 import json
+import secrets
 import unicodedata
 from dataclasses import dataclass
 from functools import lru_cache
@@ -87,6 +88,11 @@ class Dictionary:
                 scored.append((rank, i, entry))
         scored.sort(key=lambda t: (t[0], len(t[2].nko), t[1]))
         return [e for _, _, e in scored[:limit]]
+
+    def practice(self, limit: int = 10) -> list[Entry]:
+        """Return varied, short entries suitable for listen-and-type practice."""
+        suitable = [e for e in self.entries if len(e.fr) <= 40 and len(e.nko) <= 80]
+        return secrets.SystemRandom().sample(suitable, min(limit, len(suitable)))
 
 
 def _load_entries(path: Path) -> list[Entry]:

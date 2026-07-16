@@ -46,6 +46,12 @@ class TestSearchNko:
         assert "maisonnette" in frs  # ߓߏ߲ߘߋ߲ contains ߓߏ߲
 
 
+def test_practice_entries_are_bounded_and_unique():
+    entries = _dict().practice(3)
+    assert len(entries) == 3
+    assert len({(entry.fr, entry.nko) for entry in entries}) == 3
+
+
 class TestBundledLexicon:
     def test_full_lexicon_is_default(self):
         # With no NKO_LEXICON_PATH set, the bundled full French–N'Ko lexicon
@@ -61,6 +67,13 @@ class TestBundledLexicon:
 
 
 class TestEndpoint:
+    def test_practice_endpoint(self, client):
+        response = client.get("/api/dictionary/practice", params={"limit": 4})
+        assert response.status_code == 200
+        entries = response.json()
+        assert len(entries) == 4
+        assert all(entry["fr"] and entry["nko"] for entry in entries)
+
     def test_lookup_fr(self, client):
         r = client.get("/api/dictionary", params={"q": "eau", "dir": "fr"})
         assert r.status_code == 200

@@ -360,7 +360,7 @@ $("dl-pdf-btn").addEventListener("click", () => {
 // ---- On-screen N'Ko keyboard ------------------------------------------------
 // Layout by Unicode. Rows: vowels, consonants, marks/digits, controls.
 // Editable N'Ko fields the keyboard can type into:
-const NKO_FIELDS = ["result-nko", "text-output", "text-input"];
+const NKO_FIELDS = ["result-nko", "text-output", "text-input", "practice-input"];
 let activeField = $("text-output");
 for (const id of NKO_FIELDS) {
   $(id).addEventListener("focus", (e) => { activeField = e.target; });
@@ -482,6 +482,43 @@ $("keyboard-toggle").addEventListener("click", async () => {
   const kb = $("keyboard");
   const shown = kb.classList.toggle("hidden") === false;
   $("keyboard-toggle").setAttribute("aria-expanded", String(shown));
+});
+
+// ---- Self-evaluation dictation practice -------------------------------------
+let practiceItems = [], practiceIndex = -1;
+
+async function nextPractice() {
+  if (!practiceItems.length || practiceIndex >= practiceItems.length - 1) {
+    practiceItems = await api("/api/dictionary/practice?limit=10");
+    practiceIndex = -1;
+  }
+  practiceIndex += 1;
+  $("practice-input").value = "";
+  $("practice-feedback").textContent = "";
+  $("practice-input").focus();
+}
+
+function speakPractice() {
+  const item = practiceItems[practiceIndex];
+  if (!item || !("speechSynthesis" in window)) return;
+  speechSynthesis.cancel();
+  const utterance = new SpeechSynthesisUtterance(item.fr);
+  utterance.lang = "fr-FR";
+  speechSynthesis.speak(utterance);
+}
+
+$("practice-new").addEventListener("click", () => nextPractice().catch((e) => {
+  $("practice-feedback").textContent = e.message;
+}));
+$("practice-listen").addEventListener("click", speakPractice);
+$("practice-check").addEventListener("click", () => {
+  const item = practiceItems[practiceIndex];
+  if (!item) return;
+  const normalize = (value) => value.normalize("NFC").replace(/\s+/g, "").trim();
+  const correct = normalize($("practice-input").value) === normalize(item.nko);
+  $("practice-feedback").textContent = correct
+    ? window.NKO_I18N.t("correct")
+    : `${window.NKO_I18N.t("try_again")} ${item.nko}`;
 });
 
 // ---- Dictionary lookup ------------------------------------------------------

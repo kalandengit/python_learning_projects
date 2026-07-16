@@ -105,6 +105,21 @@
     <div id="keyboard" class="keyboard hidden" role="group" aria-label="N'Ko keyboard"></div>
     </div>
 
+    <!-- Listen → type → validate self-evaluation practice -->
+    <div class="tool-section practice-section">
+      <h2 data-i18n="practice_title">N'Ko dictation practice</h2>
+      <p class="hint" data-i18n="practice_help">Listen to the French word, type its N'Ko spelling, then validate.</p>
+      <div class="row">
+        <button id="practice-new" class="secondary" data-i18n="new_prompt">New word</button>
+        <button id="practice-listen" class="secondary" data-i18n="listen">🔊 Listen</button>
+      </div>
+      <textarea class="nko-text" id="practice-input" dir="rtl" lang="nqo" rows="2" spellcheck="false"></textarea>
+      <div class="row">
+        <button id="practice-check" class="secondary" data-i18n="validate">Validate</button>
+        <span id="practice-feedback" role="status" aria-live="polite"></span>
+      </div>
+    </div>
+
     <!-- Dictionary lookup -->
     <div class="tool-section dictionary-section">
       <h2 data-i18n="dictionary_title">Dictionary</h2>
