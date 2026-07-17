@@ -25,6 +25,9 @@ def test_webview_waits_for_android_permission_and_grants_audio_only():
     assert "onRequestPermissionsResult" in activity
     assert "RESOURCE_AUDIO_CAPTURE" in activity
     assert "request.grant(request.getResources())" not in activity
+    assert "ACTION_APPLICATION_DETAILS_SETTINGS" in activity
+    assert "openMicrophoneSettings" in activity
+    assert "requestMicrophoneAccess" in activity
 
 
 def test_android_file_upload_uses_document_picker_without_storage_permission():

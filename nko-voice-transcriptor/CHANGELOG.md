@@ -1,5 +1,12 @@
 # Changelog
 
+## 1.10.1 - 2026-07-17
+
+- Fixed mobile registration submission and restored browser validation.
+- Moved transcript/history controls out of the registration form.
+- Added Android microphone-permission recovery through system settings.
+- Made selected-file Transcribe and Discard actions immediately visible.
+
 ## 1.10.0 - 2026-07-17
 
 - Added rotating refresh sessions in HttpOnly cookies, logout revocation, complete account/data

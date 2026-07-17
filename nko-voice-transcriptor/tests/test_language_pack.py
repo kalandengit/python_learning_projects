@@ -53,3 +53,11 @@ def test_result_editor_has_explicit_edit_and_save_controls():
     assert 'id="save-nko-btn"' in html
     assert '$("result-nko").readOnly = true' in app
     assert '$("result-nko").readOnly = false' in app
+
+
+def test_registration_form_contains_only_auth_controls():
+    html = (STATIC / "index.html").read_text(encoding="utf-8")
+    auth_form = html.split('<form id="auth-form"', 1)[1].split("</form>", 1)[0]
+    assert 'data-mode="register"' in auth_form
+    assert 'id="segments"' not in auth_form
+    assert 'id="export-history-btn"' not in auth_form

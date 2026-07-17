@@ -36,12 +36,6 @@
         <button type="submit" data-mode="login" data-i18n="log_in">Log in</button>
         <button type="submit" data-mode="register" class="secondary" data-i18n="register">Register</button>
       </div>
-      <div id="segments" class="segments"></div>
-      <div class="row">
-        <button id="dl-vtt-nko" class="secondary">↓ N’Ko VTT</button>
-        <button id="dl-srt-nko" class="secondary">↓ N’Ko SRT</button>
-        <button id="export-history-btn" class="secondary">↓ Export history</button>
-      </div>
       <p class="hint" data-i18n="register_help">New user: choose a username and a password of at least 10 characters, then press Register. You will be signed in automatically.</p>
       <p id="auth-error" class="error" role="alert"></p>
     </form>
@@ -64,6 +58,7 @@
       </label>
     </div>
     <div class="row">
+      <button id="mic-access-btn" type="button" class="secondary">Autoriser le microphone</button>
       <button id="start-btn" class="record"><span data-i18n="start">● Start</span></button>
       <button id="standby-btn" class="secondary" disabled data-i18n="standby">❚❚ Stand by</button>
       <button id="stop-btn" class="secondary" disabled data-i18n="stop">■ Stop</button>
@@ -78,13 +73,15 @@
     <p id="app-error" class="error" role="alert"></p>
     <p class="hint"><span id="network-state"></span> · <span id="provider-state"></span></p>
     <div id="audio-preview" class="preview hidden">
+      <div class="row preview-actions">
+        <button id="submit-audio-btn" type="button">Transcribe</button>
+        <button id="discard-audio-btn" type="button" class="secondary">Discard</button>
+      </div>
       <canvas id="waveform" width="720" height="120" aria-label="Audio waveform"></canvas>
       <audio id="preview-player" controls></audio>
       <div class="row">
         <label>Start <input id="trim-start" type="number" min="0" step="0.1" value="0"></label>
         <label>End <input id="trim-end" type="number" min="0" step="0.1"></label>
-        <button id="submit-audio-btn" type="button">Transcribe</button>
-        <button id="discard-audio-btn" type="button" class="secondary">Discard</button>
       </div>
       <progress id="job-progress" max="100" value="0" class="hidden"></progress>
       <span id="job-state" class="hint" aria-live="polite"></span>
@@ -141,6 +138,12 @@
       <div class="row">
         <button id="practice-new" class="secondary" data-i18n="new_prompt">New word</button>
         <button id="practice-listen" class="secondary" data-i18n="listen">🔊 Listen</button>
+      </div>
+      <div id="segments" class="segments"></div>
+      <div class="row">
+        <button id="dl-vtt-nko" class="secondary">↓ N’Ko VTT</button>
+        <button id="dl-srt-nko" class="secondary">↓ N’Ko SRT</button>
+        <button id="export-history-btn" class="secondary">↓ Export history</button>
       </div>
       <textarea class="nko-text" id="practice-input" dir="rtl" lang="nqo" rows="2" spellcheck="false"></textarea>
       <div class="row">

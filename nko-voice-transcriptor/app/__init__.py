@@ -1,3 +1,3 @@
 """N'KO Voice Transcriptor — speech-to-N'Ko transcription for Bambara (Manding)."""
 
-__version__ = "1.10.0"
+__version__ = "1.10.1"

@@ -101,11 +101,10 @@ async function loadLanguages() {
 }
 
 // ---- Auth ------------------------------------------------------------------
-$("auth-form").addEventListener("submit", (e) => e.preventDefault());
-for (const btn of document.querySelectorAll("#auth-form button")) {
-  btn.addEventListener("click", async (e) => {
+$("auth-form").addEventListener("submit", async (e) => {
     e.preventDefault();
-    const mode = e.target.dataset.mode;
+    if (!e.currentTarget.reportValidity()) return;
+    const mode = e.submitter?.dataset.mode || "login";
     const username = $("username").value.trim();
     const password = $("password").value;
     $("auth-error").textContent = "";
@@ -119,11 +118,29 @@ for (const btn of document.querySelectorAll("#auth-form button")) {
     } catch (err) {
       $("auth-error").textContent = err.message;
     }
-  });
-}
+});
 
 // ---- Recording -------------------------------------------------------------
 // State machine: idle → recording ⇄ standby(paused) → stop → upload
+$('mic-access-btn').addEventListener('click', async () => {
+  $('app-error').textContent = '';
+  if (window.NkoAndroid?.requestMicrophoneAccess) {
+    window.NkoAndroid.requestMicrophoneAccess();
+    return;
+  }
+  if (!window.isSecureContext) {
+    $('app-error').textContent = 'Le microphone exige une adresse HTTPS.';
+    return;
+  }
+  try {
+    const permissionStream = await navigator.mediaDevices.getUserMedia({ audio: true });
+    permissionStream.getTracks().forEach((track) => track.stop());
+    $('app-error').textContent = 'Accès au microphone autorisé.';
+  } catch {
+    $('app-error').textContent = window.NKO_I18N.t('microphone_denied');
+  }
+});
+
 let recorder = null, chunks = [], timerId = null, elapsedMs = 0, lastTick = 0;
 let pendingAudio = null, pendingName = "recording.webm", decodedAudio = null, previewURL = null;
 const startBtn = $("start-btn"), standbyBtn = $("standby-btn"), stopBtn = $("stop-btn");
@@ -152,7 +169,10 @@ startBtn.addEventListener("click", async () => {
   try {
     stream = await navigator.mediaDevices.getUserMedia({ audio: true });
   } catch {
-    $("app-error").textContent = window.NKO_I18N.t("microphone_denied");
+    $("app-error").textContent = !window.isSecureContext
+      ? "Le microphone exige une adresse HTTPS. Ouvrez le menu ⋮ et configurez l’adresse HTTPS du serveur."
+      : window.NKO_I18N.t("microphone_denied");
+    window.NkoAndroid?.openMicrophoneSettings?.();
     return;
   }
   chunks = [];
@@ -273,6 +293,7 @@ async function preparePreview(blob, filename) {
   previewURL = URL.createObjectURL(blob);
   $("preview-player").src = previewURL;
   $("audio-preview").classList.remove("hidden");
+  $("audio-preview").scrollIntoView({ behavior: "smooth", block: "start" });
   try {
     const context = new AudioContext();
     decodedAudio = await context.decodeAudioData(await blob.arrayBuffer());

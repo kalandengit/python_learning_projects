@@ -12,6 +12,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Build;
 import android.os.CancellationSignal;
+import android.provider.Settings;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -170,15 +171,38 @@ public class MainActivity extends Activity {
     public void onRequestPermissionsResult(int requestCode, String[] permissions,
                                            int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-        if (requestCode != REQ_MIC || pendingMicRequest == null) return;
-        if (grantResults.length > 0
-                && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-            pendingMicRequest.grant(
-                    new String[]{PermissionRequest.RESOURCE_AUDIO_CAPTURE});
+        if (requestCode != REQ_MIC) return;
+        boolean granted = grantResults.length > 0
+                && grantResults[0] == PackageManager.PERMISSION_GRANTED;
+        if (pendingMicRequest != null) {
+            if (granted) {
+                pendingMicRequest.grant(
+                        new String[]{PermissionRequest.RESOURCE_AUDIO_CAPTURE});
+            } else {
+                pendingMicRequest.deny();
+                showMicrophoneHelp();
+            }
+            pendingMicRequest = null;
+        } else if (granted) {
+            new AlertDialog.Builder(this).setMessage("Microphone access granted.")
+                    .setPositiveButton("OK", null).show();
         } else {
-            pendingMicRequest.deny();
+            showMicrophoneHelp();
         }
-        pendingMicRequest = null;
+    }
+
+    private void showMicrophoneHelp() {
+        new AlertDialog.Builder(this)
+                .setTitle("Microphone access")
+                .setMessage("Allow Microphone for N'Ko Transcriptor in Android settings. "
+                        + "The backend address must also use HTTPS for recording.")
+                .setNegativeButton("Cancel", null)
+                .setPositiveButton("Open settings", (dialog, which) -> {
+                    Intent intent = new Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
+                    intent.setData(Uri.parse("package:" + getPackageName()));
+                    startActivity(intent);
+                })
+                .show();
     }
 
     @Override
@@ -211,6 +235,25 @@ public class MainActivity extends Activity {
                 send.setType("text/plain");
                 send.putExtra(Intent.EXTRA_TEXT, safeText);
                 activity.startActivity(Intent.createChooser(send, "Share N'Ko transcript"));
+            });
+        }
+
+        @JavascriptInterface
+        public void openMicrophoneSettings() {
+            activity.runOnUiThread(() -> ((MainActivity) activity).showMicrophoneHelp());
+        }
+
+        @JavascriptInterface
+        public void requestMicrophoneAccess() {
+            activity.runOnUiThread(() -> {
+                if (activity.checkSelfPermission(Manifest.permission.RECORD_AUDIO)
+                        == PackageManager.PERMISSION_GRANTED) {
+                    new AlertDialog.Builder(activity).setMessage("Microphone access is already granted.")
+                            .setPositiveButton("OK", null).show();
+                } else {
+                    activity.requestPermissions(
+                            new String[]{Manifest.permission.RECORD_AUDIO}, REQ_MIC);
+                }
             });
         }
     }
