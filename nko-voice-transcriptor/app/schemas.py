@@ -49,6 +49,29 @@ class TranscriptionUpdate(BaseModel):
     """User edit of a saved transcription's N'Ko text."""
 
     text_nko: str = Field(min_length=0, max_length=20_000)
+    text_latin: str | None = Field(default=None, max_length=20_000)
+    submit_for_training: bool = False
+
+
+class TrainingSampleOut(BaseModel):
+    id: int
+    transcription_id: int
+    language: str
+    raw_text_latin: str
+    corrected_text_latin: str
+    corrected_text_nko: str
+    status: str
+    reviewer_note: str
+    created_at: datetime
+
+    model_config = {"from_attributes": True}
+
+
+class TrainingReview(BaseModel):
+    status: str = Field(pattern=r"^(approved|rejected|pending)$")
+    corrected_text_latin: str | None = Field(default=None, max_length=20_000)
+    corrected_text_nko: str | None = Field(default=None, max_length=20_000)
+    reviewer_note: str = Field(default="", max_length=2_000)
 
 
 class TransliterateIn(BaseModel):
@@ -91,3 +114,4 @@ class HealthOut(BaseModel):
     status: str
     version: str
     asr_engine: str
+    model_version: str

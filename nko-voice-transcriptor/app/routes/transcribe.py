@@ -2,18 +2,23 @@
 
 from __future__ import annotations
 
+from pathlib import Path
+from uuid import uuid4
+
 from fastapi import APIRouter, Depends, Form, HTTPException, Request, UploadFile, status
 from sqlalchemy.orm import Session
 
 from app.asr import ASREngine, AudioValidationError
 from app.asr.base import read_upload_limited, validate_audio, wav_duration_seconds
 from app.config import Settings, get_settings
+from app.correction import retrieve_correction
 from app.db import get_db
 from app.languages import display_name
 from app.limits import limiter
 from app.llm import improve_transcript
 from app.logging_conf import get_logger
-from app.models import Transcription, User
+from app.media import normalize_media, segment_wav
+from app.models import TrainingSample, Transcription, User
 from app.nko import transliterate
 from app.schemas import LanguageOut, TranscriptionOut, TransliterateIn, TransliterateOut
 from app.security import get_current_user
@@ -43,6 +48,7 @@ async def transcribe_audio(
     request: Request,
     audio: UploadFile,
     language: str | None = Form(default=None),
+    training_consent: bool = Form(default=False),
     user: User = Depends(get_current_user),
     db: Session = Depends(get_db),
     settings: Settings = Depends(get_settings),
@@ -64,7 +70,16 @@ async def transcribe_audio(
             raise AudioValidationError(
                 f"Audio longer than {settings.max_audio_seconds}s limit"
             )
-        result = engine.transcribe(data, audio_format, language=lang)
+        normalized = normalize_media(data, audio_format)
+        normalized_duration = wav_duration_seconds(normalized)
+        if normalized_duration is not None and normalized_duration > settings.max_audio_seconds:
+            raise AudioValidationError(
+                f"Audio longer than {settings.max_audio_seconds}s limit"
+            )
+        segments = segment_wav(
+            normalized, settings.segment_seconds, settings.silence_threshold_db
+        )
+        results = [engine.transcribe(part, "wav", language=lang) for part in segments]
     except AudioValidationError as exc:
         raise HTTPException(status.HTTP_422_UNPROCESSABLE_ENTITY, str(exc)) from exc
     except RuntimeError as exc:
@@ -74,22 +89,48 @@ async def transcribe_audio(
             status.HTTP_503_SERVICE_UNAVAILABLE, "Speech recognition engine unavailable"
         ) from exc
 
-    text_latin = improve_transcript(result.text_latin, lang, settings)
+    raw_text_latin = " ".join(result.text_latin for result in results if result.text_latin)
+    retrieved_text, retrieval_score = retrieve_correction(raw_text_latin, lang, db)
+    text_latin = improve_transcript(retrieved_text, lang, settings)
     text_nko = transliterate(text_latin)
     record = Transcription(
         user_id=user.id,
         text_latin=text_latin,
         text_nko=text_nko,
-        engine=result.engine,
-        language=result.language,
+        engine=results[0].engine,
+        language=lang,
         audio_format=audio_format,
         audio_bytes=len(data),
     )
     db.add(record)
+    db.flush()
+    if training_consent:
+        training_dir = Path(settings.training_data_dir).resolve()
+        training_dir.mkdir(parents=True, exist_ok=True)
+        audio_path = training_dir / f"{record.id}-{uuid4().hex}.wav"
+        audio_path.write_bytes(normalized)
+        db.add(
+            TrainingSample(
+                user_id=user.id,
+                transcription_id=record.id,
+                audio_path=str(audio_path),
+                language=lang,
+                raw_text_latin=raw_text_latin,
+                corrected_text_latin=text_latin,
+                corrected_text_nko=text_nko,
+                consent=True,
+            )
+        )
     db.commit()
     db.refresh(record)
     logger.info(
-        "event=transcribed user_id=%s engine=%s bytes=%d", user.id, result.engine, len(data)
+        "event=transcribed user_id=%s engine=%s bytes=%d segments=%d retrieval=%.3f consent=%s",
+        user.id,
+        results[0].engine,
+        len(data),
+        len(segments),
+        retrieval_score,
+        training_consent,
     )
     return record
 

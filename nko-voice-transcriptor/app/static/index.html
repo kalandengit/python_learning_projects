@@ -64,7 +64,10 @@
       <span id="record-state" class="hint" aria-live="polite"></span>
     </div>
     <p class="hint" data-i18n="or_upload">…or upload an audio file:</p>
-    <input type="file" id="file-input" accept="audio/*">
+    <input type="file" id="file-input" accept="audio/*,video/mp4,video/webm,video/quicktime">
+    <label class="consent"><input type="checkbox" id="training-consent">
+      <span>Contribute this recording and my corrections to improve recognition</span>
+    </label>
     <p id="app-error" class="error" role="alert"></p>
     </div>
 
@@ -78,6 +81,9 @@
         <button id="edit-nko-btn" class="secondary" data-i18n="edit_result">✎ Edit result</button>
         <button id="save-nko-btn" class="secondary" disabled data-i18n="save_edit">💾 Save edit</button>
         <button id="share-btn" class="secondary" data-i18n="share_result">↗ Share transcript</button>
+        <label class="consent"><input type="checkbox" id="submit-correction">
+          <span>Submit my correction for review</span>
+        </label>
         <button id="copy-nko-btn" class="secondary" data-i18n="copy_nko">⧉ Copy N'Ko</button>
         <button id="copy-latin-btn" class="secondary" data-i18n="copy_latin">⧉ Copy Latin</button>
         <span id="save-state" class="hint" aria-live="polite"></span>

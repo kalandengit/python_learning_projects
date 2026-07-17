@@ -43,6 +43,8 @@ ALLOWED_CONTENT_TYPES = frozenset(
         "audio/mpeg",
         "audio/mp4",
         "audio/aac",
+        "video/mp4",
+        "video/quicktime",
     }
 )
 

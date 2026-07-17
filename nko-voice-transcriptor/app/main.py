@@ -20,7 +20,7 @@ from app.db import init_db
 from app.dictionary import get_dictionary
 from app.limits import limiter
 from app.logging_conf import configure_logging, get_logger
-from app.routes import alphabet, auth, dictionary, health, history, transcribe
+from app.routes import alphabet, auth, dictionary, health, history, training, transcribe
 
 logger = get_logger(__name__)
 
@@ -90,6 +90,7 @@ def create_app() -> FastAPI:
     app.include_router(auth.router)
     app.include_router(transcribe.router)
     app.include_router(history.router)
+    app.include_router(training.router)
     app.include_router(dictionary.router)
     app.include_router(alphabet.router)
 

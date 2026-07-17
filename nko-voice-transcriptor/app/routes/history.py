@@ -2,12 +2,14 @@
 
 from __future__ import annotations
 
+from pathlib import Path
+
 from fastapi import APIRouter, Depends, HTTPException, Query, status
 from sqlalchemy import delete, func, select
 from sqlalchemy.orm import Session
 
 from app.db import get_db
-from app.models import Transcription, User
+from app.models import TrainingSample, Transcription, User
 from app.schemas import TranscriptionOut, TranscriptionUpdate
 from app.security import get_current_user
 
@@ -61,6 +63,12 @@ def clear_history(
     db: Session = Depends(get_db),
 ) -> dict[str, int]:
     """Delete all of the caller's transcriptions. Scoped to the owner only."""
+    samples = list(
+        db.scalars(select(TrainingSample).where(TrainingSample.user_id == user.id))
+    )
+    for sample in samples:
+        Path(sample.audio_path).unlink(missing_ok=True)
+        db.delete(sample)
     result = db.execute(delete(Transcription).where(Transcription.user_id == user.id))
     db.commit()
     return {"deleted": int(result.rowcount or 0)}
@@ -76,6 +84,15 @@ def edit_transcription(
     """Save a user's manual correction of the generated N'Ko text."""
     row = _owned_or_404(transcription_id, user, db)
     row.text_nko = body.text_nko
+    if body.text_latin is not None:
+        row.text_latin = body.text_latin
+    sample = db.scalar(
+        select(TrainingSample).where(TrainingSample.transcription_id == transcription_id)
+    )
+    if sample is not None and body.submit_for_training:
+        sample.corrected_text_latin = row.text_latin
+        sample.corrected_text_nko = row.text_nko
+        sample.status = "pending"
     db.commit()
     db.refresh(row)
     return row
@@ -88,5 +105,11 @@ def delete_transcription(
     db: Session = Depends(get_db),
 ):
     row = _owned_or_404(transcription_id, user, db)
+    sample = db.scalar(
+        select(TrainingSample).where(TrainingSample.transcription_id == transcription_id)
+    )
+    if sample is not None:
+        Path(sample.audio_path).unlink(missing_ok=True)
+        db.delete(sample)
     db.delete(row)
     db.commit()

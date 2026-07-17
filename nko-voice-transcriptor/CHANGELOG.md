@@ -1,5 +1,15 @@
 # Changelog
 
+## 1.9.0 - 2026-07-17
+
+- Added FFmpeg audio/video normalization and silence-aware long-audio segmentation.
+- Added explicit opt-in recording retention, correction submission, protected review,
+  approved dataset export, and deletion of contributed audio with user history.
+- Added conservative retrieval from approved Bambara corrections before optional LLM cleanup.
+- Added fixed WER/CER metrics, four-pipeline comparison tooling, speaker-disjoint dataset
+  export, and a reproducible MMS adapter-training wrapper.
+- Added separately versioned MMS model deployment settings and health reporting.
+
 ## 1.8.1 - 2026-07-17
 
 - Fixed Android WebView microphone access by waiting for the runtime

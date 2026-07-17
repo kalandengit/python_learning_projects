@@ -86,7 +86,10 @@ public class MainActivity extends Activity {
                 if (pendingFileCallback != null) pendingFileCallback.onReceiveValue(null);
                 pendingFileCallback = callback;
                 Intent intent = params.createIntent();
-                intent.setType("audio/*");
+                intent.setType("*/*");
+                intent.putExtra(Intent.EXTRA_MIME_TYPES, new String[]{
+                        "audio/*", "video/mp4", "video/webm", "video/quicktime"
+                });
                 intent.addCategory(Intent.CATEGORY_OPENABLE);
                 try {
                     startActivityForResult(intent, REQ_FILE);

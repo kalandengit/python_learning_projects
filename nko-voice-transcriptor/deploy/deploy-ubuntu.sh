@@ -41,6 +41,8 @@ ENABLE_TLS="${ENABLE_TLS:-0}"            # 1 + DOMAIN + EMAIL → Let's Encrypt
 EMAIL="${EMAIL:-}"                        # for certbot registration
 USE_POSTGRES="${USE_POSTGRES:-0}"       # 1 = provision local PostgreSQL
 ASR_ENGINE="${ASR_ENGINE:-mock}"        # mock | mms (mms pulls ~2GB torch stack)
+MMS_MODEL_ID="${MMS_MODEL_ID:-facebook/mms-1b-all}"
+MODEL_VERSION="${MODEL_VERSION:-base}"
 LLM_PROVIDER="${LLM_PROVIDER:-none}"    # none | openai | groq | custom
 LLM_API_KEY="${LLM_API_KEY:-}"          # required when provider is enabled
 LLM_MODEL="${LLM_MODEL:-}"              # blank = provider default
@@ -69,7 +71,7 @@ export DEBIAN_FRONTEND=noninteractive
 # ---- 1. System packages ----------------------------------------------------
 log "Installing system packages..."
 apt-get update -qq
-PKGS=(python3 python3-venv python3-pip git nginx curl ca-certificates ufw)
+PKGS=(python3 python3-venv python3-pip git nginx curl ca-certificates ufw ffmpeg)
 [ "$USE_POSTGRES" = "1" ] && PKGS+=(postgresql postgresql-contrib libpq-dev)
 [ "$ENABLE_TLS" = "1" ]  && PKGS+=(certbot python3-certbot-nginx)
 apt-get install -y -qq "${PKGS[@]}"
@@ -140,6 +142,12 @@ else
   SECRET="$(python3 -c 'import secrets;print(secrets.token_urlsafe(48))')"
   log "Generated a new NKO_SECRET_KEY."
 fi
+if [ -f "$ENV_FILE" ] && grep -q '^NKO_REVIEW_API_KEY=' "$ENV_FILE"; then
+  REVIEW_KEY="$(grep '^NKO_REVIEW_API_KEY=' "$ENV_FILE" | head -1 | cut -d= -f2-)"
+else
+  REVIEW_KEY="$(python3 -c 'import secrets;print(secrets.token_urlsafe(32))')"
+  log "Generated a new NKO_REVIEW_API_KEY."
+fi
 
 CORS_ORIGINS=""
 [ -n "$DOMAIN" ] && CORS_ORIGINS="https://${DOMAIN}"
@@ -151,6 +159,10 @@ cat > "$ENV_FILE" <<EOF
 NKO_SECRET_KEY=${SECRET}
 NKO_DATABASE_URL=${DB_URL}
 NKO_ASR_ENGINE=${ASR_ENGINE}
+NKO_MMS_MODEL_ID=${MMS_MODEL_ID}
+NKO_MODEL_VERSION=${MODEL_VERSION}
+NKO_REVIEW_API_KEY=${REVIEW_KEY}
+NKO_TRAINING_DATA_DIR=${APP_HOME}/training-data
 NKO_LLM_PROVIDER=${LLM_PROVIDER}
 NKO_LLM_API_KEY=${LLM_API_KEY}
 NKO_LLM_MODEL=${LLM_MODEL}
@@ -287,6 +299,8 @@ echo "  Service       : systemctl status ${SERVICE_NAME}"
 echo "  Logs          : journalctl -u ${SERVICE_NAME} -f"
 echo "  Env / secrets : ${ENV_FILE}"
 echo "  ASR engine    : ${ASR_ENGINE}"
+echo "  Model         : ${MMS_MODEL_ID} (${MODEL_VERSION})"
+echo "  Review key    : stored in ${ENV_FILE}"
 echo "  LLM cleanup   : ${LLM_PROVIDER}"
 echo "  Database      : $([ "$USE_POSTGRES" = 1 ] && echo PostgreSQL || echo 'SQLite (single-node)')"
 echo

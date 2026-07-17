@@ -5,6 +5,45 @@ audio, transcribes it with a speech-recognition engine, and renders the result
 in the N'Ko script (ߒߞߏ), the right-to-left alphabet created by **Solomana
 Kanté** in 1949 for the Manding languages.
 
+## Recognition improvement pipeline (1.9)
+
+Uploads are normalized by FFmpeg to 16 kHz mono WAV and split near silence before
+ASR. With explicit user consent, normalized audio and later corrections enter a
+protected review queue. Only reviewer-approved pairs are used by correction memory
+or exported for training.
+
+Reviewer requests use the `X-Review-Key` value stored as `NKO_REVIEW_API_KEY` in
+the server environment. Useful endpoints are:
+
+- `GET /api/training/samples?status=pending`
+- `PATCH /api/training/samples/{id}`
+- `GET /api/training/samples/{id}/audio`
+- `GET /api/training/export.csv`
+
+Export an AudioFolder dataset on the backend, then train on a separate GPU machine:
+
+```bash
+python scripts/export_training_dataset.py ./approved-dataset
+bash scripts/train-mms-adapter.sh ./approved-dataset ./models/bam-adapter-v1
+```
+
+Deploy a separately versioned model repository or directory with:
+
+```bash
+sudo MMS_MODEL_ID=your-org/bam-mms-adapter MODEL_VERSION=bam-adapter-v1 \
+  ASR_ENGINE=mms ./deploy/deploy-ubuntu.sh
+```
+
+Compare fixed evaluation hypotheses without changing the production default:
+
+```bash
+python scripts/evaluate_pipelines.py evaluation.jsonl
+```
+
+Each JSONL row contains `reference`, `mms`, `mms_rag`, `tuned_mms`, and
+`tuned_mms_rag_llm`. Promote a pipeline only after it improves held-out WER and
+CER and passes human review.
+
 ## How it works
 
 ```

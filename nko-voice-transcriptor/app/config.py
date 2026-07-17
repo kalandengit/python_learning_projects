@@ -40,6 +40,13 @@ class Settings(BaseSettings):
 
     max_upload_bytes: int = 10 * 1024 * 1024
     max_audio_seconds: int = 120
+    segment_seconds: int = 20
+    silence_threshold_db: int = -40
+    training_data_dir: str = "./training-data"
+    review_api_key: str = ""
+    correction_memory_enabled: bool = True
+    mms_adapter_path: str = ""
+    model_version: str = "base"
 
     # Optional path to a full N'Ko–French lexicon JSON. Empty = bundled sample.
     lexicon_path: str = ""

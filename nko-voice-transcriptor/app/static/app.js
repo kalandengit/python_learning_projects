@@ -182,6 +182,7 @@ function loadResult(rec) {
 
 $("edit-nko-btn").addEventListener("click", () => {
   $("result-nko").readOnly = false;
+  $("result-latin").contentEditable = "true";
   $("result-nko").focus();
   $("save-state").textContent = window.NKO_I18N.t("editing");
 });
@@ -194,6 +195,7 @@ async function sendAudio(blob, filename) {
     form.append("audio", blob, filename);
     const lang = $("language-select").value;
     if (lang) form.append("language", lang);
+    form.append("training_consent", $("training-consent").checked ? "true" : "false");
     const rec = await api("/api/transcribe", { method: "POST", form });
     loadResult(rec);
     refreshHistory();
@@ -215,11 +217,16 @@ $("save-nko-btn").addEventListener("click", async () => {
   try {
     await api(`/api/history/${currentResultId}`, {
       method: "PATCH",
-      body: { text_nko: $("result-nko").value },
+      body: {
+        text_nko: $("result-nko").value,
+        text_latin: $("result-latin").textContent,
+        submit_for_training: $("submit-correction").checked,
+      },
     });
     $("save-nko-btn").disabled = true;
     $("save-state").textContent = window.NKO_I18N.t("saved");
     $("result-nko").readOnly = true;
+    $("result-latin").contentEditable = "false";
     refreshHistory();
   } catch (err) {
     $("save-state").textContent = err.message;

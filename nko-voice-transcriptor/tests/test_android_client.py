@@ -40,7 +40,8 @@ def test_android_file_upload_uses_document_picker_without_storage_permission():
     ).read_text(encoding="utf-8")
     manifest = (ANDROID / "src" / "main" / "AndroidManifest.xml").read_text(encoding="utf-8")
     assert "onShowFileChooser" in activity
-    assert 'setType("audio/*")' in activity
+    assert "Intent.EXTRA_MIME_TYPES" in activity
+    assert '"video/mp4"' in activity
     assert "FileChooserParams.parseResult" in activity
     assert "READ_EXTERNAL_STORAGE" not in manifest
 
