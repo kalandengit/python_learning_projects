@@ -212,6 +212,7 @@ User=${APP_USER}
 Group=${APP_USER}
 WorkingDirectory=${APP_HOME}
 EnvironmentFile=${ENV_FILE}
+Environment=HOME=${APP_HOME}
 ExecStart=${APP_HOME}/.venv/bin/gunicorn app.main:app \\
     --worker-class uvicorn.workers.UvicornWorker \\
     --workers ${WORKERS} \\
