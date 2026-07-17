@@ -129,12 +129,36 @@ class ASREngine(abc.ABC):
         """Transcribe audio bytes to Manding Latin text in the given language."""
 
 
+def _load_custom_engine(path: str, settings: Settings) -> ASREngine:
+    """Instantiate a user-supplied engine from ``package.module:ClassName``.
+
+    Lets deployments plug in any ASR backend (faster-whisper, Vosk,
+    sherpa-onnx, a cloud API wrapper, …) without forking the app — see
+    ``docs/ASR_ENGINES.md``. The value comes from trusted server config
+    (``NKO_ASR_ENGINE``), and the class must subclass :class:`ASREngine`.
+    """
+    import importlib
+
+    module_name, _, class_name = path.replace(":", ".").rpartition(".")
+    if not module_name:
+        raise ValueError(
+            f"NKO_ASR_ENGINE={path!r} is not 'mock', 'mms', or a dotted "
+            "'package.module:ClassName' path"
+        )
+    cls = getattr(importlib.import_module(module_name), class_name)
+    if not (isinstance(cls, type) and issubclass(cls, ASREngine)):
+        raise TypeError(f"{path} is not an ASREngine subclass")
+    return cls(settings)
+
+
 def get_engine(settings: Settings) -> ASREngine:
-    """Engine factory driven by ``NKO_ASR_ENGINE``."""
+    """Engine factory driven by ``NKO_ASR_ENGINE`` (fail-fast at startup)."""
     if settings.asr_engine == "mms":
         from app.asr.mms import MMSASREngine
 
         return MMSASREngine(settings)
-    from app.asr.mock import MockASREngine
+    if settings.asr_engine == "mock":
+        from app.asr.mock import MockASREngine
 
-    return MockASREngine()
+        return MockASREngine()
+    return _load_custom_engine(settings.asr_engine, settings)

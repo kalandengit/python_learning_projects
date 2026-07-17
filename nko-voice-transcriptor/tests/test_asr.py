@@ -5,6 +5,8 @@ import struct
 import pytest
 
 from app.asr.base import (
+    ASREngine,
+    ASRResult,
     AudioValidationError,
     get_engine,
     sniff_format,
@@ -114,3 +116,35 @@ class TestFactory:
         # Constructing the MMS engine must not import torch
         engine = get_engine(make_settings(asr_engine="mms"))
         assert engine.name == "mms"
+
+    def test_custom_engine_dotted_path(self):
+        # Deployments can plug in any ASREngine subclass without forking.
+        engine = get_engine(
+            make_settings(asr_engine="tests.test_asr:CustomTestEngine")
+        )
+        assert engine.name == "custom-test"
+        assert engine.transcribe(b"x", "wav").text_latin == "i ni ce"
+
+    def test_custom_engine_dot_form(self):
+        engine = get_engine(make_settings(asr_engine="tests.test_asr.CustomTestEngine"))
+        assert engine.name == "custom-test"
+
+    def test_unknown_engine_fails_fast(self):
+        with pytest.raises(ValueError, match="NKO_ASR_ENGINE"):
+            get_engine(make_settings(asr_engine="bogus"))
+
+    def test_non_engine_class_rejected(self):
+        with pytest.raises(TypeError, match="not an ASREngine subclass"):
+            get_engine(make_settings(asr_engine="tests.test_asr:TestFactory"))
+
+
+class CustomTestEngine(ASREngine):
+    """Minimal custom engine used by the dotted-path factory tests."""
+
+    name = "custom-test"
+
+    def __init__(self, settings):
+        self._settings = settings
+
+    def transcribe(self, audio: bytes, audio_format: str, language: str = "bam") -> ASRResult:
+        return ASRResult(text_latin="i ni ce", engine=self.name, language=language)

@@ -1,5 +1,26 @@
 # Changelog
 
+## 1.9.0 - 2026-07-17
+
+### ASR engine layer (from the 2026 STT landscape review)
+
+- **Pluggable engines**: `NKO_ASR_ENGINE` now also accepts a dotted path
+  `package.module:ClassName` to any `ASREngine` subclass, so deployments can
+  wire in faster-whisper, Vosk, sherpa-onnx, or cloud wrappers without
+  forking. Unknown values fail fast at startup; non-engine classes rejected.
+- **`docs/ASR_ENGINES.md`** — honest Manding-suitability review of the STT
+  ecosystem: MMS remains the only mainstream engine with real Bambara
+  support (Whisper's 99 languages include none of the Manding family);
+  includes a custom-engine example and the real quality levers
+  (Common Voice evaluation corpus, MMS fine-tuning, post-editing UX).
+- Archived the full user-supplied STT survey at
+  `docs/nko-research/stt-repertoire.md`; referenced from `NKO_RESOURCES.md`.
+
+### Tests
+
+- Factory: custom dotted-path engine loads (both `:` and `.` forms), unknown
+  engine names fail fast, non-`ASREngine` classes are rejected.
+
 ## 1.8.0 - 2026-07-14
 
 ### Language packs

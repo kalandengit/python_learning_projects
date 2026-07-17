@@ -52,6 +52,16 @@ kept for provenance under [`docs/nko-research/`](docs/nko-research/).
 - [CorMand N'Ko library](https://cormand.huma-num.fr/maninkabiblio/) — a digital
   corpus and bibliography.
 
+## Speech-to-text landscape
+
+- [`docs/ASR_ENGINES.md`](docs/ASR_ENGINES.md) — review of the STT ecosystem
+  against Manding: MMS remains the only mainstream engine with real Bambara
+  support (Whisper has none); the engine layer is pluggable for experiments.
+- [`docs/nko-research/stt-repertoire.md`](docs/nko-research/stt-repertoire.md) —
+  full 2026 survey of dictation apps, engines, APIs and datasets (user-supplied).
+- [Mozilla Common Voice](https://commonvoice.mozilla.org/) — open voice corpus;
+  the practical path to a Manding evaluation/fine-tuning dataset.
+
 ## NLP research
 
 - [Machine Translation for Nko: Tools, Corpora and Baseline Results](https://aclanthology.org/2023.wmt-1.34/) —

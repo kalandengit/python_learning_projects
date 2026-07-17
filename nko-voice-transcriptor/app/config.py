@@ -22,7 +22,9 @@ class Settings(BaseSettings):
     secret_key: str
     database_url: str = "sqlite:///./nko.db"
 
-    asr_engine: Literal["mock", "mms"] = "mock"
+    # "mock", "mms", or a custom engine as a dotted path "package.module:ClassName"
+    # (the class must subclass app.asr.base.ASREngine and accept (settings)).
+    asr_engine: str = "mock"
     mms_model_id: str = "facebook/mms-1b-all"
 
     # Comma-separated ISO 639-3 codes offered as source languages. Each must
