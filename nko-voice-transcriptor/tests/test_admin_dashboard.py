@@ -3,6 +3,7 @@ from pathlib import Path
 ROOT = Path(__file__).parents[1]
 DASHBOARD = (ROOT / "deploy" / "admin-dashboard.py").read_text(encoding="utf-8")
 INSTALLER = (ROOT / "deploy" / "install-admin-dashboard.sh").read_text(encoding="utf-8")
+KOLIBRI_INSTALLER = (ROOT / "deploy" / "configure-kolibri-studio.sh").read_text(encoding="utf-8")
 
 
 def test_dashboard_has_fixed_actions_and_no_shell_execution():
@@ -28,3 +29,11 @@ def test_installer_uses_basic_auth_exact_sudo_rules_and_resource_limit():
     assert "certbot --nginx" in INSTALLER
     assert "admin.saas.kalanfa.org" in INSTALLER
     assert "EXTRA_SERVICES" in INSTALLER
+
+
+def test_kolibri_proxy_is_loopback_https_and_rolls_back_on_failure():
+    assert 'PORT="${PORT:-9090}"' in KOLIBRI_INSTALLER
+    assert 'proxy_pass http://127.0.0.1:$PORT' in KOLIBRI_INSTALLER
+    assert "certbot --nginx" in KOLIBRI_INSTALLER
+    assert "rollback" in KOLIBRI_INSTALLER
+    assert 'SERVICE="${SERVICE:-kolibri-studio.service}"' in KOLIBRI_INSTALLER
