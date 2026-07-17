@@ -19,10 +19,18 @@ class UserCreate(BaseModel):
         return v
 
 
+class PasswordConfirm(BaseModel):
+    password: str = Field(min_length=1, max_length=128)
+
+
 class TokenResponse(BaseModel):
     access_token: str
     token_type: str = "bearer"  # noqa: S105 - field name, not a secret
     expires_in_minutes: int
+
+
+class RefreshResponse(TokenResponse):
+    pass
 
 
 class UserOut(BaseModel):
@@ -63,6 +71,37 @@ class TrainingSampleOut(BaseModel):
     status: str
     reviewer_note: str
     created_at: datetime
+
+    model_config = {"from_attributes": True}
+
+
+class SegmentOut(BaseModel):
+    id: int
+    position: int
+    start_ms: int
+    end_ms: int
+    speaker: str
+    text_latin: str
+    text_nko: str
+
+    model_config = {"from_attributes": True}
+
+
+class SegmentUpdate(BaseModel):
+    text_latin: str = Field(max_length=5_000)
+    text_nko: str = Field(max_length=5_000)
+
+
+class JobOut(BaseModel):
+    id: int
+    status: str
+    progress: int
+    provider: str
+    language: str
+    transcription_id: int | None
+    error: str
+    created_at: datetime
+    updated_at: datetime
 
     model_config = {"from_attributes": True}
 

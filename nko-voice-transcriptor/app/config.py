@@ -52,6 +52,9 @@ class Settings(BaseSettings):
     lexicon_path: str = ""
 
     access_token_minutes: int = 60
+    refresh_token_days: int = 30
+    secure_cookies: bool = True
+    job_data_dir: str = "./job-data"
 
     cors_origins: str = ""
     environment: Literal["development", "production"] = "development"

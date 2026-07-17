@@ -4,19 +4,24 @@ plugins {
 
 android {
     namespace 'net.nkotools.transcriptor'
-    compileSdk 34
+    compileSdk 36
 
     defaultConfig {
         applicationId 'net.nkotools.transcriptor'
         minSdk 26
-        targetSdk 34
-        versionCode 10900
-        versionName '1.9.0'
+        targetSdk 36
+        versionCode 11000
+        versionName '1.10.0'
+        manifestPlaceholders = [usesCleartext: "false"]
     }
 
     buildTypes {
+        debug {
+            manifestPlaceholders = [usesCleartext: "true"]
+        }
         release {
             minifyEnabled false
+            manifestPlaceholders = [usesCleartext: "false"]
         }
     }
 

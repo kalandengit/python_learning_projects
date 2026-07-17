@@ -36,6 +36,12 @@
         <button type="submit" data-mode="login" data-i18n="log_in">Log in</button>
         <button type="submit" data-mode="register" class="secondary" data-i18n="register">Register</button>
       </div>
+      <div id="segments" class="segments"></div>
+      <div class="row">
+        <button id="dl-vtt-nko" class="secondary">↓ N’Ko VTT</button>
+        <button id="dl-srt-nko" class="secondary">↓ N’Ko SRT</button>
+        <button id="export-history-btn" class="secondary">↓ Export history</button>
+      </div>
       <p class="hint" data-i18n="register_help">New user: choose a username and a password of at least 10 characters, then press Register. You will be signed in automatically.</p>
       <p id="auth-error" class="error" role="alert"></p>
     </form>
@@ -49,6 +55,7 @@
         <h2 data-i18n="record">Record</h2>
       </div>
       <button id="logout-btn" class="secondary quiet" data-i18n="log_out">Log out</button>
+      <button id="delete-account-btn" class="secondary quiet">Delete account</button>
     </div>
     <div class="tool-section capture-section">
     <div class="row">
@@ -69,6 +76,19 @@
       <span>Contribute this recording and my corrections to improve recognition</span>
     </label>
     <p id="app-error" class="error" role="alert"></p>
+    <p class="hint"><span id="network-state"></span> · <span id="provider-state"></span></p>
+    <div id="audio-preview" class="preview hidden">
+      <canvas id="waveform" width="720" height="120" aria-label="Audio waveform"></canvas>
+      <audio id="preview-player" controls></audio>
+      <div class="row">
+        <label>Start <input id="trim-start" type="number" min="0" step="0.1" value="0"></label>
+        <label>End <input id="trim-end" type="number" min="0" step="0.1"></label>
+        <button id="submit-audio-btn" type="button">Transcribe</button>
+        <button id="discard-audio-btn" type="button" class="secondary">Discard</button>
+      </div>
+      <progress id="job-progress" max="100" value="0" class="hidden"></progress>
+      <span id="job-state" class="hint" aria-live="polite"></span>
+    </div>
     </div>
 
     <div id="result" class="tool-section result-section hidden">

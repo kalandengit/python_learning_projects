@@ -20,7 +20,7 @@ from app.db import init_db
 from app.dictionary import get_dictionary
 from app.limits import limiter
 from app.logging_conf import configure_logging, get_logger
-from app.routes import alphabet, auth, dictionary, health, history, training, transcribe
+from app.routes import alphabet, auth, dictionary, health, history, jobs, training, transcribe
 
 logger = get_logger(__name__)
 
@@ -64,7 +64,7 @@ def create_app() -> FastAPI:
             CORSMiddleware,
             allow_origins=settings.cors_origin_list,
             allow_credentials=True,
-            allow_methods=["GET", "POST", "DELETE"],
+            allow_methods=["GET", "POST", "PATCH", "DELETE"],
             allow_headers=["Authorization", "Content-Type"],
         )
 
@@ -91,6 +91,7 @@ def create_app() -> FastAPI:
     app.include_router(transcribe.router)
     app.include_router(history.router)
     app.include_router(training.router)
+    app.include_router(jobs.router)
     app.include_router(dictionary.router)
     app.include_router(alphabet.router)
 

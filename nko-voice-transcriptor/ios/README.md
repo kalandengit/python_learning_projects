@@ -1,6 +1,6 @@
 # N'Ko Voice Transcriptor for iOS
 
-SwiftUI/WKWebView client for iOS 16+, version 1.8.0. It loads the same backend
+SwiftUI/WKWebView client for iOS 16+, version 1.10.0. It loads the same backend
 as Android and the browser, so the shared French-based language pack is used.
 
 1. Install XcodeGen: `brew install xcodegen`

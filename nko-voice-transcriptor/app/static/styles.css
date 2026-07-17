@@ -71,6 +71,11 @@ button {
   transition: transform 140ms ease, background-color 140ms ease, border-color 140ms ease;
 }
 button:hover:not(:disabled) { transform: translateY(-1px); }
+.preview { margin-top: 1rem; padding: 1rem; border: 1px solid #ddd; border-radius: 1rem; }
+.preview canvas { width: 100%; height: 120px; background: #f7f3e8; border-radius: .5rem; }
+.preview audio, .preview progress { width: 100%; margin: .6rem 0; }
+.segment { padding: .7rem; margin: .5rem 0; border-inline-start: 4px solid #168b77; background: #faf8f1; }
+.segment textarea { width: 100%; margin-top: .35rem; }
 button.secondary { background: transparent; color: var(--accent-strong); border: 1px solid var(--line); }
 button.secondary:hover:not(:disabled) { background: rgb(230 185 79 / 9%); border-color: var(--accent); }
 button.record { background: var(--accent-2); color: #fff; }

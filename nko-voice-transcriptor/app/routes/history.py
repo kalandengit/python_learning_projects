@@ -2,18 +2,28 @@
 
 from __future__ import annotations
 
+import csv
+import io
 from pathlib import Path
 
-from fastapi import APIRouter, Depends, HTTPException, Query, status
+from fastapi import APIRouter, Depends, HTTPException, Query, Response, status
+from fastapi.responses import StreamingResponse
 from sqlalchemy import delete, func, select
 from sqlalchemy.orm import Session
 
 from app.db import get_db
-from app.models import TrainingSample, Transcription, User
-from app.schemas import TranscriptionOut, TranscriptionUpdate
+from app.models import TrainingSample, Transcription, TranscriptSegment, User
+from app.schemas import SegmentOut, SegmentUpdate, TranscriptionOut, TranscriptionUpdate
 from app.security import get_current_user
 
 router = APIRouter(prefix="/api/history", tags=["history"])
+
+
+def _stamp(milliseconds: int, separator: str = ",") -> str:
+    hours, remainder = divmod(milliseconds, 3_600_000)
+    minutes, remainder = divmod(remainder, 60_000)
+    seconds, millis = divmod(remainder, 1_000)
+    return f"{hours:02}:{minutes:02}:{seconds:02}{separator}{millis:03}"
 
 
 def _owned_or_404(transcription_id: int, user: User, db: Session) -> Transcription:
@@ -55,6 +65,106 @@ def history_count(
         select(func.count()).select_from(Transcription).where(Transcription.user_id == user.id)
     )
     return {"count": int(total or 0)}
+
+
+@router.get("/export.csv")
+def export_history(
+    user: User = Depends(get_current_user), db: Session = Depends(get_db)
+):
+    output = io.StringIO()
+    writer = csv.writer(output)
+    writer.writerow(["id", "created_at", "language", "engine", "text_latin", "text_nko"])
+    for row in db.scalars(
+        select(Transcription)
+        .where(Transcription.user_id == user.id)
+        .order_by(Transcription.created_at.asc())
+    ):
+        writer.writerow(
+            [
+                row.id,
+                row.created_at.isoformat(),
+                row.language,
+                row.engine,
+                row.text_latin,
+                row.text_nko,
+            ]
+        )
+    return StreamingResponse(
+        iter([output.getvalue()]),
+        media_type="text/csv",
+        headers={"Content-Disposition": "attachment; filename=nko-history.csv"},
+    )
+
+
+@router.get("/{transcription_id}/segments", response_model=list[SegmentOut])
+def list_segments(
+    transcription_id: int,
+    user: User = Depends(get_current_user),
+    db: Session = Depends(get_db),
+):
+    _owned_or_404(transcription_id, user, db)
+    return list(
+        db.scalars(
+            select(TranscriptSegment)
+            .where(TranscriptSegment.transcription_id == transcription_id)
+            .order_by(TranscriptSegment.position.asc())
+        )
+    )
+
+
+@router.patch("/{transcription_id}/segments/{segment_id}", response_model=SegmentOut)
+def edit_segment(
+    transcription_id: int,
+    segment_id: int,
+    body: SegmentUpdate,
+    user: User = Depends(get_current_user),
+    db: Session = Depends(get_db),
+):
+    _owned_or_404(transcription_id, user, db)
+    segment = db.get(TranscriptSegment, segment_id)
+    if segment is None or segment.transcription_id != transcription_id:
+        raise HTTPException(status.HTTP_404_NOT_FOUND, "Segment not found")
+    segment.text_latin = body.text_latin
+    segment.text_nko = body.text_nko
+    db.commit()
+    db.refresh(segment)
+    return segment
+
+
+@router.get("/{transcription_id}/subtitles")
+def download_subtitles(
+    transcription_id: int,
+    format: str = Query(default="vtt", pattern=r"^(vtt|srt)$"),
+    script: str = Query(default="nko", pattern=r"^(nko|latin)$"),
+    user: User = Depends(get_current_user),
+    db: Session = Depends(get_db),
+):
+    _owned_or_404(transcription_id, user, db)
+    segments = list(
+        db.scalars(
+            select(TranscriptSegment)
+            .where(TranscriptSegment.transcription_id == transcription_id)
+            .order_by(TranscriptSegment.position.asc())
+        )
+    )
+    lines = ["WEBVTT", ""] if format == "vtt" else []
+    for index, segment in enumerate(segments, 1):
+        if format == "srt":
+            lines.append(str(index))
+        separator = "." if format == "vtt" else ","
+        lines.append(
+            f"{_stamp(segment.start_ms, separator)} --> {_stamp(segment.end_ms, separator)}"
+        )
+        lines.append(segment.text_nko if script == "nko" else segment.text_latin)
+        lines.append("")
+    media = "text/vtt" if format == "vtt" else "application/x-subrip"
+    return Response(
+        "\n".join(lines),
+        media_type=f"{media}; charset=utf-8",
+        headers={"Content-Disposition": (
+            f"attachment; filename=transcription-{transcription_id}-{script}.{format}"
+        )},
+    )
 
 
 @router.delete("", status_code=status.HTTP_200_OK)

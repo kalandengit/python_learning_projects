@@ -5,11 +5,17 @@
 // httpOnly cookies documented in SECURITY.md; CSP + no-inline-scripts reduce
 // XSS exfiltration risk.)
 const TOKEN_KEY = "nko_token";
-const getToken = () => sessionStorage.getItem(TOKEN_KEY);
-const setToken = (t) => sessionStorage.setItem(TOKEN_KEY, t);
-const clearToken = () => sessionStorage.removeItem(TOKEN_KEY);
+const getToken = () => window.NkoSecureStore?.getToken?.() || sessionStorage.getItem(TOKEN_KEY);
+const setToken = (t) => {
+  sessionStorage.setItem(TOKEN_KEY, t);
+  window.NkoSecureStore?.setToken?.(t);
+};
+const clearToken = () => {
+  sessionStorage.removeItem(TOKEN_KEY);
+  window.NkoSecureStore?.clear?.();
+};
 
-async function api(path, { method = "GET", body, form } = {}) {
+async function api(path, { method = "GET", body, form, retry = true } = {}) {
   const headers = {};
   const token = getToken();
   if (token) headers["Authorization"] = `Bearer ${token}`;
@@ -20,7 +26,16 @@ async function api(path, { method = "GET", body, form } = {}) {
     headers["Content-Type"] = "application/json";
     payload = JSON.stringify(body);
   }
-  const res = await fetch(path, { method, headers, body: payload });
+  const res = await fetch(path, { method, headers, body: payload, credentials: "same-origin" });
+  if (res.status === 401 && retry && path !== "/api/auth/refresh") {
+    const refreshed = await fetch("/api/auth/refresh", {
+      method: "POST", credentials: "same-origin",
+    });
+    if (refreshed.ok) {
+      setToken((await refreshed.json()).access_token);
+      return api(path, { method, body, form, retry: false });
+    }
+  }
   if (res.status === 401) {
     clearToken();
     showAuth();
@@ -44,9 +59,21 @@ function showApp() {
   appPanel.classList.remove("hidden");
   loadLanguages();
   refreshHistory();
+  refreshRuntimeState();
 }
 
-$("logout-btn").addEventListener("click", () => {
+async function refreshRuntimeState() {
+  $("network-state").textContent = navigator.onLine ? "Online" : "Offline";
+  try {
+    const health = await api("/api/health");
+    $("provider-state").textContent = `Provider: ${health.asr_engine} (${health.model_version})`;
+  } catch { $("provider-state").textContent = "Backend unavailable"; }
+}
+window.addEventListener("online", refreshRuntimeState);
+window.addEventListener("offline", refreshRuntimeState);
+
+$("logout-btn").addEventListener("click", async () => {
+  try { await api("/api/auth/logout", { method: "POST", retry: false }); } catch { /* local logout */ }
   clearToken();
   currentResultId = null;
   $("result").classList.add("hidden");
@@ -98,15 +125,16 @@ for (const btn of document.querySelectorAll("#auth-form button")) {
 // ---- Recording -------------------------------------------------------------
 // State machine: idle → recording ⇄ standby(paused) → stop → upload
 let recorder = null, chunks = [], timerId = null, elapsedMs = 0, lastTick = 0;
+let pendingAudio = null, pendingName = "recording.webm", decodedAudio = null, previewURL = null;
 const startBtn = $("start-btn"), standbyBtn = $("standby-btn"), stopBtn = $("stop-btn");
 
 function setRecUI(state) {
+  const T = window.NKO_I18N.t;
   startBtn.disabled = state !== "idle";
   standbyBtn.disabled = state === "idle";
   stopBtn.disabled = state === "idle";
   standbyBtn.textContent = state === "standby" ? T("resume") : T("standby");
   startBtn.classList.toggle("recording", state === "recording");
-  const T = window.NKO_I18N.t;
   $("record-state").textContent =
     state === "recording" ? T("recording") : state === "standby" ? T("on_standby") : "";
 }
@@ -138,7 +166,7 @@ startBtn.addEventListener("click", async () => {
     $("record-timer").textContent = "";
     setRecUI("idle");
     const blob = new Blob(chunks, { type: recorder.mimeType || "audio/webm" });
-    await sendAudio(blob, "recording.webm");
+    await preparePreview(blob, "recording.webm");
   };
   recorder.start();
   setRecUI("recording");
@@ -163,14 +191,14 @@ stopBtn.addEventListener("click", () => {
 
 $("file-input").addEventListener("change", async (e) => {
   const file = e.target.files[0];
-  if (file) await sendAudio(file, file.name);
+  if (file) await preparePreview(file, file.name);
   e.target.value = "";
 });
 
 // The transcription record currently loaded in the editor (null = unsaved text)
 let currentResultId = null;
 
-function loadResult(rec) {
+async function loadResult(rec) {
   currentResultId = rec.id ?? null;
   $("result").classList.remove("hidden");
   $("result-nko").value = rec.text_nko;
@@ -178,6 +206,49 @@ function loadResult(rec) {
   $("result-latin").textContent = rec.text_latin ?? "";
   $("save-nko-btn").disabled = true;   // nothing edited yet
   $("save-state").textContent = "";
+  if (currentResultId !== null) await loadSegments(currentResultId);
+}
+
+async function loadSegments(transcriptionId) {
+  const container = $("segments");
+  container.replaceChildren();
+  const segments = await api(`/api/history/${transcriptionId}/segments`);
+  for (const segment of segments) {
+    const card = document.createElement("div");
+    card.className = "segment";
+    const time = document.createElement("button");
+    time.className = "secondary";
+    time.textContent = `▶ ${(segment.start_ms / 1000).toFixed(1)}–${(segment.end_ms / 1000).toFixed(1)}s`;
+    time.addEventListener("click", () => {
+      const player = $("preview-player");
+      if (!player.src) return;
+      player.currentTime = segment.start_ms / 1000;
+      player.play();
+      setTimeout(() => player.pause(), Math.max(0, segment.end_ms - segment.start_ms));
+    });
+    const latin = document.createElement("textarea");
+    latin.value = segment.text_latin; latin.rows = 2; latin.lang = "bm";
+    const nko = document.createElement("textarea");
+    nko.value = segment.text_nko; nko.rows = 2; nko.lang = "nqo"; nko.dir = "rtl";
+    const save = document.createElement("button");
+    save.className = "secondary"; save.textContent = "Save segment";
+    save.addEventListener("click", async () => {
+      await api(`/api/history/${transcriptionId}/segments/${segment.id}`, {
+        method: "PATCH", body: { text_latin: latin.value, text_nko: nko.value },
+      });
+      save.textContent = "Saved";
+    });
+    card.append(time, latin, nko, save);
+    container.append(card);
+  }
+}
+
+async function authenticatedDownload(path, filename) {
+  const response = await fetch(path, {
+    headers: { Authorization: `Bearer ${getToken()}` }, credentials: "same-origin",
+  });
+  if (!response.ok) throw new Error("Download failed");
+  downloadBlob(filename, await response.blob());
 }
 
 $("edit-nko-btn").addEventListener("click", () => {
@@ -187,24 +258,117 @@ $("edit-nko-btn").addEventListener("click", () => {
   $("save-state").textContent = window.NKO_I18N.t("editing");
 });
 
-async function sendAudio(blob, filename) {
+$("delete-account-btn").addEventListener("click", async () => {
+  const password = prompt("Confirm your password to permanently delete the account and data:");
+  if (!password) return;
+  if (!confirm("This permanently deletes your account, history and contributed audio.")) return;
+  await api("/api/auth/account", { method: "DELETE", body: { password } });
+  clearToken(); showAuth();
+});
+
+async function preparePreview(blob, filename) {
+  pendingAudio = blob;
+  pendingName = filename;
+  if (previewURL) URL.revokeObjectURL(previewURL);
+  previewURL = URL.createObjectURL(blob);
+  $("preview-player").src = previewURL;
+  $("audio-preview").classList.remove("hidden");
+  try {
+    const context = new AudioContext();
+    decodedAudio = await context.decodeAudioData(await blob.arrayBuffer());
+    $("trim-start").value = "0";
+    $("trim-end").value = decodedAudio.duration.toFixed(1);
+    $("trim-end").max = decodedAudio.duration.toFixed(1);
+    drawWaveform(decodedAudio);
+    await context.close();
+  } catch {
+    decodedAudio = null; // FFmpeg on the backend may still support the selected video.
+    $("trim-end").value = "";
+  }
+}
+
+function drawWaveform(buffer) {
+  const canvas = $("waveform"), ctx = canvas.getContext("2d");
+  const data = buffer.getChannelData(0), step = Math.max(1, Math.floor(data.length / canvas.width));
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+  ctx.strokeStyle = "#168b77";
+  ctx.beginPath();
+  for (let x = 0; x < canvas.width; x += 1) {
+    let peak = 0;
+    for (let i = x * step; i < Math.min(data.length, (x + 1) * step); i += 1) {
+      peak = Math.max(peak, Math.abs(data[i]));
+    }
+    ctx.moveTo(x, canvas.height / 2 - peak * canvas.height / 2);
+    ctx.lineTo(x, canvas.height / 2 + peak * canvas.height / 2);
+  }
+  ctx.stroke();
+}
+
+function encodeTrimmedWav(buffer, startSeconds, endSeconds) {
+  const rate = buffer.sampleRate;
+  const start = Math.max(0, Math.floor(startSeconds * rate));
+  const end = Math.min(buffer.length, Math.ceil(endSeconds * rate));
+  const count = Math.max(0, end - start), bytes = new ArrayBuffer(44 + count * 2);
+  const view = new DataView(bytes), channel = buffer.getChannelData(0);
+  const text = (offset, value) => [...value].forEach((c, i) => view.setUint8(offset + i, c.charCodeAt(0)));
+  text(0, "RIFF"); view.setUint32(4, 36 + count * 2, true); text(8, "WAVE");
+  text(12, "fmt "); view.setUint32(16, 16, true); view.setUint16(20, 1, true);
+  view.setUint16(22, 1, true); view.setUint32(24, rate, true); view.setUint32(28, rate * 2, true);
+  view.setUint16(32, 2, true); view.setUint16(34, 16, true); text(36, "data");
+  view.setUint32(40, count * 2, true);
+  for (let i = 0; i < count; i += 1) {
+    const sample = Math.max(-1, Math.min(1, channel[start + i]));
+    view.setInt16(44 + i * 2, sample < 0 ? sample * 32768 : sample * 32767, true);
+  }
+  return new Blob([bytes], { type: "audio/wav" });
+}
+
+async function submitAudioJob() {
+  if (!pendingAudio) return;
   $("app-error").textContent = "";
   startBtn.disabled = true;
   try {
+    let blob = pendingAudio, filename = pendingName;
+    if (decodedAudio && $("trim-end").value) {
+      const start = Number($("trim-start").value), end = Number($("trim-end").value);
+      if (!(end > start)) throw new Error("Trim end must be after trim start");
+      blob = encodeTrimmedWav(decodedAudio, start, end);
+      filename = "trimmed-recording.wav";
+    }
     const form = new FormData();
     form.append("audio", blob, filename);
     const lang = $("language-select").value;
     if (lang) form.append("language", lang);
     form.append("training_consent", $("training-consent").checked ? "true" : "false");
-    const rec = await api("/api/transcribe", { method: "POST", form });
+    const job = await api("/api/jobs/transcribe", { method: "POST", form });
+    $("job-progress").classList.remove("hidden");
+    let state = job;
+    while (!["completed", "failed"].includes(state.status)) {
+      $("job-progress").value = state.progress;
+      $("job-state").textContent = `${state.provider}: ${state.status} ${state.progress}%`;
+      await new Promise((resolve) => setTimeout(resolve, 800));
+      state = await api(`/api/jobs/${job.id}`);
+    }
+    if (state.status === "failed") throw new Error(state.error || "Transcription failed");
+    $("job-progress").value = 100;
+    const rec = await api(`/api/jobs/${job.id}/result`);
     loadResult(rec);
     refreshHistory();
+    $("audio-preview").classList.add("hidden");
+    pendingAudio = null;
   } catch (err) {
     $("app-error").textContent = err.message;
   } finally {
     startBtn.disabled = false;
   }
 }
+
+$("submit-audio-btn").addEventListener("click", submitAudioJob);
+$("discard-audio-btn").addEventListener("click", () => {
+  pendingAudio = null; decodedAudio = null;
+  $("preview-player").removeAttribute("src");
+  $("audio-preview").classList.add("hidden");
+});
 
 // ---- Editing the generated text ---------------------------------------------
 $("result-nko").addEventListener("input", () => {
@@ -527,6 +691,13 @@ async function nextPractice() {
   $("practice-feedback").textContent = "";
   $("practice-input").focus();
 }
+
+$("dl-vtt-nko").addEventListener("click", () => currentResultId !== null &&
+  authenticatedDownload(`/api/history/${currentResultId}/subtitles?format=vtt&script=nko`, `nko-${currentResultId}.vtt`));
+$("dl-srt-nko").addEventListener("click", () => currentResultId !== null &&
+  authenticatedDownload(`/api/history/${currentResultId}/subtitles?format=srt&script=nko`, `nko-${currentResultId}.srt`));
+$("export-history-btn").addEventListener("click", () =>
+  authenticatedDownload("/api/history/export.csv", "nko-history.csv"));
 
 function speakPractice() {
   const item = practiceItems[practiceIndex];

@@ -1,5 +1,16 @@
 # Changelog
 
+## 1.10.0 - 2026-07-17
+
+- Added rotating refresh sessions in HttpOnly cookies, logout revocation, complete account/data
+  deletion, personal history export, Android Keystore and iOS Keychain token protection.
+- Added queued transcription jobs with provider/progress states and backward-compatible results.
+- Added waveform preview, duration, pause/resume, playback, client-side trimming and retry-ready jobs.
+- Added timestamp segment storage/editing, tap-to-replay and N'Ko SRT/VTT downloads.
+- Added online/offline and active-provider disclosure plus explicit contribution controls.
+- Added optional biometric/device-credential locks to both mobile wrappers.
+- Hardened trusted-origin navigation and file access, upgraded Android to API 36 and iOS to 1.10.
+
 ## 1.9.0 - 2026-07-17
 
 - Added FFmpeg audio/video normalization and silence-aware long-audio segmentation.

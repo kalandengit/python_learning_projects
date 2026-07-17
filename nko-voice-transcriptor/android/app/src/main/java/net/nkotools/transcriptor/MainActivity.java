@@ -3,14 +3,18 @@ package net.nkotools.transcriptor;
 import android.Manifest;
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.hardware.biometrics.BiometricPrompt;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Build;
+import android.os.CancellationSignal;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.webkit.PermissionRequest;
 import android.webkit.JavascriptInterface;
 import android.webkit.WebChromeClient;
@@ -21,6 +25,16 @@ import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.webkit.ValueCallback;
 import android.widget.EditText;
+import android.util.Base64;
+
+import java.nio.charset.StandardCharsets;
+import java.security.KeyStore;
+import javax.crypto.Cipher;
+import javax.crypto.KeyGenerator;
+import javax.crypto.SecretKey;
+import javax.crypto.spec.GCMParameterSpec;
+import android.security.keystore.KeyGenParameterSpec;
+import android.security.keystore.KeyProperties;
 
 /**
  * Minimal, dependency-free WebView client for the N'Ko Voice Transcriptor.
@@ -37,6 +51,8 @@ public class MainActivity extends Activity {
     private static final int REQ_MIC = 101;
     private static final int REQ_FILE = 102;
     private static final int MENU_SET_URL = 1;
+    private static final int MENU_BIOMETRIC = 2;
+    private static final String KEY_BIOMETRIC = "biometric_lock";
 
     private WebView web;
     private PermissionRequest pendingMicRequest;
@@ -54,9 +70,29 @@ public class MainActivity extends Activity {
         settings.setJavaScriptEnabled(true);
         settings.setDomStorageEnabled(true);
         settings.setMediaPlaybackRequiresUserGesture(false);
+        settings.setAllowFileAccess(false);
+        settings.setAllowContentAccess(false);
+        settings.setAllowFileAccessFromFileURLs(false);
+        settings.setAllowUniversalAccessFromFileURLs(false);
         web.addJavascriptInterface(new ShareBridge(this), "NkoAndroid");
+        web.addJavascriptInterface(new SecureStore(this), "NkoSecureStore");
 
         web.setWebViewClient(new WebViewClient() {
+            @Override
+            public boolean shouldOverrideUrlLoading(WebView view, WebResourceRequest request) {
+                Uri target = request.getUrl();
+                Uri trusted = Uri.parse(prefs().getString(KEY_URL, DEFAULT_URL));
+                boolean sameOrigin = target.getScheme() != null
+                        && target.getScheme().equalsIgnoreCase(trusted.getScheme())
+                        && target.getHost() != null
+                        && target.getHost().equalsIgnoreCase(trusted.getHost())
+                        && target.getPort() == trusted.getPort();
+                if (sameOrigin) return false;
+                if ("https".equals(target.getScheme()) || "http".equals(target.getScheme())) {
+                    startActivity(new Intent(Intent.ACTION_VIEW, target));
+                }
+                return true;
+            }
             @Override
             public void onReceivedError(WebView view, WebResourceRequest request,
                                         WebResourceError error) {
@@ -104,7 +140,7 @@ public class MainActivity extends Activity {
 
         // First launch (no saved URL) → ask for the server. Otherwise load it;
         // if the server is unreachable, onReceivedError re-opens the prompt.
-        loadSavedOrPrompt();
+        unlockThenLoad();
     }
 
     /** Grant only microphone capture, and only after Android permission succeeds. */
@@ -179,6 +215,66 @@ public class MainActivity extends Activity {
         }
     }
 
+    /** Access tokens at rest are encrypted by an Android Keystore AES key. */
+    private static final class SecureStore {
+        private static final String ALIAS = "nko-session-key";
+        private static final String VALUE = "secure_token";
+        private final Context context;
+
+        SecureStore(Context context) { this.context = context; }
+
+        private SecretKey key() throws Exception {
+            KeyStore store = KeyStore.getInstance("AndroidKeyStore");
+            store.load(null);
+            if (!store.containsAlias(ALIAS)) {
+                KeyGenerator generator = KeyGenerator.getInstance(
+                        KeyProperties.KEY_ALGORITHM_AES, "AndroidKeyStore");
+                generator.init(new KeyGenParameterSpec.Builder(
+                        ALIAS, KeyProperties.PURPOSE_ENCRYPT | KeyProperties.PURPOSE_DECRYPT)
+                        .setBlockModes(KeyProperties.BLOCK_MODE_GCM)
+                        .setEncryptionPaddings(KeyProperties.ENCRYPTION_PADDING_NONE)
+                        .build());
+                return generator.generateKey();
+            }
+            return ((KeyStore.SecretKeyEntry) store.getEntry(ALIAS, null)).getSecretKey();
+        }
+
+        @JavascriptInterface
+        public void setToken(String token) {
+            try {
+                Cipher cipher = Cipher.getInstance("AES/GCM/NoPadding");
+                cipher.init(Cipher.ENCRYPT_MODE, key());
+                String value = Base64.encodeToString(cipher.getIV(), Base64.NO_WRAP) + "."
+                        + Base64.encodeToString(
+                                cipher.doFinal(token.getBytes(StandardCharsets.UTF_8)),
+                                Base64.NO_WRAP);
+                context.getSharedPreferences(PREFS, Context.MODE_PRIVATE)
+                        .edit().putString(VALUE, value).apply();
+            } catch (Exception ignored) { }
+        }
+
+        @JavascriptInterface
+        public String getToken() {
+            try {
+                String value = context.getSharedPreferences(PREFS, Context.MODE_PRIVATE)
+                        .getString(VALUE, "");
+                if (value.isEmpty()) return "";
+                String[] pieces = value.split("\\.", 2);
+                Cipher cipher = Cipher.getInstance("AES/GCM/NoPadding");
+                cipher.init(Cipher.DECRYPT_MODE, key(), new GCMParameterSpec(
+                        128, Base64.decode(pieces[0], Base64.NO_WRAP)));
+                return new String(cipher.doFinal(
+                        Base64.decode(pieces[1], Base64.NO_WRAP)), StandardCharsets.UTF_8);
+            } catch (Exception ignored) { return ""; }
+        }
+
+        @JavascriptInterface
+        public void clear() {
+            context.getSharedPreferences(PREFS, Context.MODE_PRIVATE)
+                    .edit().remove(VALUE).apply();
+        }
+    }
+
     private void loadSavedOrPrompt() {
         String url = prefs().getString(KEY_URL, null);
         if (url == null || url.isEmpty()) {
@@ -227,6 +323,8 @@ public class MainActivity extends Activity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         menu.add(0, MENU_SET_URL, 0, R.string.set_url);
+        MenuItem lock = menu.add(0, MENU_BIOMETRIC, 1, "Biometric lock");
+        lock.setCheckable(true).setChecked(prefs().getBoolean(KEY_BIOMETRIC, false));
         return true;
     }
 
@@ -236,7 +334,40 @@ public class MainActivity extends Activity {
             promptForUrl();
             return true;
         }
+        if (item.getItemId() == MENU_BIOMETRIC) {
+            boolean enabled = !item.isChecked();
+            prefs().edit().putBoolean(KEY_BIOMETRIC, enabled).apply();
+            item.setChecked(enabled);
+            return true;
+        }
         return super.onOptionsItemSelected(item);
+    }
+
+    private void unlockThenLoad() {
+        if (!prefs().getBoolean(KEY_BIOMETRIC, false) || Build.VERSION.SDK_INT < 28) {
+            loadSavedOrPrompt();
+            return;
+        }
+        web.setVisibility(View.INVISIBLE);
+        BiometricPrompt prompt = new BiometricPrompt.Builder(this)
+                .setTitle("Unlock N'Ko Voice")
+                .setSubtitle("Protect your transcripts")
+                .setDeviceCredentialAllowed(true)
+                .build();
+        prompt.authenticate(new CancellationSignal(), getMainExecutor(),
+                new BiometricPrompt.AuthenticationCallback() {
+                    @Override
+                    public void onAuthenticationSucceeded(
+                            BiometricPrompt.AuthenticationResult result) {
+                        web.setVisibility(View.VISIBLE);
+                        loadSavedOrPrompt();
+                    }
+
+                    @Override
+                    public void onAuthenticationError(int code, CharSequence message) {
+                        showConnectionError(String.valueOf(message));
+                    }
+                });
     }
 
     @Override

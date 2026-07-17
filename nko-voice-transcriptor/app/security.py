@@ -8,6 +8,8 @@
 from __future__ import annotations
 
 import contextlib
+import hashlib
+import secrets
 from datetime import UTC, datetime, timedelta
 
 import jwt
@@ -61,6 +63,15 @@ def create_access_token(user_id: int) -> str:
         "type": "access",
     }
     return jwt.encode(payload, settings.secret_key, algorithm=ALGORITHM)
+
+
+def new_refresh_token() -> tuple[str, str]:
+    token = secrets.token_urlsafe(48)
+    return token, hashlib.sha256(token.encode()).hexdigest()
+
+
+def refresh_hash(token: str) -> str:
+    return hashlib.sha256(token.encode()).hexdigest()
 
 
 def get_current_user(

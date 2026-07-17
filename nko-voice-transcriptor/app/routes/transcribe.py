@@ -18,7 +18,7 @@ from app.limits import limiter
 from app.llm import improve_transcript
 from app.logging_conf import get_logger
 from app.media import normalize_media, segment_wav
-from app.models import TrainingSample, Transcription, User
+from app.models import TrainingSample, Transcription, TranscriptSegment, User
 from app.nko import transliterate
 from app.schemas import LanguageOut, TranscriptionOut, TransliterateIn, TransliterateOut
 from app.security import get_current_user
@@ -104,6 +104,22 @@ async def transcribe_audio(
     )
     db.add(record)
     db.flush()
+    cursor_ms = 0
+    for position, (part, result) in enumerate(zip(segments, results, strict=True)):
+        part_duration = wav_duration_seconds(part) or 0
+        end_ms = cursor_ms + round(part_duration * 1000)
+        segment_latin, _ = retrieve_correction(result.text_latin, lang, db)
+        db.add(
+            TranscriptSegment(
+                transcription_id=record.id,
+                position=position,
+                start_ms=cursor_ms,
+                end_ms=end_ms,
+                text_latin=segment_latin,
+                text_nko=transliterate(segment_latin),
+            )
+        )
+        cursor_ms = end_ms
     if training_consent:
         training_dir = Path(settings.training_data_dir).resolve()
         training_dir.mkdir(parents=True, exist_ok=True)

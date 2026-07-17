@@ -9,6 +9,7 @@ os.environ.setdefault("NKO_SECRET_KEY", "test-secret-key-0123456789abcdef-012345
 os.environ.setdefault("NKO_DATABASE_URL", "sqlite://")  # in-memory
 os.environ.setdefault("NKO_ASR_ENGINE", "mock")
 os.environ.setdefault("NKO_ENVIRONMENT", "development")
+os.environ.setdefault("NKO_SECURE_COOKIES", "false")
 
 from fastapi.testclient import TestClient  # noqa: E402
 
