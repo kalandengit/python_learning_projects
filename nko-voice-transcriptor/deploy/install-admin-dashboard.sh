@@ -6,8 +6,7 @@ DOMAIN="${DOMAIN:-admin.saas.kalanfa.org}"
 EMAIL="${EMAIL:-contact@kalanfa.org}"
 NKO_UNIT="${NKO_UNIT:-nko-transcriptor.service}"
 KOLIBRI_UNIT="${KOLIBRI_UNIT:-}"
-# Optional semicolon-separated entries: key|Display name|unit.service
-# Example: EXTRA_SERVICES='nextcloud|Nextcloud|nextcloud.service;worker|Queue worker|worker.service'
+# Optional entries: key|Display name|unit.service|https://optional-address.example
 EXTRA_SERVICES="${EXTRA_SERVICES:-}"
 ADMIN_LOGIN="${ADMIN_LOGIN:-admin}"
 ADMIN_PORT="${ADMIN_PORT:-8765}"
@@ -60,18 +59,19 @@ curl -fsSL "$SOURCE_URL" -o "$APP_DIR/admin-dashboard.py"
 chown root:"$APP_USER" "$APP_DIR/admin-dashboard.py"
 chmod 0750 "$APP_DIR/admin-dashboard.py"
 
-SERVICE_ENTRIES="nko|N'Ko Voice Transcriptor|$NKO_UNIT;kolibri|Kolibri Studio|$KOLIBRI_UNIT"
+SERVICE_ENTRIES="nko|N'Ko Voice Transcriptor|$NKO_UNIT|https://nko.kalandeh.kalanfa.org;kolibri|Kolibri Studio|$KOLIBRI_UNIT|https://kolibri.studio.kalanfa.org"
 SERVICE_UNITS=("$NKO_UNIT" "$KOLIBRI_UNIT")
 if [ -n "$EXTRA_SERVICES" ]; then
   IFS=';' read -ra EXTRAS <<< "$EXTRA_SERVICES"
   for entry in "${EXTRAS[@]}"; do
-    IFS='|' read -r key label unit extra <<< "$entry"
+    IFS='|' read -r key label unit url extra <<< "$entry"
     [[ "$key" =~ ^[a-z][a-z0-9_-]*$ ]] || die "Invalid extra service key: $key"
-    [ -n "$label" ] && [ -z "${extra:-}" ] || die "Use key|Display name|unit.service for EXTRA_SERVICES."
+    [ -n "$label" ] && [ -z "${extra:-}" ] || die "Use key|Display name|unit.service|optional URL."
     [[ "$label" != *"'"* ]] || die "An extra service label cannot contain a single quote."
     [[ "$unit" =~ ^[A-Za-z0-9_.@-]+\.service$ ]] || die "Invalid extra service unit: $unit"
     systemctl cat "$unit" >/dev/null 2>&1 || die "Service not found: $unit"
-    SERVICE_ENTRIES+=";$key|$label|$unit"
+    [ -z "${url:-}" ] || [[ "$url" =~ ^https://[A-Za-z0-9./_-]+$ ]] || die "Extra service URL must use HTTPS."
+    SERVICE_ENTRIES+=";$key|$label|$unit|${url:-}"
     SERVICE_UNITS+=("$unit")
   done
 fi
@@ -158,5 +158,5 @@ echo
 echo "SUCCESS: https://$DOMAIN/"
 echo "Login: $ADMIN_LOGIN"
 echo "Controlled services: ${SERVICE_UNITS[*]}"
-echo "Add more later by re-running with EXTRA_SERVICES='key|Display name|unit.service'"
+echo "Add more later with EXTRA_SERVICES='key|Display name|unit.service|https://address'"
 echo "The password is not printed or stored in plain text."

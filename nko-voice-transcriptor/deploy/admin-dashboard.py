@@ -15,13 +15,14 @@ PORT = int(os.getenv("ADMIN_PORT", "8765"))
 CSRF_TOKEN = os.environ["ADMIN_CSRF_TOKEN"]
 
 
-def configured_services() -> dict[str, tuple[str, str]]:
-    """Parse the installer-validated key|label|unit;... service allow-list."""
+def configured_services() -> dict[str, tuple[str, str, str]]:
+    """Parse the installer-validated key|label|unit|URL service allow-list."""
     raw = os.environ["ADMIN_SERVICES"]
     services: dict[str, tuple[str, str]] = {}
     for entry in raw.split(";"):
-        key, label, unit = entry.split("|", 2)
-        services[key] = (label, unit)
+        fields = entry.split("|", 3)
+        key, label, unit = fields[:3]
+        services[key] = (label, unit, fields[3] if len(fields) == 4 else "")
     if not services:
         raise RuntimeError("ADMIN_SERVICES cannot be empty")
     return services
@@ -72,16 +73,17 @@ def host_stats() -> tuple[str, str, str]:
 def render_page(message: str = "", error: bool = False) -> bytes:
     memory, load, uptime = host_stats()
     cards = []
-    for key, (label, unit) in SERVICES.items():
+    for key, (label, unit, url) in SERVICES.items():
         status = service_status(unit)
         buttons = "".join(
             f'<button class="{action}" name="action" value="{action}">{action.title()}</button>'
             for action in ("start", "stop", "restart")
         )
+        open_link = f'<a class="open" href="{html.escape(url)}">Open application</a>' if url else ""
         cards.append(f"""
         <section class="card">
           <div><h2>{html.escape(label)}</h2><small>{html.escape(unit)}</small></div>
-          <span class="status {status}">{html.escape(status.title())}</span>
+          <span class="status {status}">{html.escape(status.title())}</span>{open_link}
           <form method="post" action="action">
             <input type="hidden" name="csrf" value="{html.escape(CSRF_TOKEN)}">
             <input type="hidden" name="service" value="{html.escape(key)}">
@@ -100,7 +102,7 @@ h1{{font-size:1.65rem;margin:.4rem 0}}.refresh{{color:var(--ink);background:whit
 .summary,.card{{background:var(--card);border-radius:16px;padding:20px;margin:16px 0;box-shadow:0 2px 12px #153a2910}}
 .summary{{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;text-align:center}}.summary b{{display:block;font-size:1.05rem}}
 .card{{display:grid;grid-template-columns:1fr auto;gap:14px;align-items:start}}h2{{margin:0 0 4px;font-size:1.25rem}}small{{color:#607169}}
-.status{{padding:7px 12px;border-radius:999px;background:#dde3df;font-weight:700}}.status.active{{background:#d5f2e7;color:#08614d}}.status.failed{{background:#ffe1e1;color:#952727}}
+.status{{padding:7px 12px;border-radius:999px;background:#dde3df;font-weight:700}}.status.active{{background:#d5f2e7;color:#08614d}}.status.failed{{background:#ffe1e1;color:#952727}}.open{{grid-column:1/-1;color:#08614d;font-weight:700}}
 form{{grid-column:1/-1}}.actions{{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}}button{{border:0;border-radius:10px;padding:14px 8px;color:white;font-size:1rem;font-weight:700;cursor:pointer}}
 .start{{background:var(--green)}}.stop{{background:var(--red)}}.restart{{background:var(--gold)}}.notice{{background:#dff3ea;padding:12px;border-radius:10px}}.notice.error{{background:#ffe1e1;color:#802020}}
 .warning{{font-size:.9rem;color:#5b6962}}@media(max-width:520px){{main{{padding:14px}}.summary{{grid-template-columns:1fr}}.card{{grid-template-columns:1fr}}.status{{justify-self:start}}}}
@@ -156,7 +158,7 @@ class Handler(BaseHTTPRequestHandler):
         if csrf != CSRF_TOKEN or service not in SERVICES or action not in ALLOWED_ACTIONS:
             self.send_document(render_page("Invalid or expired request.", True), 403)
             return
-        label, unit = SERVICES[service]
+        label, unit, _url = SERVICES[service]
         result = run_systemctl(action, unit, privileged=True)
         if result.returncode == 0:
             self.send_document(render_page(f"{label}: {action} completed."))
