@@ -7,8 +7,9 @@ EMAIL="${EMAIL:-contact@kalanfa.org}"
 SERVICE="${SERVICE:-kolibri-studio.service}"
 PORT="${PORT:-9090}"
 NGINX_SITE="/etc/nginx/sites-available/kolibri-studio"
-OVERRIDE_DIR="/etc/systemd/system/${SERVICE}.d"
-OVERRIDE_FILE="${OVERRIDE_DIR}/port.conf"
+COMPOSE_DIR="${COMPOSE_DIR:-/opt/kolibri-studio/deploy}"
+COMPOSE_FILE="$COMPOSE_DIR/docker-compose.deploy.yml"
+COMPOSE_ENV="$COMPOSE_DIR/.env"
 
 die() { echo "ERROR: $*" >&2; exit 1; }
 [ "$(id -u)" -eq 0 ] || die "Run this script with sudo."
@@ -16,6 +17,8 @@ die() { echo "ERROR: $*" >&2; exit 1; }
 [[ "$SERVICE" =~ ^[A-Za-z0-9_.@-]+\.service$ ]] || die "Invalid service name."
 [[ "$PORT" =~ ^[0-9]+$ ]] && [ "$PORT" -ge 1024 ] && [ "$PORT" -le 65535 ] || die "Invalid port."
 systemctl cat "$SERVICE" >/dev/null 2>&1 || die "Service not found: $SERVICE"
+[ -f "$COMPOSE_FILE" ] || die "Compose file not found: $COMPOSE_FILE"
+[ -f "$COMPOSE_ENV" ] || die "Compose environment not found: $COMPOSE_ENV"
 
 echo "Checking DNS..."
 RESOLVED_IP="$(getent ahostsv4 "$DOMAIN" | awk 'NR==1 {print $1}')"
@@ -31,24 +34,44 @@ export DEBIAN_FRONTEND=noninteractive
 apt-get update -qq
 apt-get install -y -qq nginx certbot python3-certbot-nginx curl ca-certificates
 
-BACKUP=""
-if [ -f "$OVERRIDE_FILE" ]; then
-  BACKUP="${OVERRIDE_FILE}.backup-$(date +%Y%m%d-%H%M%S)"
-  cp -a "$OVERRIDE_FILE" "$BACKUP"
-fi
-mkdir -p "$OVERRIDE_DIR"
-cat > "$OVERRIDE_FILE" <<EOF
-[Service]
-# Common port variables; the service uses whichever its launcher supports.
-Environment=PORT=$PORT
-Environment=KOLIBRI_PORT=$PORT
-Environment=KOLIBRI_HTTP_PORT=$PORT
-Environment=DJANGO_PORT=$PORT
-EOF
+STAMP="$(date +%Y%m%d-%H%M%S)"
+ENV_BACKUP="${COMPOSE_ENV}.backup-${STAMP}"
+COMPOSE_BACKUP="${COMPOSE_FILE}.backup-${STAMP}"
+cp -a "$COMPOSE_ENV" "$ENV_BACKUP"
+cp -a "$COMPOSE_FILE" "$COMPOSE_BACKUP"
+
+# Remove the obsolete override created by older versions of this installer.
+rm -f "/etc/systemd/system/${SERVICE}.d/port.conf"
+
+python3 - "$COMPOSE_ENV" "$COMPOSE_FILE" "$PORT" <<'PY'
+import pathlib
+import re
+import sys
+
+env_path = pathlib.Path(sys.argv[1])
+compose_path = pathlib.Path(sys.argv[2])
+port = sys.argv[3]
+env = env_path.read_text()
+if re.search(r"(?m)^STUDIO_HTTP_PORT=.*$", env):
+    env = re.sub(r"(?m)^STUDIO_HTTP_PORT=.*$", f"STUDIO_HTTP_PORT={port}", env)
+else:
+    env += f"\nSTUDIO_HTTP_PORT={port}\n"
+env_path.write_text(env)
+
+compose = compose_path.read_text()
+old = '      - "${STUDIO_HTTP_PORT:-8080}:8080"'
+already = '      - "127.0.0.1:${STUDIO_HTTP_PORT:-9090}:8080"'
+if old in compose:
+    compose = compose.replace(old, already, 1)
+elif already not in compose:
+    raise SystemExit("Expected STUDIO_HTTP_PORT mapping not found in Compose file")
+compose_path.write_text(compose)
+PY
 
 rollback() {
-  echo "Rolling back the port override..."
-  if [ -n "$BACKUP" ]; then cp -a "$BACKUP" "$OVERRIDE_FILE"; else rm -f "$OVERRIDE_FILE"; fi
+  echo "Rolling back the Compose port configuration..."
+  cp -a "$ENV_BACKUP" "$COMPOSE_ENV"
+  cp -a "$COMPOSE_BACKUP" "$COMPOSE_FILE"
   systemctl daemon-reload
   systemctl restart "$SERVICE" || true
 }
@@ -70,7 +93,7 @@ if [ "$READY" != 1 ]; then
   systemctl status "$SERVICE" --no-pager || true
   ss -ltnp | grep -E ':(8000|8080|9090)\b' || true
   rollback
-  die "The application does not recognize the standard port variables. Send: systemctl cat $SERVICE"
+  die "Kolibri did not start on port $PORT; its previous Compose configuration was restored."
 fi
 
 cat > "$NGINX_SITE" <<EOF
