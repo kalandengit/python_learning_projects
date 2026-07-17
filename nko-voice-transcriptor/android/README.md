@@ -11,11 +11,19 @@ recording) natively.
 > unreachable" dialog with **Retry** / **Change URL**. Use the ⋮ menu →
 > **Set server URL** to change it at any time.
 
-- `versionName` **1.7.0**, `versionCode` 10700 (see `app/build.gradle`).
+- `versionName` **1.9.0**, `versionCode` 10900 (see `app/build.gradle`).
 - `minSdk` 26, `targetSdk`/`compileSdk` 34, no AndroidX.
 - Microphone permission is requested and forwarded to the WebView so in-page
   recording works. Cleartext HTTP is allowed (test build) so you can point at a
   LAN dev server; use HTTPS for anything real.
+
+## Offline tools (no server needed)
+
+The APK bundles an **offline toolkit** (⋮ menu → *Offline tools*, also offered
+from the "Server unreachable" dialog): Latin→N'Ko transliteration, the full
+47,764-entry dictionary (French / Bambara / N'Ko), the complete N'Ko keyboard,
+and the alphabet table — all on-device. Only **voice** transcription requires
+the online server.
 
 ## Getting the APK
 

@@ -136,6 +136,12 @@ Knobs (all optional env vars): `DOMAIN`, `ENABLE_TLS`, `EMAIL`, `USE_POSTGRES`,
 `deploy/deploy-ubuntu.sh`. After the PR merges, deploy `main` with
 `sudo REPO_REF=main ...`.
 
+**Update an existing server** (backs up, restarts, auto-rolls-back on failure):
+
+```bash
+sudo bash -c "$(curl -fsSL https://raw.githubusercontent.com/kalandengit/python_learning_projects/claude/nko-voice-transcriptor-b3u9zg/nko-voice-transcriptor/deploy/update-ubuntu.sh)"
+```
+
 ## Production (Docker)
 
 ```bash

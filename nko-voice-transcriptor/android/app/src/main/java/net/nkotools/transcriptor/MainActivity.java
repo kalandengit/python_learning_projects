@@ -32,6 +32,11 @@ public class MainActivity extends Activity {
     private static final String DEFAULT_URL = "http://10.0.2.2:8000";
     private static final int REQ_MIC = 101;
     private static final int MENU_SET_URL = 1;
+    private static final int MENU_OFFLINE = 2;
+    private static final int MENU_ONLINE = 3;
+
+    /** Bundled offline toolkit: transliterator, dictionary, keyboard, alphabet. */
+    private static final String OFFLINE_URL = "file:///android_asset/offline/index.html";
 
     private WebView web;
     private boolean connectionFailed = false;
@@ -115,7 +120,8 @@ public class MainActivity extends Activity {
                 .show();
     }
 
-    /** Shown when the configured server can't be reached: retry or change URL. */
+    /** Shown when the configured server can't be reached: retry, change URL,
+     *  or fall back to the bundled offline toolkit. */
     private void showConnectionError(String detail) {
         String url = prefs().getString(KEY_URL, DEFAULT_URL);
         new AlertDialog.Builder(this)
@@ -124,22 +130,33 @@ public class MainActivity extends Activity {
                 .setCancelable(false)
                 .setPositiveButton(R.string.retry, (d, w) -> loadSavedOrPrompt())
                 .setNegativeButton(R.string.change_url, (d, w) -> promptForUrl())
+                .setNeutralButton(R.string.offline_tools, (d, w) -> web.loadUrl(OFFLINE_URL))
                 .show();
     }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         menu.add(0, MENU_SET_URL, 0, R.string.set_url);
+        menu.add(0, MENU_OFFLINE, 1, R.string.offline_tools);
+        menu.add(0, MENU_ONLINE, 2, R.string.online_app);
         return true;
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        if (item.getItemId() == MENU_SET_URL) {
-            promptForUrl();
-            return true;
+        switch (item.getItemId()) {
+            case MENU_SET_URL:
+                promptForUrl();
+                return true;
+            case MENU_OFFLINE:
+                web.loadUrl(OFFLINE_URL);
+                return true;
+            case MENU_ONLINE:
+                loadSavedOrPrompt();
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
         }
-        return super.onOptionsItemSelected(item);
     }
 
     @Override

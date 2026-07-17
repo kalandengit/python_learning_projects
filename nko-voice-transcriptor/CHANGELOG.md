@@ -16,6 +16,20 @@
 - Archived the full user-supplied STT survey at
   `docs/nko-research/stt-repertoire.md`; referenced from `NKO_RESOURCES.md`.
 
+### Android offline toolkit (APK 1.9.0)
+
+- The APK now bundles **Offline tools** (⋮ menu, also offered when the server
+  is unreachable): text→N'Ko transliteration, the 47,764-entry dictionary
+  (French / Bambara / N'Ko directions), the full-block keyboard, and the
+  62-character alphabet table — all on-device, no internet. The JS engine is
+  generated from the Python tables and parity-tested (293/293 identical).
+
+### Operations
+
+- `deploy/update-ubuntu.sh` — one-command backend update: fetches the ref,
+  backs up current code, syncs + reinstalls deps, restarts the service, and
+  **rolls back automatically** if the health check fails.
+
 ### Tests
 
 - Factory: custom dotted-path engine loads (both `:` and `.` forms), unknown
