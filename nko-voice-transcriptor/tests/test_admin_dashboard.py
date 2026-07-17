@@ -25,5 +25,6 @@ def test_installer_uses_basic_auth_exact_sudo_rules_and_resource_limit():
     assert "NOPASSWD: $SYSTEMCTL start $unit" in INSTALLER
     assert "NOPASSWD: ALL" not in INSTALLER
     assert "MemoryMax=64M" in INSTALLER
-    assert "listen 443 ssl" in INSTALLER
+    assert "certbot --nginx" in INSTALLER
+    assert "admin.saas.kalanfa.org" in INSTALLER
     assert "EXTRA_SERVICES" in INSTALLER
