@@ -1,6 +1,6 @@
 [project]
 name = "nko-voice-transcriptor"
-version = "1.10.1"
+version = "1.11.0"
 description = "Speech-to-N'Ko transcription web app for Bambara (Manding)"
 requires-python = ">=3.11"
 

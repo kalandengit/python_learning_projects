@@ -61,3 +61,12 @@ def test_registration_form_contains_only_auth_controls():
     assert 'data-mode="register"' in auth_form
     assert 'id="segments"' not in auth_form
     assert 'id="export-history-btn"' not in auth_form
+
+
+def test_mobile_home_routes_to_focused_workspaces():
+    html = (STATIC / "index.html").read_text(encoding="utf-8")
+    app = (STATIC / "app.js").read_text(encoding="utf-8")
+    for view in ("record", "import", "text", "practice", "dictionary", "history"):
+        assert f'data-open-view="{view}"' in html
+    assert 'id="workspace-home-btn"' in html
+    assert "function openWorkspace(viewName)" in app

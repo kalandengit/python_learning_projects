@@ -66,8 +66,9 @@ input {
 .row { display: flex; gap: .6rem; align-items: center; margin: .8rem 0; flex-wrap: wrap; }
 .row input { flex: 1; width: auto; }
 button {
-  min-height: 42px; padding: .62rem 1.05rem; border: 0; border-radius: 11px; cursor: pointer;
+  min-height: 48px; padding: .72rem 1.1rem; border: 0; border-radius: 12px; cursor: pointer;
   background: var(--accent); color: #15211f; font-weight: 750;
+  font-size: 1rem; line-height: 1.25;
   transition: transform 140ms ease, background-color 140ms ease, border-color 140ms ease;
 }
 button:hover:not(:disabled) { transform: translateY(-1px); }
@@ -107,6 +108,7 @@ textarea.nko-text:focus { outline: 2px solid var(--accent); border-color: var(--
 }
 .skip-link:focus { transform: translateY(0); }
 .workspace-head { display: flex; align-items: start; justify-content: space-between; gap: 1rem; }
+.workspace-head > button { flex: 0 0 auto; }
 .workspace-head h2 { margin: 0; font-size: clamp(1.5rem, 3vw, 2rem); }
 .eyebrow {
   margin: 0 0 .15rem; color: var(--accent); font-size: .72rem; font-weight: 800;
@@ -118,6 +120,23 @@ textarea.nko-text:focus { outline: 2px solid var(--accent); border-color: var(--
 .quiet { min-height: 38px; padding: .45rem .75rem; color: var(--muted); }
 #auth-panel { max-width: 520px; margin-inline: auto; }
 #file-input { padding: .55rem; border-style: dashed; }
+.function-grid {
+  display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 1rem;
+  margin-top: 1.5rem;
+}
+.function-grid button {
+  min-height: 132px; display: flex; flex-direction: column; align-items: flex-start;
+  justify-content: space-between; padding: 1.25rem; text-align: left;
+  background: var(--surface); color: var(--ink); border: 2px solid var(--line);
+  font-size: clamp(1.08rem, 3vw, 1.3rem); box-shadow: 0 8px 24px rgb(0 0 0 / 10%);
+}
+.function-grid button:hover, .function-grid button:focus-visible {
+  border-color: var(--accent); background: color-mix(in srgb, var(--surface) 88%, var(--accent));
+}
+.function-icon { font-size: 2rem; line-height: 1; }
+.workspace-view { margin-top: 1.25rem; padding-top: 1.25rem; border-top: 1px solid var(--line); }
+.action-stack { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: .8rem; margin: 1rem 0; }
+.action-stack button { min-height: 62px; font-size: 1.08rem; }
 
 /* On-screen N'Ko keyboard */
 .keyboard { margin: .6rem 0 1rem; display: flex; flex-direction: column; gap: .4rem; }
@@ -144,6 +163,10 @@ footer { color: var(--muted); font-size: .85rem; padding: 1rem 0 2rem; }
   .header-row { align-items: flex-start; }
   .ui-lang { width: 100%; justify-content: space-between; }
   .card { border-radius: 16px; }
+  .workspace-head { flex-wrap: wrap; }
+  .function-grid { grid-template-columns: 1fr; gap: .75rem; }
+  .function-grid button { min-height: 98px; flex-direction: row; align-items: center; }
+  .action-stack { grid-template-columns: 1fr; }
   .capture-section .row button { flex: 1 1 8rem; }
   #history li { align-items: center; }
   #history .nko { flex: 1 0 65%; }

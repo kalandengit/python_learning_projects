@@ -46,18 +46,28 @@
     <div class="workspace-head">
       <div>
         <p class="eyebrow" data-i18n="workspace">Workspace</p>
-        <h2 data-i18n="record">Record</h2>
+        <h2 id="workspace-title">Fonctions principales</h2>
       </div>
+      <button id="workspace-home-btn" class="secondary quiet hidden" type="button">← Accueil</button>
       <button id="logout-btn" class="secondary quiet" data-i18n="log_out">Log out</button>
       <button id="delete-account-btn" class="secondary quiet">Delete account</button>
     </div>
-    <div class="tool-section capture-section">
-    <div class="row">
+    <nav id="workspace-menu" class="function-grid" aria-label="Fonctions principales">
+      <button type="button" data-open-view="record"><span class="function-icon">🎙️</span><span>Enregistrer</span></button>
+      <button type="button" data-open-view="import"><span class="function-icon">📁</span><span>Importer audio</span></button>
+      <button type="button" data-open-view="text"><span class="function-icon">✍️</span><span>Écrire du texte</span></button>
+      <button type="button" data-open-view="practice"><span class="function-icon">🎧</span><span>Dictée</span></button>
+      <button type="button" data-open-view="dictionary"><span class="function-icon">📖</span><span>Dictionnaire</span></button>
+      <button type="button" data-open-view="history"><span class="function-icon">🕘</span><span>Historique</span></button>
+    </nav>
+
+    <div class="tool-section capture-section workspace-view hidden" data-view="capture">
+    <div class="row record-only">
       <label class="inline"><span data-i18n="source_language">Language</span>
         <select id="language-select" title="Source language"></select>
       </label>
     </div>
-    <div class="row">
+    <div class="row record-only">
       <button id="mic-access-btn" type="button" class="secondary">Autoriser le microphone</button>
       <button id="start-btn" class="record"><span data-i18n="start">● Start</span></button>
       <button id="standby-btn" class="secondary" disabled data-i18n="standby">❚❚ Stand by</button>
@@ -65,8 +75,11 @@
       <span id="record-timer" aria-live="polite"></span>
       <span id="record-state" class="hint" aria-live="polite"></span>
     </div>
-    <p class="hint" data-i18n="or_upload">…or upload an audio file:</p>
-    <input type="file" id="file-input" accept="audio/*,video/mp4,video/webm,video/quicktime">
+    <div class="import-only">
+      <h2>Importer un fichier audio ou vidéo</h2>
+      <p class="hint" data-i18n="or_upload">Choisissez un fichier à transcrire :</p>
+      <input type="file" id="file-input" accept="audio/*,video/mp4,video/webm,video/quicktime">
+    </div>
     <label class="consent"><input type="checkbox" id="training-consent">
       <span>Contribute this recording and my corrections to improve recognition</span>
     </label>
@@ -113,7 +126,7 @@
       </div>
     </div>
 
-    <div class="tool-section">
+    <div class="tool-section workspace-view hidden" data-view="text">
     <h2 data-i18n="try_text">Try text directly</h2>
     <div class="row">
       <input id="text-input" placeholder="e.g. i ni ce" maxlength="500">
@@ -132,7 +145,7 @@
     </div>
 
     <!-- Listen → type → validate self-evaluation practice -->
-    <div class="tool-section practice-section">
+    <div class="tool-section practice-section workspace-view hidden" data-view="practice">
       <h2 data-i18n="practice_title">N'Ko dictation practice</h2>
       <p class="hint" data-i18n="practice_help">Listen to the French word, type its N'Ko spelling, then validate.</p>
       <div class="row">
@@ -153,7 +166,7 @@
     </div>
 
     <!-- Dictionary lookup -->
-    <div class="tool-section dictionary-section">
+    <div class="tool-section dictionary-section workspace-view hidden" data-view="dictionary">
       <h2 data-i18n="dictionary_title">Dictionary</h2>
       <div class="row">
         <input id="dict-input" data-i18n-placeholder="dict_placeholder" placeholder="Search a word…" maxlength="100">
@@ -169,7 +182,7 @@
     </div>
 
     <!-- History management -->
-    <div class="tool-section history-section">
+    <div class="tool-section history-section workspace-view hidden" data-view="history">
     <div class="row history-head">
       <h2 data-i18n="history">History</h2>
       <span id="history-count" class="hint"></span>

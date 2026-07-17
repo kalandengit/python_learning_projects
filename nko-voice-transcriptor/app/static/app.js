@@ -57,10 +57,47 @@ function showAuth() { authPanel.classList.remove("hidden"); appPanel.classList.a
 function showApp() {
   authPanel.classList.add("hidden");
   appPanel.classList.remove("hidden");
+  showWorkspaceHome();
   loadLanguages();
   refreshHistory();
   refreshRuntimeState();
 }
+
+const WORKSPACE_TITLES = {
+  record: "Enregistrer",
+  import: "Importer audio",
+  text: "Écrire du texte",
+  practice: "Dictée",
+  dictionary: "Dictionnaire",
+  history: "Historique",
+};
+
+function showWorkspaceHome() {
+  $("workspace-menu").classList.remove("hidden");
+  $("workspace-home-btn").classList.add("hidden");
+  $("workspace-title").textContent = "Fonctions principales";
+  document.querySelectorAll(".workspace-view").forEach((view) => view.classList.add("hidden"));
+  $("result").classList.add("hidden");
+  window.scrollTo({ top: 0, behavior: "smooth" });
+}
+
+function openWorkspace(viewName) {
+  $("workspace-menu").classList.add("hidden");
+  $("workspace-home-btn").classList.remove("hidden");
+  $("workspace-title").textContent = WORKSPACE_TITLES[viewName] || "Fonction";
+  document.querySelectorAll(".workspace-view").forEach((view) => view.classList.add("hidden"));
+  const targetName = ["record", "import"].includes(viewName) ? "capture" : viewName;
+  document.querySelector(`[data-view="${targetName}"]`)?.classList.remove("hidden");
+  document.querySelectorAll(".record-only").forEach((el) => el.classList.toggle("hidden", viewName !== "record"));
+  document.querySelectorAll(".import-only").forEach((el) => el.classList.toggle("hidden", viewName !== "import"));
+  if ($("result").dataset.ready === "true") $("result").classList.remove("hidden");
+  window.scrollTo({ top: 0, behavior: "smooth" });
+}
+
+document.querySelectorAll("[data-open-view]").forEach((button) => {
+  button.addEventListener("click", () => openWorkspace(button.dataset.openView));
+});
+$("workspace-home-btn").addEventListener("click", showWorkspaceHome);
 
 async function refreshRuntimeState() {
   $("network-state").textContent = navigator.onLine ? "Online" : "Offline";
@@ -220,6 +257,7 @@ let currentResultId = null;
 
 async function loadResult(rec) {
   currentResultId = rec.id ?? null;
+  $("result").dataset.ready = "true";
   $("result").classList.remove("hidden");
   $("result-nko").value = rec.text_nko;
   $("result-nko").readOnly = true;

@@ -1,5 +1,12 @@
 # Changelog
 
+## 1.11.0 - 2026-07-17
+
+- Replaced the long mobile landing page with six large, readable function cards.
+- Added focused Record, Audio Import, Text, Dictation, Dictionary and History views.
+- Added persistent Home navigation while preserving recording, editing and sharing behavior.
+- Increased button size, contrast and mobile touch targets.
+
 ## 1.10.1 - 2026-07-17
 
 - Fixed mobile registration submission and restored browser validation.
