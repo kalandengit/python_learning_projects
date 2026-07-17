@@ -39,3 +39,5 @@ def test_kolibri_proxy_is_loopback_https_and_rolls_back_on_failure():
     assert 'SERVICE="${SERVICE:-kolibri-studio.service}"' in KOLIBRI_INSTALLER
     assert "STUDIO_HTTP_PORT" in KOLIBRI_INSTALLER
     assert '127.0.0.1:${STUDIO_HTTP_PORT:-9090}:8080' in KOLIBRI_INSTALLER
+    assert "seq 1 180" in KOLIBRI_INSTALLER
+    assert "Kolibri is still warming up" in KOLIBRI_INSTALLER

@@ -84,8 +84,16 @@ fi
 
 echo "Waiting for Kolibri Studio on 127.0.0.1:$PORT..."
 READY=0
-for _ in $(seq 1 30); do
-  if curl -fsS --max-time 3 "http://127.0.0.1:$PORT/" >/dev/null 2>&1; then READY=1; break; fi
+for attempt in $(seq 1 180); do
+  HTTP_CODE="$(curl -sS -o /dev/null -w '%{http_code}' --max-time 3 "http://127.0.0.1:$PORT/" 2>/dev/null || true)"
+  if [[ "$HTTP_CODE" =~ ^[23][0-9][0-9]$ ]]; then READY=1; break; fi
+  if [ $((attempt % 15)) -eq 0 ]; then
+    if ss -ltn | grep -q "127.0.0.1:$PORT"; then
+      echo "  Port is open; Kolibri is still warming up (HTTP ${HTTP_CODE:-unavailable})..."
+    else
+      echo "  Waiting for Docker to publish port $PORT..."
+    fi
+  fi
   sleep 1
 done
 if [ "$READY" != 1 ]; then
