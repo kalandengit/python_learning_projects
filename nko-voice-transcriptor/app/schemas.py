@@ -4,12 +4,16 @@ from __future__ import annotations
 
 from datetime import datetime
 
-from pydantic import BaseModel, Field, field_validator
+from pydantic import BaseModel, Field, field_validator, model_validator
 
 
 class UserCreate(BaseModel):
     username: str = Field(min_length=3, max_length=64, pattern=r"^[a-zA-Z0-9_.-]+$")
     password: str = Field(min_length=10, max_length=128)
+    confirm_password: str | None = Field(default=None, min_length=10, max_length=128)
+    first_name: str | None = Field(default=None, min_length=1, max_length=80)
+    last_name: str | None = Field(default=None, min_length=1, max_length=80)
+    email: str | None = Field(default=None, min_length=5, max_length=254)
 
     @field_validator("password")
     @classmethod
@@ -17,6 +21,24 @@ class UserCreate(BaseModel):
         if v.isdigit() or v.isalpha():
             raise ValueError("Password must mix letters and digits/symbols")
         return v
+
+    @field_validator("email")
+    @classmethod
+    def email_looks_valid(cls, v: str | None) -> str | None:
+        if v is not None and ("@" not in v or "." not in v.rsplit("@", 1)[-1]):
+            raise ValueError("Enter a valid email address")
+        return v.lower() if v else v
+
+    @model_validator(mode="after")
+    def passwords_match(self):
+        if self.confirm_password is not None and self.confirm_password != self.password:
+            raise ValueError("Passwords do not match")
+        return self
+
+
+class LoginRequest(BaseModel):
+    username: str = Field(min_length=3, max_length=64)
+    password: str = Field(min_length=1, max_length=128)
 
 
 class PasswordConfirm(BaseModel):
@@ -36,6 +58,9 @@ class RefreshResponse(TokenResponse):
 class UserOut(BaseModel):
     id: int
     username: str
+    first_name: str | None = None
+    last_name: str | None = None
+    email: str | None = None
     created_at: datetime
 
     model_config = {"from_attributes": True}

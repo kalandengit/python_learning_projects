@@ -7,7 +7,8 @@ from __future__ import annotations
 
 from collections.abc import Iterator
 
-from sqlalchemy import create_engine
+from sqlalchemy import create_engine, inspect, text
+from sqlalchemy.exc import SQLAlchemyError
 from sqlalchemy.orm import DeclarativeBase, Session, sessionmaker
 from sqlalchemy.pool import StaticPool
 
@@ -45,6 +46,23 @@ def init_db() -> None:
     from app import models  # noqa: F401
 
     Base.metadata.create_all(engine)
+    # Lightweight additive migration for deployments created before profile/social fields.
+    columns = {column["name"] for column in inspect(engine).get_columns("users")}
+    additions = {
+        "first_name": "VARCHAR(80)", "last_name": "VARCHAR(80)",
+        "email": "VARCHAR(254)", "oauth_provider": "VARCHAR(24)",
+        "oauth_subject": "VARCHAR(255)",
+    }
+    for name, sql_type in additions.items():
+        if name not in columns:
+            try:
+                with engine.begin() as connection:
+                    connection.execute(text(f"ALTER TABLE users ADD COLUMN {name} {sql_type}"))
+            except SQLAlchemyError:
+                # Multiple production workers can start together; accept a
+                # concurrent worker having added the same column first.
+                if name not in {c["name"] for c in inspect(engine).get_columns("users")}:
+                    raise
 
 
 def get_db() -> Iterator[Session]:

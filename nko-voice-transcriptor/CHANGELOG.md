@@ -1,5 +1,12 @@
 # Changelog
 
+## 1.12.0 - 2026-07-17
+
+- Added a dedicated registration form with first name, last name, email and password confirmation.
+- Added optional, server-configured Google and Facebook OAuth registration.
+- Added safe additive database migration for existing SQLite and PostgreSQL installations.
+- Social buttons remain hidden until their provider credentials are configured.
+
 ## 1.11.0 - 2026-07-17
 
 - Replaced the long mobile landing page with six large, readable function cards.

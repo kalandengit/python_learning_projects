@@ -7,6 +7,7 @@ python-multipart>=0.0.9      # multipart/form-data audio uploads
 PyJWT>=2.7                   # JWT access tokens (HS256)
 argon2-cffi>=23.1            # password hashing
 slowapi>=0.1.9               # rate limiting
+httpx>=0.27                  # Google/Facebook OAuth token exchange
 psycopg[binary]>=3.1         # PostgreSQL driver (docker-compose / production)
 
 # --- Optional: real speech recognition (heavy, ~2GB+). Install to use ASR_ENGINE=mms ---

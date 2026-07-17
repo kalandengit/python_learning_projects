@@ -138,17 +138,24 @@ async function loadLanguages() {
 }
 
 // ---- Auth ------------------------------------------------------------------
+function setAuthMode(mode) {
+  const registering = mode === "register";
+  $("auth-form").classList.toggle("hidden", registering);
+  $("register-form").classList.toggle("hidden", !registering);
+  $("auth-title").textContent = registering ? "Créer un compte" : "Connexion";
+  $(registering ? "register-first-name" : "username").focus();
+}
+
+$("show-register-btn").addEventListener("click", () => setAuthMode("register"));
+$("show-login-btn").addEventListener("click", () => setAuthMode("login"));
+
 $("auth-form").addEventListener("submit", async (e) => {
     e.preventDefault();
     if (!e.currentTarget.reportValidity()) return;
-    const mode = e.submitter?.dataset.mode || "login";
     const username = $("username").value.trim();
     const password = $("password").value;
     $("auth-error").textContent = "";
     try {
-      if (mode === "register") {
-        await api("/api/auth/register", { method: "POST", body: { username, password } });
-      }
       const tok = await api("/api/auth/login", { method: "POST", body: { username, password } });
       setToken(tok.access_token);
       showApp();
@@ -156,6 +163,45 @@ $("auth-form").addEventListener("submit", async (e) => {
       $("auth-error").textContent = err.message;
     }
 });
+
+$("register-form").addEventListener("submit", async (e) => {
+  e.preventDefault();
+  if (!e.currentTarget.reportValidity()) return;
+  const password = $("register-password").value;
+  const confirmPassword = $("register-password-confirm").value;
+  $("register-error").textContent = "";
+  if (password !== confirmPassword) {
+    $("register-error").textContent = "Les mots de passe ne correspondent pas.";
+    return;
+  }
+  const body = {
+    first_name: $("register-first-name").value.trim(),
+    last_name: $("register-last-name").value.trim(),
+    email: $("register-email").value.trim(),
+    username: $("register-username").value.trim(),
+    password,
+    confirm_password: confirmPassword,
+  };
+  try {
+    await api("/api/auth/register", { method: "POST", body });
+    const tok = await api("/api/auth/login", {
+      method: "POST", body: { username: body.username, password },
+    });
+    setToken(tok.access_token);
+    showApp();
+  } catch (err) {
+    $("register-error").textContent = err.message;
+  }
+});
+
+async function loadSocialProviders() {
+  try {
+    const providers = await api("/api/auth/oauth/providers");
+    $("google-login").classList.toggle("hidden", !providers.google);
+    $("facebook-login").classList.toggle("hidden", !providers.facebook);
+    $("social-login").classList.toggle("hidden", !providers.google && !providers.facebook);
+  } catch { /* password login remains available */ }
+}
 
 // ---- Recording -------------------------------------------------------------
 // State machine: idle → recording ⇄ standby(paused) → stop → upload
@@ -916,4 +962,14 @@ $("history-clear-btn").addEventListener("click", async () => {
 
 // ---- Boot ------------------------------------------------------------------
 window.NKO_I18N.initUiLanguage();
-if (getToken()) showApp(); else showAuth();
+async function boot() {
+  if (new URLSearchParams(location.search).get("oauth") === "success") {
+    history.replaceState({}, "", "/");
+    try {
+      const refreshed = await fetch("/api/auth/refresh", { method: "POST", credentials: "same-origin" });
+      if (refreshed.ok) setToken((await refreshed.json()).access_token);
+    } catch { /* show login below */ }
+  }
+  if (getToken()) showApp(); else { showAuth(); loadSocialProviders(); }
+}
+boot();

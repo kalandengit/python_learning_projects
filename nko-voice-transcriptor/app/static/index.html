@@ -22,7 +22,7 @@
 <main id="main-content">
   <!-- Auth panel -->
   <section id="auth-panel" class="card">
-    <h2 data-i18n="sign_in">Sign in</h2>
+    <h2 id="auth-title" data-i18n="sign_in">Sign in</h2>
     <form id="auth-form" autocomplete="on">
       <label><span data-i18n="username">Username</span>
         <input id="username" name="username" minlength="3" maxlength="64"
@@ -33,12 +33,40 @@
                maxlength="128" required autocomplete="current-password">
       </label>
       <div class="row">
-        <button type="submit" data-mode="login" data-i18n="log_in">Log in</button>
-        <button type="submit" data-mode="register" class="secondary" data-i18n="register">Register</button>
+        <button type="submit" data-i18n="log_in">Log in</button>
+        <button type="button" id="show-register-btn" class="secondary" data-i18n="register">Register</button>
       </div>
-      <p class="hint" data-i18n="register_help">New user: choose a username and a password of at least 10 characters, then press Register. You will be signed in automatically.</p>
       <p id="auth-error" class="error" role="alert"></p>
     </form>
+    <form id="register-form" class="hidden" autocomplete="on">
+      <div class="form-grid">
+        <label>Prénom<input id="register-first-name" maxlength="80" required autocomplete="given-name"></label>
+        <label>Nom<input id="register-last-name" maxlength="80" required autocomplete="family-name"></label>
+      </div>
+      <label>Adresse e-mail
+        <input id="register-email" type="email" maxlength="254" required autocomplete="email">
+      </label>
+      <label>Nom d'utilisateur
+        <input id="register-username" minlength="3" maxlength="64" pattern="[a-zA-Z0-9_.\-]+" required autocomplete="username">
+      </label>
+      <label>Mot de passe
+        <input id="register-password" type="password" minlength="10" maxlength="128" required autocomplete="new-password">
+      </label>
+      <label>Confirmer le mot de passe
+        <input id="register-password-confirm" type="password" minlength="10" maxlength="128" required autocomplete="new-password">
+      </label>
+      <p class="hint">Au moins 10 caractères, avec des lettres et des chiffres ou symboles.</p>
+      <div class="row">
+        <button type="submit">Créer mon compte</button>
+        <button id="show-login-btn" type="button" class="secondary">J'ai déjà un compte</button>
+      </div>
+      <p id="register-error" class="error" role="alert"></p>
+    </form>
+    <div id="social-login" class="social-login hidden">
+      <p class="social-separator"><span>ou continuer avec</span></p>
+      <a id="google-login" class="social-button hidden" href="/api/auth/oauth/google/start">G&nbsp; Continuer avec Google</a>
+      <a id="facebook-login" class="social-button hidden" href="/api/auth/oauth/facebook/start">f&nbsp; Continuer avec Facebook</a>
+    </div>
   </section>
 
   <!-- Recorder panel -->

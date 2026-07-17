@@ -57,8 +57,9 @@ def test_result_editor_has_explicit_edit_and_save_controls():
 
 def test_registration_form_contains_only_auth_controls():
     html = (STATIC / "index.html").read_text(encoding="utf-8")
-    auth_form = html.split('<form id="auth-form"', 1)[1].split("</form>", 1)[0]
-    assert 'data-mode="register"' in auth_form
+    auth_form = html.split('<form id="register-form"', 1)[1].split("</form>", 1)[0]
+    assert 'id="register-email"' in auth_form
+    assert 'id="register-password-confirm"' in auth_form
     assert 'id="segments"' not in auth_form
     assert 'id="export-history-btn"' not in auth_form
 

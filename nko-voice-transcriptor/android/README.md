@@ -11,7 +11,7 @@ recording) natively.
 > unreachable" dialog with **Retry** / **Change URL**. Use the ⋮ menu →
 > **Set server URL** to change it at any time.
 
-- `versionName` **1.11.0**, `versionCode` 11100 (see `app/build.gradle`).
+- `versionName` **1.12.0**, `versionCode` 11200 (see `app/build.gradle`).
 - `minSdk` 26, `targetSdk`/`compileSdk` 34, no AndroidX.
 - Microphone permission is requested and forwarded to the WebView so in-page
   recording works. Cleartext HTTP is allowed (test build) so you can point at a
@@ -23,8 +23,8 @@ The APK is built in CI, not in this sandbox (no Android SDK here). Push to the
 branch or run the **nko-android-apk** workflow manually; it:
 
 1. builds `assembleDebug`,
-2. uploads `nko-voice-transcriptor-1.11.0-debug.apk` as a workflow **artifact**, and
-3. publishes it to a **prerelease** (`apk-v1.11.0`) for a direct download link.
+2. uploads `nko-voice-transcriptor-1.12.0-debug.apk` as a workflow **artifact**, and
+3. publishes it to a **prerelease** (`apk-v1.12.0`) for a direct download link.
 
 Download it, enable "Install unknown apps" for your browser/file manager, and
 install. Then enter your server URL:

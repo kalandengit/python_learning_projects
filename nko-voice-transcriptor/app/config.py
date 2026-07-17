@@ -54,6 +54,11 @@ class Settings(BaseSettings):
     access_token_minutes: int = 60
     refresh_token_days: int = 30
     secure_cookies: bool = True
+    oauth_base_url: str = ""
+    google_client_id: str = ""
+    google_client_secret: str = ""
+    facebook_client_id: str = ""
+    facebook_client_secret: str = ""
     job_data_dir: str = "./job-data"
 
     cors_origins: str = ""

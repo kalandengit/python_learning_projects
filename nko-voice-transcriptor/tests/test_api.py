@@ -36,6 +36,29 @@ class TestHealth:
 
 
 class TestAuth:
+    def test_registration_saves_profile_and_confirms_password(self, client):
+        body = {
+            "username": "profile-user", "password": "s3cure-passphrase!",
+            "confirm_password": "s3cure-passphrase!", "first_name": "Aminata",
+            "last_name": "Kante", "email": "aminata@example.org",
+        }
+        response = client.post("/api/auth/register", json=body)
+        assert response.status_code == 201
+        assert response.json()["first_name"] == "Aminata"
+        assert response.json()["email"] == "aminata@example.org"
+
+    def test_registration_rejects_password_mismatch(self, client):
+        response = client.post("/api/auth/register", json={
+            "username": "mismatch", "password": "s3cure-passphrase!",
+            "confirm_password": "different-passphrase2!",
+        })
+        assert response.status_code == 422
+
+    def test_social_providers_are_hidden_without_credentials(self, client):
+        response = client.get("/api/auth/oauth/providers")
+        assert response.status_code == 200
+        assert response.json() == {"google": False, "facebook": False}
+
     def test_register_login_flow(self, client):
         creds = {"username": "alice", "password": "s3cure-passphrase!"}
         r = client.post("/api/auth/register", json=creds)
