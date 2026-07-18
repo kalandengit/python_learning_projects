@@ -1,0 +1,41 @@
+# Python
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+*.egg-info/
+.pytest_cache/
+.ruff_cache/
+.mypy_cache/
+htmlcov/
+.coverage
+
+# Secrets & local config
+.env
+*.pem
+*.key
+
+# Models & large artifacts
+models/
+*.pt
+*.bin
+*.safetensors
+
+# Android
+android-app/.gradle/
+android-app/build/
+android-app/app/build/
+android-app/local.properties
+*.apk
+*.aab
+
+# iOS
+ios-app/*.xcodeproj/
+ios-app/build/
+ios-app/DerivedData/
+*.ipa
+
+# OS / editors
+.DS_Store
+.idea/
+.vscode/

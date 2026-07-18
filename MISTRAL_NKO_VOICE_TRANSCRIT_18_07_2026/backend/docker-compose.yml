@@ -1,0 +1,33 @@
+services:
+  app:
+    build: .
+    ports:
+      - "8000:8000"
+    environment:
+      NKO_SECRET_KEY: ${NKO_SECRET_KEY:?set in .env}
+      NKO_DATABASE_URL: postgresql+psycopg://nko:${POSTGRES_PASSWORD:?set in .env}@db:5432/nko
+      NKO_ASR_ENGINE: ${NKO_ASR_ENGINE:-mock}
+      NKO_MISTRAL_API_KEY: ${NKO_MISTRAL_API_KEY:-}
+      NKO_TRUSTED_PROXIES: '["172.16.0.0/12"]'
+    depends_on:
+      db:
+        condition: service_healthy
+    restart: unless-stopped
+
+  db:
+    image: postgres:16
+    environment:
+      POSTGRES_USER: nko
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:?set in .env}
+      POSTGRES_DB: nko
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U nko"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    restart: unless-stopped
+
+volumes:
+  pgdata:

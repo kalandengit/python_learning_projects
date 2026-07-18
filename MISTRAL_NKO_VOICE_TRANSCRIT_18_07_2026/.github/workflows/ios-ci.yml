@@ -1,0 +1,30 @@
+name: ios-ci
+
+on:
+  push:
+    branches: [main, develop, ios]
+    paths: ["ios-app/**", ".github/workflows/ios-ci.yml"]
+  pull_request:
+    paths: ["ios-app/**", ".github/workflows/ios-ci.yml"]
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    runs-on: macos-14
+    defaults:
+      run:
+        working-directory: ios-app
+    steps:
+      - uses: actions/checkout@v4
+      - name: Generate Xcode project
+        run: |
+          brew install xcodegen
+          xcodegen generate
+      - name: Build
+        run: |
+          xcodebuild -project NkoTranscribe.xcodeproj \
+            -scheme NkoTranscribe \
+            -destination 'generic/platform=iOS Simulator' \
+            CODE_SIGNING_ALLOWED=NO build

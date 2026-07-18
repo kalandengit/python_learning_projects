@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">N\'Ko Voice</string>
+    <string name="record">Record</string>
+    <string name="stop">Stop</string>
+    <string name="transcribing">Transcribing…</string>
+    <string name="mic_permission_needed">Microphone permission is required to record.</string>
+</resources>

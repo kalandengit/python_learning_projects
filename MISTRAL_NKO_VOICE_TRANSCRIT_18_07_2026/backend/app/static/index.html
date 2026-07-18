@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>N'Ko Voice Transcriptor — ߒߞߏ</title>
+  <link rel="stylesheet" href="/static/css/styles.css">
+</head>
+<body>
+  <header>
+    <h1>ߒߞߏ <span data-i18n="title">N'Ko Voice Transcriptor</span></h1>
+    <nav>
+      <select id="ui-lang" aria-label="Interface language">
+        <option value="en">English</option>
+        <option value="fr">Français</option>
+        <option value="ar">العربية</option>
+        <option value="nqo">ߒߞߏ</option>
+      </select>
+      <button id="btn-login" data-i18n="login">Log in</button>
+      <button id="btn-logout" class="hidden" data-i18n="logout">Log out</button>
+    </nav>
+  </header>
+
+  <main>
+    <section id="auth-panel" class="hidden">
+      <h2 data-i18n="account">Account</h2>
+      <form id="auth-form">
+        <input type="email" id="auth-email" autocomplete="email" required
+               data-i18n-placeholder="email" placeholder="Email">
+        <input type="password" id="auth-password" autocomplete="current-password"
+               minlength="10" required data-i18n-placeholder="password" placeholder="Password">
+        <div class="row">
+          <button type="submit" data-i18n="login">Log in</button>
+          <button type="button" id="btn-register" data-i18n="register">Register</button>
+        </div>
+        <p id="auth-message" role="status"></p>
+      </form>
+    </section>
+
+    <section id="transcribe-panel">
+      <h2 data-i18n="transcribe">Transcribe</h2>
+      <div class="row">
+        <label for="language" data-i18n="language">Language</label>
+        <select id="language">
+          <option value="bam">Bamanankan (Bambara)</option>
+          <option value="dyu">Julakan (Dyula)</option>
+          <option value="emk">Maninkakan (Maninka)</option>
+          <option value="jul">Julula</option>
+          <option value="fr">Français</option>
+          <option value="en">English</option>
+        </select>
+        <label for="engine" data-i18n="engine">Engine</label>
+        <select id="engine">
+          <option value="">Auto</option>
+          <option value="mock">Mock</option>
+          <option value="mms">MMS</option>
+          <option value="whisper">Whisper</option>
+          <option value="voxtral">Voxtral</option>
+        </select>
+      </div>
+      <div class="row">
+        <button id="btn-record" data-i18n="record">● Record</button>
+        <button id="btn-stop" disabled data-i18n="stop">■ Stop</button>
+        <input type="file" id="file-input" accept="audio/*">
+        <label class="row"><input type="checkbox" id="store-history">
+          <span data-i18n="save_history">Save to history</span></label>
+      </div>
+      <p id="status" role="status"></p>
+      <div id="result" class="hidden">
+        <h3 data-i18n="latin">Latin</h3>
+        <p id="latin-out" class="latin"></p>
+        <h3 data-i18n="nko">N'Ko</h3>
+        <p id="nko-out" class="nko" dir="rtl" lang="nqo"></p>
+      </div>
+    </section>
+
+    <section id="keyboard-panel">
+      <h2 data-i18n="keyboard">N'Ko keyboard</h2>
+      <textarea id="kb-target" dir="rtl" lang="nqo" rows="3"></textarea>
+      <div id="keyboard"></div>
+    </section>
+
+    <section id="lexicon-panel">
+      <h2 data-i18n="dictionary">Dictionary (Français ↔ ߒߞߏ)</h2>
+      <div class="row">
+        <input type="search" id="lex-query" data-i18n-placeholder="search" placeholder="Search…">
+        <select id="lex-direction">
+          <option value="fr">FR → ߒߞߏ</option>
+          <option value="nko">ߒߞߏ → FR</option>
+        </select>
+        <button id="btn-search" data-i18n="search_btn">Search</button>
+      </div>
+      <table id="lex-results"><tbody></tbody></table>
+    </section>
+
+    <section id="history-panel" class="hidden">
+      <h2 data-i18n="history">History</h2>
+      <table id="history-table"><tbody></tbody></table>
+    </section>
+  </main>
+
+  <footer>
+    <p data-i18n="privacy_note">Audio is processed in memory and discarded — only text is stored, and only if you ask.</p>
+    <p>
+      <a href="https://www.ankataa.com/" rel="noopener">An ka taa</a> ·
+      <a href="https://nqo.wikipedia.org/" rel="noopener">N'Ko Wikipedia</a> ·
+      <a href="https://cormand.huma-num.fr/" rel="noopener">CorMand</a>
+    </p>
+  </footer>
+
+  <script src="/static/js/i18n.js"></script>
+  <script src="/static/js/keyboard.js"></script>
+  <script src="/static/js/app.js"></script>
+</body>
+</html>

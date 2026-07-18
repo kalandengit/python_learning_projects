@@ -1,0 +1,40 @@
+# XcodeGen spec — run `xcodegen generate` to produce NkoTranscribe.xcodeproj
+name: NkoTranscribe
+options:
+  bundleIdPrefix: com.nko.voice
+  deploymentTarget:
+    iOS: "16.0"
+
+targets:
+  NkoTranscribe:
+    type: application
+    platform: iOS
+    sources: [NkoTranscribe]
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: com.nko.voice.transcriptor
+        MARKETING_VERSION: 2.0.0
+        CURRENT_PROJECT_VERSION: 1
+    info:
+      path: NkoTranscribe/Info.plist
+      properties:
+        NSMicrophoneUsageDescription: >-
+          N'Ko Voice records your speech to transcribe it into N'Ko script.
+          Audio is uploaded for transcription and immediately discarded.
+        UILaunchScreen: {}
+        # ATS stays fully enabled: HTTPS only, no exceptions.
+
+  NkoTranscribeTests:
+    type: bundle.unit-test
+    platform: iOS
+    sources: [Tests]
+    dependencies:
+      - target: NkoTranscribe
+
+schemes:
+  NkoTranscribe:
+    build:
+      targets:
+        NkoTranscribe: all
+    test:
+      targets: [NkoTranscribeTests]

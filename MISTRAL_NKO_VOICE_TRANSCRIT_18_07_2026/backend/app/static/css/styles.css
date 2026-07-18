@@ -1,0 +1,103 @@
+@font-face {
+  font-family: "Noto Sans NKo";
+  src: url("/static/fonts/NotoSansNKo-Regular.ttf") format("truetype");
+  font-display: swap;
+}
+
+:root {
+  --ink: #1d2733;
+  --paper: #f7f6f2;
+  --accent: #0b6e4f;
+  --accent-2: #b8860b;
+  --card: #ffffff;
+  --line: #d8d5cc;
+}
+
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  font-family: system-ui, sans-serif;
+  color: var(--ink);
+  background: var(--paper);
+  line-height: 1.5;
+}
+
+header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  padding: 0.75rem 1.25rem;
+  background: var(--accent);
+  color: #fff;
+}
+
+header h1 { font-size: 1.15rem; margin: 0; }
+nav { display: flex; gap: 0.5rem; align-items: center; }
+
+main {
+  max-width: 60rem;
+  margin: 0 auto;
+  padding: 1rem;
+  display: grid;
+  gap: 1rem;
+}
+
+section {
+  background: var(--card);
+  border: 1px solid var(--line);
+  border-radius: 0.5rem;
+  padding: 1rem;
+}
+
+h2 { margin-top: 0; font-size: 1rem; }
+
+.row { display: flex; flex-wrap: wrap; gap: 0.5rem; align-items: center; margin: 0.5rem 0; }
+
+button {
+  background: var(--accent);
+  color: #fff;
+  border: 0;
+  border-radius: 0.35rem;
+  padding: 0.45rem 0.9rem;
+  cursor: pointer;
+}
+button:disabled { opacity: 0.5; cursor: not-allowed; }
+#btn-record.recording { background: #a4243b; }
+
+input, select, textarea {
+  border: 1px solid var(--line);
+  border-radius: 0.35rem;
+  padding: 0.4rem 0.6rem;
+  font: inherit;
+}
+
+.nko, [lang="nqo"] {
+  font-family: "Noto Sans NKo", system-ui, sans-serif;
+  font-size: 1.4rem;
+}
+
+.latin { font-size: 1.1rem; }
+.hidden { display: none; }
+
+#keyboard { display: flex; flex-wrap: wrap; gap: 0.25rem; direction: rtl; }
+#keyboard button {
+  min-width: 2.4rem;
+  background: var(--card);
+  color: var(--ink);
+  border: 1px solid var(--line);
+  font-family: "Noto Sans NKo", sans-serif;
+  font-size: 1.25rem;
+}
+#keyboard button.tone { border-color: var(--accent-2); }
+
+table { width: 100%; border-collapse: collapse; }
+td { border-bottom: 1px solid var(--line); padding: 0.35rem 0.5rem; }
+td.nko-cell { direction: rtl; text-align: right; font-family: "Noto Sans NKo", sans-serif; font-size: 1.2rem; }
+
+footer { text-align: center; padding: 1rem; color: #5a6472; font-size: 0.85rem; }
+footer a { color: var(--accent); }
+
+[dir="rtl"] body, body.rtl { direction: rtl; }
