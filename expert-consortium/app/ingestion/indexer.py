@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import atexit
 import uuid
 from functools import lru_cache
 
@@ -24,10 +25,14 @@ _EMBED_BATCH = 64
 @lru_cache(maxsize=1)
 def get_qdrant() -> QdrantClient:
     if settings.qdrant_url:
-        return QdrantClient(url=settings.qdrant_url)
-    path = settings.data_dir / "qdrant"
-    path.mkdir(parents=True, exist_ok=True)
-    return QdrantClient(path=str(path))
+        client = QdrantClient(url=settings.qdrant_url)
+    else:
+        path = settings.data_dir / "qdrant"
+        path.mkdir(parents=True, exist_ok=True)
+        client = QdrantClient(path=str(path))
+    # Close before interpreter teardown; __del__ at shutdown prints scary noise.
+    atexit.register(client.close)
+    return client
 
 
 @lru_cache(maxsize=1)
@@ -50,12 +55,13 @@ def ensure_collection() -> None:
             SPARSE: models.SparseVectorParams(modifier=models.Modifier.IDF)
         },
     )
-    client.create_payload_index(
-        settings.qdrant_collection, "source_file", models.PayloadSchemaType.KEYWORD
-    )
-    client.create_payload_index(
-        settings.qdrant_collection, "domain", models.PayloadSchemaType.KEYWORD
-    )
+    if settings.qdrant_url:  # payload indexes only apply to server Qdrant
+        client.create_payload_index(
+            settings.qdrant_collection, "source_file", models.PayloadSchemaType.KEYWORD
+        )
+        client.create_payload_index(
+            settings.qdrant_collection, "domain", models.PayloadSchemaType.KEYWORD
+        )
 
 
 def embed_dense(texts: list[str]) -> list[list[float]]:

@@ -30,7 +30,11 @@ def ingest_path(path: Path) -> bool:
         return True
     except Exception as exc:  # noqa: BLE001 — one bad file must not stop the batch
         logger.error("Failed to ingest %s: %s", path, exc)
-        print(f"  ✗ {path.name}: {exc}")
+        hint = ""
+        if any(code in str(exc) for code in ("401", "403")):
+            hint = ("\n    → Your MISTRAL_API_KEY looks invalid. Check .env "
+                    "(docs/en/01-setup.md step 6-7 / docs/fr/01-setup.md étapes 6-7).")
+        print(f"  ✗ {path.name}: {exc}{hint}")
         return False
 
 
