@@ -38,6 +38,21 @@ def check_password(x_password: str = Header(default="")) -> None:
         raise HTTPException(401, "Wrong password.")
 
 
+# Budget guard: even with the right password, cap chat calls per minute so a leaked
+# password (or a runaway script) cannot burn through the Mistral API credit.
+_chat_calls: list[float] = []
+
+
+def chat_rate_limit() -> None:
+    now = time.monotonic()
+    _chat_calls[:] = [t for t in _chat_calls if now - t < 60.0]
+    if len(_chat_calls) >= settings.chat_rate_per_min:
+        raise HTTPException(
+            429, f"Rate limit: max {settings.chat_rate_per_min} questions/minute."
+        )
+    _chat_calls.append(now)
+
+
 # --- Schemas ---
 
 
@@ -65,7 +80,7 @@ def login() -> dict:
     return {"ok": True}
 
 
-@app.post("/api/chat", dependencies=[Depends(check_password)])
+@app.post("/api/chat", dependencies=[Depends(check_password), Depends(chat_rate_limit)])
 def api_chat(req: ChatRequest) -> dict:
     domain = req.domain if req.domain in DOMAINS else None
     try:
@@ -95,7 +110,20 @@ async def api_upload(file: UploadFile = File(...), domain: str = Form("general")
     target_dir = settings.uploads_dir / (domain if domain != "general" else "")
     target_dir.mkdir(parents=True, exist_ok=True)
     target = target_dir / name
-    target.write_bytes(await file.read())
+
+    # Stream to disk in chunks: bounded memory, hard size cap.
+    max_bytes = settings.max_upload_mb * 1_000_000
+    written = 0
+    with target.open("wb") as out:
+        while chunk := await file.read(1_048_576):
+            written += len(chunk)
+            if written > max_bytes:
+                out.close()
+                target.unlink(missing_ok=True)
+                raise HTTPException(
+                    413, f"File exceeds the {settings.max_upload_mb} MB upload limit."
+                )
+            out.write(chunk)
 
     try:
         doc = ingest_router.extract(target, domain=domain)  # type: ignore[arg-type]

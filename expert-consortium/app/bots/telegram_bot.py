@@ -127,6 +127,17 @@ async def on_file(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
         await msg.reply_text(f"⚠ Type non pris en charge / Unsupported type: {name}")
         return
 
+    # Telegram bots cannot download files larger than 20 MB.
+    size = getattr(tg_file, "file_size", None)
+    if size and size > 20 * 1024 * 1024:
+        await msg.reply_text(
+            f"⚠ {name} fait {size / 1_000_000:.0f} MB — Telegram limite les bots à "
+            "20 MB. / Telegram caps bot downloads at 20 MB.\n"
+            "→ Utilisez la page web ou le dossier uploads/ pour ce fichier. / "
+            "Use the web page or the uploads/ folder for this file."
+        )
+        return
+
     await msg.reply_text(f"⏳ Ingestion de {name}…")
     settings.uploads_dir.mkdir(parents=True, exist_ok=True)
     target = settings.uploads_dir / name

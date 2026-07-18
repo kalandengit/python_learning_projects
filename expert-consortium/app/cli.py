@@ -61,6 +61,20 @@ def cmd_watch() -> int:
     from watchdog.events import FileSystemEventHandler
     from watchdog.observers import Observer
 
+    def wait_until_stable(path: Path, checks: int = 30) -> bool:
+        """Wait until the file size stops changing (large copies take a while)."""
+        last = -1
+        for _ in range(checks):
+            try:
+                size = path.stat().st_size
+            except OSError:
+                return False
+            if size == last and size > 0:
+                return True
+            last = size
+            time.sleep(1)
+        return False
+
     class Handler(FileSystemEventHandler):
         def on_created(self, event):  # type: ignore[override]
             if event.is_directory:
@@ -68,7 +82,10 @@ def cmd_watch() -> int:
             path = Path(str(event.src_path))
             if path.suffix.lower() not in router.SUPPORTED_EXTS:
                 return
-            time.sleep(2)  # let the copy finish before reading
+            if not wait_until_stable(path):
+                print(f"  ✗ {path.name}: still being copied after 30s, skipped — "
+                      f"run 'python -m app.cli ingest' once the copy finishes")
+                return
             ingest_path(path)
 
     settings.uploads_dir.mkdir(parents=True, exist_ok=True)

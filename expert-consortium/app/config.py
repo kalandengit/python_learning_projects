@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import logging
+import logging.handlers
 from pathlib import Path
 from typing import Literal
 
@@ -52,6 +53,13 @@ class Settings(BaseSettings):
     retrieve_candidates: int = 20
     context_chunks: int = 6
 
+    # Scaling / edge-case guards (see docs/en/10-limits.md)
+    max_upload_mb: int = 500  # web upload cap, streamed to disk
+    max_ocr_mb: int = 45  # Mistral OCR file-size limit safety margin
+    audio_segment_minutes: int = 100  # longer recordings are split automatically
+    embed_batch_char_budget: int = 40_000  # max characters per embeddings request
+    chat_rate_per_min: int = 30  # protects your API budget if the password leaks
+
     def require_api_key(self) -> str:
         if not self.mistral_api_key:
             raise RuntimeError(
@@ -77,7 +85,12 @@ def setup_logging(level: int = logging.INFO) -> logging.Logger:
     logger.addHandler(console)
 
     settings.logs_dir.mkdir(parents=True, exist_ok=True)
-    file_handler = logging.FileHandler(settings.logs_dir / "app.log", encoding="utf-8")
+    file_handler = logging.handlers.RotatingFileHandler(
+        settings.logs_dir / "app.log",
+        maxBytes=5_000_000,
+        backupCount=3,
+        encoding="utf-8",
+    )
     file_handler.setFormatter(fmt)
     logger.addHandler(file_handler)
     return logger

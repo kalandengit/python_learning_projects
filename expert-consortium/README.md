@@ -44,6 +44,7 @@ Full beginner walkthrough: **[docs/en/01-setup.md](docs/en/01-setup.md)**
 | 7 | [Costs](docs/en/07-costs.md) | [Coûts](docs/fr/07-costs.md) |
 | 8 | [Glossary for beginners](docs/en/08-glossary.md) | [Glossaire pour débutants](docs/fr/08-glossary.md) |
 | 9 | [Moving to your own repo](docs/en/09-new-repo.md) | [Créer votre propre dépôt](docs/fr/09-new-repo.md) |
+| 10 | [Limits & scaling](docs/en/10-limits.md) | [Limites & montée en charge](docs/fr/10-limits.md) |
 
 Product vision and requirements: **[PRD.md](PRD.md)** ·
 Autonomous-agent playbook: **[AGENT.md](AGENT.md)**

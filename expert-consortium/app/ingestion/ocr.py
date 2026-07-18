@@ -17,8 +17,19 @@ IMAGE_MIME = {
 }
 
 
+def _check_size(path: Path) -> None:
+    size_mb = path.stat().st_size / 1_000_000
+    if size_mb > settings.max_ocr_mb:
+        raise ValueError(
+            f"{path.name} is {size_mb:.0f} MB — above the OCR limit "
+            f"({settings.max_ocr_mb} MB). Split the PDF into parts (e.g. with "
+            f"'pdftk {path.name} burst' or an online splitter) and upload the parts."
+        )
+
+
 def extract_pdf(path: Path) -> str:
     """OCR a PDF; returns markdown text with page breaks."""
+    _check_size(path)
     b64 = base64.b64encode(path.read_bytes()).decode()
     resp = with_retry(
         get_client().ocr.process,
@@ -33,6 +44,7 @@ def extract_pdf(path: Path) -> str:
 
 def extract_image(path: Path) -> str:
     """OCR a single image (photo of a page, scan, screenshot)."""
+    _check_size(path)
     mime = IMAGE_MIME[path.suffix.lower()]
     b64 = base64.b64encode(path.read_bytes()).decode()
     resp = with_retry(

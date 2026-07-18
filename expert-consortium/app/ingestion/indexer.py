@@ -29,7 +29,18 @@ def get_qdrant() -> QdrantClient:
     else:
         path = settings.data_dir / "qdrant"
         path.mkdir(parents=True, exist_ok=True)
-        client = QdrantClient(path=str(path))
+        try:
+            client = QdrantClient(path=str(path))
+        except RuntimeError as exc:
+            if "already accessed" in str(exc).lower():
+                raise RuntimeError(
+                    "The local knowledge base is already open in another process "
+                    "(e.g. the web app AND the Telegram bot at the same time). "
+                    "Embedded storage allows only ONE process. Either stop the other "
+                    "process, or run a Qdrant server and set QDRANT_URL in .env — "
+                    "docker compose does this automatically (docs/en/10-limits.md)."
+                ) from exc
+            raise
     # Close before interpreter teardown; __del__ at shutdown prints scary noise.
     atexit.register(client.close)
     return client
@@ -64,10 +75,29 @@ def ensure_collection() -> None:
         )
 
 
+def _embed_batches(texts: list[str]) -> list[list[str]]:
+    """Group texts into batches bounded by count AND total characters, so one
+    request never exceeds the embeddings API token limit on huge documents."""
+    batches: list[list[str]] = []
+    current: list[str] = []
+    chars = 0
+    for text in texts:
+        if current and (
+            len(current) >= _EMBED_BATCH
+            or chars + len(text) > settings.embed_batch_char_budget
+        ):
+            batches.append(current)
+            current, chars = [], 0
+        current.append(text)
+        chars += len(text)
+    if current:
+        batches.append(current)
+    return batches
+
+
 def embed_dense(texts: list[str]) -> list[list[float]]:
     out: list[list[float]] = []
-    for i in range(0, len(texts), _EMBED_BATCH):
-        batch = texts[i : i + _EMBED_BATCH]
+    for batch in _embed_batches(texts):
         resp = with_retry(
             get_client().embeddings.create, model=settings.embed_model, inputs=batch
         )
