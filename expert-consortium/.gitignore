@@ -1,0 +1,21 @@
+# Secrets — never commit
+.env
+
+# Personal documents and derived data — never commit
+uploads/*
+!uploads/.gitkeep
+data/
+logs/
+
+# Fine-tuning datasets may contain personal content
+finetune_data/*
+!finetune_data/manual/
+finetune_data/manual/*
+!finetune_data/manual/example.jsonl
+
+# Python
+__pycache__/
+*.pyc
+.venv/
+.pytest_cache/
+*.egg-info/

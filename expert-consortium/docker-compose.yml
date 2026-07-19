@@ -1,0 +1,60 @@
+# Full stack: web app + Telegram bot + Qdrant + HTTPS reverse proxy.
+# Local test:   docker compose up --build   -> http://localhost:8000
+# On a VPS:     set DOMAIN in .env and uncomment the caddy service for HTTPS.
+
+services:
+  web:
+    build: .
+    restart: unless-stopped
+    env_file: .env
+    environment:
+      QDRANT_URL: http://qdrant:6333
+    volumes:
+      - ./uploads:/srv/app/uploads
+      - ./logs:/srv/app/logs
+      - ./finetune_data:/srv/app/finetune_data
+    ports:
+      - "8000:8000"
+    depends_on:
+      - qdrant
+
+  bot:
+    build: .
+    restart: unless-stopped
+    env_file: .env
+    environment:
+      QDRANT_URL: http://qdrant:6333
+    command: ["python", "-m", "app.bots.telegram_bot"]
+    volumes:
+      - ./uploads:/srv/app/uploads
+      - ./logs:/srv/app/logs
+      - ./finetune_data:/srv/app/finetune_data
+    depends_on:
+      - qdrant
+
+  qdrant:
+    image: qdrant/qdrant:latest
+    restart: unless-stopped
+    volumes:
+      - qdrant_storage:/qdrant/storage
+    # No ports exposed: only reachable by the app containers.
+
+  # Uncomment for HTTPS on a VPS (set DOMAIN=consortium.example.com in .env,
+  # point your domain's DNS A record at the server first).
+  # caddy:
+  #   image: caddy:latest
+  #   restart: unless-stopped
+  #   ports:
+  #     - "80:80"
+  #     - "443:443"
+  #   environment:
+  #     DOMAIN: ${DOMAIN}
+  #   volumes:
+  #     - ./Caddyfile:/etc/caddy/Caddyfile:ro
+  #     - caddy_data:/data
+  #   depends_on:
+  #     - web
+
+volumes:
+  qdrant_storage:
+  caddy_data:
