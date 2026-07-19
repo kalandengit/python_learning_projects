@@ -18,6 +18,11 @@
       "name": "it-prompt-specialist",
       "source": "./claude-skills/plugins/it-prompt-specialist",
       "description": "Senior multidisciplinary IT expert lens across software, cloud, security, AI/ML, networking, and more."
+    },
+    {
+      "name": "export-project",
+      "source": "./claude-skills/plugins/export-project",
+      "description": "The /export_project command: analyzes an entire project and generates a durable, LLM-portable knowledge package (blueprint, context JSON, rebuild prompt, decision log, development state) for handoff and reconstruction."
     }
   ]
 }
