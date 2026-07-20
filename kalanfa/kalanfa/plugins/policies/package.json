@@ -1,0 +1,17 @@
+{
+    "name": "kalanfa-policies-plugin",
+    "description": "Policies Plugin for Kalanfa",
+    "private": true,
+    "version": "0.0.1",
+    "dependencies": {
+        "@vueuse/core": "catalog:",
+        "kalanfa": "workspace:*",
+        "kalanfa-app": "workspace:*",
+        "kalanfa-common": "workspace:*",
+        "kalanfa-design-system": "catalog:",
+        "kalanfa-plugin-data": "workspace:*",
+        "lodash": "catalog:",
+        "vue": "catalog:",
+        "vuex": "catalog:"
+    }
+}

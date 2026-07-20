@@ -1,0 +1,39 @@
+FROM images/base.img
+TO images/Kalanfa.img
+
+PUMP 500M
+
+ENV DEBIAN_FRONTEND noninteractive
+
+echo "--- Using Kalanfa deb"
+
+# Preseeding package config
+RUN debconf-set-selections <<EOF
+$(cat files/debconf)
+EOF
+
+
+# Free space from base image build before installing Kalanfa
+RUN apt-get clean
+
+# All files copied at build stage to /pi-gen
+INSTALL dist/*.deb /tmp/kalanfa.deb
+
+RUN apt-get install -y /tmp/kalanfa.deb
+RUN rm /tmp/kalanfa.deb
+
+RUN ls -la /home/pi/.kalanfa/options.ini
+
+RUN apt-get install -y kalanfa-server
+
+RUN systemctl enable kalanfa-server
+
+RUN apt-get clean
+
+# Zero free space so the image compresses better in the ZIP
+ZERO
+
+# Shrink the partition to fit actual content (removes unused space)
+SHRINK
+
+ENV DEBIAN_FRONTEND

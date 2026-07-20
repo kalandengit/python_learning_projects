@@ -1,0 +1,6 @@
+include AUTHORS.rst
+include CONTRIBUTING.rst
+include LICENSE
+include README.md
+recursive-exclude kalanfa_sync_extras_plugin/* *pyc
+recursive-include kalanfa_sync_extras_plugin *.py

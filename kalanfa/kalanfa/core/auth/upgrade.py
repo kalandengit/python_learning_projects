@@ -1,0 +1,60 @@
+"""
+A file to contain specific logic to handle version upgrades in Kalanfa.
+"""
+
+import logging
+import os
+import shutil
+
+from kalanfa.core.auth.models import AdHocGroup
+from kalanfa.core.auth.models import Facility
+from kalanfa.core.auth.tasks import enqueue_automatic_kdp_sync
+from kalanfa.core.upgrade import version_upgrade
+from kalanfa.utils import conf
+
+logger = logging.getLogger(__name__)
+
+
+@version_upgrade(old_version="<0.14.0")
+def prune_empty_adhoc_groups():
+    """
+    We started making adhoc groups for every lesson and quiz, even though they were not
+    needed. This upgrade task cleans up those empty adhoc groups.
+    """
+    AdHocGroup.objects.filter(membership__isnull=True).delete()
+
+
+@version_upgrade(old_version="<0.15.0")
+def name_unnamed_adhoc_groups():
+    """
+    We started making adhoc groups for every lesson and quiz, even though they were not
+    needed. This upgrade task cleans up those empty adhoc groups.
+    """
+    AdHocGroup.objects.filter(name="").update(name="Ad hoc")
+
+
+@version_upgrade(old_version="<0.19.0")
+def cleanup_legacy_file_sessions():
+    """
+    Clean up legacy file-based sessions when upgrading to database-backed sessions.
+    Removes the sessions directory from KALANFA_HOME if it exists.
+    """
+    session_dir = os.path.join(conf.KALANFA_HOME, "sessions")
+    if os.path.exists(session_dir):
+        try:
+            shutil.rmtree(session_dir)
+            logger.info(
+                "Cleaned up legacy file-based sessions directory: %s", session_dir
+            )
+        except OSError:
+            logger.warning("Failed to remove legacy sessions directory %s", session_dir)
+
+
+@version_upgrade(old_version="<0.19.3")
+def enqueue_kdp_sync_for_registered_facilities():
+    """
+    For facilities already registered with KDP, enqueue automatic daily syncing.
+    Previously, registration did not set up recurring syncs.
+    """
+    for facility in Facility.objects.filter(dataset__registered=True):
+        enqueue_automatic_kdp_sync(facility)

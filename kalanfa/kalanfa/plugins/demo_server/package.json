@@ -1,0 +1,13 @@
+{
+    "name": "kalanfa-demo-server-plugin",
+    "description": "Demo Server Plugin for Kalanfa",
+    "private": true,
+    "version": "0.0.1",
+    "dependencies": {
+        "kalanfa": "workspace:*",
+        "kalanfa-common": "workspace:*",
+        "kalanfa-module": "workspace:*",
+        "lodash": "catalog:",
+        "vue": "catalog:"
+    }
+}

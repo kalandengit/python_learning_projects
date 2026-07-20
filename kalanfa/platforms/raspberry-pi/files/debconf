@@ -1,0 +1,4 @@
+kalanfa	kalanfa/init	boolean	false
+kalanfa	kalanfa/user	string	pi
+kalanfa-server	kalanfa-server/port	select	80
+kalanfa-server	kalanfa-server/zip_content_port	select	81

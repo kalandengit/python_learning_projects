@@ -1,0 +1,16 @@
+{
+  "name": "kalanfa-module",
+  "version": "1.0.0",
+  "description": "The Kalanfa module",
+  "main": "src/index.js",
+  "author": "Learning Equality",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/learningequality/kalanfa.git",
+    "directory": "packages/kalanfa-module"
+  },
+  "license": "MIT",
+  "dependencies": {
+    "kalanfa": "workspace:*"
+  }
+}

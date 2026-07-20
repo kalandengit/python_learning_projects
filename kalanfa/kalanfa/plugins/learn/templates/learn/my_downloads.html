@@ -1,0 +1,5 @@
+{% extends "kalanfa/base.html" %}
+{% load webpack_tags %}
+{% block content %}
+  {% webpack_asset 'kalanfa.plugins.learn.my_downloads_app' %}
+{% endblock %}

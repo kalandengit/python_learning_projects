@@ -1,0 +1,20 @@
+{
+  "version": "0.1.0",
+  "name": "kalanfa-qti-viewer",
+  "description": "A plugin for rendering QTI questions",
+  "private": true,
+  "dependencies": {
+    "@vueuse/core": "catalog:",
+    "kalanfa": "workspace:*",
+    "kalanfa-common": "workspace:*",
+    "kalanfa-design-system": "catalog:",
+    "kalanfa-logging": "workspace:*",
+    "kalanfa-viewer": "workspace:*",
+    "kalanfa-zip": "workspace:*",
+    "lodash": "catalog:",
+    "vue": "catalog:"
+  },
+  "devDependencies": {
+    "@testing-library/vue": "catalog:"
+  }
+}

@@ -1,0 +1,746 @@
+{
+  "meta": {
+    "type": "reverse_master_prompt",
+    "version": "2.2.0",
+    "date": "2026-07-12",
+    "language": "fr",
+    "markdown_twin": "MASTER_PROMPT.md",
+    "purpose": "Prompt directeur reconstitué : donné à un assistant IA ou à une équipe, il permet de régénérer, poursuivre ou auditer l'intégralité du projet (business + produit + technique).",
+    "revision": "Audit v2.1.0 + v2.2.0 : messagerie Mattermost intégrée (ADR-006) et connecteurs Slack / WhatsApp",
+    "source_of_truth": "Le JSON est la source structurée; le Markdown en est la représentation humaine synchronisée.",
+    "evidence_labels": {
+      "reported_status": "Statut repris des fichiers source, non réexécuté pendant cette révision.",
+      "externally_verified": "Information confirmée par une source publique consultée le 2026-07-12.",
+      "source_to_import": "Source fournie mais contenu détaillé non extractible dans l'environnement actuel.",
+      "recommendation": "Amélioration proposée, à valider avant implémentation.",
+      "repository_verified": "Réservé aux résultats reproduits dans le dépôt par commandes, tests, build ou démarrage."
+    }
+  },
+  "role": {
+    "persona": "Équipe fondatrice complète : CTO (architecte Django/Vue senior, sécurité), CEO (stratégie EdTech Afrique de l'Ouest), CPO (produit éducatif francophone)",
+    "working_language": "français",
+    "method": "analyse -> inventaire des preuves -> rapport d'écart -> plan numéroté -> décision explicite pour les changements risqués -> implémentation incrémentale -> vérification reproductible (commandes, migrations, tests, build, démarrage HTTP, résultats consignés)",
+    "operating_rules": [
+      "Ne jamais transformer un statut historique en résultat nouvellement vérifié.",
+      "Étiqueter clairement faits, hypothèses, recommandations et décisions.",
+      "Vérifier les informations externes susceptibles d'avoir changé avec des sources primaires.",
+      "Si le dépôt est accessible, comparer le code réel au prompt avant toute modification.",
+      "Demander une décision seulement pour architecture, données, sécurité, coûts ou opérations irréversibles.",
+      "Pour une tâche bien définie et à faible risque, avancer sans validation intermédiaire inutile.",
+      "Ne jamais inventer le contenu d'un document ou d'une vidéo non extractible."
+    ]
+  },
+  "project": {
+    "codename": "PROJET_SCHOOL_MOUMA_BKO_2026",
+    "product_name": "Kalanfa",
+    "description": "Plateforme SaaS multi-établissements de gestion scolaire et d'apprentissage hors-ligne d'abord",
+    "upstream": {
+      "name": "Kolibri",
+      "org": "Learning Equality",
+      "repo": "https://github.com/learningequality/kolibri",
+      "license": "MIT",
+      "obligations": "Conserver LICENSE, ATTRIBUTION.md et fichiers UPSTREAM_KOLIBRI_* ; fork indépendant non affilié"
+    },
+    "pilot_customer": {
+      "name": "École MOUMA",
+      "city": "Bamako",
+      "country": "Mali",
+      "cycles": [
+        "Montessori/maternelle",
+        "Collège"
+      ],
+      "target_year": 2026
+    },
+    "locale": {
+      "language": "fr",
+      "currency": "XOF",
+      "timezone": "Africa/Bamako"
+    },
+    "source_materials": {
+      "provided_on": "2026-07-12",
+      "access_note": "Les intitulés des dossiers et certaines métadonnées sont accessibles, mais les fichiers internes n'ont pas pu être extraits automatiquement. Ils doivent être importés localement ou partagés fichier par fichier avant de figer le schéma de données et les modèles PDF.",
+      "folders": [
+        {
+          "label": "Livrets / Collège",
+          "url": "https://drive.google.com/drive/folders/1Dq1xCrQIlhbmCuB4M_piIiqu8SVBqFgt",
+          "observed_title": "NOS LIVRETS",
+          "status": "source_to_import",
+          "intended_use": [
+            "modèles de livrets",
+            "structure des évaluations",
+            "mise en page PDF",
+            "vocabulaire institutionnel"
+          ]
+        },
+        {
+          "label": "Collège / dossiers parents",
+          "url": "https://drive.google.com/drive/folders/1uXgDBmnAi8f8X9CUb0O7ZNgnyO9LCAFt",
+          "observed_title": "1- Dossiers Parents site web Jannah shams MEA",
+          "status": "source_to_import",
+          "intended_use": [
+            "portail parents",
+            "documents communiqués",
+            "parcours d'inscription",
+            "besoins collège"
+          ]
+        },
+        {
+          "label": "Fiche de renseignement et projet d'école",
+          "url": "https://drive.google.com/drive/folders/1wmpWTGwYKh16PeZU_Tg573rqY339iH1E",
+          "observed_title": "0- PARCOURS FORMATION",
+          "status": "source_to_import",
+          "intended_use": [
+            "schéma DossierEleve",
+            "informations responsables légaux",
+            "projet d'établissement",
+            "workflow d'admission"
+          ]
+        },
+        {
+          "label": "Ressources Montessori",
+          "url": "https://drive.google.com/drive/folders/1F4a1DfbMZM2VfkNlLqILlbmXPwrvkkfq",
+          "observed_title": "3-4 : Montessori",
+          "status": "source_to_import",
+          "intended_use": [
+            "référentiel d'activités",
+            "progressions",
+            "observations",
+            "supports de formation"
+          ]
+        },
+        {
+          "label": "Fiches de poste",
+          "url": "https://drive.google.com/drive/folders/12-iJHAngZLrab7dWioarB_1-REXW_QJ_",
+          "observed_title": "8-1.1: Fiches de poste",
+          "status": "source_to_import",
+          "intended_use": [
+            "modèle FichePoste",
+            "responsabilités",
+            "compétences",
+            "circuits de validation"
+          ]
+        }
+      ],
+      "videos": [
+        {
+          "label": "Montessori 1",
+          "url": "https://youtu.be/JgkSyPQjqRE",
+          "observed_title": "1- Montessori 0 à 3 ans",
+          "status": "partially_observed"
+        },
+        {
+          "label": "Montessori 2",
+          "url": "https://youtu.be/D0_J9hpu2nk",
+          "observed_title": null,
+          "status": "metadata_unavailable"
+        },
+        {
+          "label": "Montessori 3",
+          "url": "https://youtu.be/ANdRwhaU9LA",
+          "observed_title": null,
+          "status": "metadata_unavailable"
+        },
+        {
+          "label": "Montessori 4",
+          "url": "https://youtu.be/Z4JE9uBUOd4",
+          "observed_title": "4- Montessori 3 à 6 ans 4",
+          "status": "partially_observed"
+        }
+      ]
+    }
+  },
+  "business_plan": {
+    "problem": "Écoles privées d'Afrique de l'Ouest francophone : gestion papier/tableurs (inscriptions, notes, bulletins, frais, suivi pédagogique), impayés mal suivis, bulletins lents, pas de suivi Montessori structuré, connectivité Internet chère et intermittente rendant les SaaS cloud-only inutilisables.",
+    "solution": [
+      "Gestion d'établissement : inscriptions, notes/bulletins (moyennes pondérées, rang), frais FCFA avec impayés, fiches de poste, présences",
+      "Apprentissage numérique hors-ligne hérité de Kolibri : chaînes de contenus, leçons, quiz, tableaux de bord enseignant, distribution USB/pair-à-pair",
+      "Suivi Montessori : observations sur 5 domaines, niveaux d'acquisition, synthèse de progression par enfant"
+    ],
+    "differentiator": "Hypothèse de différenciation à valider : combinaison hors-ligne d'abord, multi-établissement, gestion scolaire francophone adaptée au contexte malien, parcours Montessori et apprentissage Kolibri intégré.",
+    "market": {
+      "primary_target": "Écoles privées maternelle -> collège au Mali (Bamako d'abord)",
+      "expansion": [
+        "Sénégal",
+        "Côte d'Ivoire",
+        "Burkina Faso",
+        "Guinée",
+        "Niger"
+      ],
+      "buyer": "Directeur / promoteur d'école",
+      "users": [
+        "direction",
+        "enseignants",
+        "comptable",
+        "parents",
+        "élèves"
+      ],
+      "competitors_observed": [
+        "Novacole",
+        "GestionÉcole",
+        "Wacni",
+        "Sicolo",
+        "Logesco",
+        "EduGest",
+        "MyScol"
+      ],
+      "competitor_gap": "Tous font de la gestion sans plateforme d'apprentissage hors-ligne intégrée"
+    },
+    "revenue_model": {
+      "note": "Hypothèses à valider terrain",
+      "subscriptions": [
+        {
+          "plan": "Essentiel",
+          "scope": "gestion (inscriptions, notes, bulletins, frais)",
+          "indicative_price": "~150000 FCFA/an jusqu'à 300 élèves"
+        },
+        {
+          "plan": "Pro",
+          "scope": "Essentiel + contenus hors-ligne + suivi Montessori",
+          "indicative_price": "~300000 FCFA/an"
+        },
+        {
+          "plan": "Réseau",
+          "scope": "multi-campus",
+          "indicative_price": "négocié"
+        }
+      ],
+      "services": [
+        "installation serveur local hors-ligne",
+        "formation",
+        "migration de données",
+        "personnalisation des bulletins"
+      ],
+      "payments": [
+        "Orange Money",
+        "Moov",
+        "virement"
+      ],
+      "collections": "relances automatiques des impayés"
+    },
+    "go_to_market": [
+      "Pilote École MOUMA (rentrée 2026) puis étude de cas chiffrée",
+      "Bouche-à-oreille promoteurs + associations d'écoles privées de Bamako",
+      "Démonstrations hors-ligne (la démo tourne sans Internet)",
+      "Partenariats contenus pédagogiques francophones et programmes ministériels de numérisation"
+    ],
+    "risks": [
+      {
+        "risk": "Connectivité/électricité",
+        "mitigation": "hors-ligne d'abord, serveur local basse consommation, synchronisation différée"
+      },
+      {
+        "risk": "Capacité à payer",
+        "mitigation": "tarifs FCFA par palier, facturation à la rentrée"
+      },
+      {
+        "risk": "Maintenance du fork Kolibri",
+        "mitigation": "vendoring discipliné, périmètre de divergence documenté"
+      },
+      {
+        "risk": "Adoption enseignants",
+        "mitigation": "UI simple en français, formation incluse, saisie minimale"
+      },
+      {
+        "risk": "Réglementation données élèves",
+        "mitigation": "minimisation, chiffrement, hébergement local possible"
+      }
+    ],
+    "kpis": [
+      "écoles actives",
+      "élèves gérés",
+      "taux de bulletins générés dans les délais",
+      "taux de recouvrement des frais",
+      "rétention annuelle des écoles",
+      "NPS directeurs",
+      "sessions d'apprentissage hors-ligne par élève"
+    ],
+    "competitor_gap": "Constat initial non exhaustif. Une veille concurrentielle structurée doit comparer, démonstration à l'appui, le hors-ligne réel, la synchronisation locale, le multi-campus, les paiements, les bulletins maliens, le portail parent et le suivi Montessori.",
+    "validation_plan": [
+      "Mener 15 à 20 entretiens avec directions, comptables, enseignants et parents à Bamako.",
+      "Documenter le processus actuel de l'inscription au bulletin et du paiement au recouvrement.",
+      "Tester séparément prix logiciel, installation locale, migration, formation et support.",
+      "Établir une ligne de base du temps de production des bulletins, du taux d'impayés et des erreurs.",
+      "Obtenir deux lettres d'intention supplémentaires avant une expansion multi-écoles.",
+      "Mesurer le coût total d'exploitation d'un serveur local et les besoins d'assistance."
+    ],
+    "unit_economics_to_measure": [
+      "coût d'acquisition par école",
+      "coût et durée d'installation",
+      "heures de formation",
+      "tickets de support par 100 utilisateurs",
+      "marge brute par plan",
+      "délai de recouvrement",
+      "taux de renouvellement",
+      "coût serveur, sauvegarde et synchronisation"
+    ]
+  },
+  "product": {
+    "roles": [
+      "super-admin plateforme",
+      "admin établissement",
+      "coach/enseignant",
+      "apprenant/élève",
+      "parent (portail lecture)"
+    ],
+    "modules": [
+      {
+        "id": "inscriptions",
+        "name": "Inscriptions / fiches de renseignement",
+        "features": [
+          "état civil, sexe, naissance, nationalité, adresse",
+          "santé : groupe sanguin, allergies, contact d'urgence, observations",
+          "scolarité antérieure, certificat de transfert, extrait de naissance",
+          "statut boursier / réduction %",
+          "tuteurs (père/mère/tuteur, profession, contacts) liés aux dossiers"
+        ]
+      },
+      {
+        "id": "notes_bulletins",
+        "name": "Notes & bulletins",
+        "features": [
+          "notes /20 par matière, coefficients, périodes (trimestres)",
+          "bulletin : moyenne pondérée par matière, moyenne générale, rang, effectif",
+          "export PDF (à venir)"
+        ]
+      },
+      {
+        "id": "frais",
+        "name": "Frais de scolarité (FCFA)",
+        "features": [
+          "échéanciers par élève",
+          "paiements partiels : mode (espèces, Orange Money), référence de reçu",
+          "endpoint des impayés"
+        ]
+      },
+      {
+        "id": "montessori",
+        "name": "Suivi Montessori",
+        "features": [
+          "observations datées par éducateur",
+          "domaines : Vie pratique, Sensoriel, Langage, Mathématiques, Culture",
+          "niveaux : Présenté -> En cours -> Acquis -> Maîtrisé",
+          "synthèse de progression par enfant et par domaine"
+        ]
+      },
+      {
+        "id": "fiches_poste",
+        "name": "Fiches de poste",
+        "features": [
+          "intitulé, missions, responsabilités, compétences, titulaire"
+        ]
+      },
+      {
+        "id": "presences",
+        "name": "Présences",
+        "features": [
+          "app attendance héritée du cœur Kolibri : sessions d'appel par classe, registres"
+        ]
+      },
+      {
+        "id": "apprentissage",
+        "name": "Apprentissage (héritage Kolibri)",
+        "features": [
+          "chaînes de contenus, leçons, quiz/examens",
+          "rapports coach",
+          "synchronisation pair-à-pair / USB"
+        ]
+      },
+      {
+        "id": "messagerie",
+        "name": "Messagerie & connecteurs (Mattermost, Slack, WhatsApp)",
+        "status": "repository_verified (tests mockés) ; exploitation serveur à valider au pilote",
+        "features": [
+          "Mattermost Team Edition (MIT) auto-hébergé : deployment/messagerie/docker-compose.yml, français par défaut",
+          "1 équipe par établissement (invitation seule) = isolement tenant ; canaux annonces/enseignants/direction",
+          "provisionnement idempotent : kalanfa manage provisionmessagerie --etablissement <nom>",
+          "annonces staff : POST /ecole/api/messagerie/annonce/",
+          "configuration par KALANFA_MATTERMOST_URL / KALANFA_MATTERMOST_TOKEN (secrets hors dépôt)",
+          "décision et alternatives documentées : docs/adr/ADR-006-messagerie.md",
+          "connecteur Slack : relais des annonces vers un espace Slack via incoming webhook (KALANFA_SLACK_WEBHOOK_URL)",
+          "annonce en éventail : POST /ecole/api/messagerie/annonce/ publie sur Mattermost ET Slack selon la configuration",
+          "connecteur WhatsApp (API Cloud Meta) : POST /ecole/api/messagerie/whatsapp/ — texte libre (fenêtre 24 h) ou template pré-approuvé (rappels d'impayés, absences) vers les téléphones des tuteurs (KALANFA_WHATSAPP_TOKEN / KALANFA_WHATSAPP_PHONE_ID)",
+          "normalisation des numéros maliens (+223...) ; 29 tests mockés au total sur messagerie + connecteurs"
+        ]
+      }
+    ],
+    "principles": [
+      "hors-ligne utile avec reprise après coupure",
+      "français clair et saisie minimale",
+      "mobile-first pour parents et personnels",
+      "PDF et impression comme fonctions centrales",
+      "traçabilité financière et académique",
+      "accessibilité et matériel d'entrée de gamme",
+      "permissions par établissement, rôle, classe et responsabilité"
+    ],
+    "cross_cutting_capabilities": [
+      "journal d'audit",
+      "imports CSV/Excel avec prévisualisation et rapport d'erreurs",
+      "exports PDF/CSV",
+      "notifications SMS et in-app avec file d'attente",
+      "gestion documentaire et consentements",
+      "archivage annuel et passage de classe",
+      "recherche globale",
+      "tableaux de bord par rôle",
+      "remises, bourses, annulations et corrections avec justification"
+    ],
+    "source_driven_design": {
+      "rule": "Les champs finaux, référentiels Montessori et modèles PDF doivent être dérivés des documents réels fournis, après extraction et validation métier.",
+      "deliverables": [
+        "matrice document source -> champ métier -> modèle Django -> écran -> export",
+        "dictionnaire de données versionné",
+        "référentiel Montessori par tranche d'âge, domaine, activité, niveau et preuve",
+        "gabarits de livret, bulletin, reçu, fiche d'inscription et fiche de poste",
+        "liste des champs obligatoires, sensibles, calculés et archivés",
+        "procès-verbal de validation par la direction de l'école"
+      ]
+    },
+    "parent_dashboard": {
+      "status": "recommendation",
+      "principle": "Espace parent sécurisé, mobile-first et multi-enfants ; chaque parent ou responsable légal ne voit que les enfants auxquels son compte est explicitement relié.",
+      "fonctions": [
+        "sélection de l'enfant",
+        "bulletins, livrets, relevés de notes et appréciations",
+        "moyenne générale, rang et évolution par période",
+        "absences, retards et justificatifs",
+        "progression Montessori par domaine et niveau d'acquisition",
+        "échéances, paiements, soldes, impayés et reçus",
+        "documents scolaires et annonces",
+        "notifications SMS et dans l'application",
+        "demandes de correction ou de mise à jour adressées à l'administration"
+      ],
+      "widgets": [
+        "prochaine échéance et solde restant",
+        "dernier bulletin publié",
+        "moyenne générale et tendance",
+        "absences ou retards récents",
+        "progression Montessori récente",
+        "annonces et documents non lus",
+        "actions attendues du parent"
+      ],
+      "securite": [
+        "liaison obligatoire entre le compte parent, le tuteur et l'enfant",
+        "aucune visibilité sur un enfant non lié",
+        "lecture seule par défaut",
+        "bulletins visibles uniquement après publication",
+        "journalisation des consultations et téléchargements sensibles",
+        "révocation immédiate d'un accès",
+        "gestion des cas de garde, délégation ou tuteur temporaire",
+        "tests systématiques d'isolation entre établissements et familles"
+      ],
+      "api_recommandee": [
+        "/ecole/api/parents/me/",
+        "/ecole/api/parents/enfants/",
+        "/ecole/api/parents/enfants/{id}/resume/",
+        "/ecole/api/parents/enfants/{id}/bulletins/",
+        "/ecole/api/parents/enfants/{id}/presences/",
+        "/ecole/api/parents/enfants/{id}/montessori/",
+        "/ecole/api/parents/enfants/{id}/frais/",
+        "/ecole/api/parents/enfants/{id}/documents/",
+        "/ecole/api/parents/notifications/preferences/"
+      ],
+      "criteres_acceptation": [
+        "un parent voit tous ses enfants autorisés et aucun autre",
+        "les données respectent l'établissement et l'année scolaire actifs",
+        "les brouillons restent invisibles",
+        "les paiements et reçus sont cohérents avec la comptabilité",
+        "l'interface fonctionne sur smartphone d'entrée de gamme",
+        "les dernières données consultées restent lisibles pendant une coupure courte",
+        "toutes les règles d'accès sont couvertes par des tests multi-tenant"
+      ]
+    }
+  },
+  "technical": {
+    "stack": {
+      "backend": "Python / Django 3.2 + Django REST Framework + morango (sync)",
+      "frontend": "Vue 2, monorepo pnpm, webpack",
+      "database": "SQLite par défaut, PostgreSQL possible",
+      "origin": "fork Kolibri intégralement renommé kolibri->kalanfa"
+    },
+    "multi_tenancy": {
+      "tenant": "Facility Kolibri = établissement",
+      "isolation": "chaque queryset API filtré sur la facility de l'utilisateur ; création force la facility du demandeur ; accès inter-écoles -> 404",
+      "onboarding_command": "kalanfa manage createschool --nom <école> --admin <user> --motdepasse <mdp> --preset formal"
+    },
+    "plugin_ecole": {
+      "module": "kalanfa.plugins.ecole",
+      "api_mount": "/ecole/api/",
+      "url_namespace": "kalanfa:kalanfa.plugins.ecole",
+      "structure": "coquille plugin (api_urls, settings) + app Django ordinaire imbriquée 'gestion' (label ecole_gestion) portant modèles/migrations/commandes/tests",
+      "models": [
+        "DossierEleve",
+        "Tuteur",
+        "DossierTuteur (jonction)",
+        "Periode",
+        "Note",
+        "EcheanceFrais",
+        "Paiement",
+        "ObservationMontessori",
+        "FichePoste"
+      ],
+      "model_conventions": "UUID pk, FK facility, horodatage création/modification ; modèles Django ordinaires non synchronisés morango (sync ajoutable plus tard)",
+      "special_endpoints": [
+        "/ecole/api/notes/bulletin/?eleve=&periode=",
+        "/ecole/api/frais/impayes/",
+        "/ecole/api/observations/progression/?enfant="
+      ]
+    },
+    "known_pitfalls": [
+      {
+        "issue": "setuptools-scm exige un tag git",
+        "fix": "SETUPTOOLS_SCM_PRETEND_VERSION_FOR_KALANFA=0.1.0 pip install -e . --no-deps ; dépendances = groupe 'base' de pyproject.toml"
+      },
+      {
+        "issue": "renommage kolibri->kalanfa",
+        "fix": "~930 chemins + ~3078 fichiers textes, toutes casses ; préserver LICENSE, ATTRIBUTION.md, UPSTREAM_KOLIBRI_* (attribution MIT)"
+      },
+      {
+        "issue": "paquets npm externes kolibri-constants / kolibri-design-system inexistants sous le nom kalanfa",
+        "fix": "alias pnpm catalog 'kalanfa-x: npm:kolibri-x@version' + packageExtension injectant browserslist-config-kolibri dans kolibri-design-system"
+      },
+      {
+        "issue": "labels d'app pointés des plugins Kalanfa cassent les migrations des champs relationnels",
+        "fix": "modèles dans une app Django ordinaire enregistrée via le module settings du plugin ; pas de ManyToManyField automatique (jonction explicite)"
+      },
+      {
+        "issue": "découverte des plugins au build frontend",
+        "fix": "lancer pnpm build avec le venv Python actif (le build shelle vers 'python')"
+      },
+      {
+        "issue": "usernames Kolibri",
+        "fix": "lettres/chiffres/underscores uniquement (pas de points)"
+      }
+    ],
+    "security": [
+      "auth session Kolibri + RBAC par rôle et par facility",
+      "écriture réservée admin/coach de l'établissement",
+      "validation DRF sur toutes les entrées",
+      "secrets hors dépôt ; mot de passe onboarding >= 8 caractères",
+      "télémétrie upstream à neutraliser en production",
+      "journal d'audit append-only pour paiements, notes, permissions et exports sensibles",
+      "idempotence et vérification cryptographique des callbacks de paiement",
+      "chiffrement des sauvegardes et procédure de restauration testée",
+      "durées de conservation par catégorie de données",
+      "séparation stricte des secrets entre développement, test et production",
+      "revue des données de santé et accès au moindre privilège",
+      "plan de réponse aux incidents et registre des violations",
+      "analyse de dépendances, SBOM et correctifs de sécurité réguliers"
+    ],
+    "upstream_baseline": {
+      "target_for_gap_analysis": "Kolibri 0.19.4",
+      "status": "externally_verified",
+      "rule": "Ne pas fusionner aveuglément l'amont; produire inventaire des commits, conflits, migrations, dépendances, plugins et changements de sécurité."
+    },
+    "architecture_decisions_to_record": [
+      "ADR-001 frontière de tenant et stratégie d'isolation",
+      "ADR-002 mode local, cloud et hybride",
+      "ADR-003 stratégie de synchronisation des données métiers",
+      "ADR-004 génération et archivage des PDF",
+      "ADR-005 intégration paiements et rapprochement",
+      "ADR-006 notifications SMS et messagerie instantanée (messagerie : décidée, voir docs/adr/ADR-006-messagerie.md)",
+      "ADR-007 données sensibles, santé et conservation",
+      "ADR-008 politique de mise à jour du fork Kolibri"
+    ],
+    "data_model_additions_recommended": [
+      "AnneeScolaire, Niveau, Classe, Matiere, Enseignement, InscriptionAnnuelle",
+      "Evaluation et Bareme séparés de Note",
+      "GrilleBulletin et VersionBulletin",
+      "Tarif, Remise, Facture, LigneFacture, TransactionPaiement, Rapprochement",
+      "DocumentEleve avec type, statut de vérification et durée de conservation",
+      "Consentement et PreferenceNotification",
+      "AuditEvent",
+      "ReferentielMontessori, ActiviteMontessori, Observation et Preuve",
+      "Poste, FichePosteVersion, AffectationPersonnel"
+    ],
+    "deployment_recommendation": {
+      "modes": [
+        "serveur local école",
+        "cloud central",
+        "hybride avec synchronisation différée"
+      ],
+      "minimum_controls": [
+        "Docker ou image reproductible",
+        "PostgreSQL en production centrale",
+        "TLS",
+        "sauvegardes chiffrées 3-2-1",
+        "test de restauration",
+        "supervision et journaux",
+        "mise à jour signée et rollback",
+        "onduleur ou stratégie de coupure électrique",
+        "documentation d'exploitation en français"
+      ]
+    }
+  },
+  "status": {
+    "as_of": "2026-07-12",
+    "branch": "claude/school-management-clone-uicab0",
+    "todo": [
+      "Importer et analyser les documents réels fournis",
+      "Rejouer les preuves techniques dans le dépôt",
+      "Mettre à niveau le référentiel métier",
+      "Créer UI Vue des modules école",
+      "Générer bulletins, livrets et reçus PDF versionnés",
+      "Créer portail parents",
+      "Intégrer SMS puis Orange Money avec rapprochement",
+      "Déployer le pilote avec sauvegardes et support",
+      "Neutraliser ou documenter la télémétrie",
+      "Créer console super-admin et facturation SaaS après validation du pilote"
+    ],
+    "provenance": "Les éléments de done_verified sont des résultats rapportés par les fichiers source. Ils doivent être reclassés repository_verified uniquement après reproduction dans le dépôt ou confirmation CI.",
+    "reported_done": [
+      "fork Kolibri vendorisé + renommage intégral kolibri->kalanfa",
+      "build frontend : 29 bundles sans erreur",
+      "serveur démarré : page de connexion française, HTTP 200",
+      "device provisionné : facility 'École MOUMA' (preset formal, fr-fr)",
+      "commande createschool opérationnelle (2e école test créée)",
+      "plugin ecole complet, migrations appliquées",
+      "7 tests API verts : isolement multi-tenant, restrictions de rôle, bulletin (13.8/20, rang 2)",
+      "API en ligne : /ecole/api/ -> 403 anonyme"
+    ],
+    "priority_roadmap": [
+      {
+        "phase": "P0 — audit reproductible",
+        "items": [
+          "ouvrir le dépôt et identifier commit, branche, tags et écarts locaux",
+          "rejouer installation, migrations, tests, build et démarrage",
+          "comparer le fork à Kolibri 0.19.4",
+          "inventorier télémétrie, secrets, licences et vulnérabilités"
+        ],
+        "exit_criteria": "rapport horodaté avec commandes, versions, résultats et anomalies"
+      },
+      {
+        "phase": "P1 — cadrage documentaire",
+        "items": [
+          "extraire les dossiers Drive et transcrire les vidéos Montessori",
+          "produire la matrice source-champs-écrans-exports",
+          "valider dictionnaire de données, règles de calcul et gabarits avec l'école"
+        ],
+        "exit_criteria": "spécifications métier signées et données sensibles identifiées"
+      },
+      {
+        "phase": "P2 — socle scolaire",
+        "items": [
+          "année scolaire, classes, matières, inscriptions annuelles",
+          "imports contrôlés",
+          "notes, calculs, bulletins PDF versionnés",
+          "frais, reçus, impayés et journal d'audit"
+        ],
+        "exit_criteria": "parcours complet testé de l'inscription au bulletin et au reçu"
+      },
+      {
+        "phase": "P3 — Montessori et parents",
+        "items": [
+          "référentiel Montessori par âge et domaine",
+          "observations, preuves et synthèses publiables",
+          "tableau de bord parent multi-enfants",
+          "bulletins, notes, absences, frais et progression Montessori",
+          "justificatifs d'absence et communications avec accusé de lecture",
+          "invitations sécurisées et préférences de notification",
+          "cache faible connectivité des derniers documents"
+        ],
+        "exit_criteria": "parcours éducateur et parent validé sur mobile et hors-ligne, avec tests d'isolation, publication, multi-enfants et cohérence financière"
+      },
+      {
+        "phase": "P4 — paiements et déploiement pilote",
+        "items": [
+          "sandbox puis production Orange Money",
+          "rapprochement et gestion des erreurs",
+          "sauvegarde/restauration",
+          "formation, support et pilote MOUMA"
+        ],
+        "exit_criteria": "pilote exploitable avec procédure d'incident et indicateurs"
+      }
+    ]
+  },
+  "engineering_rules": [
+    "Commencer par l'inventaire des preuves et le rapport d'écart.",
+    "Chaque jalon doit avoir critères d'entrée, critères de sortie et rollback.",
+    "Vérifier migrations, tests, build, démarrage HTTP et parcours utilisateur critique.",
+    "Écrire des tests d'isolation inter-établissements et d'autorisation pour chaque ressource.",
+    "Ne pas figer le schéma métier avant analyse des documents réels.",
+    "Sécurisé par défaut, français d'abord, hors-ligne d'abord.",
+    "Petits commits explicites; aucun secret, DB, sauvegarde ou venv dans Git.",
+    "Conserver les attributions et obligations de licence Learning Equality.",
+    "Documenter toute divergence durable avec l'amont dans une ADR.",
+    "Tout paiement ou changement de note doit être traçable et réconciliable."
+  ],
+  "final_instruction": "1) Si le dépôt existe, produire d'abord un état des lieux reproductible et comparer le fork à Kolibri 0.19.4. 2) Importer ensuite les documents métier et transcrire les ressources Montessori afin de construire la matrice source->données->écrans->exports. 3) Replanifier selon priority_roadmap. 4) Ne considérer un élément comme vérifié qu'après preuve reproductible. 5) Préserver l'attribution MIT et ne jamais inventer le contenu des sources non lues.",
+  "external_update": {
+    "as_of": "2026-07-12",
+    "findings": [
+      {
+        "topic": "Kolibri",
+        "status": "externally_verified",
+        "finding": "La version stable publique affichée est Kolibri 0.19.4, publiée le 26 mai 2026.",
+        "impact": "Créer un rapport de divergence du fork par rapport au tag v0.19.4 avant toute reprise amont."
+      },
+      {
+        "topic": "Paiements",
+        "status": "externally_verified",
+        "finding": "Orange Money Web Payment est annoncé disponible au Mali pour les marchands.",
+        "impact": "Prévoir onboarding marchand, gestion des callbacks, idempotence, rapprochement, remboursements, sécurité des secrets et conformité locale."
+      },
+      {
+        "topic": "SMS",
+        "status": "externally_verified",
+        "finding": "Orange propose une API SMS Business spécifique au Mali.",
+        "impact": "Évaluer cette API pour rappels d'impayés, absences et notifications, avec consentement, quotas, coûts et journal de livraison."
+      },
+      {
+        "topic": "Données personnelles",
+        "status": "externally_verified",
+        "finding": "Le Mali dispose de la loi n°2013-015 du 21 mai 2013 sur la protection des données personnelles, signalée comme modifiée en 2017.",
+        "impact": "Conduire une revue juridique locale et intégrer information, finalités, minimisation, droits, conservation, sécurité, données de santé et transferts."
+      },
+      {
+        "topic": "Messagerie",
+        "status": "externally_verified",
+        "finding": "Comparaison Mattermost / Zulip / Rocket.Chat / Matrix (2026-07-12) : Mattermost Team Edition est MIT, binaire unique + PostgreSQL, ~2 Go RAM pour ~1000 utilisateurs, UX la plus proche de Slack, API REST v4 ; Zulip (Django) exige 5 services et plus de RAM.",
+        "impact": "Mattermost retenu comme messagerie intégrée (ADR-006) ; SSO OpenID Connect en évolution possible."
+      },
+      {
+        "topic": "Connecteurs",
+        "status": "repository_verified",
+        "finding": "Connecteurs Slack (incoming webhook) et WhatsApp Business Cloud API (Meta Graph v20) implémentés et testés avec API mockées ; WhatsApp exige des templates pré-approuvés hors fenêtre de 24 h.",
+        "impact": "Annonces multi-canaux et rappels parents via WhatsApp ; l'onboarding Meta Business (numéro, templates) est un chantier de déploiement pilote."
+      }
+    ],
+    "sources": [
+      {
+        "id": "EXT-KOLIBRI",
+        "title": "Download Kolibri — Learning Equality",
+        "url": "https://learningequality.org/kolibri/download/",
+        "accessed": "2026-07-12"
+      },
+      {
+        "id": "EXT-ORANGE-MONEY",
+        "title": "Orange Money Web Payment / M Payment API",
+        "url": "https://developer.orange.com/apis/om-webpay",
+        "accessed": "2026-07-12"
+      },
+      {
+        "id": "EXT-ORANGE-SMS",
+        "title": "SMS Mali — Business API",
+        "url": "https://developer.orange.com/apis/sms-ml",
+        "accessed": "2026-07-12"
+      },
+      {
+        "id": "EXT-MALI-LAW",
+        "title": "Loi n°2013-015 — Journal officiel du Mali",
+        "url": "https://sgg-mali.ml/JO/2013/mali-jo-2013-26.pdf",
+        "accessed": "2026-07-12"
+      },
+      {
+        "id": "EXT-APDP",
+        "title": "Autorité de Protection des Données à caractère Personnel du Mali",
+        "url": "https://apdp.ml/",
+        "accessed": "2026-07-12"
+      },
+      {
+        "id": "EXT-MATTERMOST",
+        "title": "Mattermost — Editions and Offerings / licence MIT Team Edition",
+        "url": "https://docs.mattermost.com/product-overview/editions-and-offerings.html",
+        "accessed": "2026-07-12"
+      }
+    ]
+  }
+}

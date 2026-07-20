@@ -1,0 +1,14 @@
+{
+  "name": "browserslist-config-kalanfa",
+  "version": "0.20.0",
+  "description": "Browsers list configuration for Kalanfa",
+  "main": "index.js",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/learningequality/kalanfa.git",
+    "directory": "packages/browserslist-config-kalanfa"
+  },
+  "author": "Learning Equality",
+  "license": "MIT",
+  "private": false
+}

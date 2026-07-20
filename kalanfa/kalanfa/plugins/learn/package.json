@@ -1,0 +1,30 @@
+{
+  "name": "kalanfa-learn-plugin",
+  "description": "Learn Plugin for Kalanfa",
+  "private": true,
+  "version": "0.0.1",
+  "dependencies": {
+    "@vueuse/core": "catalog:",
+    "deep-object-diff": "^1.1.9",
+    "frame-throttle": "^3.0.0",
+    "kalanfa": "workspace:*",
+    "kalanfa-app": "workspace:*",
+    "kalanfa-common": "workspace:*",
+    "kalanfa-constants": "catalog:",
+    "kalanfa-design-system": "catalog:",
+    "kalanfa-logging": "workspace:*",
+    "kalanfa-plugin-data": "workspace:*",
+    "kalanfa-sandbox": "workspace:*",
+    "kalanfa-viewer": "workspace:*",
+    "lodash": "catalog:",
+    "tinycolor2": "^1.6.0",
+    "vue": "catalog:",
+    "vue-router": "catalog:",
+    "vuex": "catalog:"
+  },
+  "devDependencies": {
+    "@testing-library/vue": "catalog:",
+    "@vue/test-utils": "catalog:",
+    "flush-promises": "^1.0.2"
+  }
+}

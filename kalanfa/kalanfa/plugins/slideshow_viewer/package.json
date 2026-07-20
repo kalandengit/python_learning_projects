@@ -1,0 +1,16 @@
+{
+  "name": "kalanfa-slideshow-render-plugin",
+  "description": "Slideshow Render Plugin for Kalanfa",
+  "private": true,
+  "version": "0.0.1",
+  "dependencies": {
+    "hooper": "^0.3.4",
+    "kalanfa": "workspace:*",
+    "kalanfa-common": "workspace:*",
+    "kalanfa-design-system": "catalog:",
+    "kalanfa-viewer": "workspace:*",
+    "lodash": "catalog:",
+    "object-fit-images": "^3.2.4",
+    "vue": "catalog:"
+  }
+}

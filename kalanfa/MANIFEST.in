@@ -1,0 +1,51 @@
+include AUTHORS.md
+include CONTRIBUTING.md
+include CHANGELOG.md
+include LICENSE
+include README.md
+include kalanfa/VERSION
+recursive-include kalanfa/locale *.mo
+recursive-include kalanfa/locale *.json
+graft kalanfa/core
+recursive-include kalanfa/deployment *
+recursive-include kalanfa/dist *
+
+# Exclude the unused Django GIS and Humanize app
+recursive-exclude kalanfa/dist/django/contrib/gis *
+recursive-exclude kalanfa/dist/django/contrib/humanize *
+# Exclude Django module locales that are not used by Kalanfa
+recursive-exclude kalanfa/dist/rest_framework/locale *
+recursive-exclude kalanfa/dist/django_filters/locale *
+recursive-exclude kalanfa/dist/mptt/locale *
+recursive-exclude kalanfa/dist/django/contrib/admindocs/locale *
+recursive-exclude kalanfa/dist/django/contrib/auth/locale *
+recursive-exclude kalanfa/dist/django/contrib/sites/locale *
+recursive-exclude kalanfa/dist/django/contrib/contenttypes/locale *
+recursive-exclude kalanfa/dist/django/contrib/flatpages/locale *
+recursive-exclude kalanfa/dist/django/contrib/sessions/locale *
+recursive-exclude kalanfa/dist/django/contrib/admin/locale *
+
+graft kalanfa/plugins
+recursive-include kalanfa/utils *
+recursive-include kalanfa/*/static *.*
+recursive-include kalanfa/*/build/ *.json
+recursive-include kalanfa/plugins/*/build *.json
+
+recursive-exclude kalanfa/* *pyc
+recursive-exclude kalanfa/* *pyo
+prune kalanfa/core/frontend
+prune kalanfa/core/node_modules
+prune kalanfa/plugins/*/frontend
+prune kalanfa/plugins/*/node_modules
+exclude kalanfa/*/buildConfig.js
+exclude kalanfa/plugins/*/buildConfig.js
+
+recursive-exclude kalanfa/dist *pyc
+recursive-exclude kalanfa/dist/*/__pycache__ *
+
+# Exclude all test directories
+recursive-exclude kalanfa/**/tests *
+recursive-exclude kalanfa/**/test *
+recursive-exclude kalanfa/**/testing *
+# Except the Django one which is needed by rest_framework
+recursive-include kalanfa/dist/django/test *.py

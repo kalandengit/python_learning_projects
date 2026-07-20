@@ -1,0 +1,6 @@
+{% extends "kalanfa/base.html" %}
+{% load webpack_tags user_auth_tags %}
+{% block content %}
+  {% user_auth_assets %}
+  {% webpack_asset 'kalanfa.plugins.user_auth.app' %}
+{% endblock %}

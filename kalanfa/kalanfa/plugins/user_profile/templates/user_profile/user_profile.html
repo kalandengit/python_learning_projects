@@ -1,0 +1,5 @@
+{% extends "kalanfa/base.html" %}
+{% load webpack_tags %}
+{% block content %}
+  {% webpack_asset 'kalanfa.plugins.user_profile.app' %}
+{% endblock %}

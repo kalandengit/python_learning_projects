@@ -1,0 +1,13 @@
+{
+  "name": "kalanfa-plugin-data",
+  "version": "1.0.1",
+  "description": "The Kalanfa plugin data module",
+  "main": "src/index.js",
+  "author": "Learning Equality",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/learningequality/kalanfa.git",
+    "directory": "packages/kalanfa-plugin-data"
+  },
+  "license": "MIT"
+}

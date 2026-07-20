@@ -1,0 +1,18 @@
+DEFAULT_PLUGINS = [
+    "kalanfa.plugins.coach",
+    "kalanfa.plugins.default_theme",
+    "kalanfa.plugins.device",
+    "kalanfa.plugins.epub_viewer",
+    "kalanfa.plugins.html5_viewer",
+    "kalanfa.plugins.facility",
+    "kalanfa.plugins.learn",
+    "kalanfa.plugins.media_player",
+    "kalanfa.plugins.pdf_viewer",
+    "kalanfa.plugins.perseus_viewer",
+    "kalanfa.plugins.qti_viewer",
+    "kalanfa.plugins.setup_wizard",
+    "kalanfa.plugins.slideshow_viewer",
+    "kalanfa.plugins.user_auth",
+    "kalanfa.plugins.user_profile",
+    "kalanfa.plugins.bloompub_viewer",
+]
