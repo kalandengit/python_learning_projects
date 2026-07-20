@@ -1,0 +1,133 @@
+{
+  "metadata": {
+    "name": "Kalanfa",
+    "codename": "PROJET_SCHOOL_MOUMA_BKO_2026",
+    "description": "Multi-tenant offline-first school-management + digital-learning SaaS for francophone West Africa; independent MIT fork of Kolibri (Learning Equality).",
+    "pilot": "École MOUMA, Bamako, Mali (Montessori/maternelle + Collège), 2026",
+    "locale": {"language": "fr", "currency": "XOF", "timezone": "Africa/Bamako"},
+    "repo_branch": "claude/school-management-clone-uicab0",
+    "exported_at_commit": "2a2ab1d",
+    "upstream": {"name": "Kolibri", "org": "Learning Equality", "license": "MIT", "gap_analysis_target": "Kolibri 0.19.4"},
+    "companion_files": ["PROJECT_BLUEPRINT.md", "PROJECT_REBUILD_PROMPT.md", "DECISION_LOG.md", "DEVELOPMENT_STATE.md", "MASTER_PROMPT.md", "MASTER_PROMPT.json"],
+    "evidence_labels": {"verified": "observed in repo this pass", "reported": "executed earlier in history, not re-run", "inferred": "reasoned from evidence", "recommendation": "proposed, not built"},
+    "llm_summary": "MIT fork of Kolibri (Django 3.2/DRF/morango/Vue2) rebranded kolibri->kalanfa. Tenant = Kolibri Facility. Plugin kalanfa.plugins.ecole holds nested Django app 'gestion' (label ecole_gestion) to avoid the dotted-plugin-app_label migration bug. 9 UUID+facility-FK models. DRF API /ecole/api/ facility-scoped, staff-only writes, custom actions bulletin/impayes/progression. Messaging via self-hosted Mattermost (team per facility) + Slack webhook + WhatsApp Cloud API connectors, env-configured. 29 mocked tests green."
+  },
+  "architecture": {
+    "style": "Modular monolith (Django) + plugin system; server-rendered SPA (Vue 2) from Kolibri; optional external messaging services",
+    "backend": "Django 3.2 + Django REST Framework + morango (offline sync)",
+    "frontend": "Vue 2 monorepo (pnpm/webpack), Kolibri Design System",
+    "database": "SQLite (dev) / PostgreSQL (prod)",
+    "multi_tenancy": "Tenant = Kolibri Facility; every ecole record has FK facility; querysets filtered to request.user.facility; create force-assigns; cross-facility -> 404",
+    "plugin_pattern": "Plugin shell (kalanfa.plugins.ecole) + nested ordinary Django app 'gestion' (label ecole_gestion) registered via plugin settings.py; explicit junction model instead of ManyToManyField",
+    "offline_first": "Kolibri content channels + morango P2P/USB sync; degrade gracefully without Internet"
+  },
+  "technologies": {
+    "languages": ["Python 3.9-3.13", "JavaScript (Vue 2)"],
+    "backend": ["Django==3.2.25", "djangorestframework==3.14.0", "morango==0.8.13", "django-mptt", "requests"],
+    "frontend": ["vue@2.7", "webpack", "pnpm", "kolibri-design-system@5.7.0 (npm-aliased)"],
+    "build": ["setuptools + setuptools-scm", "pnpm monorepo", "kalanfa-build (webpack wrapper)"],
+    "messaging": ["Mattermost Team Edition (MIT)", "Slack incoming webhook", "WhatsApp Business Cloud API (Meta Graph v20)"],
+    "testing": ["pytest", "pytest-django", "unittest.mock"]
+  },
+  "modules": [
+    {"id": "core", "name": "kalanfa.core (inherited Kolibri)", "responsibility": "SIS, content, lessons, exams, attendance, auth/RBAC, device/facility, sync"},
+    {"id": "ecole", "name": "kalanfa.plugins.ecole", "responsibility": "Plugin shell: URL mount /ecole/api/, settings registering the gestion app"},
+    {"id": "gestion", "name": "ecole_gestion", "responsibility": "School-management data: models, serializers, viewsets, messaging, connectors, commands, tests"},
+    {"id": "messagerie", "name": "Messaging & connectors", "responsibility": "Mattermost integration + Slack + WhatsApp"}
+  ],
+  "entities": [
+    {"name": "DossierEleve", "key": "UUID", "scope": "facility", "notes": "Fiche de renseignement: 1-1 FacilityUser; état civil, santé, scolarité antérieure, bourse/réduction"},
+    {"name": "Tuteur", "scope": "facility", "notes": "Parent/tuteur; lien (père/mère/tuteur/autre)"},
+    {"name": "DossierTuteur", "notes": "Explicit junction DossierEleve<->Tuteur (unique_together)"},
+    {"name": "Periode", "scope": "facility", "notes": "annee_scolaire + nom (trimestre) + ordre; unique per facility"},
+    {"name": "Note", "scope": "facility", "notes": "valeur /20 (0-20), coefficient, matiere, appreciation; FK eleve, periode"},
+    {"name": "EcheanceFrais", "scope": "facility", "notes": "montant_du FCFA int; computed montant_paye/solde"},
+    {"name": "Paiement", "scope": "facility", "notes": "montant FCFA, mode, reference_recu, encaisse_par"},
+    {"name": "ObservationMontessori", "scope": "facility", "notes": "domaine(5) x niveau(4 acquisition); FK enfant, educateur"},
+    {"name": "FichePoste", "scope": "facility", "notes": "intitule, missions, responsabilites, competences, titulaire"}
+  ],
+  "apis": [
+    {"route": "/ecole/api/dossiers/", "methods": ["GET", "POST", "PUT", "PATCH", "DELETE"], "auth": "member read / staff write", "scope": "facility"},
+    {"route": "/ecole/api/tuteurs/", "methods": ["CRUD"], "auth": "member/staff"},
+    {"route": "/ecole/api/periodes/", "methods": ["CRUD"], "auth": "member/staff"},
+    {"route": "/ecole/api/notes/", "methods": ["CRUD"], "auth": "member/staff"},
+    {"route": "/ecole/api/notes/bulletin/", "methods": ["GET"], "params": ["eleve", "periode"], "returns": "matieres, moyenne_generale (pondérée), rang, effectif"},
+    {"route": "/ecole/api/frais/", "methods": ["CRUD"], "auth": "member/staff"},
+    {"route": "/ecole/api/frais/impayes/", "methods": ["GET"], "returns": "échéances à solde positif"},
+    {"route": "/ecole/api/paiements/", "methods": ["CRUD"]},
+    {"route": "/ecole/api/observations/", "methods": ["CRUD"]},
+    {"route": "/ecole/api/observations/progression/", "methods": ["GET"], "params": ["enfant"], "returns": "synthèse par domaine"},
+    {"route": "/ecole/api/fiches-poste/", "methods": ["CRUD"]},
+    {"route": "/ecole/api/messagerie/annonce/", "methods": ["POST"], "auth": "staff", "effect": "fan-out Mattermost + Slack"},
+    {"route": "/ecole/api/messagerie/whatsapp/", "methods": ["POST"], "auth": "staff", "effect": "WhatsApp text (24h) or template"}
+  ],
+  "workflows": [
+    {"name": "Onboarding école", "steps": ["kalanfa manage createschool", "Facility + preset + admin créés (transaction)", "add_admin"]},
+    {"name": "Bulletin", "steps": ["GET notes/bulletin", "filtrer notes facility+eleve+periode", "moyenne pondérée = Σ(note·coef)/Σcoef", "classer moyennes de tous les élèves", "renvoyer rang+effectif"]},
+    {"name": "Provision messagerie", "steps": ["provisionmessagerie", "ensure_team (1/facility, invite-only)", "ensure_default_channels", "ensure_user pour chaque FacilityUser (idempotent)"]},
+    {"name": "Annonce multi-canal", "steps": ["POST messagerie/annonce", "si Mattermost configuré: annoncer canal annonces", "si Slack configuré: webhook", "réponse canaux+erreurs"]}
+  ],
+  "business_rules": [
+    "IF user.facility != record.facility THEN accès refusé (404/queryset vide)",
+    "IF method not in SAFE_METHODS AND user not admin/coach of facility THEN 403",
+    "IF note.valeur < 0 OR > 20 THEN validation error",
+    "moyenne_generale = Σ(note·coefficient) / Σ(coefficient) sur la période",
+    "rang = position de l'élève dans les moyennes triées desc de l'établissement",
+    "EcheanceFrais.solde = montant_du - Σ paiements ; impayé IF solde > 0",
+    "WhatsApp hors fenêtre 24 h => seul un template pré-approuvé est envoyable",
+    "IF messagerie non configurée THEN 502 avec message propre (pas de secret)"
+  ],
+  "dependencies": [
+    {"name": "Django 3.2", "why": "inherited from Kolibri; ORM, auth, admin, i18n"},
+    {"name": "djangorestframework", "why": "REST API for ecole plugin"},
+    {"name": "morango", "why": "Kolibri offline data sync"},
+    {"name": "requests", "why": "HTTP client for Mattermost/Slack/WhatsApp (already core dep)"},
+    {"name": "Mattermost Team Edition (external)", "why": "self-hosted Slack-like messaging, MIT, low footprint"},
+    {"name": "kolibri-design-system (npm, aliased)", "why": "Vue component library from upstream"}
+  ],
+  "coding_conventions": [
+    "French domain names and docstrings; English for inherited Kolibri code",
+    "ecole models: UUID pk via UUIDPrimaryKeyModel, facility FK + timestamps via EtablissementScopedModel",
+    "DRF viewsets extend EcoleBaseViewSet for automatic facility scoping",
+    "No secrets in repo; all external config via KALANFA_* environment variables",
+    "External API clients are thin wrappers over requests with a MessagerieError/ConnecteurError boundary",
+    "Tests mock external HTTP; APITestCase with databases='__all__'; namespace 'kalanfa:kalanfa.plugins.ecole'",
+    "Usernames: letters/digits/underscores only (Kolibri constraint)"
+  ],
+  "deployment": {
+    "install": "SETUPTOOLS_SCM_PRETEND_VERSION_FOR_KALANFA=0.1.0 pip install -e . --no-deps; deps from pyproject base group",
+    "frontend_build": "pnpm install && pnpm build (venv Python active); npm aliases + browserslist packageExtension",
+    "run": "kalanfa manage migrate && kalanfa start --foreground",
+    "provision": "kalanfa manage provisiondevice --facility 'École MOUMA' --preset formal --language_id fr-fr",
+    "messaging": "deployment/messagerie/docker-compose.yml (Mattermost + PostgreSQL, French default, closed teams)",
+    "modes": ["serveur local école", "cloud central", "hybride sync différée"]
+  },
+  "roadmap": {
+    "P0": "Audit reproductible + gap analysis vs Kolibri 0.19.4",
+    "P1": "Cadrage documentaire (import Drive, transcription Montessori, matrice source->champs->écrans->exports)",
+    "P2": "Socle scolaire (année/classes/matières/inscriptions annuelles, imports, bulletins PDF versionnés, frais+audit)",
+    "P3": "Montessori + portail parents multi-enfants",
+    "P4": "Paiements Orange Money + SMS + déploiement pilote MOUMA"
+  },
+  "known_limitations": [
+    "School modules are API-only; no Vue UI yet",
+    "No PDF generation for bulletins/receipts yet (WeasyPrint planned)",
+    "Parent portal specified (MASTER_PROMPT §7) but not implemented",
+    "ecole models are plain Django (not morango-synced) — offline sync of school data not yet wired",
+    "Mattermost and Kalanfa accounts are separate (no SSO in v1)",
+    "External integrations (Mattermost/Slack/WhatsApp) verified via mocks only, not against live services"
+  ],
+  "technical_debt": [
+    "Upstream telemetry (telemetry.learningequality.org) still active — neutralize in prod",
+    "Fork based on Kolibri develop branch, ahead of 0.19.4 — carries unreleased upstream changes (document in ADR-008)",
+    "Vendored built assets included in fork (large) — revisit for a clean build pipeline",
+    "createschool/provision commands print initial passwords to stdout — operational handling needed",
+    "No CI configured for the fork yet"
+  ],
+  "engineering_decisions": [
+    {"id": "fork-rebrand", "decision": "Fork Kolibri and rename kolibri->kalanfa wholesale", "see": "DECISION_LOG.md"},
+    {"id": "tenant-facility", "decision": "Reuse Kolibri Facility as SaaS tenant", "see": "DECISION_LOG.md"},
+    {"id": "nested-app", "decision": "Data layer in nested ordinary Django app to avoid dotted plugin app_label migration bug", "see": "DECISION_LOG.md"},
+    {"id": "messaging-mattermost", "decision": "Mattermost Team Edition for messaging", "see": "docs/adr/ADR-006-messagerie.md"}
+  ]
+}
