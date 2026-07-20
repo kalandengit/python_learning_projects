@@ -1,0 +1,45 @@
+name: ai-school-assistant CI
+
+on:
+  push:
+    paths: ["ai_school_assistant/**"]
+  pull_request:
+    paths: ["ai_school_assistant/**"]
+
+jobs:
+  backend:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ai_school_assistant/backend
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+      - name: Install
+        run: pip install -e ".[dev]"
+      - name: Lint (ruff)
+        run: ruff check .
+      - name: Types (mypy, strict)
+        run: mypy
+      - name: Tests (pytest)
+        run: pytest -q
+      - name: Dependency audit
+        run: pip install pip-audit && pip-audit --strict || true  # advisory at M0; blocking from M1
+
+  frontend:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ai_school_assistant/frontend
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+      - name: Install
+        run: npm install
+      - name: Typecheck
+        run: npm run typecheck

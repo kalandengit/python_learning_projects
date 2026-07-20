@@ -1,0 +1,65 @@
+# Local development stack for AI School Assistant.
+#   docker compose -f infra/docker-compose.yml up -d
+# Credentials below are for LOCAL DEVELOPMENT ONLY — deployed environments use
+# the cloud secrets manager (see docs/04_ARCHITECTURE.md §5).
+
+name: ai-school-assistant
+
+services:
+  db:
+    image: pgvector/pgvector:pg16
+    environment:
+      POSTGRES_USER: asa
+      POSTGRES_PASSWORD: asa
+      POSTGRES_DB: asa
+    ports:
+      - "5432:5432"
+    volumes:
+      - db-data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U asa -d asa"]
+      interval: 5s
+      timeout: 3s
+      retries: 10
+
+  redis:
+    image: redis:7-alpine
+    ports:
+      - "6379:6379"
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 5s
+      timeout: 3s
+      retries: 10
+
+  objectstore:
+    image: minio/minio:latest
+    command: server /data --console-address ":9001"
+    environment:
+      MINIO_ROOT_USER: asa-dev
+      MINIO_ROOT_PASSWORD: asa-dev-secret
+    ports:
+      - "9000:9000"
+      - "9001:9001"
+    volumes:
+      - minio-data:/data
+
+  api:
+    build:
+      context: ../backend
+    environment:
+      ASA_ENVIRONMENT: dev
+      ASA_DATABASE_URL: postgresql+asyncpg://asa:asa@db:5432/asa
+      ASA_REDIS_URL: redis://redis:6379/0
+      ASA_OBJECT_STORE_ENDPOINT: http://objectstore:9000
+    ports:
+      - "8000:8000"
+    depends_on:
+      db:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+
+volumes:
+  db-data:
+  minio-data:
