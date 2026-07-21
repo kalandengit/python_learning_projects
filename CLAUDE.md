@@ -37,3 +37,43 @@ planning phase whenever requirements change.
 Invoke it explicitly with `/planning-first` when you want to force this lens.
 <!-- END planning-first (managed) -->
 
+<!-- BEGIN reverse-engineering (managed) -->
+## Skill: reverse-engineering
+
+This repository ships the **reverse-engineering** Claude Code skill at
+`.claude/skills/reverse-engineering/`. Claude Code discovers it automatically in
+any session opened on this repo (including Claude Code on the web, where personal
+`~/.claude` skills are not available).
+
+When working in this project, apply that skill for reverse-engineering and
+binary-analysis tasks: static and dynamic analysis, disassembly, decompilation,
+malware triage, firmware, protocol reversing, and mobile RE. Keep the work
+**lawful and authorized** — malware analysis, security research, CTF, vulnerability
+research, interoperability, debugging, and forensics — and confirm authorization
+when intent is unclear. Handle untrusted artifacts safely (isolation, hashing,
+network sinkholing, defanged indicators), follow a reproducible methodology, and
+separate observed facts from inference.
+
+Invoke it explicitly with `/reverse-engineering` when you want to force this lens.
+<!-- END reverse-engineering (managed) -->
+
+<!-- BEGIN master-it-specialist-for-all-llm (managed) -->
+## Skill: master-it-specialist-for-all-llm
+
+This repository ships the **Master_IT_Specialist_SKILL_For_All_LLM** skill at
+`skills/Master_IT_Specialist_SKILL_For_All_LLM/` (Claude Code discovers it via
+`.claude/skills/master-it-specialist-for-all-llm/`). It **merges the three skills
+above** into one lens: plan-first workflow + senior multidisciplinary IT expert +
+lawful reverse-engineering specialist.
+
+It is **model-agnostic**: the same instructions ship as a portable system prompt
+(`PROMPT.md`), with extract-ready `prompt.txt` and `ollama/Modelfile`, so behavior
+is identical in Claude Code, ChatGPT, Gemini, Mistral, or a local model.
+Regenerate the extract-ready files with `scripts/build-portable-prompts.sh`.
+
+When working in this project, apply that skill for broad tasks that benefit from
+all three lenses at once: plan before building, act as a production-ready,
+secure-by-default IT expert, and keep any reverse-engineering work lawful and
+authorized. Invoke it explicitly with `/master-it-specialist-for-all-llm`.
+<!-- END master-it-specialist-for-all-llm (managed) -->
+

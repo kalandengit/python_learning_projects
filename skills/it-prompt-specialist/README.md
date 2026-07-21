@@ -21,7 +21,17 @@ implements solutions across virtually every area of IT, with dedicated modes for
 - **Security** — secure-by-default (OWASP Top 10, Zero Trust, least privilege, secrets)
 - **AI/ML, DevOps, Cloud, Data, UX/UI, Networking, Embedded, Game Dev, PM**
 
-## Installation
+## Use with any LLM (portable prompt)
+
+This skill also ships a **model-agnostic** version: [`PROMPT.md`](./PROMPT.md), with
+extract-ready [`prompt.txt`](./prompt.txt) (markers stripped) and an
+[`ollama/Modelfile`](./ollama/Modelfile) for local models. Drop it into ChatGPT
+(Custom GPT / custom instructions), Google Gemini (Gems), Claude (Projects),
+Mistral, or pass it as the `system` field of any raw API call. The extract-ready
+files are generated from `PROMPT.md` by `scripts/build-portable-prompts.sh`, so
+they never drift.
+
+## Installation (Claude Code)
 
 ### Personal skill (available in all your projects)
 
