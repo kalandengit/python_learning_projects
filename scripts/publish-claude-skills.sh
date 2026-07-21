@@ -47,7 +47,7 @@ git checkout -q -b main
 git add -A
 git -c user.name="${GIT_AUTHOR_NAME:-$(git config user.name || echo kalandengit)}" \
     -c user.email="${GIT_AUTHOR_EMAIL:-$(git config user.email || echo kalan.kalandeh@gmail.com)}" \
-    commit -q -m "Publish claude-skills marketplace (planning-first, it-prompt-specialist)"
+    commit -q -m "Publish claude-skills marketplace (planning-first, it-prompt-specialist, reverse-engineering)"
 git remote add origin "$REMOTE"
 echo ">> Pushing bundle to $REMOTE (branch main)..."
 git push -u --force origin main

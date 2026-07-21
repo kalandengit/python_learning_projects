@@ -37,3 +37,23 @@ planning phase whenever requirements change.
 Invoke it explicitly with `/planning-first` when you want to force this lens.
 <!-- END planning-first (managed) -->
 
+<!-- BEGIN reverse-engineering (managed) -->
+## Skill: reverse-engineering
+
+This repository ships the **reverse-engineering** Claude Code skill at
+`.claude/skills/reverse-engineering/`. Claude Code discovers it automatically in
+any session opened on this repo (including Claude Code on the web, where personal
+`~/.claude` skills are not available).
+
+When working in this project, apply that skill for reverse-engineering and
+binary-analysis tasks: static and dynamic analysis, disassembly, decompilation,
+malware triage, firmware, protocol reversing, and mobile RE. Keep the work
+**lawful and authorized** — malware analysis, security research, CTF, vulnerability
+research, interoperability, debugging, and forensics — and confirm authorization
+when intent is unclear. Handle untrusted artifacts safely (isolation, hashing,
+network sinkholing, defanged indicators), follow a reproducible methodology, and
+separate observed facts from inference.
+
+Invoke it explicitly with `/reverse-engineering` when you want to force this lens.
+<!-- END reverse-engineering (managed) -->
+

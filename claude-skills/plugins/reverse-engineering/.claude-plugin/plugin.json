@@ -1,0 +1,13 @@
+{
+  "$schema": "https://json.schemastore.org/claude-code-plugin-manifest.json",
+  "name": "reverse-engineering",
+  "displayName": "Reverse Engineering Specialist",
+  "version": "1.0.0",
+  "description": "Transforms Claude into a senior reverse-engineering and binary-analysis expert across static and dynamic analysis, disassembly, decompilation, malware triage, firmware, protocol reversing, and mobile RE. Scoped to lawful, authorized work.",
+  "author": {
+    "name": "kalandengit"
+  },
+  "repository": "https://github.com/kalandengit/claude-skills",
+  "license": "MIT",
+  "keywords": ["reverse-engineering", "malware-analysis", "binary-analysis", "security", "disassembly", "ctf"]
+}
