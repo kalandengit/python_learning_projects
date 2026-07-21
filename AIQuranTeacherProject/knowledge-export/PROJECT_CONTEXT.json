@@ -1,0 +1,139 @@
+{
+  "metadata": {
+    "name": "AI Quran Teacher",
+    "summary": "AI-assisted Quran learning platform: Mistral-AI tajweed feedback and quizzes, gamification, WebRTC live classes, Stripe subscriptions with an admin premium whitelist. Runnable core is a NestJS API + Socket.IO signaling server; iOS/Android clients are scaffolds.",
+    "repo": "kalandengit/python_learning_projects",
+    "project_path": "AIQuranTeacherProject/",
+    "branch": "claude/mistral-ai-quran-teacher-i36jim",
+    "status": "backend + signaling production-grade and tested; mobile scaffolded",
+    "tests": { "unit": 39, "e2e": 17, "signaling": 3 }
+  },
+  "architecture": {
+    "style": "modular monolith API + separate signaling service + native mobile clients",
+    "edge": "Caddy reverse proxy with automatic HTTPS",
+    "media": "WebRTC peer-to-peer; signaling only brokers SDP/ICE",
+    "auth": "stateless JWT (HS256 pinned, issuer/audience) + Passport",
+    "persistence": "TypeORM; SQLite in dev/test, PostgreSQL in prod",
+    "patterns": ["Modular (NestJS modules)", "Dependency Injection", "Repository (TypeORM)", "Adapter/Facade (MistralService, StripeService)", "Guard/Interceptor/Filter (cross-cutting)", "MVVM (mobile clients)"]
+  },
+  "technologies": {
+    "backend": ["NestJS 11", "TypeScript (strict)", "TypeORM 0.3", "Passport-JWT", "class-validator", "Helmet", "@nestjs/throttler", "@nestjs/swagger", "Stripe SDK 18", "bcryptjs"],
+    "ai": ["Mistral AI chat-completions (mistral-large-latest, response_format json_object)"],
+    "signaling": ["Node.js", "Socket.IO 4", "jsonwebtoken", "pino", "Express"],
+    "mobile": ["Swift/SwiftUI/Combine/AVFoundation/Speech", "Kotlin/Jetpack Compose/Retrofit/Room/Coroutines"],
+    "infra": ["Docker (multi-stage, non-root)", "Docker Compose", "Caddy 2", "PostgreSQL 16", "GitHub Actions", "Dependabot"],
+    "testing": ["Jest", "Supertest", "node:test"]
+  },
+  "modules": [
+    { "name": "config", "purpose": "typed config + fail-fast env validation (JWT secret length, HS256 pin, issuer/audience)" },
+    { "name": "database", "purpose": "TypeORM root config; sqlite (better-sqlite3) or postgres; entity registry" },
+    { "name": "common/mistral", "purpose": "MistralService: fetch-based chat client, timeout, JSON parse, mockable" },
+    { "name": "common/stripe", "purpose": "StripeService: SDK wrapper, webhook signature verification" },
+    { "name": "common/guards", "purpose": "JwtAuthGuard (global, @Public opt-out), RolesGuard (admin, role read from DB)" },
+    { "name": "users", "purpose": "register/login/me; bcrypt(12); JWT issue; User entity + JwtStrategy" },
+    { "name": "quran", "purpose": "Surah/Ayah entities; offline seed; public read endpoints" },
+    { "name": "tajweed", "purpose": "AI recitation analysis vs reference ayah; sanitised/clamped; history" },
+    { "name": "quiz", "purpose": "AI quiz generation (answers hidden), server-side grading, awards points" },
+    { "name": "gamification", "purpose": "points, UTC-day streaks, badges, leaderboard (lazy profile)" },
+    { "name": "billing", "purpose": "Stripe checkout/portal/webhook; entitlement; admin premium whitelist" },
+    { "name": "health", "purpose": "liveness probe" }
+  ],
+  "entities": [
+    { "name": "User", "key": "id(uuid)", "fields": ["email(unique)", "passwordHash(select:false)", "displayName", "role", "timestamps"] },
+    { "name": "Surah", "key": "id(int 1-114)", "fields": ["nameArabic", "nameTransliteration", "nameTranslation", "revelationPlace", "ayahCount"] },
+    { "name": "Ayah", "key": "id(uuid)", "fields": ["surahId", "numberInSurah", "textArabic", "textTransliteration", "translation"], "constraints": ["unique(surahId,numberInSurah)"] },
+    { "name": "TajweedAnalysis", "key": "id(uuid)", "fields": ["userId", "surahId", "ayahNumber", "referenceText", "transcript", "score", "mistakes(json)", "feedback", "createdAt"] },
+    { "name": "Quiz", "key": "id(uuid)", "fields": ["userId", "topic", "difficulty", "questions(json incl correctIndex)"] },
+    { "name": "QuizAttempt", "key": "id(uuid)", "fields": ["quizId", "userId", "answers", "correctCount", "totalCount"] },
+    { "name": "GamificationProfile", "key": "userId(uuid)", "fields": ["points", "currentStreak", "longestStreak", "lastActivityDate", "badges(json)"] },
+    { "name": "BillingCustomer", "key": "userId(uuid)", "fields": ["stripeCustomerId(unique)", "subscriptionId", "plan", "status", "currentPeriodEnd", "cancelAtPeriodEnd"] },
+    { "name": "PremiumGrant", "key": "userId(uuid)", "fields": ["reason", "grantedBy", "expiresAt(unix,nullable)"] }
+  ],
+  "apis": [
+    { "method": "POST", "route": "/api/auth/register", "auth": "public" },
+    { "method": "POST", "route": "/api/auth/login", "auth": "public" },
+    { "method": "GET", "route": "/api/auth/me", "auth": "jwt" },
+    { "method": "GET", "route": "/api/quran/surahs", "auth": "public" },
+    { "method": "GET", "route": "/api/quran/surahs/:id", "auth": "public" },
+    { "method": "GET", "route": "/api/quran/surahs/:surahId/ayahs/:ayah", "auth": "public" },
+    { "method": "POST", "route": "/api/tajweed/analyze", "auth": "jwt" },
+    { "method": "GET", "route": "/api/tajweed/history", "auth": "jwt" },
+    { "method": "POST", "route": "/api/quiz/generate", "auth": "jwt" },
+    { "method": "GET", "route": "/api/quiz/:id", "auth": "jwt" },
+    { "method": "POST", "route": "/api/quiz/:id/submit", "auth": "jwt" },
+    { "method": "GET", "route": "/api/gamification/me|badges|leaderboard", "auth": "jwt" },
+    { "method": "GET", "route": "/api/billing/config|me", "auth": "jwt" },
+    { "method": "POST", "route": "/api/billing/checkout|portal", "auth": "jwt" },
+    { "method": "POST", "route": "/api/billing/webhook", "auth": "stripe-signature" },
+    { "method": "GET|POST|DELETE", "route": "/api/billing/whitelist[/:userId]", "auth": "admin" },
+    { "method": "GET", "route": "/api/health", "auth": "public" }
+  ],
+  "workflows": [
+    { "name": "tajweed", "steps": ["client on-device STT", "POST transcript", "get reference ayah", "Mistral compares", "sanitise+clamp+persist", "return scored mistakes"] },
+    { "name": "quiz", "steps": ["POST generate", "Mistral returns JSON", "sanitise, hide answers, persist", "client answers", "POST submit", "grade server-side", "award points/badges"] },
+    { "name": "subscription", "steps": ["POST checkout -> Stripe URL", "user pays on Stripe", "webhook (signed) updates local state", "entitlement reflects active sub"] },
+    { "name": "whitelist", "steps": ["admin POST grant (durationDays?)", "PremiumGrant upserted", "entitlement=premium via whitelist until expiry/revoke"] }
+  ],
+  "business_rules": [
+    "points = correct*10 + (perfect ? 20 : 0)",
+    "streak: same UTC day unchanged; yesterday +1; older gap resets to 1",
+    "isPremium = active/trialing subscription (not lapsed) OR non-expired whitelist grant",
+    "quiz answers length must equal questions length else 400",
+    "webhook invalid/missing signature -> 400; unknown event -> 200 ignored; idempotent",
+    "other user's resource -> 404 (no existence probing)",
+    "AI/model output validated and clamped before persistence"
+  ],
+  "dependencies": [
+    { "name": "@nestjs/*", "why": "framework, DI, config, jwt, passport, throttler, swagger, typeorm" },
+    { "name": "typeorm + better-sqlite3 + pg", "why": "ORM; embedded dev DB; postgres prod driver" },
+    { "name": "stripe", "why": "subscriptions/checkout/portal/webhooks" },
+    { "name": "socket.io + jsonwebtoken + pino", "why": "signaling transport, JWT verify, structured logs" },
+    { "name": "helmet + class-validator + bcryptjs", "why": "headers, DTO validation, password hashing" }
+  ],
+  "coding_conventions": [
+    "NestJS module-per-feature; DTOs with class-validator; services hold logic, controllers thin",
+    "External integrations behind an injectable service (mockable) — no direct SDK calls in features",
+    "Secure by default: global JwtAuthGuard; opt out with @Public()",
+    "Never trust external/model input: sanitise + clamp + length-limit before persistence",
+    "Prettier (single quotes, trailing commas) + ESLint (max-warnings 0)",
+    "Errors via Nest HttpExceptions; AllExceptionsFilter normalises envelope; internals -> generic 500",
+    "unix-seconds integers for cross-DB time fields (bigint) instead of DB-specific datetime"
+  ],
+  "deployment": {
+    "target": "single Linode VPS (Ubuntu 24.04)",
+    "stack": "docker compose: db(postgres16) + backend + signaling + caddy",
+    "tls": "Caddy automatic HTTPS when SITE_ADDRESS is a domain; :80 for IP test",
+    "exposure": "only Caddy publishes 80/443; app+db internal-only (expose, not ports)",
+    "provisioning": "deploy/setup.sh installs Docker + UFW (default-deny, allow 22/80/443, rate-limit SSH)",
+    "firewall_note": "Docker bypasses UFW for published ports; also allow 80/443 in Linode Cloud Firewall",
+    "ci": ["backend-ci", "signaling-ci", "ios-ci", "smoke-e2e", "dependabot"],
+    "ci_hardening": "permissions: contents: read on all workflows"
+  },
+  "roadmap": {
+    "short": ["real STT + local tajweed heuristics in mobile", "wire mobile screens to API", "TypeORM migrations (replace synchronize)"],
+    "mid": ["full Quran corpus import", "live class UI + TURN infra", "refresh-token rotation + revocation", "Redis cache + Socket.IO Redis adapter"],
+    "long": ["multi-instance scaling", "observability (metrics/tracing/alerts)", "secrets manager", "postgres backups"]
+  },
+  "known_limitations": [
+    "DB_SYNCHRONIZE=true (no migrations yet) — fine for test, not prod",
+    "Quran seed is only Al-Fatihah + Al-Ikhlas",
+    "Mobile apps are scaffolds (no compilable Xcode/Gradle project committed)",
+    "Signaling room state in-process (single instance) until Redis adapter added",
+    "JWT not revocable (stateless) — no refresh/blacklist yet"
+  ],
+  "technical_debt": [
+    "Add migrations; add Postgres backups; add observability",
+    "Mobile API clients illustrative — align fully to documented routes",
+    "Consider restricted Stripe keys + secrets manager for prod",
+    "Registration race on duplicate email could surface as 500 under concurrency (currently checked-then-insert)"
+  ],
+  "engineering_decisions": [
+    "Modular NestJS monolith for the API; separate signaling service (different runtime concerns)",
+    "External services (Mistral, Stripe) behind mockable wrappers for testability + single key location",
+    "SQLite dev / Postgres prod via one TypeORM config for zero-dependency local runs",
+    "Pin JWT HS256 + issuer/audience to defeat algorithm-confusion",
+    "Stripe Checkout (hosted) to stay PCI SAQ-A; webhook is the trusted source of truth",
+    "Entitlement unifies paid subscription and admin whitelist",
+    "Caddy for automatic HTTPS on a single VPS; only edge publishes ports"
+  ]
+}
