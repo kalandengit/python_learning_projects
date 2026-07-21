@@ -1,0 +1,13 @@
+{
+  "$schema": "https://json.schemastore.org/claude-code-plugin-manifest.json",
+  "name": "master-it-specialist-for-all-llm",
+  "displayName": "Master IT Specialist (For All LLM)",
+  "version": "1.0.0",
+  "description": "One skill merging three lenses — plan-first workflow, senior multidisciplinary IT expert, and lawful reverse-engineering/binary-analysis specialist. Ships a model-agnostic prompt so behavior is identical across any LLM.",
+  "author": {
+    "name": "kalandengit"
+  },
+  "repository": "https://github.com/kalandengit/Master_IT_Specialist_SKILL_For_All_LLM",
+  "license": "MIT",
+  "keywords": ["it", "architecture", "security", "reverse-engineering", "planning", "portable", "all-llm"]
+}

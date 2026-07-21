@@ -23,6 +23,11 @@
       "name": "reverse-engineering",
       "source": "./plugins/reverse-engineering",
       "description": "Senior reverse-engineering and binary-analysis expert: static/dynamic analysis, disassembly, malware triage, firmware, protocol reversing, and mobile RE. Lawful, authorized use only."
+    },
+    {
+      "name": "master-it-specialist-for-all-llm",
+      "source": "./plugins/master-it-specialist-for-all-llm",
+      "description": "Merges plan-first, it-prompt-specialist, and reverse-engineering into one master IT specialist. Ships a model-agnostic prompt (PROMPT.md/prompt.txt/Modelfile) for use in any LLM."
     }
   ]
 }

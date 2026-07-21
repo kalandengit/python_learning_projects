@@ -34,14 +34,15 @@ binary artifacts, with dedicated modes for:
 
 ## Use with any LLM (portable prompt)
 
-This skill also ships a **model-agnostic** version: [`PROMPT.md`](./PROMPT.md).
-It's a plain system prompt with no Claude Code-specific mechanics, so you can drop
-it into ChatGPT (Custom GPT / custom instructions), Google Gemini (Gems), Claude
-(Projects), Mistral, or local models (Ollama `Modelfile`, LM Studio, llama.cpp) —
-or pass it as the `system` field of any raw API call. `PROMPT.md` includes
-per-platform recipes and minimal OpenAI/Anthropic API snippets. For the cleanest
-result, copy only the text between its `BEGIN PORTABLE PROMPT` / `END PORTABLE
-PROMPT` markers.
+This skill also ships a **model-agnostic** version: [`PROMPT.md`](./PROMPT.md), with
+extract-ready [`prompt.txt`](./prompt.txt) (markers stripped) and an
+[`ollama/Modelfile`](./ollama/Modelfile) for local models. It's a plain system
+prompt with no Claude Code-specific mechanics, so you can drop it into ChatGPT
+(Custom GPT / custom instructions), Google Gemini (Gems), Claude (Projects),
+Mistral, or local models (Ollama, LM Studio, llama.cpp) — or pass it as the
+`system` field of any raw API call. `PROMPT.md` includes per-platform recipes and
+minimal OpenAI/Anthropic API snippets. The extract-ready files are generated from
+`PROMPT.md` by `scripts/build-portable-prompts.sh`, so they never drift.
 
 ## Installation (Claude Code)
 
