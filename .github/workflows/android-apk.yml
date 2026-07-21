@@ -1,0 +1,66 @@
+name: nko-android-apk
+
+on:
+  workflow_dispatch:
+  push:
+    paths:
+      - "nko-voice-transcriptor/android/**"
+      - ".github/workflows/android-apk.yml"
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: nko-voice-transcriptor/android
+    steps:
+      - uses: actions/checkout@v5
+
+      - name: Set up JDK 21
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: "21"
+
+      - name: Set up Android SDK
+        uses: android-actions/setup-android@v3
+
+      - name: Generate Gradle wrapper
+        run: gradle wrapper --gradle-version 8.7 --distribution-type bin --no-daemon
+
+      - name: Build debug APK
+        run: ./gradlew assembleDebug --no-daemon --stacktrace
+
+      - name: Stage APK with version name
+        run: |
+          VER=$(grep versionName app/build.gradle | head -1 | sed -E "s/.*'([^']+)'.*/\1/")
+          cp app/build/outputs/apk/debug/app-debug.apk \
+             "nko-voice-transcriptor-${VER}-debug.apk"
+          echo "APK_NAME=nko-voice-transcriptor-${VER}-debug.apk" >> "$GITHUB_ENV"
+          echo "APK_VERSION=${VER}" >> "$GITHUB_ENV"
+
+      - name: Upload APK artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: nko-voice-transcriptor-apk
+          path: nko-voice-transcriptor/android/${{ env.APK_NAME }}
+          if-no-files-found: error
+
+      - name: Publish downloadable prerelease
+        if: github.ref_name == 'claude/nko-voice-transcriptor-b3u9zg'
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: apk-v${{ env.APK_VERSION }}
+          name: N'Ko Voice Transcriptor — test APK v${{ env.APK_VERSION }}
+          prerelease: true
+          body: |
+            Debug (test) APK of the N'Ko Voice Transcriptor Android client,
+            version ${{ env.APK_VERSION }}.
+
+            This is a WebView client — install it, open it, and enter the URL of a
+            running N'Ko Voice Transcriptor server (e.g. your machine's LAN IP on
+            port 8000). Sideloading requires "Install unknown apps" enabled.
+          files: nko-voice-transcriptor/android/${{ env.APK_NAME }}
