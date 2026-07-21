@@ -32,7 +32,18 @@ binary artifacts, with dedicated modes for:
 - **Mobile RE** — Android (apktool, jadx, smali) and iOS (Mach-O, Frida/objection)
 - **Safe handling** — isolation, hashing, network sinkholing, defanged indicators
 
-## Installation
+## Use with any LLM (portable prompt)
+
+This skill also ships a **model-agnostic** version: [`PROMPT.md`](./PROMPT.md).
+It's a plain system prompt with no Claude Code-specific mechanics, so you can drop
+it into ChatGPT (Custom GPT / custom instructions), Google Gemini (Gems), Claude
+(Projects), Mistral, or local models (Ollama `Modelfile`, LM Studio, llama.cpp) —
+or pass it as the `system` field of any raw API call. `PROMPT.md` includes
+per-platform recipes and minimal OpenAI/Anthropic API snippets. For the cleanest
+result, copy only the text between its `BEGIN PORTABLE PROMPT` / `END PORTABLE
+PROMPT` markers.
+
+## Installation (Claude Code)
 
 ### Personal skill (available in all your projects)
 
