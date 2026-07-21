@@ -130,6 +130,42 @@ ENV/
 env.bak/
 venv.bak/
 
+# ---------------------------------------------------------------------------
+# Node / TypeScript (AIQuranTeacherProject backend & signaling-server)
+# ---------------------------------------------------------------------------
+node_modules/
+dist/
+coverage/
+*.tsbuildinfo
+npm-debug.log*
+yarn-error.log*
+.pnpm-debug.log*
+
+# Local databases (SQLite dev store)
+*.sqlite
+*.sqlite-journal
+*.sqlite3
+
+# Env files (all variants) — never commit real secrets
+.env.*
+!.env.example
+
+# ---------------------------------------------------------------------------
+# Mobile
+# ---------------------------------------------------------------------------
+# Android
+android/.gradle/
+android/build/
+android/app/build/
+android/local.properties
+*.apk
+*.aab
+# iOS / Xcode
+ios/**/xcuserdata/
+ios/**/*.xcworkspace/xcuserdata/
+ios/Pods/
+.DS_Store
+
 # Spyder project settings
 .spyderproject
 .spyproject

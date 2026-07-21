@@ -1,0 +1,8 @@
+node_modules
+dist
+coverage
+.env
+*.sqlite
+npm-debug.log
+.git
+test

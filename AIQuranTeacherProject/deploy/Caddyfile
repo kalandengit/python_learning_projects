@@ -1,0 +1,31 @@
+# Reverse proxy for the AI Quran Teacher stack.
+#
+# SITE_ADDRESS controls TLS:
+#   ":80"            -> plain HTTP on the VPS IP (quick test, no certificate)
+#   "api.example.com" -> automatic HTTPS via Let's Encrypt (needs DNS + ACME_EMAIL)
+{
+	email {$ACME_EMAIL}
+}
+
+{$SITE_ADDRESS} {
+	# WebSocket signaling (Socket.IO uses the /socket.io/ path).
+	handle /socket.io/* {
+		reverse_proxy signaling:3001
+	}
+
+	# REST API (NestJS is served under the /api prefix).
+	handle /api/* {
+		reverse_proxy backend:3000
+	}
+
+	# Friendly landing response at the root.
+	handle {
+		respond "AI Quran Teacher API — try /api/health" 200
+	}
+
+	encode gzip
+	log {
+		output stdout
+		format console
+	}
+}

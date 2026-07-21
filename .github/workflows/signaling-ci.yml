@@ -1,0 +1,33 @@
+name: Signaling Server CI
+
+on:
+  push:
+    branches: [main]
+    paths: ['AIQuranTeacherProject/signaling-server/**', '.github/workflows/signaling-ci.yml']
+  pull_request:
+    paths: ['AIQuranTeacherProject/signaling-server/**', '.github/workflows/signaling-ci.yml']
+
+permissions:
+  contents: read
+
+defaults:
+  run:
+    working-directory: AIQuranTeacherProject/signaling-server
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: npm
+          cache-dependency-path: AIQuranTeacherProject/signaling-server/package-lock.json
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Run tests
+        run: npm test

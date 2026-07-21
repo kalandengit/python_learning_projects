@@ -1,0 +1,89 @@
+# AI Quran Teacher — test deployment stack for a single Linode VPS.
+#
+#   cp deploy/.env.example .env   # then edit secrets
+#   docker compose up -d --build
+#
+# Caddy terminates TLS (automatic Let's Encrypt when SITE_ADDRESS is a domain)
+# and reverse-proxies /api -> backend and /socket.io -> signaling. Only Caddy
+# publishes ports; the app containers are reachable only on the internal network.
+services:
+  db:
+    image: postgres:16-alpine
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER:-aiquran}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:?set POSTGRES_PASSWORD in .env}
+      POSTGRES_DB: ${POSTGRES_DB:-aiquran}
+    volumes:
+      - db-data:/var/lib/postgresql/data
+    healthcheck:
+      test: ['CMD-SHELL', 'pg_isready -U ${POSTGRES_USER:-aiquran}']
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks: [internal]
+
+  backend:
+    build: ./backend
+    restart: unless-stopped
+    depends_on:
+      db:
+        condition: service_healthy
+    environment:
+      NODE_ENV: production
+      PORT: '3000'
+      DB_TYPE: postgres
+      DATABASE_URL: postgres://${POSTGRES_USER:-aiquran}:${POSTGRES_PASSWORD}@db:5432/${POSTGRES_DB:-aiquran}
+      # Test deployment: auto-create schema. Switch to migrations for production.
+      DB_SYNCHRONIZE: 'true'
+      JWT_SECRET: ${JWT_SECRET:?set JWT_SECRET in .env}
+      JWT_ISSUER: ${JWT_ISSUER:-ai-quran-teacher}
+      JWT_AUDIENCE: ${JWT_AUDIENCE:-ai-quran-teacher-clients}
+      CORS_ORIGINS: ${PUBLIC_URL:-http://localhost}
+      MISTRAL_API_KEY: ${MISTRAL_API_KEY:-}
+      STRIPE_SECRET_KEY: ${STRIPE_SECRET_KEY:-}
+      STRIPE_WEBHOOK_SECRET: ${STRIPE_WEBHOOK_SECRET:-}
+      STRIPE_PUBLISHABLE_KEY: ${STRIPE_PUBLISHABLE_KEY:-}
+      STRIPE_PRICE_PREMIUM_MONTHLY: ${STRIPE_PRICE_PREMIUM_MONTHLY:-}
+      STRIPE_PRICE_PREMIUM_YEARLY: ${STRIPE_PRICE_PREMIUM_YEARLY:-}
+    expose: ['3000']
+    networks: [internal]
+
+  signaling:
+    build: ./signaling-server
+    restart: unless-stopped
+    environment:
+      NODE_ENV: production
+      PORT: '3001'
+      # Must match the backend so JWTs issued by the API are accepted.
+      JWT_SECRET: ${JWT_SECRET:?set JWT_SECRET in .env}
+      CORS_ORIGINS: ${PUBLIC_URL:-http://localhost}
+      ALLOW_ANONYMOUS: ${SIGNALING_ALLOW_ANONYMOUS:-false}
+    expose: ['3001']
+    networks: [internal]
+
+  caddy:
+    image: caddy:2-alpine
+    restart: unless-stopped
+    depends_on: [backend, signaling]
+    ports:
+      - '80:80'
+      - '443:443'
+    environment:
+      # A bare ":80" (default) serves plain HTTP on the VPS IP for a quick test.
+      # Set to your domain (e.g. api.example.com) for automatic HTTPS.
+      SITE_ADDRESS: ${SITE_ADDRESS:-:80}
+      ACME_EMAIL: ${ACME_EMAIL:-}
+    volumes:
+      - ./deploy/Caddyfile:/etc/caddy/Caddyfile:ro
+      - caddy-data:/data
+      - caddy-config:/config
+    networks: [internal]
+
+volumes:
+  db-data:
+  caddy-data:
+  caddy-config:
+
+networks:
+  internal:
