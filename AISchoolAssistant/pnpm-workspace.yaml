@@ -2,3 +2,8 @@ packages:
   - 'packages/*'
   - 'services/*'
   - 'apps/*'
+allowBuilds:
+  '@scarf/scarf': false
+  esbuild: true
+onlyBuiltDependencies:
+  - esbuild

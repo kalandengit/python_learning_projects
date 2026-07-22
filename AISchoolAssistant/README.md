@@ -8,12 +8,14 @@ portals, AI tutors & assistants, analytics) built as a Turborepo monorepo.
 > Adoption decisions: [`docs/adr/`](docs/adr/). Delivery plan: [`docs/ROADMAP.md`](docs/ROADMAP.md).
 
 ## Principles
+
 Clean Architecture · DDD · SOLID · CQRS where apt · Event-Driven · API-First ·
 Twelve-Factor · Secure/Privacy/Accessibility by Design. **AI-native:** all AI
 flows through the AI SDK and a registered **Capability** — never a raw provider
 call (ADR-0002).
 
 ## Repository layout
+
 ```
 AISchoolAssistant/
 ├── apps/                # Next.js web, Flutter mobile (later WPs)
@@ -27,6 +29,7 @@ AISchoolAssistant/
 ```
 
 ## Getting started (WP-0)
+
 ```bash
 corepack enable
 pnpm install
@@ -38,8 +41,10 @@ pnpm --filter @asa/service-template start:dev   # http://localhost:3000/api/v1/h
 ```
 
 ## Toolchain
+
 Node 22+/24 LTS · pnpm 11 · Turborepo 2 · TypeScript 5.9 · NestJS 11.
 Pinned versions & upgrade policy: [`docs/STACK_VERSIONS.md`](docs/STACK_VERSIONS.md).
 
 ## Status
+
 **WP-0 (Platform Foundation)** — see [`docs/ROADMAP.md`](docs/ROADMAP.md).

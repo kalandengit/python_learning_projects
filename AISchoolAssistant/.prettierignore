@@ -1,0 +1,10 @@
+node_modules
+dist
+build
+coverage
+.turbo
+pnpm-lock.yaml
+
+# Governance documents are authored verbatim (constitution, charter, ADRs) and
+# must not be reflowed by the formatter.
+docs/
