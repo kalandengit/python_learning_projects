@@ -1,0 +1,92 @@
+name: ASA CI
+
+# Continuous integration for the AI School Assistant monorepo (AISchoolAssistant/).
+# Lint, typecheck, unit + e2e tests, and build must all pass on every PR.
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'AISchoolAssistant/**'
+      - '.github/workflows/asa-ci.yml'
+  pull_request:
+    paths:
+      - 'AISchoolAssistant/**'
+      - '.github/workflows/asa-ci.yml'
+
+# Least privilege: read-only by default.
+permissions:
+  contents: read
+
+concurrency:
+  group: asa-ci-${{ github.ref }}
+  cancel-in-progress: true
+
+defaults:
+  run:
+    working-directory: AISchoolAssistant
+
+jobs:
+  verify:
+    name: Lint, typecheck, test, build
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Enable Corepack
+        run: corepack enable
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: pnpm
+          cache-dependency-path: AISchoolAssistant/pnpm-lock.yaml
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Lint
+        run: pnpm lint
+
+      - name: Format check
+        run: pnpm format:check
+
+      - name: Typecheck
+        run: pnpm turbo run typecheck
+
+      - name: Unit tests
+        run: pnpm turbo run test
+
+      - name: End-to-end tests
+        run: pnpm turbo run test:e2e
+
+      - name: Build
+        run: pnpm turbo run build
+
+  security-scan:
+    name: Dependency audit
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Enable Corepack
+        run: corepack enable
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: pnpm
+          cache-dependency-path: AISchoolAssistant/pnpm-lock.yaml
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Audit (high severity)
+        run: pnpm audit --audit-level high
+        continue-on-error: true
