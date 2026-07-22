@@ -40,6 +40,10 @@ export class ExampleService {
     return createPage(slice, this.items.length, normalized);
   }
 
+  count(): number {
+    return this.items.length;
+  }
+
   getById(id: string): Example {
     const found = this.items.find((item) => item.id === id);
     if (!found) {

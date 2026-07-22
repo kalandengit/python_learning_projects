@@ -5,6 +5,7 @@ import {
   ApiServiceUnavailableResponse,
   ApiTags,
 } from '@nestjs/swagger';
+import { Public } from '@asa/auth';
 import type { HealthReport } from '@asa/contracts';
 import { HealthService } from './health.service';
 
@@ -14,6 +15,7 @@ import { HealthService } from './health.service';
  * balancer while dependencies are unavailable) and returns 503 when not ready.
  */
 @ApiTags('health')
+@Public()
 @Controller('health')
 export class HealthController {
   constructor(private readonly health: HealthService) {}

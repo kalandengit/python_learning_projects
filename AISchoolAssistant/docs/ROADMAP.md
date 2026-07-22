@@ -7,8 +7,8 @@ Registry, Evaluation, Governance) are foundational and land early.
 
 | WP | Title | Scope | Status |
 |----|-------|-------|--------|
-| **WP-0** | **Platform Foundation** | Turborepo + pnpm; shared packages (`@asa/config`, `@asa/logger`, `@asa/errors`, `@asa/contracts`); golden NestJS service template (health/live/ready, OpenAPI, `/metrics`, config, problem+json errors, pagination); local infra `docker-compose`; CI (lint/typecheck/test/build/scan); governance docs + ADRs | **in progress** |
-| **WP-1** | Identity, Multi-tenancy & Access | Keycloak/OIDC gateway; RBAC/ABAC; tenant resolution + isolation; audit logging; MFA hooks | planned |
+| **WP-0** | **Platform Foundation** | Turborepo + pnpm; shared packages (`@asa/config`, `@asa/logger`, `@asa/errors`, `@asa/contracts`); golden NestJS service template (health/live/ready, OpenAPI, `/metrics`, config, problem+json errors, pagination); local infra `docker-compose`; CI (lint/typecheck/test/build/scan); governance docs + ADRs | **done** |
+| **WP-1** | **Identity, Multi-tenancy & Access** | `@asa/auth`: OIDC/OAuth 2.1 JWT verification (Keycloak JWKS, RS256); RBAC guards + `@Roles`/`@Public`; `@CurrentUser`/`@CurrentTenant`; `AsyncLocalStorage` request context (tenant + correlation id); wired into the service template with e2e coverage (ADR-0004) | **done** |
 | **WP-2** | AI SDK + Capability Registry | Provider-agnostic AI SDK (OpenAI/Anthropic/Gemini/Mistral/Ollama/vLLM); Capability Registry (versioned capabilities, schemas); Evaluation + Governance + Observability hooks; MCP tool support | planned |
 | **WP-3** | Agent Registry + Multi-Agent Runtime | Agent catalog, orchestration runtime, MCP-based tools | planned |
 | **WP-4** | Eventing + Knowledge Platform | NATS JetStream + Event Catalog; Knowledge Platform (Qdrant/OpenSearch); Learner Digital Twin foundations | planned |

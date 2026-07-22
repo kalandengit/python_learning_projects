@@ -1,6 +1,7 @@
 import { Controller, Get, Header, Res, VERSION_NEUTRAL } from '@nestjs/common';
 import type { Response } from 'express';
 import { ApiExcludeEndpoint } from '@nestjs/swagger';
+import { Public } from '@asa/auth';
 import { MetricsService } from './metrics.service';
 
 /**
@@ -8,6 +9,7 @@ import { MetricsService } from './metrics.service';
  * excluded from the global API prefix (see `main.ts`) so scrapers hit a stable
  * path independent of API versioning.
  */
+@Public()
 @Controller({ path: 'metrics', version: VERSION_NEUTRAL })
 export class MetricsController {
   constructor(private readonly metrics: MetricsService) {}

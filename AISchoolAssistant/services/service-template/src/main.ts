@@ -36,6 +36,7 @@ export function configureApp(app: INestApplication, config: AppConfig): void {
       .setTitle(config.SERVICE_NAME)
       .setDescription('Golden service template API.')
       .setVersion('1.0')
+      .addBearerAuth()
       .build();
     const document = SwaggerModule.createDocument(app, swaggerConfig);
     SwaggerModule.setup(`${GLOBAL_PREFIX}/docs`, app, document);

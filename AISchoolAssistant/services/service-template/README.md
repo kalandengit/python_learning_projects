@@ -20,19 +20,24 @@ services share the same production-ready cross-cutting behavior.
   OpenAPI docs at `/api/docs` (non-production only).
 - **Pagination** — shared `Page<T>` envelope and safe input normalization from
   `@asa/contracts`, demonstrated by the `examples` resource.
+- **Auth** — OIDC/OAuth 2.1 via `@asa/auth`: deny-by-default authentication,
+  RBAC (`@Roles`), `@Public` opt-outs (health, metrics), `@CurrentUser` /
+  `@CurrentTenant`, and an `AsyncLocalStorage` request context (tenant +
+  correlation id). The `examples` admin route and `/api/v1/me` demonstrate it.
 
 ## Layout
 
 ```
 src/
   common/          global exception filter (problem+json)
-  config/          env schema + config module
-  examples/        sample paginated resource (replace per feature)
-  health/          liveness/readiness probes + indicator registry
-  observability/   Prometheus registry, /metrics, request interceptor
-  app.module.ts    root composition
+  config/          env schema + config module (incl. OIDC settings)
+  examples/        sample paginated resource incl. a role-guarded route
+  health/          liveness/readiness probes + indicator registry (@Public)
+  me/              current-principal endpoint (@CurrentUser/@CurrentTenant)
+  observability/   Prometheus registry, /metrics (@Public), request interceptor
+  app.module.ts    root composition (wires AuthModule.forRootAsync)
   main.ts          bootstrap + configureApp() (shared with e2e)
-test/              e2e specs
+test/              e2e specs + auth test kit (local JWKS token signer)
 ```
 
 ## Development
@@ -47,12 +52,18 @@ pnpm --filter @asa/service-template start       # run compiled dist
 
 ## Configuration
 
-| Variable       | Default            | Description                             |
-| -------------- | ------------------ | --------------------------------------- |
-| `NODE_ENV`     | `development`      | `development` \| `production` \| `test` |
-| `PORT`         | `3000`             | HTTP listen port                        |
-| `LOG_LEVEL`    | `info`             | pino log level                          |
-| `SERVICE_NAME` | `service-template` | Logged + used as the OpenAPI title      |
+| Variable            | Default            | Description                                     |
+| ------------------- | ------------------ | ----------------------------------------------- |
+| `NODE_ENV`          | `development`      | `development` \| `production` \| `test`         |
+| `PORT`              | `3000`             | HTTP listen port                                |
+| `LOG_LEVEL`         | `info`             | pino log level                                  |
+| `SERVICE_NAME`      | `service-template` | Logged + used as the OpenAPI title              |
+| `AUTH_ENABLED`      | `true`             | Auth on by default; set `false` for local dev   |
+| `OIDC_ISSUER`       | —                  | Token issuer (required when auth enabled)       |
+| `OIDC_AUDIENCE`     | —                  | Expected audience (required when auth enabled)  |
+| `OIDC_JWKS_URI`     | —                  | JWKS endpoint (required when auth enabled)      |
+| `OIDC_CLIENT_ID`    | —                  | Client whose `resource_access` roles are merged |
+| `OIDC_TENANT_CLAIM` | `tenant_id`        | Claim carrying the tenant id                    |
 
 ## Extending
 
