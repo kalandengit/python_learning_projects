@@ -1,0 +1,149 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>PIDS · SOC Console</title>
+  <style>
+    :root {
+      --bg: #0b0f17; --panel: #131a26; --panel2: #1a2333; --line: #24314a;
+      --txt: #e6edf7; --muted: #8ea0bd; --accent: #3ea6ff;
+      --low: #3fb950; --medium: #d6a419; --high: #f0883e; --critical: #f85149;
+    }
+    * { box-sizing: border-box; }
+    body { margin: 0; font: 14px/1.5 system-ui, -apple-system, Segoe UI, Roboto, sans-serif;
+           background: var(--bg); color: var(--txt); }
+    header { display: flex; align-items: center; gap: 12px; padding: 12px 20px;
+             border-bottom: 1px solid var(--line); background: var(--panel); }
+    header h1 { font-size: 16px; margin: 0; letter-spacing: .5px; }
+    .dot { width: 10px; height: 10px; border-radius: 50%; background: var(--critical); }
+    .dot.ok { background: var(--low); }
+    main { padding: 20px; max-width: 1100px; margin: 0 auto; }
+    .row { display: flex; gap: 12px; flex-wrap: wrap; }
+    .card { background: var(--panel); border: 1px solid var(--line); border-radius: 10px; padding: 16px; }
+    .stat { flex: 1 1 150px; }
+    .stat .n { font-size: 28px; font-weight: 700; }
+    .stat .l { color: var(--muted); font-size: 12px; text-transform: uppercase; letter-spacing: .5px; }
+    table { width: 100%; border-collapse: collapse; margin-top: 8px; }
+    th, td { text-align: left; padding: 8px 10px; border-bottom: 1px solid var(--line); }
+    th { color: var(--muted); font-weight: 600; font-size: 12px; text-transform: uppercase; }
+    .badge { padding: 2px 8px; border-radius: 999px; font-size: 12px; font-weight: 600; }
+    .b-low { background: rgba(63,185,80,.15); color: var(--low); }
+    .b-medium { background: rgba(214,164,25,.15); color: var(--medium); }
+    .b-high { background: rgba(240,136,62,.15); color: var(--high); }
+    .b-critical { background: rgba(248,81,73,.15); color: var(--critical); }
+    input, button { font: inherit; padding: 8px 10px; border-radius: 8px; border: 1px solid var(--line);
+                    background: var(--panel2); color: var(--txt); }
+    button { background: var(--accent); color: #041020; border: none; font-weight: 600; cursor: pointer; }
+    button.ghost { background: var(--panel2); color: var(--txt); border: 1px solid var(--line); }
+    .muted { color: var(--muted); }
+    h2 { font-size: 14px; text-transform: uppercase; letter-spacing: .5px; color: var(--muted); }
+    #login { max-width: 360px; margin: 60px auto; }
+    #login input { width: 100%; margin: 6px 0; }
+    .hide { display: none; }
+    .bar { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; margin-bottom: 12px; }
+  </style>
+</head>
+<body>
+  <header>
+    <span class="dot" id="conn"></span>
+    <h1>PIDS · Security Operations Console</h1>
+    <span class="muted" id="who"></span>
+    <span style="margin-left:auto"></span>
+    <button class="ghost" id="logout" onclick="logout()" hidden>Sign out</button>
+  </header>
+
+  <main>
+    <!-- Login -->
+    <div id="login" class="card">
+      <h2>Sign in</h2>
+      <input id="email" value="admin@demo.pids" placeholder="email" />
+      <input id="password" type="password" value="changeme123" placeholder="password" />
+      <button style="width:100%;margin-top:8px" onclick="login()">Sign in</button>
+      <p class="muted" style="font-size:12px">Demo seed: admin@demo.pids / changeme123</p>
+    </div>
+
+    <!-- Dashboard -->
+    <div id="dash" class="hide">
+      <div class="bar">
+        <label class="muted">API</label>
+        <input id="api" value="http://localhost:8000" style="width:220px" />
+        <button class="ghost" onclick="refresh()">Refresh</button>
+        <button class="ghost" onclick="simulate()">Simulate detection</button>
+        <span class="muted" id="lastupd"></span>
+      </div>
+
+      <div class="row" id="stats"></div>
+
+      <div class="card" style="margin-top:16px">
+        <h2>Recent alerts</h2>
+        <table>
+          <thead><tr><th>Time</th><th>Type</th><th>Criticality</th><th>Status</th><th></th></tr></thead>
+          <tbody id="alerts"></tbody>
+        </table>
+      </div>
+    </div>
+  </main>
+
+  <script>
+    const S = { token: null, api: 'http://localhost:8000', camera: null };
+    const $ = (id) => document.getElementById(id);
+    const api = () => $('api').value.replace(/\/$/, '');
+
+    async function login() {
+      S.api = api();
+      const body = new URLSearchParams({ username: $('email').value, password: $('password').value });
+      const r = await fetch(S.api + '/api/v1/auth/token', { method: 'POST', body });
+      if (!r.ok) return alert('Login failed');
+      S.token = (await r.json()).access_token;
+      $('login').classList.add('hide'); $('dash').classList.remove('hide');
+      $('logout').hidden = false; $('conn').classList.add('ok');
+      const me = await get('/api/v1/auth/me'); $('who').textContent = me.email + ' · ' + me.role;
+      const cams = await get('/api/v1/cameras'); S.camera = cams[0] && cams[0].id;
+      refresh();
+    }
+    function logout() { S.token = null; location.reload(); }
+
+    function headers() { return { Authorization: 'Bearer ' + S.token }; }
+    async function get(path) { const r = await fetch(S.api + path, { headers: headers() }); return r.json(); }
+
+    async function refresh() {
+      const s = await get('/api/v1/dashboard/stats');
+      $('stats').innerHTML = [
+        ['Cameras', s.cameras_total], ['Online', s.cameras_online], ['Offline', s.cameras_offline],
+        ['Intrusions today', s.intrusions_today], ['Critical', s.critical_alerts], ['Open alerts', s.open_alerts]
+      ].map(([l, n]) => `<div class="card stat"><div class="n">${n}</div><div class="l">${l}</div></div>`).join('');
+
+      const alerts = await get('/api/v1/alerts');
+      $('alerts').innerHTML = alerts.slice(0, 25).map(a => `
+        <tr>
+          <td class="muted">${new Date(a.created_at).toLocaleString()}</td>
+          <td>${a.type}</td>
+          <td><span class="badge b-${a.criticality}">${a.criticality}</span></td>
+          <td>${a.status}</td>
+          <td>${a.status === 'NEW' || a.status === 'IN_PROGRESS'
+            ? `<button class="ghost" onclick="ack('${a.id}')">Acknowledge</button>` : ''}</td>
+        </tr>`).join('') || '<tr><td colspan="5" class="muted">No alerts yet.</td></tr>';
+      $('lastupd').textContent = 'updated ' + new Date().toLocaleTimeString();
+    }
+
+    async function ack(id) {
+      await fetch(S.api + '/api/v1/alerts/' + id, {
+        method: 'PATCH', headers: { ...headers(), 'Content-Type': 'application/json' },
+        body: JSON.stringify({ status: 'ACKNOWLEDGED', reason: 'ack from console' })
+      });
+      refresh();
+    }
+
+    async function simulate() {
+      if (!S.camera) return alert('No camera in seed data');
+      const ts = new Date(); ts.setHours(23);  // night -> high criticality for humans
+      await fetch(S.api + '/api/v1/events', {
+        method: 'POST', headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ camera_id: S.camera, object_class: 'human', confidence: 0.93, ts: ts.toISOString() })
+      });
+      refresh();
+    }
+  </script>
+</body>
+</html>

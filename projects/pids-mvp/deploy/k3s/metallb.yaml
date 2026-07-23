@@ -1,0 +1,31 @@
+# MetalLB — gives k3s LoadBalancer Services a real IP on the site LAN (L2/ARP mode),
+# so cameras have one stable endpoint to POST detections to.
+#
+# Install MetalLB itself first (native manifest, arm64-compatible):
+#   sudo k3s kubectl apply -f https://raw.githubusercontent.com/metallb/metallb/v0.14.8/config/manifests/metallb-native.yaml
+#   sudo k3s kubectl -n metallb-system rollout status deploy/controller
+# Then apply this pool + advertisement:
+#   sudo k3s kubectl apply -f deploy/k3s/metallb.yaml
+#
+# NOTE: k3s ships its own ServiceLB (klipper). Disable it so MetalLB owns LoadBalancer IPs:
+#   install k3s servers with `--disable servicelb` (see the Pi 5 doc), or set it in config.yaml.
+#
+# Adjust the address range to a slice of your LAN that DHCP will NOT hand out.
+---
+apiVersion: metallb.io/v1beta1
+kind: IPAddressPool
+metadata:
+  name: pids-pool
+  namespace: metallb-system
+spec:
+  addresses:
+    - 192.168.1.240-192.168.1.250   # reserve this range on your router/DHCP
+---
+apiVersion: metallb.io/v1beta1
+kind: L2Advertisement
+metadata:
+  name: pids-l2
+  namespace: metallb-system
+spec:
+  ipAddressPools:
+    - pids-pool

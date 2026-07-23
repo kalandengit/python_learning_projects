@@ -1,0 +1,39 @@
+# Local/dev stack for the PIDS MVP.
+# The backend runs with SQLite by default; uncomment the PostgreSQL/Redis wiring
+# below to exercise the production data path. Kafka/MinIO/observability are listed
+# as the growth path (see docs/ARCHITECTURE.md) but omitted here to keep dev light.
+
+services:
+  api:
+    build: ../backend
+    ports:
+      - "8000:8000"
+    environment:
+      PIDS_SECRET_KEY: "change-me-in-prod"
+      PIDS_ENVIRONMENT: "docker"
+      # Switch to PostgreSQL + Redis for the production data path:
+      # PIDS_DATABASE_URL: "postgresql+psycopg://pids:pids@db:5432/pids"
+      # PIDS_REDIS_URL: "redis://redis:6379/0"
+    # depends_on:
+    #   - db
+    #   - redis
+    restart: unless-stopped
+
+  # db:
+  #   image: postgres:16
+  #   environment:
+  #     POSTGRES_USER: pids
+  #     POSTGRES_PASSWORD: pids
+  #     POSTGRES_DB: pids
+  #   volumes:
+  #     - pgdata:/var/lib/postgresql/data
+  #   ports:
+  #     - "5432:5432"
+
+  # redis:
+  #   image: redis:7-alpine
+  #   ports:
+  #     - "6379:6379"
+
+# volumes:
+#   pgdata:

@@ -1,0 +1,104 @@
+{
+  "title": "PIDS — Edge Overview",
+  "uid": "pids-edge",
+  "tags": ["pids", "security", "edge"],
+  "timezone": "browser",
+  "schemaVersion": 39,
+  "version": 1,
+  "refresh": "15s",
+  "time": { "from": "now-6h", "to": "now" },
+  "templating": { "list": [] },
+  "panels": [
+    {
+      "id": 1,
+      "type": "timeseries",
+      "title": "Detections/sec by decision",
+      "gridPos": { "h": 8, "w": 12, "x": 0, "y": 0 },
+      "datasource": { "type": "prometheus", "uid": "${DS_PROMETHEUS}" },
+      "targets": [
+        {
+          "expr": "sum by (decision) (rate(pids_events_total[5m]))",
+          "legendFormat": "{{decision}}"
+        }
+      ],
+      "fieldConfig": { "defaults": { "unit": "ops" } }
+    },
+    {
+      "id": 2,
+      "type": "stat",
+      "title": "Intrusion share (5m)",
+      "gridPos": { "h": 8, "w": 6, "x": 12, "y": 0 },
+      "datasource": { "type": "prometheus", "uid": "${DS_PROMETHEUS}" },
+      "targets": [
+        {
+          "expr": "sum(rate(pids_events_total{decision=\"intrusion\"}[5m])) / clamp_min(sum(rate(pids_events_total[5m])), 0.0001)"
+        }
+      ],
+      "fieldConfig": { "defaults": { "unit": "percentunit", "min": 0, "max": 1 } }
+    },
+    {
+      "id": 3,
+      "type": "stat",
+      "title": "Dedup drops/sec (5m)",
+      "gridPos": { "h": 8, "w": 6, "x": 18, "y": 0 },
+      "datasource": { "type": "prometheus", "uid": "${DS_PROMETHEUS}" },
+      "targets": [{ "expr": "sum(rate(pids_dedup_dropped_total[5m]))" }],
+      "fieldConfig": { "defaults": { "unit": "ops" } }
+    },
+    {
+      "id": 4,
+      "type": "timeseries",
+      "title": "Alerts by criticality (rate)",
+      "gridPos": { "h": 8, "w": 12, "x": 0, "y": 8 },
+      "datasource": { "type": "prometheus", "uid": "${DS_PROMETHEUS}" },
+      "targets": [
+        {
+          "expr": "sum by (criticality) (rate(pids_alerts_total[5m]))",
+          "legendFormat": "{{criticality}}"
+        }
+      ],
+      "fieldConfig": { "defaults": { "unit": "ops" } }
+    },
+    {
+      "id": 5,
+      "type": "stat",
+      "title": "NAR proxy — alerts / 24h (per km, set your perimeter length)",
+      "gridPos": { "h": 8, "w": 12, "x": 12, "y": 8 },
+      "datasource": { "type": "prometheus", "uid": "${DS_PROMETHEUS}" },
+      "description": "Nuisance Alarm Rate target: < 5 alarms/day/km. Divide by your perimeter length (km) via a recording rule for a true NAR.",
+      "targets": [{ "expr": "sum(increase(pids_alerts_total[24h]))" }],
+      "fieldConfig": {
+        "defaults": {
+          "unit": "short",
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              { "color": "green", "value": null },
+              { "color": "yellow", "value": 5 },
+              { "color": "red", "value": 20 }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": 6,
+      "type": "timeseries",
+      "title": "Notifications dispatched/sec",
+      "gridPos": { "h": 8, "w": 12, "x": 0, "y": 16 },
+      "datasource": { "type": "prometheus", "uid": "${DS_PROMETHEUS}" },
+      "targets": [{ "expr": "sum(rate(pids_notifications_total[5m]))" }],
+      "fieldConfig": { "defaults": { "unit": "ops" } }
+    },
+    {
+      "id": 7,
+      "type": "text",
+      "title": "SLO / MTTA note",
+      "gridPos": { "h": 8, "w": 12, "x": 12, "y": 16 },
+      "options": {
+        "mode": "markdown",
+        "content": "**SLOs to track**\n\n- Detection→alert latency P95 < 2s (add a `pids_pipeline_latency_seconds` histogram)\n- Camera availability (add `pids_camera_up` gauge)\n- **MTTA/MTTR** (add alert-ack timestamps as a histogram)\n\nThe current build exports counters; add histograms/gauges in `app/metrics.py` to light up latency and MTTA panels."
+      }
+    }
+  ]
+}
