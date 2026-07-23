@@ -24,6 +24,11 @@ services share the same production-ready cross-cutting behavior.
   RBAC (`@Roles`), `@Public` opt-outs (health, metrics), `@CurrentUser` /
   `@CurrentTenant`, and an `AsyncLocalStorage` request context (tenant +
   correlation id). The `examples` admin route and `/api/v1/me` demonstrate it.
+- **AI** — the AI-native core via `@asa/capability-registry` (`AiModule`):
+  capabilities are registered, evaluated, and published at boot; features invoke
+  them through `CapabilityExecutor` (never a raw model). The `faq-answer`
+  reference capability + `POST /api/v1/ai/faq` demonstrate the full path
+  (auth → registry → AI SDK → observability).
 
 ## Layout
 
@@ -31,6 +36,7 @@ services share the same production-ready cross-cutting behavior.
 src/
   common/          global exception filter (problem+json)
   config/          env schema + config module (incl. OIDC settings)
+  ai/              reference capability (faq-answer) + POST /ai/faq
   examples/        sample paginated resource incl. a role-guarded route
   health/          liveness/readiness probes + indicator registry (@Public)
   me/              current-principal endpoint (@CurrentUser/@CurrentTenant)

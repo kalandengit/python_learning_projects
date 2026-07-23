@@ -21,7 +21,7 @@ AISchoolAssistant/
 ├── apps/                # Next.js web, Flutter mobile (later WPs)
 ├── services/            # NestJS services (from the golden template)
 │   └── service-template/
-├── packages/            # shared libs: @asa/config, @asa/logger, @asa/errors, @asa/contracts, @asa/auth
+├── packages/            # shared libs: @asa/config, @asa/logger, @asa/errors, @asa/contracts, @asa/auth, @asa/ai-sdk, @asa/capability-registry
 ├── infrastructure/      # docker-compose (dev), Helm/Terraform (later)
 ├── docs/                # governance, ADRs, roadmap, stack versions
 ├── scripts/

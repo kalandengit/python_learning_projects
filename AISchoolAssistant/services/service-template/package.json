@@ -14,7 +14,9 @@
     "clean": "rm -rf dist .turbo coverage"
   },
   "dependencies": {
+    "@asa/ai-sdk": "workspace:*",
     "@asa/auth": "workspace:*",
+    "@asa/capability-registry": "workspace:*",
     "@asa/config": "workspace:*",
     "@asa/contracts": "workspace:*",
     "@asa/errors": "workspace:*",
