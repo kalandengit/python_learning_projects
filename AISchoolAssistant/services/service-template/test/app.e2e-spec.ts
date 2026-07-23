@@ -222,6 +222,103 @@ describe('Service template (e2e)', () => {
     });
   });
 
+  describe('learner digital twin (event-driven)', () => {
+    it('rejects recording activity without a token', async () => {
+      const res = await request(app.getHttpServer())
+        .post('/api/v1/learners/L1/lessons')
+        .send({ lessonId: 'les-1', topic: 'algebra' });
+      expect(res.status).toBe(401);
+    });
+
+    it('projects lessons and assessments into the twin via the bus', async () => {
+      const token = await kit.sign();
+      const auth = { Authorization: `Bearer ${token}` };
+
+      await request(app.getHttpServer())
+        .post('/api/v1/learners/L1/lessons')
+        .set(auth)
+        .send({ lessonId: 'les-1', topic: 'algebra' })
+        .expect(201);
+
+      const scored = await request(app.getHttpServer())
+        .post('/api/v1/learners/L1/assessments')
+        .set(auth)
+        .send({ assessmentId: 'as-1', topic: 'algebra', score: 80 });
+      expect(scored.status).toBe(201);
+      expect(scored.body).toMatchObject({
+        learnerId: 'L1',
+        lessonsCompleted: 1,
+        assessmentsTaken: 1,
+        averageScore: 80,
+      });
+      expect(scored.body.masteryByTopic.algebra).toBe(80);
+
+      const twin = await request(app.getHttpServer())
+        .get('/api/v1/learners/L1/twin')
+        .set(auth);
+      expect(twin.status).toBe(200);
+      expect(twin.body.lessonsCompleted).toBe(1);
+    });
+
+    it('returns 404 for a learner with no activity', async () => {
+      const token = await kit.sign();
+      const res = await request(app.getHttpServer())
+        .get('/api/v1/learners/ghost/twin')
+        .set('Authorization', `Bearer ${token}`);
+      expect(res.status).toBe(404);
+      expect(res.body.type).toBe('urn:asa:error:not_found');
+    });
+
+    it('rejects an out-of-range assessment score (400)', async () => {
+      const token = await kit.sign();
+      const res = await request(app.getHttpServer())
+        .post('/api/v1/learners/L1/assessments')
+        .set('Authorization', `Bearer ${token}`)
+        .send({ assessmentId: 'as-2', topic: 'algebra', score: 150 });
+      expect(res.status).toBe(400);
+    });
+  });
+
+  describe('knowledge platform', () => {
+    it('rejects search without a token', async () => {
+      const res = await request(app.getHttpServer()).get(
+        '/api/v1/knowledge/search?q=algebra',
+      );
+      expect(res.status).toBe(401);
+    });
+
+    it('ingests a document and retrieves it via semantic search', async () => {
+      const token = await kit.sign();
+      const auth = { Authorization: `Bearer ${token}` };
+
+      const ingest = await request(app.getHttpServer())
+        .post('/api/v1/knowledge/documents')
+        .set(auth)
+        .send({
+          id: 'doc-1',
+          text: 'Photosynthesis converts light into energy.',
+        });
+      expect(ingest.status).toBe(201);
+      expect(ingest.body).toEqual({ ingested: 1 });
+
+      const search = await request(app.getHttpServer())
+        .get('/api/v1/knowledge/search')
+        .set(auth)
+        .query({ q: 'Photosynthesis converts light into energy.' });
+      expect(search.status).toBe(200);
+      expect(search.body.hits[0].id).toBe('doc-1');
+      expect(search.body.hits[0].text).toContain('Photosynthesis');
+    });
+
+    it('requires a query parameter (400)', async () => {
+      const token = await kit.sign();
+      const res = await request(app.getHttpServer())
+        .get('/api/v1/knowledge/search')
+        .set('Authorization', `Bearer ${token}`);
+      expect(res.status).toBe(400);
+    });
+  });
+
   describe('validation', () => {
     it('returns 404 problem+json for a missing example', async () => {
       const token = await kit.sign();
