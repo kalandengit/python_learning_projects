@@ -9,6 +9,8 @@ export interface ChatMessage {
   name?: string;
   /** Correlates a `tool` message with the assistant tool call it answers. */
   toolCallId?: string;
+  /** Tool calls emitted by an assistant turn, preserved in history. */
+  toolCalls?: ToolCall[];
 }
 
 /** A tool the model may call, described with a JSON Schema parameter object. */

@@ -19,3 +19,7 @@ export {
 export { AiProviderRegistry } from './provider-registry';
 export { ModelRouter, type ResolvedModel } from './model-router';
 export { EchoProvider } from './providers/echo-provider';
+export {
+  ScriptedProvider,
+  type ScriptedResponse,
+} from './providers/scripted-provider';
