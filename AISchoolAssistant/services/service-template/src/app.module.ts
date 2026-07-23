@@ -3,6 +3,8 @@ import { APP_FILTER } from '@nestjs/core';
 import { AuthModule } from '@asa/auth';
 import { AiModule } from '@asa/capability-registry';
 import { AgentModule } from '@asa/agent-runtime';
+import { EventingModule } from '@asa/eventing';
+import { KnowledgeModule } from '@asa/knowledge';
 import { AllExceptionsFilter } from './common/all-exceptions.filter';
 import { ConfigModule } from './config/config.module';
 import { APP_CONFIG, type AppConfig, toAuthOptions } from './config/app-config';
@@ -11,6 +13,9 @@ import { faqCapability } from './ai/faq.capability';
 import { AgentsFeatureModule } from './agents/agents.feature.module';
 import { assistantAgent } from './agents/assistant.agent';
 import { addTool } from './agents/add.tool';
+import { LearnerTwinModule } from './learner-twin/learner-twin.module';
+import { learnerEvents } from './learner-twin/events';
+import { KnowledgeFeatureModule } from './knowledge/knowledge.feature.module';
 import { ExampleModule } from './examples/example.module';
 import { HealthModule } from './health/health.module';
 import { MeModule } from './me/me.module';
@@ -33,12 +38,16 @@ import { MetricsModule } from './observability/metrics.module';
     }),
     AiModule.forRoot({ capabilities: [faqCapability] }),
     AgentModule.forRoot({ tools: [addTool], agents: [assistantAgent] }),
+    EventingModule.forRoot({ events: learnerEvents }),
+    KnowledgeModule.forRoot({}),
     MetricsModule,
     HealthModule,
     ExampleModule,
     MeModule,
     AiFeatureModule,
     AgentsFeatureModule,
+    LearnerTwinModule,
+    KnowledgeFeatureModule,
   ],
   providers: [{ provide: APP_FILTER, useClass: AllExceptionsFilter }],
 })

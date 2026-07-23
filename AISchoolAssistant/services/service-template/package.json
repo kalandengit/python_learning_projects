@@ -21,6 +21,8 @@
     "@asa/config": "workspace:*",
     "@asa/contracts": "workspace:*",
     "@asa/errors": "workspace:*",
+    "@asa/eventing": "workspace:*",
+    "@asa/knowledge": "workspace:*",
     "@asa/logger": "workspace:*",
     "@nestjs/common": "^11.0.0",
     "@nestjs/core": "^11.0.0",

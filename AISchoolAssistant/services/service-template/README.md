@@ -32,6 +32,13 @@ services share the same production-ready cross-cutting behavior.
 - **Agents** — the multi-agent runtime via `@asa/agent-runtime` (`AgentModule`):
   a bounded, governed tool-calling loop. The reference `assistant` agent + `add`
   tool + `POST /api/v1/agents/:id/invoke` demonstrate it.
+- **Eventing + Digital Twin** — `@asa/eventing` (`EventingModule`): a
+  catalog-validated event bus. The Learner Digital Twin is an event-sourced
+  projection (`POST /api/v1/learners/:id/lessons|assessments` → events →
+  projection → `GET /api/v1/learners/:id/twin`).
+- **Knowledge** — `@asa/knowledge` (`KnowledgeModule`): embedding-backed,
+  tenant-scoped semantic search (`POST /api/v1/knowledge/documents`,
+  `GET /api/v1/knowledge/search?q=`).
 
 ## Layout
 
@@ -41,6 +48,8 @@ src/
   config/          env schema + config module (incl. OIDC settings)
   ai/              reference capability (faq-answer) + POST /ai/faq
   agents/          reference agent (assistant) + add tool + POST /agents/:id/invoke
+  learner-twin/    event-sourced Learner Digital Twin projection
+  knowledge/       tenant-scoped semantic search (ingest + search)
   examples/        sample paginated resource incl. a role-guarded route
   health/          liveness/readiness probes + indicator registry (@Public)
   me/              current-principal endpoint (@CurrentUser/@CurrentTenant)
