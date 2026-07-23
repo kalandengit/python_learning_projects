@@ -161,6 +161,36 @@ describe('Service template (e2e)', () => {
     });
   });
 
+  describe('ai capabilities', () => {
+    it('rejects the capability endpoint without a token', async () => {
+      const res = await request(app.getHttpServer())
+        .post('/api/v1/ai/faq')
+        .send({ question: 'hi' });
+      expect(res.status).toBe(401);
+    });
+
+    it('invokes the faq capability and returns a typed answer', async () => {
+      const token = await kit.sign();
+      const res = await request(app.getHttpServer())
+        .post('/api/v1/ai/faq')
+        .set('Authorization', `Bearer ${token}`)
+        .send({ question: 'When does term start?' });
+      expect(res.status).toBe(201);
+      expect(res.body.answer).toBe('[echo] When does term start?');
+      expect(res.body.model).toBe('echo:default');
+      expect(res.body.usage.totalTokens).toBeGreaterThan(0);
+    });
+
+    it('rejects an invalid capability request body (400)', async () => {
+      const token = await kit.sign();
+      const res = await request(app.getHttpServer())
+        .post('/api/v1/ai/faq')
+        .set('Authorization', `Bearer ${token}`)
+        .send({ question: '' });
+      expect(res.status).toBe(400);
+    });
+  });
+
   describe('validation', () => {
     it('returns 404 problem+json for a missing example', async () => {
       const token = await kit.sign();
