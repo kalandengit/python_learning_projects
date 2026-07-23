@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">مُفرّغ N\'Ko</string><string name="set_url">تعيين عنوان الخادم</string>
+    <string name="url_title">عنوان خادم N\'Ko</string><string name="url_message">أدخل عنوان خادم N\'Ko Voice Transcriptor.</string>
+    <string name="load">تحميل</string><string name="conn_error_title">الخادم غير متاح</string>
+    <string name="conn_error_message">تعذر الاتصال بـ:\n%1$s\n\n%2$s\n\nتحقق من الخادم ثم أعد المحاولة.</string>
+    <string name="retry">إعادة المحاولة</string><string name="change_url">تغيير العنوان</string>
+</resources>

@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">N\'Ko kumakan sɛbɛnnikɛlan</string><string name="set_url">Sɛrɛwɛri URL bila</string>
+    <string name="url_title">N\'Ko sɛrɛwɛri URL</string><string name="url_message">N\'Ko Voice Transcriptor sɛrɛwɛri ladɛrɛsi sɛbɛn.</string>
+    <string name="load">A dayɛlɛ</string><string name="conn_error_title">Sɛrɛwɛri ma sɔrɔ</string>
+    <string name="conn_error_message">A ma se ka taa yan:\n%1$s\n\n%2$s\n\nSɛrɛwɛri lajɛ, ka a lajɛ kokura.</string>
+    <string name="retry">A lajɛ kokura</string><string name="change_url">URL yɛlɛma</string>
+</resources>

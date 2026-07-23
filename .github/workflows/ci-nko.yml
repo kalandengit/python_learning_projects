@@ -1,0 +1,38 @@
+name: nko-voice-transcriptor CI
+
+on:
+  push:
+    paths: ["nko-voice-transcriptor/**", ".github/workflows/ci-nko.yml"]
+  pull_request:
+    paths: ["nko-voice-transcriptor/**", ".github/workflows/ci-nko.yml"]
+
+permissions:
+  contents: read
+
+defaults:
+  run:
+    working-directory: nko-voice-transcriptor
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-python@v6
+        with:
+          python-version: "3.11"
+          cache: pip
+      - name: Install dependencies
+        run: pip install -r requirements-dev.txt
+      - name: Lint
+        run: ruff check app tests
+      - name: Tests
+        run: python -m pytest tests/ -v
+
+  docker:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+      - name: Build image
+        run: docker build -t nko-voice-transcriptor:ci nko-voice-transcriptor
+        working-directory: .

@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>ߒߞߏ — N'KO Voice Transcriptor</title>
+<link rel="stylesheet" href="/static/styles.css">
+</head>
+<body>
+<a class="skip-link" href="#main-content">Skip to content</a>
+<header>
+  <div class="row header-row">
+    <h1><span class="nko-glyph">ߒߞߏ</span> <span data-i18n="app_title">N'KO Voice Transcriptor</span></h1>
+    <label class="inline ui-lang">
+      <span data-i18n="ui_language">Interface</span>
+      <select id="ui-language-select" title="Interface language"></select>
+    </label>
+  </div>
+  <p class="subtitle" data-i18n="subtitle">Speak Manding — read N'Ko</p>
+</header>
+
+<main id="main-content">
+  <!-- Auth panel -->
+  <section id="auth-panel" class="card">
+    <h2 id="auth-title" data-i18n="sign_in">Sign in</h2>
+    <form id="auth-form" autocomplete="on">
+      <label><span data-i18n="username">Username</span>
+        <input id="username" name="username" minlength="3" maxlength="64"
+               pattern="[a-zA-Z0-9_.\-]+" required autocomplete="username">
+      </label>
+      <label><span data-i18n="password">Password</span>
+        <input id="password" name="password" type="password" minlength="10"
+               maxlength="128" required autocomplete="current-password">
+      </label>
+      <div class="row">
+        <button type="submit" data-i18n="log_in">Log in</button>
+        <button type="button" id="show-register-btn" class="secondary" data-i18n="register">Register</button>
+      </div>
+      <p id="auth-error" class="error" role="alert"></p>
+    </form>
+    <form id="register-form" class="hidden" autocomplete="on">
+      <div class="form-grid">
+        <label>Prénom<input id="register-first-name" maxlength="80" required autocomplete="given-name"></label>
+        <label>Nom<input id="register-last-name" maxlength="80" required autocomplete="family-name"></label>
+      </div>
+      <label>Adresse e-mail
+        <input id="register-email" type="email" maxlength="254" required autocomplete="email">
+      </label>
+      <label>Nom d'utilisateur
+        <input id="register-username" minlength="3" maxlength="64" pattern="[a-zA-Z0-9_.\-]+" required autocomplete="username">
+      </label>
+      <label>Mot de passe
+        <input id="register-password" type="password" minlength="10" maxlength="128" required autocomplete="new-password">
+      </label>
+      <label>Confirmer le mot de passe
+        <input id="register-password-confirm" type="password" minlength="10" maxlength="128" required autocomplete="new-password">
+      </label>
+      <p class="hint">Au moins 10 caractères, avec des lettres et des chiffres ou symboles.</p>
+      <div class="row">
+        <button type="submit">Créer mon compte</button>
+        <button id="show-login-btn" type="button" class="secondary">J'ai déjà un compte</button>
+      </div>
+      <p id="register-error" class="error" role="alert"></p>
+    </form>
+    <div id="social-login" class="social-login hidden">
+      <p class="social-separator"><span>ou continuer avec</span></p>
+      <a id="google-login" class="social-button hidden" href="/api/auth/oauth/google/start">G&nbsp; Continuer avec Google</a>
+      <a id="facebook-login" class="social-button hidden" href="/api/auth/oauth/facebook/start">f&nbsp; Continuer avec Facebook</a>
+    </div>
+  </section>
+
+  <!-- Recorder panel -->
+  <section id="app-panel" class="card hidden">
+    <div class="workspace-head">
+      <div>
+        <p class="eyebrow" data-i18n="workspace">Workspace</p>
+        <h2 id="workspace-title">Fonctions principales</h2>
+      </div>
+      <button id="workspace-home-btn" class="secondary quiet hidden" type="button">← Accueil</button>
+      <button id="logout-btn" class="secondary quiet" data-i18n="log_out">Log out</button>
+      <button id="delete-account-btn" class="secondary quiet">Delete account</button>
+    </div>
+    <nav id="workspace-menu" class="function-grid" aria-label="Fonctions principales">
+      <button type="button" data-open-view="record"><span class="function-icon">🎙️</span><span>Enregistrer</span></button>
+      <button type="button" data-open-view="import"><span class="function-icon">📁</span><span>Importer audio</span></button>
+      <button type="button" data-open-view="text"><span class="function-icon">✍️</span><span>Écrire du texte</span></button>
+      <button type="button" data-open-view="practice"><span class="function-icon">🎧</span><span>Dictée</span></button>
+      <button type="button" data-open-view="dictionary"><span class="function-icon">📖</span><span>Dictionnaire</span></button>
+      <button type="button" data-open-view="history"><span class="function-icon">🕘</span><span>Historique</span></button>
+    </nav>
+
+    <div class="tool-section capture-section workspace-view hidden" data-view="capture">
+    <div class="row record-only">
+      <label class="inline"><span data-i18n="source_language">Language</span>
+        <select id="language-select" title="Source language"></select>
+      </label>
+    </div>
+    <div class="row record-only">
+      <button id="mic-access-btn" type="button" class="secondary">Autoriser le microphone</button>
+      <button id="start-btn" class="record"><span data-i18n="start">● Start</span></button>
+      <button id="standby-btn" class="secondary" disabled data-i18n="standby">❚❚ Stand by</button>
+      <button id="stop-btn" class="secondary" disabled data-i18n="stop">■ Stop</button>
+      <span id="record-timer" aria-live="polite"></span>
+      <span id="record-state" class="hint" aria-live="polite"></span>
+    </div>
+    <div class="import-only">
+      <h2>Importer un fichier audio ou vidéo</h2>
+      <p class="hint" data-i18n="or_upload">Choisissez un fichier à transcrire :</p>
+      <input type="file" id="file-input" accept="audio/*,video/mp4,video/webm,video/quicktime">
+    </div>
+    <label class="consent"><input type="checkbox" id="training-consent">
+      <span>Contribute this recording and my corrections to improve recognition</span>
+    </label>
+    <p id="app-error" class="error" role="alert"></p>
+    <p class="hint"><span id="network-state"></span> · <span id="provider-state"></span></p>
+    <div id="audio-preview" class="preview hidden">
+      <div class="row preview-actions">
+        <button id="submit-audio-btn" type="button">Transcribe</button>
+        <button id="discard-audio-btn" type="button" class="secondary">Discard</button>
+      </div>
+      <canvas id="waveform" width="720" height="120" aria-label="Audio waveform"></canvas>
+      <audio id="preview-player" controls></audio>
+      <div class="row">
+        <label>Start <input id="trim-start" type="number" min="0" step="0.1" value="0"></label>
+        <label>End <input id="trim-end" type="number" min="0" step="0.1"></label>
+      </div>
+      <progress id="job-progress" max="100" value="0" class="hidden"></progress>
+      <span id="job-state" class="hint" aria-live="polite"></span>
+    </div>
+    </div>
+
+    <div id="result" class="tool-section result-section hidden">
+      <h3><span data-i18n="nko">N'Ko</span> <span class="hint" data-i18n="editable_hint">— editable, click to correct</span></h3>
+      <textarea class="nko-text" id="result-nko" dir="rtl" lang="nqo" rows="2"
+                spellcheck="false"></textarea>
+      <h3 data-i18n="latin">Latin (Manding)</h3>
+      <p id="result-latin" lang="bm"></p>
+      <div class="row">
+        <button id="edit-nko-btn" class="secondary" data-i18n="edit_result">✎ Edit result</button>
+        <button id="save-nko-btn" class="secondary" disabled data-i18n="save_edit">💾 Save edit</button>
+        <button id="share-btn" class="secondary" data-i18n="share_result">↗ Share transcript</button>
+        <label class="consent"><input type="checkbox" id="submit-correction">
+          <span>Submit my correction for review</span>
+        </label>
+        <button id="copy-nko-btn" class="secondary" data-i18n="copy_nko">⧉ Copy N'Ko</button>
+        <button id="copy-latin-btn" class="secondary" data-i18n="copy_latin">⧉ Copy Latin</button>
+        <span id="save-state" class="hint" aria-live="polite"></span>
+      </div>
+      <div class="row">
+        <span class="hint" data-i18n="download">Download:</span>
+        <button id="dl-txt-btn" class="secondary">⤓ TXT</button>
+        <button id="dl-png-btn" class="secondary">⤓ PNG</button>
+        <button id="dl-pdf-btn" class="secondary">⤓ PDF</button>
+      </div>
+    </div>
+
+    <div class="tool-section workspace-view hidden" data-view="text">
+    <h2 data-i18n="try_text">Try text directly</h2>
+    <div class="row">
+      <input id="text-input" placeholder="e.g. i ni ce" maxlength="500">
+      <button id="paste-btn" class="secondary" title="Paste from clipboard" data-i18n="paste">⎘ Paste</button>
+      <button id="text-btn" class="secondary">→ ߒߞߏ</button>
+    </div>
+    <textarea class="nko-text" id="text-output" dir="rtl" lang="nqo" rows="2"
+              spellcheck="false" placeholder="ߒߞߏ…"></textarea>
+    <button id="copy-text-btn" class="secondary hidden" data-i18n="copy_nko">⧉ Copy N'Ko</button>
+
+    <!-- On-screen N'Ko keyboard -->
+    <div class="row">
+      <button id="keyboard-toggle" class="secondary" aria-expanded="false" data-i18n="nko_keyboard">⌨ N'Ko keyboard</button>
+    </div>
+    <div id="keyboard" class="keyboard hidden" role="group" aria-label="N'Ko keyboard"></div>
+    </div>
+
+    <!-- Listen → type → validate self-evaluation practice -->
+    <div class="tool-section practice-section workspace-view hidden" data-view="practice">
+      <h2 data-i18n="practice_title">N'Ko dictation practice</h2>
+      <p class="hint" data-i18n="practice_help">Listen to the French word, type its N'Ko spelling, then validate.</p>
+      <div class="row">
+        <button id="practice-new" class="secondary" data-i18n="new_prompt">New word</button>
+        <button id="practice-listen" class="secondary" data-i18n="listen">🔊 Listen</button>
+      </div>
+      <div id="segments" class="segments"></div>
+      <div class="row">
+        <button id="dl-vtt-nko" class="secondary">↓ N’Ko VTT</button>
+        <button id="dl-srt-nko" class="secondary">↓ N’Ko SRT</button>
+        <button id="export-history-btn" class="secondary">↓ Export history</button>
+      </div>
+      <textarea class="nko-text" id="practice-input" dir="rtl" lang="nqo" rows="2" spellcheck="false"></textarea>
+      <div class="row">
+        <button id="practice-check" class="secondary" data-i18n="validate">Validate</button>
+        <span id="practice-feedback" role="status" aria-live="polite"></span>
+      </div>
+    </div>
+
+    <!-- Dictionary lookup -->
+    <div class="tool-section dictionary-section workspace-view hidden" data-view="dictionary">
+      <h2 data-i18n="dictionary_title">Dictionary</h2>
+      <div class="row">
+        <input id="dict-input" data-i18n-placeholder="dict_placeholder" placeholder="Search a word…" maxlength="100">
+        <select id="dict-dir" title="Direction">
+          <option value="fr">FR → ߒߞߏ</option>
+          <option value="nko">ߒߞߏ → FR</option>
+        </select>
+        <button id="dict-btn" class="secondary" data-i18n="search">🔍 Search</button>
+      </div>
+      <ul id="dict-results"></ul>
+      <p id="dict-empty" class="hint hidden" data-i18n="dict_none">No match.</p>
+      <p class="hint" data-i18n="dict_credit">Lexicon: NKo Wuruki / N'Ko Institute (sample).</p>
+    </div>
+
+    <!-- History management -->
+    <div class="tool-section history-section workspace-view hidden" data-view="history">
+    <div class="row history-head">
+      <h2 data-i18n="history">History</h2>
+      <span id="history-count" class="hint"></span>
+    </div>
+    <div class="row">
+      <input id="history-search" data-i18n-placeholder="search_history" placeholder="Search…" maxlength="200">
+      <button id="history-clear-btn" class="secondary" data-i18n="clear_all">🗑 Clear all</button>
+    </div>
+    <ul id="history"></ul>
+    <div class="row">
+      <button id="history-more-btn" class="secondary hidden" data-i18n="load_more">Load more</button>
+      <span id="history-empty" class="hint hidden" data-i18n="no_history">No history yet.</span>
+    </div>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <p data-i18n="footer">Manding → N'Ko (script of Solomana Kanté). Recognition quality depends on
+     the configured ASR engine.</p>
+</footer>
+
+<!-- Print-only area used for "Download PDF" (browser Save as PDF) -->
+<div id="print-area" aria-hidden="true">
+  <div id="print-nko" dir="rtl" lang="nqo"></div>
+  <div id="print-latin" lang="bm"></div>
+</div>
+
+<script src="/static/languages.js"></script>
+<script src="/static/i18n.js"></script>
+<script src="/static/app.js"></script>
+</body>
+</html>

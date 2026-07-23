@@ -1,0 +1,36 @@
+plugins {
+    id 'com.android.application'
+}
+
+android {
+    namespace 'net.nkotools.transcriptor'
+    compileSdk 36
+
+    defaultConfig {
+        applicationId 'net.nkotools.transcriptor'
+        minSdk 26
+        targetSdk 36
+        versionCode 11200
+        versionName '1.12.0'
+        manifestPlaceholders = [usesCleartext: "false"]
+    }
+
+    buildTypes {
+        debug {
+            manifestPlaceholders = [usesCleartext: "true"]
+        }
+        release {
+            minifyEnabled false
+            manifestPlaceholders = [usesCleartext: "false"]
+        }
+    }
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_17
+        targetCompatibility JavaVersion.VERSION_17
+    }
+}
+
+// No dependencies: the app uses only the Android framework (WebView).
+dependencies {
+}
