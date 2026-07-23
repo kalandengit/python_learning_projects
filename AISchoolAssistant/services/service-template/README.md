@@ -29,6 +29,9 @@ services share the same production-ready cross-cutting behavior.
   them through `CapabilityExecutor` (never a raw model). The `faq-answer`
   reference capability + `POST /api/v1/ai/faq` demonstrate the full path
   (auth → registry → AI SDK → observability).
+- **Agents** — the multi-agent runtime via `@asa/agent-runtime` (`AgentModule`):
+  a bounded, governed tool-calling loop. The reference `assistant` agent + `add`
+  tool + `POST /api/v1/agents/:id/invoke` demonstrate it.
 
 ## Layout
 
@@ -37,6 +40,7 @@ src/
   common/          global exception filter (problem+json)
   config/          env schema + config module (incl. OIDC settings)
   ai/              reference capability (faq-answer) + POST /ai/faq
+  agents/          reference agent (assistant) + add tool + POST /agents/:id/invoke
   examples/        sample paginated resource incl. a role-guarded route
   health/          liveness/readiness probes + indicator registry (@Public)
   me/              current-principal endpoint (@CurrentUser/@CurrentTenant)

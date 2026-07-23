@@ -191,6 +191,37 @@ describe('Service template (e2e)', () => {
     });
   });
 
+  describe('agents', () => {
+    it('rejects the agent endpoint without a token', async () => {
+      const res = await request(app.getHttpServer())
+        .post('/api/v1/agents/assistant/invoke')
+        .send({ goal: 'hi' });
+      expect(res.status).toBe(401);
+    });
+
+    it('runs the assistant agent and returns a result', async () => {
+      const token = await kit.sign();
+      const res = await request(app.getHttpServer())
+        .post('/api/v1/agents/assistant/invoke')
+        .set('Authorization', `Bearer ${token}`)
+        .send({ goal: 'say hello' });
+      expect(res.status).toBe(201);
+      expect(res.body.output).toBe('[echo] say hello');
+      expect(res.body.finishReason).toBe('completed');
+      expect(res.body.model).toBe('echo:default');
+    });
+
+    it('returns 404 problem+json for an unknown agent', async () => {
+      const token = await kit.sign();
+      const res = await request(app.getHttpServer())
+        .post('/api/v1/agents/nope/invoke')
+        .set('Authorization', `Bearer ${token}`)
+        .send({ goal: 'x' });
+      expect(res.status).toBe(404);
+      expect(res.body.type).toBe('urn:asa:error:not_found');
+    });
+  });
+
   describe('validation', () => {
     it('returns 404 problem+json for a missing example', async () => {
       const token = await kit.sign();
