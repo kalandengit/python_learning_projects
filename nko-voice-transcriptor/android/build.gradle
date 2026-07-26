@@ -1,0 +1,5 @@
+// Root build file. The app is a dependency-free WebView client, so the only
+// plugin needed is the Android application plugin.
+plugins {
+    id 'com.android.application' version '8.5.2' apply false
+}

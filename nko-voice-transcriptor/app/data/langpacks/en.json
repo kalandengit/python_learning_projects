@@ -1,0 +1,459 @@
+{
+ "_language": "en",
+ "_name": "English",
+ "_partial": true,
+ "_source": "Seed pack — translations curated by hand; N'Ko from the NKo Wuruki / N'Ko Institute lexicon. Complete via build_langpack.py.",
+ "_count": 90,
+ "entries": [
+  {
+   "term": "one",
+   "nko": "ߖߏߣߊ",
+   "cat": "ߡ."
+  },
+  {
+   "term": "three",
+   "nko": "ߛߓߊ߬",
+   "cat": "ߡ."
+  },
+  {
+   "term": "four",
+   "nko": "ߣߊߣߌ߲߫",
+   "cat": "ߕߡ."
+  },
+  {
+   "term": "six",
+   "nko": "ߛߊ߬ߓߊ ߛߌ߰ ߝߌ߬ߟߊ߬",
+   "cat": "ߡ."
+  },
+  {
+   "term": "nine",
+   "nko": "ߞߐ߬ߣߐ߲߬ߘߐ߫",
+   "cat": "ߡ."
+  },
+  {
+   "term": "hello",
+   "nko": "ߌ ߣߌ߫ ߛߐ߰ߡߊ߬",
+   "cat": "ߝߥ."
+  },
+  {
+   "term": "thank you",
+   "nko": "ߒ߬ߓߊ߬ߘߍ",
+   "cat": "ߞߍߕ."
+  },
+  {
+   "term": "yes",
+   "nko": "ߐ߲߬ߐ߲߬ߐ߲߫",
+   "cat": "ߞߊ߲ߕ."
+  },
+  {
+   "term": "man",
+   "nko": "ߡߐ߱",
+   "cat": "ߕ."
+  },
+  {
+   "term": "woman",
+   "nko": "ߡߏ߬ߛߏ߫ ߖߘߍ߬ߝߊ߬ߙߊ߲߬ߛߊ߬ߟߊ",
+   "cat": "ߞߍߣ."
+  },
+  {
+   "term": "child",
+   "nko": "ߓߐ߲ߛߐ߲",
+   "cat": "ߡ."
+  },
+  {
+   "term": "mother",
+   "nko": "ߡߏߦߌߓߊ߮ ߡߛߏ߬ߡߊ߲",
+   "cat": "ߡ."
+  },
+  {
+   "term": "father",
+   "nko": "ߘߊߝߟߐߓߊ߮",
+   "cat": "ߡ."
+  },
+  {
+   "term": "king",
+   "nko": "ߡߊ߲߬ߛߊ",
+   "cat": "ߡ."
+  },
+  {
+   "term": "water",
+   "nko": "ߓߊߟߋ߲",
+   "cat": "ߕ."
+  },
+  {
+   "term": "fire",
+   "nko": "ߕߊ",
+   "cat": "ߡ."
+  },
+  {
+   "term": "sun",
+   "nko": "ߕߋ߬ߟߋ",
+   "cat": "ߕ."
+  },
+  {
+   "term": "moon",
+   "nko": "ߞߊߙߏ",
+   "cat": "ߕ."
+  },
+  {
+   "term": "tree",
+   "nko": "ߦߙߌ",
+   "cat": "ߕ."
+  },
+  {
+   "term": "flower",
+   "nko": "ߛߐ߰ߡߘߊ߬ߝߙߋ",
+   "cat": "ߕ."
+  },
+  {
+   "term": "stone",
+   "nko": "ߝߘߊ",
+   "cat": "ߕ."
+  },
+  {
+   "term": "earth",
+   "nko": "ߘߎ߱",
+   "cat": "ߕ."
+  },
+  {
+   "term": "sky",
+   "nko": "ߛߊ߲",
+   "cat": "ߞߊߟ."
+  },
+  {
+   "term": "wind",
+   "nko": "ߝߢߐ",
+   "cat": "ߕ."
+  },
+  {
+   "term": "rain",
+   "nko": "ߛߊ߲ߖߌ",
+   "cat": "ߕ."
+  },
+  {
+   "term": "sea",
+   "nko": "ߓߊߟߋ߲",
+   "cat": "ߕ."
+  },
+  {
+   "term": "river",
+   "nko": "ߓߊ",
+   "cat": "ߕ."
+  },
+  {
+   "term": "animal",
+   "nko": "ߢߣߊߡߦߊ",
+   "cat": "ߗߞߕ."
+  },
+  {
+   "term": "bird",
+   "nko": "ߖߌ߬ߓߙߌ",
+   "cat": "ߕ."
+  },
+  {
+   "term": "fish",
+   "nko": "ߖߍ߮",
+   "cat": "ߕ."
+  },
+  {
+   "term": "horse",
+   "nko": "ߛߏ߭",
+   "cat": "ߕ."
+  },
+  {
+   "term": "cow",
+   "nko": "ߣߛߌ߬ߡߛߏ",
+   "cat": "ߡ."
+  },
+  {
+   "term": "goat",
+   "nko": "ߓߊ߭",
+   "cat": "ߕ."
+  },
+  {
+   "term": "hen",
+   "nko": "ߛߌ߬ߛߍ߬ߓߊ",
+   "cat": "ߡ."
+  },
+  {
+   "term": "food",
+   "nko": "ߛߎ߬ߡߊ߲",
+   "cat": "ߕ."
+  },
+  {
+   "term": "bread",
+   "nko": "ߓߙߎ",
+   "cat": "ߕ."
+  },
+  {
+   "term": "milk",
+   "nko": "ߣߐߣߐ",
+   "cat": "ߕ."
+  },
+  {
+   "term": "rice",
+   "nko": "ߡߊ߬ߟߏ",
+   "cat": "ߞߍߕ."
+  },
+  {
+   "term": "meat",
+   "nko": "ߛߏ߬ߓߏ",
+   "cat": "ߕ."
+  },
+  {
+   "term": "hand",
+   "nko": "ߕߍ߮",
+   "cat": "ߕ."
+  },
+  {
+   "term": "head",
+   "nko": "ߛߊ߲ߝߍߟߊ",
+   "cat": "ߞߍߕ."
+  },
+  {
+   "term": "heart",
+   "nko": "ߖߎ߬ߛߎ",
+   "cat": "ߘߞ."
+  },
+  {
+   "term": "name",
+   "nko": "ߕߐ߮",
+   "cat": "ߕ."
+  },
+  {
+   "term": "love",
+   "nko": "ߞߊ߬ߣߌ߲",
+   "cat": "ߞߍߕ."
+  },
+  {
+   "term": "peace",
+   "nko": "ߖߐ",
+   "cat": "ߕ."
+  },
+  {
+   "term": "truth",
+   "nko": "ߕߎ߬ߢߊ",
+   "cat": "ߕ."
+  },
+  {
+   "term": "strength",
+   "nko": "ߓߊ߲ߓߊ߲",
+   "cat": "ߕ."
+  },
+  {
+   "term": "health",
+   "nko": "ߜߋߙߋ߲ߜߋߙߋ߲ߦߊ",
+   "cat": "ߗߞߕ."
+  },
+  {
+   "term": "illness",
+   "nko": "ߖߊ߲߬ߞߊߙߏ",
+   "cat": "ߕ."
+  },
+  {
+   "term": "death",
+   "nko": "ߛߊ߬ߦߊ",
+   "cat": "ߗߞߕ."
+  },
+  {
+   "term": "life",
+   "nko": "ߘߎߢߊߘߐߕߍ߮",
+   "cat": "ߗߞߕ."
+  },
+  {
+   "term": "word",
+   "nko": "ߓߍ߲߬ߞߎ߲߬ߡߊ߫ ߟߊߣߍ߲ ߡߊߞߊ߬ߝߏ߬ߟߌ",
+   "cat": "ߞߍߕ."
+  },
+  {
+   "term": "country",
+   "nko": "ߓߊ߲߬ߞߎ",
+   "cat": "ߕߡ."
+  },
+  {
+   "term": "language",
+   "nko": "ߞߊ߲",
+   "cat": "ߞߍߕ."
+  },
+  {
+   "term": "god",
+   "nko": "ߊߟߊ߫",
+   "cat": "ߕ."
+  },
+  {
+   "term": "market",
+   "nko": "ߛߎ߯ߝߍ",
+   "cat": "ߡ."
+  },
+  {
+   "term": "path",
+   "nko": "ߛߌߟߊ",
+   "cat": "ߞߍߣ."
+  },
+  {
+   "term": "city",
+   "nko": "ߘߎ߱",
+   "cat": "ߕ."
+  },
+  {
+   "term": "village",
+   "nko": "ߘߊ߲ߘߎ߮",
+   "cat": "ߡ."
+  },
+  {
+   "term": "world",
+   "nko": "ߖߊ߯ߓߊ",
+   "cat": "ߕߡ."
+  },
+  {
+   "term": "school",
+   "nko": "ߞߊ߬ߙߊ߲߬ߕߊ",
+   "cat": "ߕ."
+  },
+  {
+   "term": "money",
+   "nko": "ߜߍ",
+   "cat": "ߕ."
+  },
+  {
+   "term": "book",
+   "nko": "ߝߊ߬ߘߊ߲߬ߞߊ",
+   "cat": "ߕ."
+  },
+  {
+   "term": "day",
+   "nko": "ߕߟߋ߬ߖߎߞߘߎ",
+   "cat": "ߞߊߟ."
+  },
+  {
+   "term": "time",
+   "nko": "ߕߎ߬ߡߊ",
+   "cat": "ߡ."
+  },
+  {
+   "term": "year",
+   "nko": "ߛߊ߲߭",
+   "cat": "ߞߍߕ."
+  },
+  {
+   "term": "month",
+   "nko": "ߛߊ߲߬ߓߏߟߏ߲",
+   "cat": "ߕ."
+  },
+  {
+   "term": "week",
+   "nko": "ߞߎ߲߬ߢߐ߲߮",
+   "cat": "ߕ."
+  },
+  {
+   "term": "morning",
+   "nko": "ߛߐ߱",
+   "cat": "ߞߍߕ."
+  },
+  {
+   "term": "to eat",
+   "nko": "ߘߊߥߎ߲߫",
+   "cat": "ߕߡ."
+  },
+  {
+   "term": "to drink",
+   "nko": "ߡߌ߲߬",
+   "cat": "ߞߍߕ."
+  },
+  {
+   "term": "to go",
+   "nko": "ߕߊ߯ߟߌ",
+   "cat": "ߘߒ."
+  },
+  {
+   "term": "to come",
+   "nko": "ߡߊߘߏ߲߬",
+   "cat": "ߘߒ."
+  },
+  {
+   "term": "to see",
+   "nko": "ߘߐߜߍ߫",
+   "cat": "ߕߡ."
+  },
+  {
+   "term": "to speak",
+   "nko": "ߞߎߡߊ߫",
+   "cat": "ߕߡ."
+  },
+  {
+   "term": "to write",
+   "nko": "ߛߓߍ߫",
+   "cat": "ߕߡ."
+  },
+  {
+   "term": "to read",
+   "nko": "ߝߐ߫",
+   "cat": "ߕ."
+  },
+  {
+   "term": "to sleep",
+   "nko": "ߛߎ߬ߣߐ߰",
+   "cat": "ߘߒ."
+  },
+  {
+   "term": "to work",
+   "nko": "ߓߊ߯ߙߊ߫",
+   "cat": "ߘߕ."
+  },
+  {
+   "term": "to give",
+   "nko": "ߛߐ߫",
+   "cat": "ߕߡ."
+  },
+  {
+   "term": "to take",
+   "nko": "ߕߊ߬",
+   "cat": "ߕߡ."
+  },
+  {
+   "term": "to know",
+   "nko": "ߟߐ߲ߠߌ߲ߦߊ",
+   "cat": "ߕߡ."
+  },
+  {
+   "term": "to love",
+   "nko": "ߞߊ߬ߣߌ߲߬",
+   "cat": "ߕߡ."
+  },
+  {
+   "term": "to want",
+   "nko": "ߟߊߢߌߣߌ߲߫",
+   "cat": "ߕߡ."
+  },
+  {
+   "term": "to do",
+   "nko": "ߓߊ߯ߙߊ߫",
+   "cat": "ߕߡ."
+  },
+  {
+   "term": "hot",
+   "nko": "ߜߊ߭",
+   "cat": "ߗߞߕ."
+  },
+  {
+   "term": "cold",
+   "nko": "ߛߎߡߊ߫",
+   "cat": "ߕߡ."
+  },
+  {
+   "term": "new",
+   "nko": "ߞߎߘߊ",
+   "cat": "ߡ."
+  },
+  {
+   "term": "old",
+   "nko": "ߕߎ߬ߡߊ߬ߖߊ߲",
+   "cat": "ߕ."
+  },
+  {
+   "term": "red",
+   "nko": "ߥߎ߬ߟߋ߲",
+   "cat": "ߡ."
+  }
+ ]
+}

@@ -1,0 +1,2607 @@
+{
+"_source": "https://www.nkowuruki.net/lexique-nkofr.html",
+"_note": "Attributed SAMPLE of the N'Ko-French lexicon by NKo Wuruki / N'Ko Institute (Conakry). Not the full dataset. Provide the complete lexicon via NKO_LEXICON_PATH. Verify redistribution rights before shipping the full data.",
+"_count": 520,
+"entries": [
+{
+"fr": "-de but ou-",
+"nko": "ߞߏ߲߬ߘߊ߬ߞߣߐ߬ߜߍ߲߬ߘߋ߲",
+"cat": "ߡ."
+},
+{
+"fr": "aborder",
+"nko": "ߘߏ߲߬ ߊ߬ ߞߊ߲߬",
+"cat": "ߞߕ."
+},
+{
+"fr": "abuser",
+"nko": "ߡߜߊߣߊ߲ߦߊ߫",
+"cat": "ߕߡ."
+},
+{
+"fr": "accouplement",
+"nko": "ߣߊߙߏ߲ߠߌ߲",
+"cat": "ߗߞߕ."
+},
+{
+"fr": "acidifiant,e",
+"nko": "ߞߎ߲߰ߠߊ",
+"cat": "ߞߍߣ."
+},
+{
+"fr": "adage",
+"nko": "ߘߎߢߊߡߊߛߊ߲߬ߘߊ",
+"cat": "ߕ."
+},
+{
+"fr": "adonner",
+"nko": "ߝߙߍ߫ ߊ߬ ߡߊ߬",
+"cat": "ߞߛ."
+},
+{
+"fr": "affairement",
+"nko": "ߞߏߡߦߊ",
+"cat": "ߗߞߕ."
+},
+{
+"fr": "affluence",
+"nko": "ߘߐߜߙߐ߬",
+"cat": "ߞߍߕ."
+},
+{
+"fr": "agglutiner",
+"nko": "ߣߘߐ߫",
+"cat": "ߞߕ."
+},
+{
+"fr": "aguichant,e",
+"nko": "ߘߊߞߘߐߓߐߞߏ",
+"cat": "ߡ."
+},
+{
+"fr": "ainsi",
+"nko": "ߤߊ߯ߟߌ",
+"cat": "ߞߞߘ."
+},
+{
+"fr": "alcoolique",
+"nko": "ߘߊ߲߬ߘߊ߬ߟߌ߲߬ߡߊ",
+"cat": "ߡ."
+},
+{
+"fr": "allonge",
+"nko": "ߓߌ߬ߟߊ߬ߢߐ߲߰ߡߊ߬ߝߟߎ",
+"cat": "ߕ."
+},
+{
+"fr": "altérable",
+"nko": "ߢߡߊߕߌߢߍߕߊ",
+"cat": "ߡ."
+},
+{
+"fr": "amende",
+"nko": "ߢߍ߬ߢߌ߲߬ߘߐ߬ߓߍ߲",
+"cat": "ߕ."
+},
+{
+"fr": "amour",
+"nko": "ߞߊ߬ߣߌ߲",
+"cat": "ߞߍߕ."
+},
+{
+"fr": "amovible",
+"nko": "ߝߌߙߌ߲ߝߌߙߌ߲ߕߊ",
+"cat": "ߡ."
+},
+{
+"fr": "anarchisme",
+"nko": "ߥߊ߬ߟߊ߲߬ߞߌ߬ߦߊ",
+"cat": "ߗߞߕ."
+},
+{
+"fr": "animalité",
+"nko": "ߢߣߊߡߦߊߟߌ",
+"cat": "ߞߍߕ."
+},
+{
+"fr": "anthracite",
+"nko": "ߕߊߞߓߊ",
+"cat": "ߕ."
+},
+{
+"fr": "antirouille",
+"nko": "ߞߏ߬ߙߌ߬ߞߏߙߌߓߊ߬ߟߌ",
+"cat": "ߡ."
+},
+{
+"fr": "aphonie",
+"nko": "ߞߊ߲ߠߊߝߊ߮",
+"cat": "ߞߍߕ."
+},
+{
+"fr": "appauvrir",
+"nko": "ߟߊߝߊ߲߬ߕߊ߲߬ߧߊ߫",
+"cat": "ߕߡ."
+},
+{
+"fr": "apprêter",
+"nko": "ߘߐߓߍ߲߬",
+"cat": "ߕߡ."
+},
+{
+"fr": "arc-en-ciel",
+"nko": "ߣߌ߲߬ߞߌ߲ߣߊ߲߬ߞߊ߲",
+"cat": "ߕ."
+},
+{
+"fr": "aristotélisme",
+"nko": "ߊߙߛߌߕߊߟߛߌߦߊ",
+"cat": "ߗߞߕ."
+},
+{
+"fr": "arrière-train",
+"nko": "ߟߊߓߊ߲",
+"cat": "ߡ."
+},
+{
+"fr": "ascendance",
+"nko": "ߓߐߛߎ߲",
+"cat": "ߞߍߕ."
+},
+{
+"fr": "assemblée de notable",
+"nko": "ߡߐ߰ߘߐ߬ߜߍ߬ߓߏߟߏ߲",
+"cat": "ߡ."
+},
+{
+"fr": "assureur",
+"nko": "ߟߊߟߊߟߊ",
+"cat": "ߡ."
+},
+{
+"fr": "atmosphérique",
+"nko": "ߡߐ߲ߕߐ߲ߡߊ",
+"cat": "ߡ."
+},
+{
+"fr": "attitude",
+"nko": "ߘߊ߲ߖߏ߮",
+"cat": "ߞߍߕ."
+},
+{
+"fr": "augmenter",
+"nko": "ߜߟߍ߬ߦߊ߬",
+"cat": "ߞߕ."
+},
+{
+"fr": "automatique",
+"nko": "ߞߍߒߖߘߍ߬ߡߊ",
+"cat": "ߞߍߕ."
+},
+{
+"fr": "avant-première",
+"nko": "ߢߍߛߘߊߟߊ",
+"cat": "ߞߊߟ."
+},
+{
+"fr": "aviver",
+"nko": "ߘߐߜߊ߬",
+"cat": "ߞߕ."
+},
+{
+"fr": "aérolite",
+"nko": "ߛߊ߲ߞߓߊ",
+"cat": "ߕ."
+},
+{
+"fr": "bahut",
+"nko": "ߞߏ߲߬ߘߏ",
+"cat": "ߕ."
+},
+{
+"fr": "ballotage",
+"nko": "ߝߍ߬ߡߐ߰ߞߢߊ",
+"cat": "ߞߍߕ."
+},
+{
+"fr": "baratiner",
+"nko": "ߥߣߊ߬ߞߊ߬ߥߣߊߞߊ߫",
+"cat": "ߘߞߕ."
+},
+{
+"fr": "basse",
+"nko": "ߘߎ߲߬ߘߎ߲߬ߞߊ߲",
+"cat": "ߕ."
+},
+{
+"fr": "beau-fils",
+"nko": "ߕߊ߬ߘߋ߲",
+"cat": "ߡ."
+},
+{
+"fr": "betterave",
+"nko": "ߝߎߦߋ߲ߣߍ߲ߥߎߟߋ߲",
+"cat": "ߕ."
+},
+{
+"fr": "bigarré,e",
+"nko": "ߡߊߢߍ߲߰ߣߍ߲",
+"cat": "ߡ."
+},
+{
+"fr": "bière",
+"nko": "ߢߐ߬ߘߟߐ",
+"cat": "ߞߍߕ."
+},
+{
+"fr": "blâmer",
+"nko": "ߦߙߊ߬ߞߌ߬ߟߌ",
+"cat": "ߞߍߕ."
+},
+{
+"fr": "boire",
+"nko": "ߡߌ߲߬",
+"cat": "ߞߍߕ."
+},
+{
+"fr": "boniment",
+"nko": "ߘߌߦߊߣߊߞߊ߲",
+"cat": "ߕ."
+},
+{
+"fr": "bonjour",
+"nko": "ߌ ߣߌ߫ ߛߐ߰ߡߊ߬",
+"cat": "ߝߥ."
+},
+{
+"fr": "bouffarde",
+"nko": "ߛߌ߬ߛߌ߬ߥߙߏߝߋ",
+"cat": "ߞߍߕ."
+},
+{
+"fr": "Bourgeois,oise",
+"nko": "ߢߋߙߌߡߊ",
+"cat": "ߡ."
+},
+{
+"fr": "braconner",
+"nko": "ߝߟߍߡߊߛߏ߬ߧߊ߬",
+"cat": "ߕߡ."
+},
+{
+"fr": "brigand",
+"nko": "ߕߋ߰ߙߋ",
+"cat": "ߡ."
+},
+{
+"fr": "brosser",
+"nko": "ߞߏ߬ ߝߎ߭ ߟߊ߫",
+"cat": "ߕߡ."
+},
+{
+"fr": "bulgare",
+"nko": "ߓߟߌߜ߭ߊߙߌߞߊ",
+"cat": "ߡ."
+},
+{
+"fr": "bée",
+"nko": "ߘߊߜߟߏߕߋߓߊ߯ߕߐ",
+"cat": "ߡ."
+},
+{
+"fr": "cablogramme",
+"nko": "ߔߙߊߕߌ",
+"cat": "ߕ."
+},
+{
+"fr": "cafouillis",
+"nko": "ߡߊߣߡߊߙߊߟߌ",
+"cat": "ߞߍߕ."
+},
+{
+"fr": "calibre",
+"nko": "ߝߙߏߞߏ",
+"cat": "ߡ."
+},
+{
+"fr": "campement",
+"nko": "ߘߊ߯ߟߌ",
+"cat": "ߞߍߕ."
+},
+{
+"fr": "canon",
+"nko": "ߜߍ߬ߟߍ",
+"cat": "ߕ."
+},
+{
+"fr": "captivité",
+"nko": "ߕߍߕߊ",
+"cat": "ߡ."
+},
+{
+"fr": "caresse",
+"nko": "ߡߊ߬ߡߐ߬ߡߐ߬ߟߌ",
+"cat": "ߞߍߕ."
+},
+{
+"fr": "carter",
+"nko": "ߘߟߊߡߊ߲",
+"cat": "ߕ."
+},
+{
+"fr": "caste",
+"nko": "ߛߌ",
+"cat": "ߕ."
+},
+{
+"fr": "causer",
+"nko": "ߛߊߓߎߦߊ߫",
+"cat": "ߞߛ."
+},
+{
+"fr": "center industriel,elle",
+"nko": "ߘߍ߲߰ߠߌ߲߬ ߕߊ߲ߓߊ߲",
+"cat": "ߡ."
+},
+{
+"fr": "cet",
+"nko": "ߣߌ߲߬ ߞߞߘ",
+"cat": "ߞߞߘ."
+},
+{
+"fr": "champêtre",
+"nko": "ߛߣߍ߬ߓߏ߲߬ߘߟߊ߬ߞߊ",
+"cat": "ߡ."
+},
+{
+"fr": "chardonneret",
+"nko": "ߖߋ߬ߝߙߋ߬-ߞߊ߲ߘߌߡߊ",
+"cat": "ߡ."
+},
+{
+"fr": "chatoiement",
+"nko": "ߦߟߋߞߎ",
+"cat": "ߞߍߕ."
+},
+{
+"fr": "chenapan",
+"nko": "ߛߐ߲߬ߖߎ߮",
+"cat": "ߡ."
+},
+{
+"fr": "chiper",
+"nko": "ߛߏ߲߬ߧߊ߫",
+"cat": "ߕߡ."
+},
+{
+"fr": "christianisme",
+"nko": "ߣߊ߬ߛߙߊ߬ߦߊ",
+"cat": "ߗߞߕ."
+},
+{
+"fr": "cigale",
+"nko": "ߕߋ߬ߟߋ߲ߓߊ߲",
+"cat": "ߕ."
+},
+{
+"fr": "ciseau",
+"nko": "ߞߡߋߛߎ",
+"cat": "ߕ."
+},
+{
+"fr": "clarté lunaire",
+"nko": "ߞߊߙߏߜߍ",
+"cat": "ߕ."
+},
+{
+"fr": "cloisonner",
+"nko": "ߝߙߍߞߕߍߦߊ߫",
+"cat": "ߞߕ."
+},
+{
+"fr": "codage",
+"nko": "ߘߏߛߓߍߦߊ",
+"cat": "ߗߞߕ."
+},
+{
+"fr": "colback",
+"nko": "ߕߙߎߞߌߝߟߍߞߍ",
+"cat": "ߕ."
+},
+{
+"fr": "coloré,e",
+"nko": "ߞߟߐ߬ߦߊ߬ߣߍ߲",
+"cat": "ߡ."
+},
+{
+"fr": "commettre des –s",
+"nko": "ߝߊߙߊ߲ߛߊ",
+"cat": "ߞߍߕ."
+},
+{
+"fr": "compilateur,trice",
+"nko": "ߟߊߞߊ߬ߝߏ߬ߓߊ߮",
+"cat": "ߡ."
+},
+{
+"fr": "comptable",
+"nko": "ߦߙߍߞߍߟߊ",
+"cat": "ߡ."
+},
+{
+"fr": "conclusion",
+"nko": "ߓߍ߲߬ߒߘߐ",
+"cat": "ߞߍߕ."
+},
+{
+"fr": "conduite",
+"nko": "ߢߍߡߌ߬ߘߊ",
+"cat": "ߞߍߕ."
+},
+{
+"fr": "congenital,e,aux",
+"nko": "ߘߊߟߌߢߊ",
+"cat": "ߡ."
+},
+{
+"fr": "consanguinité",
+"nko": "ߓߊߘߋ߲ߝߘߎ",
+"cat": "ߞߍߕ."
+},
+{
+"fr": "consonne",
+"nko": "ߡߊ߲߬ߞߊ߲",
+"cat": "ߕ."
+},
+{
+"fr": "contenant",
+"nko": "ߡߎ߬ߙߊ߲",
+"cat": "ߕ."
+},
+{
+"fr": "contrairement à",
+"nko": "ߢߊߜߘߍߡߦߊ߬",
+"cat": "ߞߊߟ."
+},
+{
+"fr": "contrister",
+"nko": "ߛߎ߬ߣߎ߲߬",
+"cat": "ߘߒ."
+},
+{
+"fr": "coordination",
+"nko": "ߘߏ߲߬ߢߐ߲߰ߓߟߏ߬ߟߌ",
+"cat": "ߞߍߕ."
+},
+{
+"fr": "cornichon",
+"nko": "ߣߊߟߏߡߊ",
+"cat": "ߡ."
+},
+{
+"fr": "cosmétique",
+"nko": "ߟߊ߬ߗߋ߲߬ߧߟߊ߬ߝߋ߲",
+"cat": "ߡ."
+},
+{
+"fr": "coupable",
+"nko": "ߞߎ߲߬ߞߏ߬ߕߐ",
+"cat": "ߡ."
+},
+{
+"fr": "court-vêtu,e",
+"nko": "ߡߊ߬ߛߘߌ߬ߛߎ߬ߘߎ߲߬ߕߌ߮",
+"cat": "ߡ."
+},
+{
+"fr": "cran",
+"nko": "ߕߏ߲",
+"cat": "ߕ."
+},
+{
+"fr": "crise",
+"nko": "ߘߌߡߌ߲",
+"cat": "ߡ."
+},
+{
+"fr": "croupir",
+"nko": "ߞߙߏ߫",
+"cat": "ߞߕ."
+},
+{
+"fr": "crépins",
+"nko": "ߛߏ߬ߛߋ߲߬ߖߟߎ",
+"cat": "ߕ."
+},
+{
+"fr": "culbuter",
+"nko": "ߟߊߖߊ߲",
+"cat": "ߞߕ."
+},
+{
+"fr": "cygne",
+"nko": "ߕߐ߲ߞߣߐ",
+"cat": "ߕ."
+},
+{
+"fr": "dactylographe",
+"nko": "ߛߓߍߟߊ߲ߛߓߍߟߊ",
+"cat": "ߞߍߣ."
+},
+{
+"fr": "de licencié",
+"nko": "ߞߏ߲߬ߓߏ߬ߦߊ",
+"cat": "ߗߞߕ."
+},
+{
+"fr": "denteler",
+"nko": "ߟߋ߲ߛߋ߲ߦߊ߫",
+"cat": "ߞߕ."
+},
+{
+"fr": "dessouler",
+"nko": "ߞߍ߫ ߊ߬ ߖߘߍ߬ ߞߊ߬ߟߊߡߊ߬",
+"cat": "ߞߕ."
+},
+{
+"fr": "diacre",
+"nko": "ߣߓߊ",
+"cat": "ߡ."
+},
+{
+"fr": "diffuser",
+"nko": "ߞߟߋߞߟߋ߫",
+"cat": "ߕߡ."
+},
+{
+"fr": "dimension",
+"nko": "ߕߊ߲ߛߊ߲",
+"cat": "ߕ."
+},
+{
+"fr": "discobole",
+"nko": "ߝߘߍ߬ߝߏ߬ߦߌ߬ߟߊ",
+"cat": "ߞߍߣ."
+},
+{
+"fr": "dispense",
+"nko": "ߘߌ߬ߢߍ߬ߒߘߐ",
+"cat": "ߞߍߕ."
+},
+{
+"fr": "distension",
+"nko": "ߝߍߒߠߊ",
+"cat": "ߞߍߕ."
+},
+{
+"fr": "divorcer",
+"nko": "ߕߍߝߘߊ߫",
+"cat": "ߞߕ."
+},
+{
+"fr": "dollar",
+"nko": "ߘߟߊ",
+"cat": "ߕ."
+},
+{
+"fr": "dos",
+"nko": "ߞߐ",
+"cat": "ߕ."
+},
+{
+"fr": "drap",
+"nko": "ߘߐߟߊ",
+"cat": "ߕ."
+},
+{
+"fr": "duperir",
+"nko": "ߖߊ߲߬ߝߊ߬ߞߏ",
+"cat": "ߡ."
+},
+{
+"fr": "débile",
+"nko": "ߝߛߐߞߐߙ",
+"cat": "ߡ."
+},
+{
+"fr": "débrouiller",
+"nko": "ߢߊߓߐ߫",
+"cat": "ߘߒ."
+},
+{
+"fr": "décerner",
+"nko": "ߞߎ߲߬ߧߊߛߌ߰",
+"cat": "ߕߡ."
+},
+{
+"fr": "déclencher",
+"nko": "ߥߟߌ߬",
+"cat": "ߕߡ."
+},
+{
+"fr": "décontenancer",
+"nko": "ߞߎ߲߬ߡߊ߬ߜߊ߲߫",
+"cat": "ߕߡ."
+},
+{
+"fr": "décéder",
+"nko": "ߛߊ߬",
+"cat": "ߘߒ."
+},
+{
+"fr": "défiance",
+"nko": "ߣߍߡߦߊ",
+"cat": "ߞߍߕ."
+},
+{
+"fr": "dégel",
+"nko": "ߦߋ߬ߟߋ߲߬ߠߌ߲",
+"cat": "ߞߍߕ."
+},
+{
+"fr": "déifier",
+"nko": "ߟߊߡߊ߰ߙߌ߬ߦߊ߫",
+"cat": "ߕߡ."
+},
+{
+"fr": "déloyauté",
+"nko": "ߡߊߙߊ߲ߛߊ",
+"cat": "ߞߍߕ."
+},
+{
+"fr": "démonter",
+"nko": "ߟߊߓߋ߬",
+"cat": "ߞߕ."
+},
+{
+"fr": "dép-ècement",
+"nko": "ߘߐߓߛߏߟߌ",
+"cat": "ߞߍߕ."
+},
+{
+"fr": "déployer",
+"nko": "ߘߐߝߍ߲߬ߛߍ߲߫",
+"cat": "ߞߕ."
+},
+{
+"fr": "dépôt",
+"nko": "ߞߊ߬ߙߌ߬ߝߊ",
+"cat": "ߞߍߕ."
+},
+{
+"fr": "désaimantation",
+"nko": "ߣߍ߰ߛߎ߬ߓߊ߰ߓߐ",
+"cat": "ߞߍߕ."
+},
+{
+"fr": "désespoir",
+"nko": "ߢߜߊ",
+"cat": "ߞߍߕ."
+},
+{
+"fr": "désopilant e",
+"nko": "ߦߟߍߞߏ",
+"cat": "ߡ."
+},
+{
+"fr": "déterminer un lieu en latitude",
+"nko": "ߞߊ߬ ߦߙߐ ߘߟߊߕߍ߯ߦߊ߫",
+"cat": "ߝߥ."
+},
+{
+"fr": "développer",
+"nko": "ߡߐ߬ߘߌߦߊ߫",
+"cat": "ߞߍߕ."
+},
+{
+"fr": "eau",
+"nko": "ߓߊߟߋ߲",
+"cat": "ߕ."
+},
+{
+"fr": "ecole spéciale",
+"nko": "ߘߎ߲߬ߘߎ߬ߡߊ߬ ߞߊߙߊ߲ߕߊ",
+"cat": "ߡ."
+},
+{
+"fr": "effritement",
+"nko": "ߓߘߎߓߘߎߟߌ",
+"cat": "ߞߍߕ."
+},
+{
+"fr": "emboîtage",
+"nko": "ߜߊ߲߬ߞߎ߲",
+"cat": "ߗߞߕ."
+},
+{
+"fr": "empilement",
+"nko": "ߖߐ߬ߟߌ",
+"cat": "ߞߍߕ."
+},
+{
+"fr": "empâter",
+"nko": "ߟߊߘߎ߬",
+"cat": "ߕߡ."
+},
+{
+"fr": "encliquetage",
+"nko": "ߞߟߋ߬ߞߎ߬ߦߊ",
+"cat": "ߗߞߕ."
+},
+{
+"fr": "endormi,e",
+"nko": "ߖߊ߲߬ߓߐߣߍ߲",
+"cat": "ߡ."
+},
+{
+"fr": "enfant",
+"nko": "ߓߐ߲ߛߐ߲",
+"cat": "ߡ."
+},
+{
+"fr": "engageant,e",
+"nko": "ߘߐߛߎ߫ ߞߊ߲",
+"cat": "ߕ."
+},
+{
+"fr": "enjôler",
+"nko": "ߕߟߏߡߊߕߍ߬",
+"cat": "ߕߡ."
+},
+{
+"fr": "ensanglanter",
+"nko": "ߖߋ߬ߟߌ߬ߡߊ߬ߦߊ߫",
+"cat": "ߕߡ."
+},
+{
+"fr": "entracte",
+"nko": "ߢߐ߲ߢߐ߲߫ ߕߎߡߊ",
+"cat": "ߞߍߕ."
+},
+{
+"fr": "entériner",
+"nko": "ߓߍ߲߬ ߊ߬ ߡߊ߬",
+"cat": "ߞߛ."
+},
+{
+"fr": "esanskrit",
+"nko": "ߛߊ߲ߛߌߞߙߌߕߌ߫ ߛߓߍߟߌ",
+"cat": "ߕ."
+},
+{
+"fr": "esplanade",
+"nko": "ߞߣߍ",
+"cat": "ߕ."
+},
+{
+"fr": "estimateur",
+"nko": "ߡߐ߬ߟߐ߲߬ߝߐߣߍ߲",
+"cat": "ߡ."
+},
+{
+"fr": "ex professo",
+"nko": "ߞߣߍ ߞߊ߲߬",
+"cat": "ߞߊߟ."
+},
+{
+"fr": "excréteur,trice",
+"nko": "ߣߐ߯ ߟߊߓߐߟߊ߲",
+"cat": "ߕ."
+},
+{
+"fr": "exister (il n’- pas )",
+"nko": "ߊ߬ ߕߴߦߋ߲߬",
+"cat": "ߝߥ."
+},
+{
+"fr": "exporter",
+"nko": "ߟߊߝߏߦߌ߫",
+"cat": "ߕߡ."
+},
+{
+"fr": "extension",
+"nko": "ߘߐߛߊ߬ߡߊ߲",
+"cat": "ߞߍߕ."
+},
+{
+"fr": "exubérance",
+"nko": "ߓߌ߮",
+"cat": "ߞߍߕ."
+},
+{
+"fr": "faculté",
+"nko": "ߤߊߞߍ",
+"cat": "ߗߞߕ."
+},
+{
+"fr": "faix",
+"nko": "ߞߐ߲߬ߞߐ߲߬ߘߐ߬ߞߏ",
+"cat": "ߞߍߕ."
+},
+{
+"fr": "farder",
+"nko": "ߢߟߊߘߏ߲߰ߠߊ",
+"cat": "ߞߕ."
+},
+{
+"fr": "faussement",
+"nko": "ߝߎ߯",
+"cat": "ߞߞߘ."
+},
+{
+"fr": "femme",
+"nko": "ߡߏ߬ߛߏ߫ ߖߘߍ߬ߝߊ߬ߙߊ߲߬ߛߊ߬ߟߊ",
+"cat": "ߞߍߣ."
+},
+{
+"fr": "fer ( de - )",
+"nko": "ߣߍ߰ߡߊ",
+"cat": "ߡ."
+},
+{
+"fr": "feu vert",
+"nko": "ߕߊ߫ ߓߊ߯ߡߊ",
+"cat": "ߡ."
+},
+{
+"fr": "fier",
+"nko": "ߞߊ߬ߘߏ߬ߜߍߟߍ߲",
+"cat": "ߡ."
+},
+{
+"fr": "film en couleurs)",
+"nko": "ߖߌ߬ߦߊ߬ߖߟߎ߫ ߞߟߐ߬ߡߊ",
+"cat": "ߡ."
+},
+{
+"fr": "fit",
+"nko": "ߟߞߊߟߌߦߊ߫",
+"cat": "ߕߡ."
+},
+{
+"fr": "flan",
+"nko": "ߝߜߍߕߊߞߎߟߊ",
+"cat": "ߞߍߣ."
+},
+{
+"fr": "flou,e",
+"nko": "ߡߊߜߎߣߍ߲",
+"cat": "ߡ."
+},
+{
+"fr": "folâtrer",
+"nko": "ߥߙߍ߬ߥߙߍ",
+"cat": "ߡ."
+},
+{
+"fr": "force de l’âge",
+"nko": "ߘߋ߲ߡߌߛߍ߲ߧߊ ߝߊ߭",
+"cat": "ߡ."
+},
+{
+"fr": "formuler",
+"nko": "ߝߐ߫",
+"cat": "ߕߡ."
+},
+{
+"fr": "fouine",
+"nko": "ߓߏ߲ߠߌ߲",
+"cat": "ߞߍߕ."
+},
+{
+"fr": "fourré",
+"nko": "ߥߊ߬ߢߊ߲",
+"cat": "ߡ."
+},
+{
+"fr": "franchissement",
+"nko": "ߟߕߊ߬ߡߌ߲߬ߠߌ߲",
+"cat": "ߞߍߕ."
+},
+{
+"fr": "frequentation",
+"nko": "ߓߐߒߡߊߟߌ",
+"cat": "ߞߍߕ."
+},
+{
+"fr": "froid,e",
+"nko": "ߜߟߌߟߌ",
+"cat": "ߞߍߕ."
+},
+{
+"fr": "fréquemment",
+"nko": "ߊ߬ ߛߌߦߊߡߊ߲ ߘߐ߫",
+"cat": "ߝߥ."
+},
+{
+"fr": "furoncle",
+"nko": "ߞߊ߬ߙߊ߲߬ߜߊ",
+"cat": "ߕ."
+},
+{
+"fr": "fée conte de - s",
+"nko": "ߛߎߓߊ߯ ߡߛߏ",
+"cat": "ߗߞߕ."
+},
+{
+"fr": "gageur,euse,",
+"nko": "ߕߏ߬ߟߌ߬ߡߊ߬ߛߌ߰ߟߊ",
+"cat": "ߞߍߣ."
+},
+{
+"fr": "gamme",
+"nko": "ߦߌߟߡߊ",
+"cat": "ߕ."
+},
+{
+"fr": "garçonnet",
+"nko": "ߘߋ߲ߞߎߣߍ߲",
+"cat": "ߡ."
+},
+{
+"fr": "gazouiller",
+"nko": "ߛߐ߲߬ߞߌ߲߫",
+"cat": "ߕߡ."
+},
+{
+"fr": "gibecière",
+"nko": "ߓߐ߬ߘߐ",
+"cat": "ߡ."
+},
+{
+"fr": "glisser",
+"nko": "ߛߣߍߣߍ߫",
+"cat": "ߕߡ."
+},
+{
+"fr": "gombo",
+"nko": "ߜߊ߲",
+"cat": "ߞߍߕ."
+},
+{
+"fr": "goéland",
+"nko": "ߖߌߕߎߣߎ߲ߓߟߊ߫",
+"cat": "ߕߡ."
+},
+{
+"fr": "graniteux",
+"nko": "ߡߊߣߊ߲ߦߊ",
+"cat": "ߗߞߕ."
+},
+{
+"fr": "greffon",
+"nko": "ߦߙߌߜߙߊߟߌ",
+"cat": "ߞߍߕ."
+},
+{
+"fr": "grive",
+"nko": "ߕߌߡߍߕߌߡߍߦߊ",
+"cat": "ߗߞߕ."
+},
+{
+"fr": "gueule-loup",
+"nko": "ߣߎ߲",
+"cat": "ߕ."
+},
+{
+"fr": "gâchis",
+"nko": "ߓߐ߱",
+"cat": "ߕ."
+},
+{
+"fr": "géométrique",
+"nko": "ߘߎ߰ߛߎ߬ߡߊ߲߬ߡߊ",
+"cat": "ߡ."
+},
+{
+"fr": "hagiographe",
+"nko": "ߕߎ߬ߡߏ߬ߙߌ߬ ߘߝߐ߬ ߛߓߍ߬ߟߊ",
+"cat": "ߞߍߣ."
+},
+{
+"fr": "hardiesse",
+"nko": "ߝߊߘߌ߲ߧߊ",
+"cat": "ߗߞߕ."
+},
+{
+"fr": "helléniste",
+"nko": "ߜ߭ߙߍ߬ߞߌ߬ߟߐ߲߬ߠߊ",
+"cat": "ߞߍߣ."
+},
+{
+"fr": "hindou,e",
+"nko": "ߤߌ߲ߘߌߝߋ߲",
+"cat": "ߡ."
+},
+{
+"fr": "homme",
+"nko": "ߡߐ߱",
+"cat": "ߕ."
+},
+{
+"fr": "homéopathique",
+"nko": "ߛߌ߰ߒ߬ߝߍ߬ߢߐ߲߮",
+"cat": "ߡ."
+},
+{
+"fr": "huilage",
+"nko": "ߕߟߎߦߊߟߌ",
+"cat": "ߞߍߕ."
+},
+{
+"fr": "hydrophobie",
+"nko": "ߖߌߡߏߙߌߦߊ",
+"cat": "ߗߞߕ."
+},
+{
+"fr": "hâtif,",
+"nko": "ߞߎ߲߬ߝߟߐ",
+"cat": "ߡ."
+},
+{
+"fr": "héréditairement",
+"nko": "ߗߍߕߊߓߟߏߡߊ߬",
+"cat": "ߞߊߟ."
+},
+{
+"fr": "ignition",
+"nko": "ߡߍߣߍ߲ߠߌ߲",
+"cat": "ߞߍߕ."
+},
+{
+"fr": "imbrication",
+"nko": "ߞߊ߰ߙߋ߬ߞߊ߯ߙߋ",
+"cat": "ߗߞߕ."
+},
+{
+"fr": "immortaliser",
+"nko": "ߟߊߢߣߊߡߦߊ߫",
+"cat": "ߞߕ."
+},
+{
+"fr": "impitoyablement",
+"nko": "ߤߌߣߓߊߟߌߦߊߓߟߏߡߊ߬",
+"cat": "ߞߊߟ."
+},
+{
+"fr": "impression",
+"nko": "ߣߐ߬ߟߊ",
+"cat": "ߞߍߕ."
+},
+{
+"fr": "impureté,",
+"nko": "ߓߎ߬ߘߎ߲",
+"cat": "ߞߍߕ."
+},
+{
+"fr": "inapplication",
+"nko": "ߓߟߏߦߓߊߟߌߦߊ",
+"cat": "ߗߞߕ."
+},
+{
+"fr": "incisif,",
+"nko": "ߘߌߡߌ߲ߣߍ߲",
+"cat": "ߡ."
+},
+{
+"fr": "inconsidéré,e",
+"nko": "ߦߏߙߏ߲ߣߍ߲",
+"cat": "ߡ."
+},
+{
+"fr": "indetermination",
+"nko": "ߘߊ߲߬ߠߊ߬ߕߍ߰ߓߊߟߌߦߊ",
+"cat": "ߗߞߕ."
+},
+{
+"fr": "indubitable",
+"nko": "ߕߎ߲߬ߞߎ߬ߙߎ߲߬ߒ߬ߡߊ߬ߓߊߟߌ",
+"cat": "ߞߍߕ."
+},
+{
+"fr": "inexpert,e",
+"nko": "ߘߎ߰ߙߋ߲߬ߕߍ",
+"cat": "ߕ."
+},
+{
+"fr": "inflexible",
+"nko": "ߘߐ߬ߞߙߎ߬ߓߊߟߌ",
+"cat": "ߞߍߕ."
+},
+{
+"fr": "inhalation",
+"nko": "ߣߌߟߊߞߟߌߟߌ",
+"cat": "ߞߍߕ."
+},
+{
+"fr": "inobservance",
+"nko": "ߞߣߐ߬ߜߍ߲߬ߓߊߟߌߦߊ",
+"cat": "ߗߞߕ."
+},
+{
+"fr": "insignifiance",
+"nko": "ߓߐ߬ߘߍ߬ߒߕߊ߲ߧߊ",
+"cat": "ߗߞߕ."
+},
+{
+"fr": "instard de (à l’)",
+"nko": "ߕߢߊ ߞߊ߲߬ ߞߘ",
+"cat": "ߝߥ."
+},
+{
+"fr": "intangibilité",
+"nko": "ߡߊ߰ߒ߬ߠߊ߬ߓߊߟߌߦߊ",
+"cat": "ߗߞߕ."
+},
+{
+"fr": "interdire",
+"nko": "ߞߎ߬ߡߊ߲߬ߘߌ߫",
+"cat": "ߕߡ."
+},
+{
+"fr": "interrupteur,trice",
+"nko": "ߓߟߏߕߍ߯ߟߊ߲",
+"cat": "ߕ."
+},
+{
+"fr": "intrigant,e",
+"nko": "ߞߣߐߞߍߟߌ",
+"cat": "ߞߍߕ."
+},
+{
+"fr": "invariabilité",
+"nko": "ߘߐ߬ߦߟߍ߬ߡߊ߲߬ߓߊߟߌߦߊ",
+"cat": "ߗߞߕ."
+},
+{
+"fr": "inélégance",
+"nko": "ߢߊ߬ߓߊߟߌߦߊ",
+"cat": "ߗߞߕ."
+},
+{
+"fr": "irréfléchi,e",
+"nko": "ߡߙߌߓߊߟߌ",
+"cat": "ߞߍߕ."
+},
+{
+"fr": "ivraie",
+"nko": "ߓߐߙߐ߲ߓߌߦߊ",
+"cat": "ߗߞߕ."
+},
+{
+"fr": "jardinière",
+"nko": "ߝߙߋߘߊ߮",
+"cat": "ߞߍߣ."
+},
+{
+"fr": "joie",
+"nko": "ߛߍߥߊ",
+"cat": "ߡ."
+},
+{
+"fr": "judas",
+"nko": "ߡߊߙߊ߲ߛߊߓߊ߮",
+"cat": "ߡ."
+},
+{
+"fr": "justificatif,",
+"nko": "ߟߊ߬ߜߍ߬ߟߊ߲",
+"cat": "ߕ."
+},
+{
+"fr": "kérosène",
+"nko": "ߢߟߊߡߍߣߍ߲ߕߊߖߌ",
+"cat": "ߕ."
+},
+{
+"fr": "laitiniste",
+"nko": "ߟߐߠߌ߲ߠߊ ߟߊ߬ߕߍ߲ ߘߐ߫",
+"cat": "ߝߥ."
+},
+{
+"fr": "langue s de feu",
+"nko": "ߕߊ߫ ߖߟߏߖߟߏ",
+"cat": "ߡ."
+},
+{
+"fr": "latent,e",
+"nko": "ߢߡߊߘߏ߲߰ߣߍ߲",
+"cat": "ߡ."
+},
+{
+"fr": "lemonier",
+"nko": "ߟߋ߬ߡߎ߬ߣߎ߲߬ߞߎ߲߰ߖߎ",
+"cat": "ߕ."
+},
+{
+"fr": "liage",
+"nko": "ߜߋ߲߬ߞߘߎ",
+"cat": "ߞߍߕ."
+},
+{
+"fr": "lierre",
+"nko": "ߣߐ߲ߐߓߐ߫ ߡߌߛߍ߲ ߘߏ߫ ߟߋ߬",
+"cat": "ߕ."
+},
+{
+"fr": "lippe",
+"nko": "ߘߊߜߟߏ",
+"cat": "ߕ."
+},
+{
+"fr": "livre",
+"nko": "ߝߊ߬ߘߊ߲߬ߞߊ",
+"cat": "ߕ."
+},
+{
+"fr": "longron",
+"nko": "ߟߊߞߏ",
+"cat": "ߡ."
+},
+{
+"fr": "loyalisme",
+"nko": "ߟߊߜߍߦߊ",
+"cat": "ߗߞߕ."
+},
+{
+"fr": "lune",
+"nko": "ߞߊߙߏ",
+"cat": "ߕ."
+},
+{
+"fr": "lustré,e",
+"nko": "ߡߣߍߡߣߍߟߊ",
+"cat": "ߞߍߣ."
+},
+{
+"fr": "légitimé,e",
+"nko": "ߕߊߓߍߛߎ߲ߓߍ",
+"cat": "ߡ."
+},
+{
+"fr": "machiniste",
+"nko": "ߕߙߏ߬ߞߏ߬ߦߊ߬ߟߊ",
+"cat": "ߞߍߣ."
+},
+{
+"fr": "mai",
+"nko": "ߘߓߊ߬ߕߊ",
+"cat": "ߡ."
+},
+{
+"fr": "maison",
+"nko": "ߓߏ߲",
+"cat": "ߕ."
+},
+{
+"fr": "malais",
+"nko": "ߡߊߟߖ߭ߌߞߊ",
+"cat": "ߡ."
+},
+{
+"fr": "maltraiter",
+"nko": "ߥߊߢߊ߲ߞߊ߫",
+"cat": "ߘߒ."
+},
+{
+"fr": "manger",
+"nko": "ߘߊߥߎ߲߫",
+"cat": "ߕߡ."
+},
+{
+"fr": "manifester",
+"nko": "ߟߊ߲ߞߣߍߡߊ߫",
+"cat": "ߕߡ."
+},
+{
+"fr": "marais",
+"nko": "ߕߏ߬ߘߊ",
+"cat": "ߞߍߣ."
+},
+{
+"fr": "marmottement",
+"nko": "ߘߊߞߘߐߞߎߡߊ",
+"cat": "ߡ."
+},
+{
+"fr": "masquer",
+"nko": "ߢߊߘߐ ߘߏ߲߬",
+"cat": "ߞߒ."
+},
+{
+"fr": "maturation",
+"nko": "ߡߐ߭",
+"cat": "ߞߍߕ."
+},
+{
+"fr": "menaçant,e",
+"nko": "ߜߊ߬ߟߏ߬ߡߊ߬ߦߌߘߊ߬ߞߏ",
+"cat": "ߡ."
+},
+{
+"fr": "merci",
+"nko": "ߒ߬ߓߊ߬ߘߍ",
+"cat": "ߞߍߕ."
+},
+{
+"fr": "merlan",
+"nko": "ߖߍ߮ ߛߎ߮ ߘߏ߫ ߟߋ߬",
+"cat": "ߕ."
+},
+{
+"fr": "mi-voix",
+"nko": "ߞߊ߲ߡߊߖߌ߯ߓߟߏߡߊ߬",
+"cat": "ߞߊߟ."
+},
+{
+"fr": "millier",
+"nko": "ߥߊ߯ߞߋߟߋ߲߫ ߡߊߜߍ߲",
+"cat": "ߕ."
+},
+{
+"fr": "minutieux",
+"nko": "ߢߊߡߌߛߍ߲",
+"cat": "ߡ."
+},
+{
+"fr": "mitoyenneté",
+"nko": "ߓߐߙߐ߲ߘߐ",
+"cat": "ߞߍߕ."
+},
+{
+"fr": "modèle",
+"nko": "ߢߐ߲߱",
+"cat": "ߗߞߕ."
+},
+{
+"fr": "momentanément",
+"nko": "ߡߎߣߎ߲߬",
+"cat": "ߘߞߕ."
+},
+{
+"fr": "monosyllabique",
+"nko": "ߜߋ߲߬ߞߋ߬ߟߋ߲߬ߡߦߊ߬ߣߍ߲",
+"cat": "ߡ."
+},
+{
+"fr": "mordacité",
+"nko": "ߘߊߥߎ߲ߠߌ߲",
+"cat": "ߞߍߕ."
+},
+{
+"fr": "motocyclette",
+"nko": "ߕߊߣߍ߯ߛߓߏߙߌߟߊ",
+"cat": "ߕ."
+},
+{
+"fr": "moutonneux",
+"nko": "ߞߊ߲߬ߞߦߊ߬ߣߍ߲",
+"cat": "ߡ."
+},
+{
+"fr": "munificience",
+"nko": "ߞߊ߬ߡߙߊ߬ߒߞߋߦߊ",
+"cat": "ߗߞߕ."
+},
+{
+"fr": "mycologue",
+"nko": "ߝߍߘߍ߲ߝߌߣߊߟߐ߲ߠߊ",
+"cat": "ߞߍߣ."
+},
+{
+"fr": "mère",
+"nko": "ߡߏߦߌߓߊ߮ ߡߛߏ߬ߡߊ߲",
+"cat": "ߡ."
+},
+{
+"fr": "mécène",
+"nko": "ߡߟߋߞߎߦߊߟߊ߲ߘߌ",
+"cat": "ߡ."
+},
+{
+"fr": "mélodique",
+"nko": "ߘߐ߲߬ߞߟߌ߬ߟߊ߬ߡߊ",
+"cat": "ߡ."
+},
+{
+"fr": "métallurgique",
+"nko": "ߣߍ߰ߘߍ߲߰ߦߊ߬ߞߏ",
+"cat": "ߡ."
+},
+{
+"fr": "n",
+"nko": "ߣ",
+"cat": "ߕ."
+},
+{
+"fr": "nationaliser",
+"nko": "ߟߝߊ߬ߛߏ߬ߦߊ߫",
+"cat": "ߕߡ."
+},
+{
+"fr": "nervation",
+"nko": "ߝߛߊ߬ߦߊ߬ߟߌ",
+"cat": "ߞߍߕ."
+},
+{
+"fr": "nimbe",
+"nko": "ߦߋߟߋ߲ߞߌߘߌ߲",
+"cat": "ߕ."
+},
+{
+"fr": "non-assistance",
+"nko": "ߡߊ߬ߜߍ߲߬ߠߌ߲߬ߓߊߟߌߦߊ",
+"cat": "ߗߞߕ."
+},
+{
+"fr": "notoriété",
+"nko": "ߟߊߥߊ߲߬ߞߊ߬ߕߊ",
+"cat": "ߡ."
+},
+{
+"fr": "numéro",
+"nko": "ߝߙߍߕߍ",
+"cat": "ߕ."
+},
+{
+"fr": "négroïde",
+"nko": "ߞߘߌߞߘߌߟߡߊ",
+"cat": "ߡ."
+},
+{
+"fr": "oblitérateur,trice",
+"nko": "ߖߏ߬ߛߌ߬ߟߊ",
+"cat": "ߞߍߣ."
+},
+{
+"fr": "obvenir",
+"nko": "ߟߊߓߊ߲߫",
+"cat": "ߕߡ."
+},
+{
+"fr": "offensante",
+"nko": "ߘߐ߯ߦߡߊ",
+"cat": "ߡ."
+},
+{
+"fr": "oléagineux",
+"nko": "ߕߟߎߟߡߊ",
+"cat": "ߡ."
+},
+{
+"fr": "ontologique",
+"nko": "ߓߍߓߊ߯ߕߎߜߍߟߐ߲ߘߐߞߏ",
+"cat": "ߡ."
+},
+{
+"fr": "opulence",
+"nko": "ߘߓߐ߬ߟߌ",
+"cat": "ߞߍߕ."
+},
+{
+"fr": "oreiller",
+"nko": "ߞߎ߲߬ߞߘߐ߬ߟߊ߬ߓߘߐ",
+"cat": "ߕ."
+},
+{
+"fr": "orthopédie",
+"nko": "ߛߌ߲߬ߝߏ߲߬ߡߐ߬ߟߐ߲߬ߦߊ",
+"cat": "ߗߞߕ."
+},
+{
+"fr": "ourdir",
+"nko": "ߕߍ߲߬ߕߍ߲߫",
+"cat": "ߕߡ."
+},
+{
+"fr": "ovationner",
+"nko": "ߕߍ߮ ߝߐ߫",
+"cat": "ߕߡ."
+},
+{
+"fr": "paiement",
+"nko": "ߘߌߕߊ",
+"cat": "ߞߍߕ."
+},
+{
+"fr": "paix",
+"nko": "ߖߐ",
+"cat": "ߕ."
+},
+{
+"fr": "palmier",
+"nko": "ߕߌ߲߬ߛߎ߲",
+"cat": "ߕ."
+},
+{
+"fr": "paneré,e",
+"nko": "ߛߊ߬ߦߌ߬ߝߊ",
+"cat": "ߕ."
+},
+{
+"fr": "papi",
+"nko": "ߒ ߓߋ߲ߓߊ߫ ߘߐߕߌߢߍߣߍ߲ ߘߋߣߍ߲ߞߊ߲ ߘߐ߫",
+"cat": "ߡ."
+},
+{
+"fr": "paradisiaque",
+"nko": "ߝߙߍߣߊߞߐߡߊ",
+"cat": "ߡ."
+},
+{
+"fr": "parascolaire",
+"nko": "ߣߊߙߊ߲ߕߌߟߡߊ",
+"cat": "ߡ."
+},
+{
+"fr": "pariade",
+"nko": "ߝߌ߬ߟߓߊ߬ߦߊ ߕߎ߲߬ߡߊ",
+"cat": "ߗߞߕ."
+},
+{
+"fr": "parsi,e",
+"nko": "ߖߙߊߘߛߌߕߙߊ߫ ߣߊߡߎ߲ߕߌ߮ ߤߌ߲ߘߌ߫",
+"cat": "ߝߥ."
+},
+{
+"fr": "parvis",
+"nko": "ߘߟߊߞߣߍ",
+"cat": "ߡ."
+},
+{
+"fr": "pasticher",
+"nko": "ߟߴߊ߬ ߡߊ߬",
+"cat": "ߕߡ."
+},
+{
+"fr": "patriarche",
+"nko": "ߟߎߕߌ߮",
+"cat": "ߡ."
+},
+{
+"fr": "pavoiser",
+"nko": "ߛߊ߲ߖߏ߲ߖߏ߲ߦߊ߫",
+"cat": "ߕߡ."
+},
+{
+"fr": "pellet",
+"nko": "ߣߍ߰ߞߎߘߎ߲ߞߎߘߎ߲",
+"cat": "ߕ."
+},
+{
+"fr": "penseur",
+"nko": "ߡߙߌߟߓߊ",
+"cat": "ߞߍߣ."
+},
+{
+"fr": "percussion",
+"nko": "ߞߐ߲ߞߐ߲ߠߌ߲",
+"cat": "ߞߍߕ."
+},
+{
+"fr": "permission",
+"nko": "ߘߌ߬ߢߍ߬ߒߧߋ",
+"cat": "ߞߍߕ."
+},
+{
+"fr": "personnaliste",
+"nko": "ߘߎ߲߬ߘߎ߬ߡߊ߬ߞߏ߬ߟߊ߲߬ߘߌ",
+"cat": "ߡ."
+},
+{
+"fr": "peser",
+"nko": "ߦߟߍ߬ ߖߊ߭ ߟߊ߫",
+"cat": "ߞߕ."
+},
+{
+"fr": "pharaonique",
+"nko": "ߥߙߊߥߐ߲ߞߏ",
+"cat": "ߡ."
+},
+{
+"fr": "phonéticien,enne",
+"nko": "ߝߐߞߊ߲ߟߐ߲ߠߊ",
+"cat": "ߞߍߣ."
+},
+{
+"fr": "phototactisme",
+"nko": "ߦߋߟߋ߲ߡߜߊ",
+"cat": "ߕ."
+},
+{
+"fr": "phénotypique",
+"nko": "ߦߋߙߋ߲ߘߐߡߊ",
+"cat": "ߡ."
+},
+{
+"fr": "pilaire",
+"nko": "ߛߌߡߊ",
+"cat": "ߡ."
+},
+{
+"fr": "pipe-line",
+"nko": "ߥߙߏ߬ߝߋ",
+"cat": "ߕ."
+},
+{
+"fr": "piteusement",
+"nko": "ߤߌߣߊߓߟߏߡߊ߬",
+"cat": "ߞߊߟ."
+},
+{
+"fr": "placenta",
+"nko": "ߞߣߐߘߏ߲ߛߏ",
+"cat": "ߕ."
+},
+{
+"fr": "planeur",
+"nko": "ߛߊ߲ߞߎߟߎ߲ߣߍ߲",
+"cat": "ߡ."
+},
+{
+"fr": "plastique",
+"nko": "ߡߣߊߡߊ",
+"cat": "ߡ."
+},
+{
+"fr": "pliage",
+"nko": "ߘߐߞߎ߲ߓߍ߲ߠߌ߲",
+"cat": "ߞߍߕ."
+},
+{
+"fr": "pluralisme",
+"nko": "ߥߙߍߞߊߒߞߋߦߊ",
+"cat": "ߗߞߕ."
+},
+{
+"fr": "pneumologue",
+"nko": "ߖߝߐ߬ߜߊ߲߬ߘߌ߬ߟߐ߲߬ߠߊ",
+"cat": "ߞߍߣ."
+},
+{
+"fr": "poinçonner",
+"nko": "ߝߎ߬ߙߊ߲߬",
+"cat": "ߕߡ."
+},
+{
+"fr": "politique salariale",
+"nko": "ߛߙߊ߬ߟߌ߬ߞߏ ߓߘߍ߬ߓߘߍ߬ߟߌ",
+"cat": "ߝߥ."
+},
+{
+"fr": "polythéisme",
+"nko": "ߡߊ߰ߙߌ߬ߥߙߍ߬ߦߊ",
+"cat": "ߗߞߕ."
+},
+{
+"fr": "pondérateur,trice",
+"nko": "ߕߍߞߢߊߟߊ߲",
+"cat": "ߕ."
+},
+{
+"fr": "port",
+"nko": "ߡߊ߬ߥߏ",
+"cat": "ߕ."
+},
+{
+"fr": "portraiturer",
+"nko": "ߛߌ߲ߞߐ߲ߡߊߖߌߦߊߕߊ߬",
+"cat": "ߕߡ."
+},
+{
+"fr": "postiche",
+"nko": "ߛߌߛߎ",
+"cat": "ߕ."
+},
+{
+"fr": "pots-pourris",
+"nko": "ߞߎߛߍߞߎߛߍߘߐ߲ߞߟߌ",
+"cat": "ߕ."
+},
+{
+"fr": "pourpoint",
+"nko": "ߞߏ߬ߛߊ߬ߜߘߏ",
+"cat": "ߕ."
+},
+{
+"fr": "pragmatisme",
+"nko": "ߜߍߘߐߞߏߦߊ",
+"cat": "ߗߞߕ."
+},
+{
+"fr": "pressier",
+"nko": "ߜߌߙߌ߲ߘߌߘߋ߲",
+"cat": "ߡ."
+},
+{
+"fr": "principal,ale,aux",
+"nko": "ߢߣߊߡߊ",
+"cat": "ߡ."
+},
+{
+"fr": "problématique",
+"nko": "ߖߍ߬",
+"cat": "ߡ."
+},
+{
+"fr": "profanation",
+"nko": "ߕߣߊ߬ߟߊ߬ߕߍ",
+"cat": "ߞߍߕ."
+},
+{
+"fr": "prohibitionnisme",
+"nko": "ߟߊ߬ߕߐ߲߬ߞߊ߬ߒ߬ߞߋ߬ߦߊ",
+"cat": "ߗߞߕ."
+},
+{
+"fr": "prononcer",
+"nko": "ߡߙߌߣߊ߲ߦߌߘߊ߫",
+"cat": "ߕߡ."
+},
+{
+"fr": "propédeutique",
+"nko": "ߖߏߣߡߊߞߊߙߊ߲ ߥߟߊ߬ߟߊ߬ߓߐ",
+"cat": "ߞߍߕ."
+},
+{
+"fr": "proto-étoile",
+"nko": "ߓߟߊߓߟߊߢߊ߲ߕߊ",
+"cat": "ߡ."
+},
+{
+"fr": "provisoire",
+"nko": "ߡߊ߬ߞߐߣߐ߲",
+"cat": "ߞߍߕ."
+},
+{
+"fr": "précepteur,trice",
+"nko": "ߘߋ߲ߣߍ߲ߞߊߙߊ߲ߡߐ߮",
+"cat": "ߡ."
+},
+{
+"fr": "prédominante",
+"nko": "ߣߌ߬ߣߌ߬ߣߍ߲",
+"cat": "ߡ."
+},
+{
+"fr": "prémices",
+"nko": "ߟߊߞߌߢߍߦߊ",
+"cat": "ߗߞߕ."
+},
+{
+"fr": "préserver",
+"nko": "ߟߊߘߊ߬ߙߏ߬",
+"cat": "ߕߡ."
+},
+{
+"fr": "préélectoral,ale,aux",
+"nko": "ߢߣߊߕߊߢߊߞߘߐߟߊ",
+"cat": "ߞߍߣ."
+},
+{
+"fr": "psychose",
+"nko": "ߢߣߍ߬ߡߎ߲߬ߕߐ߬ߦߊ",
+"cat": "ߞߍߕ."
+},
+{
+"fr": "pugilistique",
+"nko": "ߞߘߎ߬ߟߌ߬ߞߏ",
+"cat": "ߡ."
+},
+{
+"fr": "punitive",
+"nko": "ߖߊ߰ߞߕߊ߬ߞߏ",
+"cat": "ߡ."
+},
+{
+"fr": "pygargue",
+"nko": "ߛߍ߯ߓߊ",
+"cat": "ߕ."
+},
+{
+"fr": "pègre",
+"nko": "ߛߏ߲߬ߕߐ߲",
+"cat": "ߡ."
+},
+{
+"fr": "père",
+"nko": "ߘߊߝߟߐߓߊ߮",
+"cat": "ߡ."
+},
+{
+"fr": "pédéraste",
+"nko": "ߓߏ߬ߘߊ߬ߘߐ߬ߦߊ߬ߟߊ",
+"cat": "ߞߍߣ."
+},
+{
+"fr": "péremption",
+"nko": "ߛߎ߬ߦߊ",
+"cat": "ߗߞߕ."
+},
+{
+"fr": "pétillement",
+"nko": "ߝߍߙߍ߲ߕߍ",
+"cat": "ߞߍߕ."
+},
+{
+"fr": "quadrupler",
+"nko": "ߣߊߣߌ߲ߣߍ߲ߦߊ߫",
+"cat": "ߕ."
+},
+{
+"fr": "quelqu’un,e indef",
+"nko": "ߘߐ߫",
+"cat": "ߞߞߘ."
+},
+{
+"fr": "quoi que",
+"nko": "ߡߎ߲߬ߘߏ߲߬",
+"cat": "ߢߞ."
+},
+{
+"fr": "raccompagner",
+"nko": "ߡߊߟߐ߬",
+"cat": "ߕߡ."
+},
+{
+"fr": "radical,ale,aux",
+"nko": "ߓߊߖߎߕߌ",
+"cat": "ߡ."
+},
+{
+"fr": "raffiner",
+"nko": "ߛߍ߲ߛߍ߲߫",
+"cat": "ߕߡ."
+},
+{
+"fr": "raisonnement",
+"nko": "ߦߌ߬ߘߊ߬ߟߌ",
+"cat": "ߞߍߕ."
+},
+{
+"fr": "rampe",
+"nko": "ߝߊ߯ߙߌ",
+"cat": "ߡ."
+},
+{
+"fr": "rapportable",
+"nko": "ߡߊߕߡߊߣߕߊ",
+"cat": "ߡ."
+},
+{
+"fr": "rationnement",
+"nko": "ߛߟߐߓߐ",
+"cat": "ߞߍߕ."
+},
+{
+"fr": "rayonné,e",
+"nko": "ߥߎߦߊ߲ߦߊ",
+"cat": "ߗߞߕ."
+},
+{
+"fr": "recharge",
+"nko": "ߖߛߐߡߊߛߊ߬ߦߌ",
+"cat": "ߞߍߕ."
+},
+{
+"fr": "recoupe",
+"nko": "ߓߘߎ߬ߓߘߎ",
+"cat": "ߡ."
+},
+{
+"fr": "recyclage",
+"nko": "ߟߐ߲ߕߟߊߞߎߘߦߊ",
+"cat": "ߞߍߕ."
+},
+{
+"fr": "refuser",
+"nko": "ߓߊ߲߬",
+"cat": "ߞߞߘ."
+},
+{
+"fr": "relaxation",
+"nko": "ߓߌ߬ߟߊ߬ߟߌ",
+"cat": "ߞߍߕ."
+},
+{
+"fr": "remastiquer",
+"nko": "ߢߌ߬ߡߌ߲ߢߌߡߌ߲߫",
+"cat": "ߕߡ."
+},
+{
+"fr": "rempiètement",
+"nko": "ߛߡߊ߬ߛߋ߲߬ߡߊ߬ߛߊߦߌ",
+"cat": "ߞߍߕ."
+},
+{
+"fr": "renfoncer",
+"nko": "ߘߊ߬ߣߊ߲ ߛߐ߰",
+"cat": "ߕߡ."
+},
+{
+"fr": "renâcler",
+"nko": "ߞߟߏ߫",
+"cat": "ߞߕ."
+},
+{
+"fr": "reposer",
+"nko": "ߛߏ߯ߙߏߡߛߊߦߌ߫",
+"cat": "ߕߡ."
+},
+{
+"fr": "rescinder",
+"nko": "ߘߊߓߌ߬ߟߊ߬",
+"cat": "ߕߡ."
+},
+{
+"fr": "ressuer",
+"nko": "ߥߊ߬ߛߌ߬",
+"cat": "ߕߡ."
+},
+{
+"fr": "retiré,e",
+"nko": "ߓߟߏߓߐߣߍ߲",
+"cat": "ߡ."
+},
+{
+"fr": "revendicatif",
+"nko": "ߡߞߊߣߌ߲ߞߏ",
+"cat": "ߡ."
+},
+{
+"fr": "rhume",
+"nko": "ߛߊ߬ߛߊ",
+"cat": "ߕ."
+},
+{
+"fr": "ripolin",
+"nko": "ߓߎߙߊ߲ߕߟߎ",
+"cat": "ߕ."
+},
+{
+"fr": "roche éruptif",
+"nko": "ߘߎ߰ߝߎ߬ߙߊ߲߬ ߝߘߊ",
+"cat": "ߕ."
+},
+{
+"fr": "rosser",
+"nko": "ߜߊ߬ߛߌߜߊ߬ߛߌ߬",
+"cat": "ߞߍߕ."
+},
+{
+"fr": "roussette",
+"nko": "ߛߎ߭ߞߎ߬ߘߋ߲",
+"cat": "ߕ."
+},
+{
+"fr": "Rugops",
+"nko": "ߢߘߊߢߐ߬ߙߐ߲߬ߣߍ߲",
+"cat": ""
+},
+{
+"fr": "râtelage",
+"nko": "ߛߊ߬ߛߊ߬ߟߌ",
+"cat": "ߞߍߕ."
+},
+{
+"fr": "récapitulation",
+"nko": "ߟߊߘߛߏ",
+"cat": "ߞߍߕ."
+},
+{
+"fr": "récusable",
+"nko": "ߡߊߛߐ߬ߛߐ߬ߕߊ",
+"cat": "ߡ."
+},
+{
+"fr": "réfugier",
+"nko": "ߞߎ߲߬ߞߊ߬ߙߌ߬ߝߊ߫",
+"cat": "ߞߕ."
+},
+{
+"fr": "réhydrater",
+"nko": "ߡߊ߰ߦߡߊ߬ߛߊߦߌ߫",
+"cat": "ߕߡ."
+},
+{
+"fr": "réorganisation",
+"nko": "ߛߌ߲߬ߝߏ߲߬ߧߊ߬ߟߌ߬ߡߊ߬ߛߊߦߌ",
+"cat": "ߞߍߕ."
+},
+{
+"fr": "réputer",
+"nko": "ߖߌ߰",
+"cat": "ߘߞߕ."
+},
+{
+"fr": "résonant,e",
+"nko": "ߥߙߍ߬ߡߍ߬ߟߊ",
+"cat": "ߞߍߣ."
+},
+{
+"fr": "rétrodiffusion",
+"nko": "ߞߐߕߊ߲ߕߊ߲ߝߊ߯ߙߌ",
+"cat": "ߡ."
+},
+{
+"fr": "révoquer",
+"nko": "ߓߟߏߓߐ߫",
+"cat": "ߞߕ."
+},
+{
+"fr": "sablonner",
+"nko": "ߕߌ߬ߢߍ߬ߦߊ߫",
+"cat": "ߕߡ."
+},
+{
+"fr": "sacripant",
+"nko": "ߞߎ߬ߘߋ߲߬ߞߊߣߌ߲",
+"cat": "ߡ."
+},
+{
+"fr": "saison",
+"nko": "ߘߐ߬ߝߊߟߋ߲",
+"cat": "ߞߍߕ."
+},
+{
+"fr": "sangle",
+"nko": "ߣߎ߰ߙߋ߲߬ߖߟߎ",
+"cat": "ߕ."
+},
+{
+"fr": "sardinier,ière",
+"nko": "ߕߌߣߊߝߟߍߟߊ",
+"cat": "ߕ."
+},
+{
+"fr": "saupoudrage",
+"nko": "ߡߊ߬ߖߎ߲߬ߖߎ߲߬ߠߌ߲",
+"cat": "ߞߍߕ."
+},
+{
+"fr": "saxophone",
+"nko": "ߝߎ߬ߟߋ߬ߓߘߎ",
+"cat": "ߕ."
+},
+{
+"fr": "schématisée",
+"nko": "ߦߌ߬ߘߊ߬ߥߟߊ߬ߦߊ߬ߣߍ߲",
+"cat": "ߡ."
+},
+{
+"fr": "scoutisme",
+"nko": "ߓߙߊߘߋ߲ߦߊ",
+"cat": "ߗߞߕ."
+},
+{
+"fr": "sectateur,trice",
+"nko": "ߟߓߊ߬ߕߏ߬ߓߊ߮",
+"cat": "ߞߍߣ."
+},
+{
+"fr": "semestriellement",
+"nko": "ߛߊ߲߬ߕߟߊ߬ߓߟߏߡߊ߬",
+"cat": "ߞߊߟ."
+},
+{
+"fr": "sensualiste",
+"nko": "ߛߏ߬ߓߌ߬ߞߊ߬ߒ߬ߞߋ߬ߞߏ",
+"cat": "ߡ."
+},
+{
+"fr": "serf",
+"nko": "ߛߣߍ߬ߖߐ߲",
+"cat": "ߡ."
+},
+{
+"fr": "servilement",
+"nko": "ߞߎߓߍ߫",
+"cat": "ߞߕ."
+},
+{
+"fr": "si",
+"nko": "ߦߋ߫ ߕߋ߲߬",
+"cat": "ߝߥ."
+},
+{
+"fr": "signer",
+"nko": "ߞߟߊ߬ߣߐ߬ߦߊ߫",
+"cat": "ߕߡ."
+},
+{
+"fr": "simplifiable",
+"nko": "ߝߙߋߞߋߓߐߕߊ",
+"cat": "ߡ."
+},
+{
+"fr": "sirocco",
+"nko": "ߥߙߏ߬ߘߎ߰ߝߢߐߜߍ",
+"cat": "ߕ."
+},
+{
+"fr": "smiller",
+"nko": "ߝߘߊߕߍ߰",
+"cat": "ߕߡ."
+},
+{
+"fr": "soin",
+"nko": "ߣߍߡߊ߭",
+"cat": "ߕ."
+},
+{
+"fr": "soleil",
+"nko": "ߕߋ߬ߟߋ",
+"cat": "ߕ."
+},
+{
+"fr": "solive",
+"nko": "ߞߏ߬ߟߊ",
+"cat": "ߞߍߣ."
+},
+{
+"fr": "sonde",
+"nko": "ߡߙߌߣߊ߲ߢߌߣߌ߲",
+"cat": "ߕ."
+},
+{
+"fr": "sosie",
+"nko": "ߤߐ߲",
+"cat": "ߡ."
+},
+{
+"fr": "soufroir",
+"nko": "ߟߊߜߍߟߊ߲",
+"cat": "ߕ."
+},
+{
+"fr": "sourcilier,ère",
+"nko": "ߢߊߞߎ߲ߞߊ߲ߛߌߞߏ",
+"cat": "ߡ."
+},
+{
+"fr": "sous-jacent,e",
+"nko": "ߞߘߐߕߊ",
+"cat": "ߡ."
+},
+{
+"fr": "souteneur",
+"nko": "ߞߘߐߓߌ߲ߓߌ߲ߓߌ߲ߠߊ",
+"cat": "ߞߍߣ."
+},
+{
+"fr": "spectacle",
+"nko": "ߢߊߝߏߣߊ߲",
+"cat": "ߡ."
+},
+{
+"fr": "spirochétose",
+"nko": "ߢߐߛߌߢߐߙߐ߲ߓߣߊ",
+"cat": "ߕ."
+},
+{
+"fr": "spécifiquement",
+"nko": "ߖߋߞߎߖߋߞߎ߫",
+"cat": "ߞߊߟ."
+},
+{
+"fr": "stariser",
+"nko": "ߕߐ߯ߓߐ߫",
+"cat": "ߞߕ."
+},
+{
+"fr": "stillation",
+"nko": "ߕߏ߲ߘߋߕߏ߲ߘߋ",
+"cat": "ߕ."
+},
+{
+"fr": "straussm",
+"nko": "ߟߊ߬ߓߎ߲߮",
+"cat": "ߕ."
+},
+{
+"fr": "stupidement",
+"nko": "ߞߏߝߊ߲ߞߏߝߊ߲߫",
+"cat": "ߞߊߟ."
+},
+{
+"fr": "stérilisation",
+"nko": "ߟߊ߬ߞߏ߬ߣߊ߬ߦߊ",
+"cat": "ߗߞߕ."
+},
+{
+"fr": "subliminal,ale,aux",
+"nko": "ߝߍ߲߯ߝߍ߲߮",
+"cat": "ߡ."
+},
+{
+"fr": "subtilisation",
+"nko": "ߛߏ߲߬ߧߊ߬ߟߌ",
+"cat": "ߞߍߕ."
+},
+{
+"fr": "sudoral,ale,aux",
+"nko": "ߥߊ߬ߛߌ߬ߞߏ",
+"cat": "ߡ."
+},
+{
+"fr": "syntacticien,enne",
+"nko": "ߞߎߡߦߊߘߐߟߐ߲ߠߊ",
+"cat": "ߞߍߣ."
+},
+{
+"fr": "sécurité",
+"nko": "ߞߎ߲߬ߠߊ߬ߝߎ߬ߟߋ߲",
+"cat": "ߞߍߕ."
+},
+{
+"fr": "séméiologie",
+"nko": "ߥߟߏߒߡߊߟߐ߲ߘߐߦߊ",
+"cat": "ߗߞߕ."
+},
+{
+"fr": "sérologie",
+"nko": "ߖߋ߬ߟߌ߬ߛߟߊ߬ߟߐ߲߬ߘߐ߬ߦߊ",
+"cat": "ߗߞߕ."
+},
+{
+"fr": "tachygraphe",
+"nko": "ߘߐ߬ߘߛߏ߬ߛߓߍ߬ߟߊ",
+"cat": "ߞߍߣ."
+},
+{
+"fr": "talion",
+"nko": "ߕߊߛߙߊ",
+"cat": "ߞߍߕ."
+},
+{
+"fr": "tangential,elle",
+"nko": "ߡߊ߰ߕߏ߲߬ߘߋ߬ߦߊ߬ߞߏ",
+"cat": "ߡ."
+},
+{
+"fr": "taquinerie",
+"nko": "ߢߊ߬ߙߊ߲߬ߞߋ",
+"cat": "ߡ."
+},
+{
+"fr": "tassage",
+"nko": "ߛߙߊߓߐߟߌ",
+"cat": "ߞߍߕ."
+},
+{
+"fr": "tayloriser",
+"nko": "ߞߊ߬ ߞߏ ߞߍ߫ ߕߊߦߌߟߐߙߌߟߞߊ ߕߊ߫ ߢߊ ߞߊ߲߬",
+"cat": "ߘߞ."
+},
+{
+"fr": "telle",
+"nko": "ߦߏ߫",
+"cat": "ߞߞߘ."
+},
+{
+"fr": "tendrement",
+"nko": "ߞߌ߬ߣߌ߲߬ߞߌ߬ߣߌ߲߬ߘߐ߫",
+"cat": "ߞߊߟ."
+},
+{
+"fr": "ternir",
+"nko": "ߜߛߌߞߙߌߦߊ߫",
+"cat": "ߕߡ."
+},
+{
+"fr": "texturation",
+"nko": "ߝߕߊߦߊߟߌ",
+"cat": "ߞߍߕ."
+},
+{
+"fr": "thoracique",
+"nko": "ߛߌߛߌߛߐ߯ߞߏ",
+"cat": "ߡ."
+},
+{
+"fr": "tibétain,e",
+"nko": "ߕߓߍߕߌߞߊ",
+"cat": "ߡ."
+},
+{
+"fr": "tire-clou",
+"nko": "ߓߟߐ߬ߙߋ߲߬ߓߐ߬ߟߊ߲",
+"cat": "ߕ."
+},
+{
+"fr": "togolais,e",
+"nko": "ߕߜ߭ߏߞߊ",
+"cat": "ߡ."
+},
+{
+"fr": "tonner",
+"nko": "ߔߍߙߍ߲߫",
+"cat": "ߘߞߕ."
+},
+{
+"fr": "torsade",
+"nko": "ߡߙߐߡߙߐ",
+"cat": "ߞߍߕ."
+},
+{
+"fr": "touffu,e",
+"nko": "ߕߐ߬ߛߐ߲߬ߞߐ߬ߘߐ߲߬ߡߊ߬ߣߍ߲",
+"cat": "ߡ."
+},
+{
+"fr": "tournicoter",
+"nko": "ߝߌߙߌ߲ߝߌߙߌ߲߫",
+"cat": "ߘߞߕ."
+},
+{
+"fr": "tractoriste",
+"nko": "ߞߏ߬ߙߏ߲߬ߞߏ߬ߙߏ߲߬ߓߊ߮",
+"cat": "ߡ."
+},
+{
+"fr": "tranquilité",
+"nko": "ߡߊ߬ߝߊ",
+"cat": "ߞߍߕ."
+},
+{
+"fr": "transitaire",
+"nko": "ߕߍ߲ߠߊߝߋ߲",
+"cat": "ߡ."
+},
+{
+"fr": "transvaser",
+"nko": "ߘߐߞߊ߬",
+"cat": "ߕߡ."
+},
+{
+"fr": "treillis",
+"nko": "ߞߊ߰ߙߋ߬ߢߊ߲ߛߊ߲",
+"cat": "ߕ."
+},
+{
+"fr": "tricher",
+"nko": "ߖߊ߲߬ߝߊ߬",
+"cat": "ߕߡ."
+},
+{
+"fr": "triomphal,e,aux",
+"nko": "ߟߊ߬ߥߛߊ߬ߞߏ",
+"cat": "ߡ."
+},
+{
+"fr": "trombine",
+"nko": "ߞߎ߲߬ߞߟߏ",
+"cat": "ߕ."
+},
+{
+"fr": "trous-madame",
+"nko": "ߥߏ߬ߟߊ߬ߕߏߟߏ߲",
+"cat": "ߞߍߕ."
+},
+{
+"fr": "trépang",
+"nko": "ߖߌߜߊ߬ߟߊߜߊ߬ߛߊ",
+"cat": "ߕ."
+},
+{
+"fr": "tunicier",
+"nko": "ߝߘߊ߬ߡߊ߬ߟߋ߲",
+"cat": "ߕ."
+},
+{
+"fr": "type",
+"nko": "ߓߐߞߏߣߊ߲",
+"cat": "ߡ."
+},
+{
+"fr": "télécopieur",
+"nko": "ߔߙߊߕߖߌߦߊߓߍߦߊߟߊ߲",
+"cat": "ߕ."
+},
+{
+"fr": "témoigner",
+"nko": "ߟߊߛߙߋߦߊ߫",
+"cat": "ߕߡ."
+},
+{
+"fr": "tête-à-tête",
+"nko": "ߢߊ-ߣߌ-ߢߊ",
+"cat": "ߡ."
+},
+{
+"fr": "underground",
+"nko": "ߘߎ߰ߖߎ߬ߞߘߐ߬ߞߏ",
+"cat": "ߡ."
+},
+{
+"fr": "universellement",
+"nko": "ߝߘߏ߬ߓߦߊ߬ߓߟߏߡߊ߬",
+"cat": "ߞߊߟ."
+},
+{
+"fr": "usagé,e",
+"nko": "ߞߏߙߏ߲",
+"cat": "ߡ."
+},
+{
+"fr": "vaccinothérapie",
+"nko": "ߓߟߏߕߋߘߊ߲ߘߊߟߌ",
+"cat": "ߞߍߕ."
+},
+{
+"fr": "valide",
+"nko": "ߞߍ߲ߘߍ",
+"cat": "ߡ."
+},
+{
+"fr": "varapper",
+"nko": "ߝߘߊߟߊߦߟߍ߫",
+"cat": "ߞߕ."
+},
+{
+"fr": "vedettariat",
+"nko": "ߟߏ߬ߟߏ߬ߡߊ߬ߦߊ",
+"cat": "ߗߞߕ."
+},
+{
+"fr": "ventis",
+"nko": "ߥߊ߬ߙߊ߲߬ߞߏ߬ߣߍ߲",
+"cat": "ߡ."
+},
+{
+"fr": "vernation",
+"nko": "ߝߌߘߊߝߎ߲ߕߌ",
+"cat": "ߕ."
+},
+{
+"fr": "vesse",
+"nko": "ߓߏ߬ߝߢߐ ߡߍ߲ ߡߊ߲߬ߞߊ߲߬ ߕߍ߫ ߓߐ߫ ߟߊ߫",
+"cat": "ߕ."
+},
+{
+"fr": "vichy",
+"nko": "ߞߛߏ߬ߘߎ߰ߓߍ߲",
+"cat": "ߕ."
+},
+{
+"fr": "vigie",
+"nko": "ߖߌߞߊ߲ߜߋߟߎ߲",
+"cat": "ߞߍߕ."
+},
+{
+"fr": "violateur,trice",
+"nko": "ߕߣߊ߬ߟߊ߬ߕߍ߬ߟߊ",
+"cat": "ߞߍߣ."
+},
+{
+"fr": "visible",
+"nko": "ߦߋߕߊ",
+"cat": "ߡ."
+},
+{
+"fr": "viverridés",
+"nko": "ߥߘߊߙߋ߲",
+"cat": "ߡ."
+},
+{
+"fr": "volailleur,euse",
+"nko": "ߛߏߞߣߐߕߌ߮",
+"cat": "ߡ."
+},
+{
+"fr": "volvox",
+"nko": "ߡߙߍߣߙߏ߬ߟߏ߲",
+"cat": "ߕ."
+},
+{
+"fr": "vrombissement",
+"nko": "ߞߌߞߌ߫ߓߟߏߡߊ߬",
+"cat": "ߘߒ."
+},
+{
+"fr": "vénérer",
+"nko": "ߡߊߓߏ߲߬ߧߊ߫",
+"cat": "ߕߡ."
+},
+{
+"fr": "water-closet",
+"nko": "ߞߐߡߊ߭",
+"cat": "ߕ."
+},
+{
+"fr": "yaourt",
+"nko": "ߣߐߣߐߞߎߡߎ߲",
+"cat": "ߕ."
+},
+{
+"fr": "zigzag",
+"nko": "ߞߊߘߌߞߊߘߟߌ",
+"cat": "ߞߍߕ."
+},
+{
+"fr": "zymotique",
+"nko": "ߟߊ߬ߘߟߐ߬ߦߊ߬ߞߏ",
+"cat": "ߡ."
+},
+{
+"fr": "éberlué,e",
+"nko": "ߞߣߐߘߐߝߟߌ߬ߣߍ߲",
+"cat": "ߡ."
+},
+{
+"fr": "échapper à,",
+"nko": "ߓߐ߫",
+"cat": "ߞߛ."
+},
+{
+"fr": "éclatement",
+"nko": "ߥߊ߬ߦߊ",
+"cat": "ߞߍߕ."
+},
+{
+"fr": "école",
+"nko": "ߞߊ߬ߙߊ߲߬ߕߊ",
+"cat": "ߕ."
+},
+{
+"fr": "écrit,e",
+"nko": "ߛߓߍߦߊߣߍ߲",
+"cat": "ߡ."
+},
+{
+"fr": "également",
+"nko": "ߢߊߞߋߟߋ߲ߡߊ߬",
+"cat": "ߞߊߟ."
+},
+{
+"fr": "élasticité",
+"nko": "ߞߟߏ",
+"cat": "ߞߍߕ."
+},
+{
+"fr": "élonger",
+"nko": "ߛߊ߲ߜߊߕߊ߯ߡߊ߫",
+"cat": "ߞߕ."
+},
+{
+"fr": "éminent,e",
+"nko": "ߡߊߦߋߙߋ߲ߣߍ߲",
+"cat": "ߡ."
+},
+{
+"fr": "épanoui,e",
+"nko": "ߘߐߝߎߟߋ߲ߣߍ߲",
+"cat": "ߡ."
+},
+{
+"fr": "épiler se (faire - dans un institut de beauté)",
+"nko": "ߊ߬ ߓߘߴߊ߬ ߛߌ ߟߌ߫ ߟߊ߬ߗߋ߲߬ߧߘߊ ߟߊ߫",
+"cat": "ߝߥ."
+},
+{
+"fr": "épuration",
+"nko": "ߓߊ߲ߕߌߦߊ",
+"cat": "ߞߍߕ."
+},
+{
+"fr": "érotisme",
+"nko": "ߞߊ߬ߣߌ߲߬ߝߋ߲",
+"cat": "ߡ."
+},
+{
+"fr": "étendre",
+"nko": "ߘߐߝߍ߲߬ߛߍ߲߫",
+"cat": "ߕߡ."
+},
+{
+"fr": "étreinte",
+"nko": "ߞߊ߲ߘߐߛߎ߲ߓߎ",
+"cat": "ߞߍߕ."
+},
+{
+"fr": "évier",
+"nko": "ߓߟߍߘߊ߮",
+"cat": "ߕ."
+}
+]
+}

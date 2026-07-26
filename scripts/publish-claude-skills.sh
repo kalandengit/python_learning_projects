@@ -13,7 +13,10 @@
 #   ./scripts/publish-claude-skills.sh git@github.com:kalandengit/claude-skills.git
 #   ./scripts/publish-claude-skills.sh https://github.com/kalandengit/claude-skills.git
 #
-# Safe to re-run: it force-updates the remote 'main' with the current bundle.
+# This force-updates the remote 'main'. It is destructive, so it refuses to push
+# unless CONFIRM_FORCE_PUSH=1 is set, prints the resolved remote for review, and
+# uses --force-with-lease:
+#   CONFIRM_FORCE_PUSH=1 ./scripts/publish-claude-skills.sh <git-remote-url>
 set -euo pipefail
 
 REMOTE="${1:-}"
@@ -49,6 +52,18 @@ git -c user.name="${GIT_AUTHOR_NAME:-$(git config user.name || echo kalandengit)
     -c user.email="${GIT_AUTHOR_EMAIL:-$(git config user.email || echo kalan.kalandeh@gmail.com)}" \
     commit -q -m "Publish claude-skills marketplace (planning-first, it-prompt-specialist, reverse-engineering)"
 git remote add origin "$REMOTE"
-echo ">> Pushing bundle to $REMOTE (branch main)..."
-git push -u --force origin main
+
+# Force-updating a remote 'main' is destructive: require explicit opt-in and
+# show the resolved remote so a mistyped argument cannot silently overwrite the
+# wrong repository. Use --force-with-lease so we never clobber unseen commits.
+RESOLVED="$(git remote get-url origin)"
+echo ">> Target remote resolves to: $RESOLVED (branch main)"
+if [ "${CONFIRM_FORCE_PUSH:-0}" != "1" ]; then
+    echo "!! Refusing to force-push. This overwrites 'main' on the target remote." >&2
+    echo "   Re-run with CONFIRM_FORCE_PUSH=1 once you've verified the remote above." >&2
+    echo "   Ensure branch protection is configured on the destination repository." >&2
+    exit 1
+fi
+echo ">> Pushing bundle to $RESOLVED (branch main)..."
+git push -u --force-with-lease origin main
 echo ">> Done. In Claude Code:  /plugin marketplace add kalandengit/claude-skills"

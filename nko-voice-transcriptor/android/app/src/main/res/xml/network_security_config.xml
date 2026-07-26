@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Test APK: permit cleartext HTTP so a tester can point at a local/LAN
+     dev server. For a production build, serve over HTTPS and remove this. -->
+<network-security-config>
+    <base-config cleartextTrafficPermitted="true" />
+</network-security-config>
