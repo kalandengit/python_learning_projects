@@ -1,0 +1,24 @@
+<odoo>
+  <template id="scanner_page" name="EMS Scanner">
+    <t t-call="website.layout">
+      <t t-set="head">
+        <link rel="manifest" href="/ems/scanner/manifest.json"/>
+      </t>
+      <main class="container py-4 ems-scanner">
+        <h1>EMS Scanner</h1>
+        <p id="ems-network-state" class="text-muted">Checking connectivity…</p>
+        <div class="mb-3">
+          <label for="ems-device-uid" class="form-label">Device UID</label>
+          <input id="ems-device-uid" class="form-control" autocomplete="off"/>
+        </div>
+        <div class="mb-3">
+          <label for="ems-envelope" class="form-label">QR payload</label>
+          <textarea id="ems-envelope" class="form-control" rows="5"></textarea>
+        </div>
+        <button id="ems-submit-scan" class="btn btn-primary" type="button">Validate scan</button>
+        <button id="ems-sync-scans" class="btn btn-outline-secondary" type="button">Sync offline queue</button>
+        <pre id="ems-scan-result" class="mt-3 p-3 bg-light"></pre>
+      </main>
+    </t>
+  </template>
+</odoo>

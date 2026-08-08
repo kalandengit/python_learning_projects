@@ -1,0 +1,8 @@
+<odoo noupdate="1">
+  <record id="cron_waitlist_expire" model="ir.cron">
+    <field name="name">EMS: Expire Waitlist Offers</field>
+    <field name="model_id" ref="model_ems_waitlist_entry"/>
+    <field name="state">code</field><field name="code">model._cron_expire_offers()</field>
+    <field name="interval_number">5</field><field name="interval_type">minutes</field><field name="active">True</field>
+  </record>
+</odoo>

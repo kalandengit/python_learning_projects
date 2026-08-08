@@ -1,0 +1,49 @@
+upstream ems_odoo_backend {
+    server 127.0.0.1:${ODOO_PORT};
+    keepalive 16;
+}
+
+server {
+    listen 80;
+    listen [::]:80;
+    server_name ${ODOO_DOMAIN};
+
+    location /.well-known/acme-challenge/ { root /var/www/certbot; }
+    location / { return 301 https://$host$request_uri; }
+}
+
+server {
+    listen 443 ssl http2;
+    listen [::]:443 ssl http2;
+    server_name ${ODOO_DOMAIN};
+
+    ssl_certificate /etc/letsencrypt/live/${ODOO_DOMAIN}/fullchain.pem;
+    ssl_certificate_key /etc/letsencrypt/live/${ODOO_DOMAIN}/privkey.pem;
+
+    client_max_body_size 64m;
+    proxy_connect_timeout 60s;
+    proxy_read_timeout 720s;
+    proxy_send_timeout 720s;
+
+    add_header X-Content-Type-Options "nosniff" always;
+    add_header Referrer-Policy "strict-origin-when-cross-origin" always;
+
+    location /websocket {
+        proxy_pass http://ems_odoo_backend;
+        proxy_http_version 1.1;
+        proxy_set_header Upgrade $http_upgrade;
+        proxy_set_header Connection "upgrade";
+        proxy_set_header Host $host;
+        proxy_set_header X-Forwarded-Proto https;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+    }
+
+    location / {
+        proxy_pass http://ems_odoo_backend;
+        proxy_http_version 1.1;
+        proxy_set_header Host $host;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header X-Forwarded-Proto https;
+    }
+}

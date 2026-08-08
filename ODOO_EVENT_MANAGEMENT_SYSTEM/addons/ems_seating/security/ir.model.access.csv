@@ -1,0 +1,5 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_seat_user,ems.seat.user,model_ems_seat,ems_core.group_ems_user,1,1,1,0
+access_seat_manager,ems.seat.manager,model_ems_seat,ems_core.group_ems_manager,1,1,1,1
+access_hold_user,ems.hold.user,model_ems_seat_hold,ems_core.group_ems_user,1,1,1,0
+access_hold_manager,ems.hold.manager,model_ems_seat_hold,ems_core.group_ems_manager,1,1,1,1

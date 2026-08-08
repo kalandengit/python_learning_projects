@@ -1,0 +1,22 @@
+<odoo>
+  <record id="badge_list" model="ir.ui.view">
+    <field name="name">ems.badge.list</field><field name="model">ems.badge</field>
+    <field name="arch" type="xml"><list>
+      <field name="name"/><field name="event_id"/><field name="partner_id"/>
+      <field name="valid_from"/><field name="valid_until"/><field name="active"/>
+    </list></field>
+  </record>
+  <record id="badge_form" model="ir.ui.view">
+    <field name="name">ems.badge.form</field><field name="model">ems.badge</field>
+    <field name="arch" type="xml"><form><sheet><group>
+      <field name="name"/><field name="badge_uid" readonly="1"/><field name="event_id"/>
+      <field name="partner_id"/><field name="zone_ids" widget="many2many_tags"/>
+      <field name="valid_from"/><field name="valid_until"/><field name="active"/>
+    </group></sheet><chatter/></form></field>
+  </record>
+  <record id="action_ems_badge" model="ir.actions.act_window">
+    <field name="name">Badges</field><field name="res_model">ems.badge</field><field name="view_mode">list,form</field>
+  </record>
+  <menuitem id="menu_ems_badge" name="Badges" parent="ems_core.menu_ems_root"
+            action="action_ems_badge" sequence="35"/>
+</odoo>

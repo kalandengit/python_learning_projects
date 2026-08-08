@@ -1,0 +1,13 @@
+<odoo>
+  <record id="waitlist_list" model="ir.ui.view">
+    <field name="name">ems.waitlist.entry.list</field><field name="model">ems.waitlist.entry</field>
+    <field name="arch" type="xml"><list>
+      <field name="event_id"/><field name="partner_id"/><field name="priority"/>
+      <field name="state"/><field name="offer_expires_at"/>
+    </list></field>
+  </record>
+  <record id="action_waitlist" model="ir.actions.act_window">
+    <field name="name">Waitlist</field><field name="res_model">ems.waitlist.entry</field><field name="view_mode">list,form</field>
+  </record>
+  <menuitem id="menu_waitlist" name="Waitlist" parent="ems_core.menu_ems_root" action="action_waitlist" sequence="50"/>
+</odoo>

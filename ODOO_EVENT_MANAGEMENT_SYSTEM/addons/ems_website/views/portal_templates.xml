@@ -1,0 +1,29 @@
+<odoo>
+  <template id="portal_my_ems_tickets" name="My EMS Tickets">
+    <t t-call="portal.portal_layout">
+      <div class="container py-4">
+        <h2>My Event Tickets</h2>
+        <div class="list-group">
+          <t t-foreach="tickets" t-as="ticket">
+            <a class="list-group-item list-group-item-action"
+               t-att-href="'/my/ems/ticket/%s' % ticket.public_uid">
+              <strong t-esc="ticket.event_id.name"/>
+              <span class="badge text-bg-secondary ms-2" t-esc="ticket.state"/>
+            </a>
+          </t>
+        </div>
+      </div>
+    </t>
+  </template>
+
+  <template id="portal_ems_ticket" name="EMS Ticket">
+    <t t-call="portal.portal_layout">
+      <div class="container py-4">
+        <h2 t-esc="ticket.event_id.name"/>
+        <p><strong>Ticket:</strong> <span t-esc="ticket.name"/></p>
+        <div id="ems_qr_payload" class="alert alert-light text-break" t-esc="envelope"/>
+        <p class="text-muted">The access credential expires quickly; reload before entry if needed.</p>
+      </div>
+    </t>
+  </template>
+</odoo>

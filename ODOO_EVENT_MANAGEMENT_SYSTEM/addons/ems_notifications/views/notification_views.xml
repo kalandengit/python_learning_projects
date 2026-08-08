@@ -1,0 +1,13 @@
+<odoo>
+  <record id="notification_list" model="ir.ui.view">
+    <field name="name">ems.notification.list</field><field name="model">ems.notification</field>
+    <field name="arch" type="xml"><list>
+      <field name="channel"/><field name="recipient"/><field name="subject"/><field name="state"/>
+      <field name="attempt_count"/><field name="next_attempt_at"/>
+    </list></field>
+  </record>
+  <record id="action_notifications" model="ir.actions.act_window">
+    <field name="name">Notifications</field><field name="res_model">ems.notification</field><field name="view_mode">list,form</field>
+  </record>
+  <menuitem id="menu_notifications" name="Notifications" parent="ems_core.menu_ems_root" action="action_notifications" sequence="65"/>
+</odoo>

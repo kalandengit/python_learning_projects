@@ -1,0 +1,8 @@
+<odoo noupdate="1">
+  <record id="seq_ems_event" model="ir.sequence">
+    <field name="name">EMS Event</field>
+    <field name="code">ems.event</field>
+    <field name="prefix">EVT/%(year)s/</field>
+    <field name="padding">6</field>
+  </record>
+</odoo>

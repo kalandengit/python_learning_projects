@@ -1,0 +1,3 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_ai_user,ems.ai.user,model_ems_ai_request,ems_core.group_ems_user,1,1,1,0
+access_ai_manager,ems.ai.manager,model_ems_ai_request,ems_core.group_ems_manager,1,1,1,1

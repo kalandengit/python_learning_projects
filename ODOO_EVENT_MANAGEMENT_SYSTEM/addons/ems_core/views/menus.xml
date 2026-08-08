@@ -1,0 +1,12 @@
+<odoo>
+  <record id="action_ems_events" model="ir.actions.act_window">
+    <field name="name">Events</field>
+    <field name="res_model">event.event</field>
+    <field name="view_mode">kanban,list,form,calendar</field>
+  </record>
+  <menuitem id="menu_ems_root" name="EMS" sequence="35" groups="ems_core.group_ems_user"/>
+  <menuitem id="menu_ems_events" name="Events" parent="menu_ems_root"
+            action="action_ems_events" sequence="10"/>
+  <menuitem id="menu_ems_zones" name="Venue Zones" parent="menu_ems_root"
+            action="action_ems_zones" sequence="20"/>
+</odoo>

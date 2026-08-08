@@ -1,0 +1,33 @@
+{
+  "package": "EMS Enterprise Odoo 19 Community",
+  "version": "19.0.2.0.0",
+  "addons": [
+    "ems_access",
+    "ems_ai",
+    "ems_api",
+    "ems_badge",
+    "ems_core",
+    "ems_gdpr",
+    "ems_notifications",
+    "ems_payment_stripe",
+    "ems_reporting",
+    "ems_scanner_pwa",
+    "ems_seating",
+    "ems_suite",
+    "ems_ticketing",
+    "ems_waitlist",
+    "ems_website"
+  ],
+  "generated_utc": "2026-08-08",
+  "validation": {
+    "static": "PASS",
+    "runtime_odoo19_install": "must be executed by Codex/on deployment host",
+    "verified_native_odoo19_ids": [
+      "event.view_event_form",
+      "event.group_event_user",
+      "event.group_event_manager"
+    ],
+    "payment_transaction_signature_checked": true
+  },
+  "file_count": 124
+}

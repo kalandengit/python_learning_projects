@@ -1,0 +1,20 @@
+<odoo>
+  <record id="scan_pivot" model="ir.ui.view">
+    <field name="name">ems.scan.log.pivot</field><field name="model">ems.scan.log</field>
+    <field name="arch" type="xml"><pivot string="Check-in Analysis">
+      <field name="event_id" type="row"/><field name="result" type="col"/><field name="id" type="measure"/>
+    </pivot></field>
+  </record>
+  <record id="scan_graph" model="ir.ui.view">
+    <field name="name">ems.scan.log.graph</field><field name="model">ems.scan.log</field>
+    <field name="arch" type="xml"><graph string="Check-ins" type="bar">
+      <field name="server_scanned_at" interval="hour"/><field name="id" type="measure"/>
+    </graph></field>
+  </record>
+  <record id="action_reporting_scans" model="ir.actions.act_window">
+    <field name="name">Check-in Analytics</field><field name="res_model">ems.scan.log</field>
+    <field name="view_mode">pivot,graph,list</field>
+  </record>
+  <menuitem id="menu_reporting" name="Analytics" parent="ems_core.menu_ems_root"
+            action="action_reporting_scans" sequence="80"/>
+</odoo>

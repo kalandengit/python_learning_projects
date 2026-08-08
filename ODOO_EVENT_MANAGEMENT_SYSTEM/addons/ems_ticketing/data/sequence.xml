@@ -1,0 +1,6 @@
+<odoo noupdate="1">
+  <record id="seq_ems_ticket" model="ir.sequence">
+    <field name="name">EMS Ticket</field><field name="code">ems.ticket</field>
+    <field name="prefix">TKT/%(year)s/</field><field name="padding">8</field>
+  </record>
+</odoo>

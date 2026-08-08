@@ -1,0 +1,18 @@
+<odoo>
+  <record id="event_form_ems_extension" model="ir.ui.view">
+    <field name="name">event.event.form.ems.extension</field>
+    <field name="model">event.event</field>
+    <field name="inherit_id" ref="event.view_event_form"/>
+    <field name="arch" type="xml">
+      <xpath expr="//sheet" position="inside">
+        <group string="EMS">
+          <field name="ems_code" readonly="1"/>
+          <field name="ems_organizer_id"/>
+          <field name="ems_company_id"/>
+          <field name="ems_high_security"/>
+          <field name="ems_checkin_open"/>
+        </group>
+      </xpath>
+    </field>
+  </record>
+</odoo>
