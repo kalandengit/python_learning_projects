@@ -9,11 +9,15 @@ services:
     volumes:
       - ems_odoo_db:/var/lib/postgresql/data
     networks: [ems_odoo_internal]
+    # No ports: PostgreSQL is reachable only from the internal network.
     healthcheck:
       test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER} -d ${POSTGRES_DB}"]
       interval: 10s
       timeout: 5s
       retries: 10
+    logging:
+      driver: json-file
+      options: { max-size: "10m", max-file: "5" }
 
   odoo:
     image: odoo:19.0
@@ -28,11 +32,24 @@ services:
       PASSWORD: ${POSTGRES_PASSWORD}
     volumes:
       - ems_odoo_data:/var/lib/odoo
+      - ems_odoo_log:/var/log/odoo
       - ../addons:/mnt/extra-addons:ro
       - ./generated/odoo.conf:/etc/odoo/odoo.conf:ro
     ports:
+      # Loopback only: host Nginx is the sole entry point, so this stack can
+      # coexist with other projects on the same VPS without exposing Odoo.
       - "127.0.0.1:${ODOO_PORT}:8069"
     networks: [ems_odoo_internal]
+    healthcheck:
+      # python3 rather than curl: it is guaranteed present in the Odoo image.
+      test: ["CMD-SHELL", "python3 -c \"import urllib.request as u; u.urlopen('http://localhost:8069/web/health', timeout=5)\""]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+      start_period: 60s
+    logging:
+      driver: json-file
+      options: { max-size: "10m", max-file: "5" }
 
 networks:
   ems_odoo_internal:
@@ -41,3 +58,4 @@ networks:
 volumes:
   ems_odoo_db:
   ems_odoo_data:
+  ems_odoo_log:

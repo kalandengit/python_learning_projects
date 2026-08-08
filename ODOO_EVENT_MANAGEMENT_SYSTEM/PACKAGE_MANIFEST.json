@@ -1,6 +1,6 @@
 {
   "package": "EMS Enterprise Odoo 19 Community",
-  "version": "19.0.2.0.0",
+  "version": "19.0.2.1.0",
   "addons": [
     "ems_access",
     "ems_ai",
@@ -18,16 +18,33 @@
     "ems_waitlist",
     "ems_website"
   ],
-  "generated_utc": "2026-08-08",
-  "validation": {
-    "static": "PASS",
-    "runtime_odoo19_install": "must be executed by Codex/on deployment host",
-    "verified_native_odoo19_ids": [
-      "event.view_event_form",
-      "event.group_event_user",
-      "event.group_event_manager"
-    ],
-    "payment_transaction_signature_checked": true
+  "verified_against": {
+    "odoo_repository": "https://github.com/odoo/odoo.git",
+    "odoo_branch": "19.0",
+    "odoo_commit": "4d7ef1f513155010f709884325b154b862b8c59d",
+    "odoo_version": "19.0.0 final",
+    "edition": "community",
+    "python": "3.11.15",
+    "postgresql": "16.13"
   },
-  "file_count": 124
+  "validation": {
+    "static_validator": "PASS",
+    "install_ems_suite": "PASS (15/15 modules installed, --without-demo=all)",
+    "upgrade_ems_suite": "PASS",
+    "tests": "PASS (113 tests, 0 failed, 0 errors)",
+    "backup_restore_drill": "PASS (executed; see docs/INSTALL_TEST_REPORT.md)",
+    "deployment_stack_validation": "PASS (nginx -t, compose config, secret scan)",
+    "not_executed": [
+      "docker compose up (no Docker daemon in the build environment)",
+      "TLS certificate issuance (requires public DNS)",
+      "live /websocket traffic through nginx",
+      "Stripe sandbox transaction (requires Stripe test credentials)",
+      "browser execution of the scanner PWA (camera, IndexedDB, service worker)"
+    ]
+  },
+  "reports": [
+    "docs/GAP_ANALYSIS.md",
+    "docs/DEPENDENCY_VERIFICATION.md",
+    "docs/INSTALL_TEST_REPORT.md"
+  ]
 }

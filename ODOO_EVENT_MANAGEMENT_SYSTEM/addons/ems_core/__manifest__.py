@@ -1,6 +1,8 @@
 {
     "name": "EMS Core",
     "version": "19.0.2.0.0",
+    "summary": "Core EMS objects: event extensions, venue zones, groups",
+    "author": "EMS",
     "category": "Marketing/Events",
     "license": "LGPL-3",
     "depends": ["event", "mail", "contacts"],

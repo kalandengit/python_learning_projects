@@ -8,10 +8,20 @@
   </record>
   <record id="badge_form" model="ir.ui.view">
     <field name="name">ems.badge.form</field><field name="model">ems.badge</field>
-    <field name="arch" type="xml"><form><sheet><group>
-      <field name="name"/><field name="badge_uid" readonly="1"/><field name="event_id"/>
-      <field name="partner_id"/><field name="zone_ids" widget="many2many_tags"/>
-      <field name="valid_from"/><field name="valid_until"/><field name="active"/>
+    <field name="arch" type="xml"><form>
+      <header>
+        <button name="action_print_badge" type="object" string="Print Badge" class="btn-primary"/>
+      </header>
+      <sheet><group>
+      <group>
+        <field name="name"/><field name="badge_uid" readonly="1"/><field name="event_id"/>
+        <field name="partner_id"/><field name="ticket_id"/>
+      </group>
+      <group>
+        <field name="valid_from"/><field name="valid_until"/><field name="active"/>
+        <field name="qr_image" widget="image" options="{'size': [140, 140]}"/>
+      </group>
+      <field name="zone_ids" widget="many2many_tags" colspan="2"/>
     </group></sheet><chatter/></form></field>
   </record>
   <record id="action_ems_badge" model="ir.actions.act_window">

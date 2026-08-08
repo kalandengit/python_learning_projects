@@ -1,2 +1,22 @@
-.ems-scanner { max-width: 760px; }
-#ems-scan-result { min-height: 6rem; white-space: pre-wrap; }
+.ems-scanner { max-width: 900px; }
+
+.ems-scanner #ems-scan-result {
+    min-height: 6rem;
+    white-space: pre-wrap;
+    word-break: break-word;
+}
+
+.ems-scanner #ems-scan-result[data-level="success"] {
+    border-left: 4px solid var(--bs-success, #198754);
+}
+.ems-scanner #ems-scan-result[data-level="warning"] {
+    border-left: 4px solid var(--bs-warning, #ffc107);
+}
+.ems-scanner #ems-scan-result[data-level="error"] {
+    border-left: 4px solid var(--bs-danger, #dc3545);
+}
+
+.ems-scanner .ems-camera-wrapper #ems-camera {
+    aspect-ratio: 4 / 3;
+    object-fit: cover;
+}

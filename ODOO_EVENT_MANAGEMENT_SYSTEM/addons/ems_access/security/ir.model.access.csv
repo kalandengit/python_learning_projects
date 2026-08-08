@@ -3,3 +3,4 @@ access_ems_device_user,ems.device.user,model_ems_scanner_device,ems_core.group_e
 access_ems_device_manager,ems.device.manager,model_ems_scanner_device,ems_core.group_ems_manager,1,1,1,1
 access_ems_scan_user,ems.scan.user,model_ems_scan_log,ems_core.group_ems_user,1,0,1,0
 access_ems_scan_manager,ems.scan.manager,model_ems_scan_log,ems_core.group_ems_manager,1,0,1,0
+access_ems_device_secret_wizard,ems.device.secret.wizard,model_ems_device_secret_wizard,ems_core.group_ems_manager,1,1,1,1

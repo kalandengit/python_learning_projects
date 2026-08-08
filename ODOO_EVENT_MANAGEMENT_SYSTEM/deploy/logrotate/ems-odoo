@@ -1,0 +1,18 @@
+# Host logrotate policy for the EMS Odoo container log file.
+#
+# Install with:
+#   deploy/scripts/install-logrotate.sh
+#
+# The path is the host side of the ems_odoo_log volume; install-logrotate.sh
+# resolves it and writes the final file to /etc/logrotate.d/ems-odoo.
+__ODOO_LOG_PATH__/*.log {
+    daily
+    rotate 30
+    missingok
+    notifempty
+    compress
+    delaycompress
+    copytruncate
+    su root root
+    create 0640 root root
+}

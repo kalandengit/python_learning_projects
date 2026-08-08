@@ -11,6 +11,8 @@
           <field name="ems_company_id"/>
           <field name="ems_high_security"/>
           <field name="ems_checkin_open"/>
+          <field name="ems_auto_issue_tickets"/>
+          <field name="ems_seats_remaining"/>
         </group>
       </xpath>
     </field>

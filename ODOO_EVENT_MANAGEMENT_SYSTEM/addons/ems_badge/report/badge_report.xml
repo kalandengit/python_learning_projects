@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+  <record id="action_report_ems_badge" model="ir.actions.report">
+    <field name="name">EMS Badge</field>
+    <field name="model">ems.badge</field>
+    <field name="report_type">qweb-pdf</field>
+    <field name="report_name">ems_badge.report_ems_badge</field>
+    <field name="report_file">ems_badge.report_ems_badge</field>
+    <field name="binding_model_id" ref="model_ems_badge"/>
+    <field name="binding_type">report</field>
+    <field name="print_report_name">'Badge - %s' % (object.name or '')</field>
+  </record>
+
+  <template id="report_ems_badge">
+    <t t-call="web.basic_layout">
+      <t t-foreach="docs" t-as="badge">
+        <div class="page" style="page-break-after: always;">
+          <div class="text-center mb-3">
+            <h2 t-out="badge.event_id.name"/>
+            <h3 t-out="badge.partner_id.display_name"/>
+          </div>
+          <div class="text-center">
+            <img t-if="badge.qr_image"
+                 t-att-src="'data:image/png;base64,%s' % badge.qr_image.decode()"
+                 style="width: 180px; height: 180px;" alt="Badge QR"/>
+          </div>
+          <div class="text-center mt-3">
+            <strong t-out="badge.name"/>
+          </div>
+          <div class="mt-3">
+            <t t-if="badge.zone_ids">
+              <strong>Zones:</strong>
+              <span t-out="', '.join(badge.zone_ids.mapped('name'))"/>
+            </t>
+            <t t-else="">
+              <span class="text-muted">No zone access granted.</span>
+            </t>
+          </div>
+          <div class="mt-2 small text-muted">
+            <t t-if="badge.valid_from or badge.valid_until">
+              Valid
+              <span t-if="badge.valid_from">from <span t-out="badge.valid_from"/></span>
+              <span t-if="badge.valid_until">until <span t-out="badge.valid_until"/></span>
+            </t>
+          </div>
+        </div>
+      </t>
+    </t>
+  </template>
+</odoo>

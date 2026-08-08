@@ -1,3 +1,4 @@
+<?xml version="1.0" encoding="utf-8"?>
 <odoo>
   <record id="device_list" model="ir.ui.view">
     <field name="name">ems.scanner.device.list</field><field name="model">ems.scanner.device</field>
@@ -5,6 +6,46 @@
       <field name="name"/><field name="device_uid"/><field name="active"/><field name="last_seen_at"/>
     </list></field>
   </record>
+
+  <record id="device_form" model="ir.ui.view">
+    <field name="name">ems.scanner.device.form</field><field name="model">ems.scanner.device</field>
+    <field name="arch" type="xml"><form>
+      <header>
+        <button name="action_enroll" type="object" string="Enroll / Rotate Secret"
+                groups="ems_core.group_ems_manager" class="btn-primary"/>
+      </header>
+      <sheet><group>
+        <group>
+          <field name="name"/><field name="device_uid"/><field name="active"/>
+        </group>
+        <group>
+          <field name="company_id" groups="base.group_multi_company"/>
+          <field name="last_seen_at"/>
+          <field name="secret_set_on" groups="ems_core.group_ems_manager"/>
+        </group>
+      </group>
+      <group string="Authorized Events">
+        <field name="event_ids" nolabel="1" widget="many2many_tags"/>
+      </group>
+      </sheet><chatter/>
+    </form></field>
+  </record>
+
+  <record id="device_secret_wizard_form" model="ir.ui.view">
+    <field name="name">ems.device.secret.wizard.form</field>
+    <field name="model">ems.device.secret.wizard</field>
+    <field name="arch" type="xml"><form>
+      <div class="alert alert-warning" role="alert">
+        Copy this secret into the scanner now. It is shown once and cannot be recovered.
+      </div>
+      <group>
+        <field name="device_id"/>
+        <field name="secret" class="text-break"/>
+      </group>
+      <footer><button string="Done" special="cancel" class="btn-primary"/></footer>
+    </form></field>
+  </record>
+
   <record id="scan_list" model="ir.ui.view">
     <field name="name">ems.scan.log.list</field><field name="model">ems.scan.log</field>
     <field name="arch" type="xml"><list create="0" edit="0" delete="0">
@@ -12,6 +53,23 @@
       <field name="device_id"/><field name="result"/><field name="reason"/>
     </list></field>
   </record>
+
+  <record id="scan_search" model="ir.ui.view">
+    <field name="name">ems.scan.log.search</field><field name="model">ems.scan.log</field>
+    <field name="arch" type="xml"><search>
+      <field name="ticket_id"/><field name="device_id"/><field name="event_id"/>
+      <filter name="accepted" string="Accepted" domain="[('result','=','accepted')]"/>
+      <filter name="rejected" string="Rejected"
+              domain="[('result','not in',['accepted','duplicate'])]"/>
+      <filter name="duplicates" string="Duplicates" domain="[('result','=','duplicate')]"/>
+      <group>
+        <filter name="group_event" string="Event" context="{'group_by':'event_id'}"/>
+        <filter name="group_device" string="Device" context="{'group_by':'device_id'}"/>
+        <filter name="group_result" string="Result" context="{'group_by':'result'}"/>
+      </group>
+    </search></field>
+  </record>
+
   <record id="action_ems_devices" model="ir.actions.act_window">
     <field name="name">Scanner Devices</field><field name="res_model">ems.scanner.device</field><field name="view_mode">list,form</field>
   </record>

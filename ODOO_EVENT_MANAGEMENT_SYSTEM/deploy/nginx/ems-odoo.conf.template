@@ -3,6 +3,11 @@ upstream ems_odoo_backend {
     keepalive 16;
 }
 
+map $http_upgrade $ems_connection_upgrade {
+    default upgrade;
+    ''      close;
+}
+
 server {
     listen 80;
     listen [::]:80;
@@ -13,37 +18,74 @@ server {
 }
 
 server {
+    # The `http2` listen parameter (rather than the newer `http2 on;`
+    # directive) keeps this template valid on nginx 1.24, which is what
+    # Ubuntu 24.04 LTS ships; 1.25+ still honours it.
     listen 443 ssl http2;
     listen [::]:443 ssl http2;
     server_name ${ODOO_DOMAIN};
 
     ssl_certificate /etc/letsencrypt/live/${ODOO_DOMAIN}/fullchain.pem;
     ssl_certificate_key /etc/letsencrypt/live/${ODOO_DOMAIN}/privkey.pem;
+    ssl_protocols TLSv1.2 TLSv1.3;
+    ssl_prefer_server_ciphers off;
+    ssl_session_cache shared:EMS_SSL:10m;
+    ssl_session_timeout 1d;
 
     client_max_body_size 64m;
     proxy_connect_timeout 60s;
     proxy_read_timeout 720s;
     proxy_send_timeout 720s;
 
+    add_header Strict-Transport-Security "max-age=31536000; includeSubDomains" always;
     add_header X-Content-Type-Options "nosniff" always;
     add_header Referrer-Policy "strict-origin-when-cross-origin" always;
 
+    gzip on;
+    gzip_types text/css text/plain application/javascript application/json image/svg+xml;
+    gzip_min_length 1024;
+
+    # Odoo's bus. Needs HTTP/1.1 and the upgrade headers or long-lived
+    # notifications silently fail.
     location /websocket {
         proxy_pass http://ems_odoo_backend;
         proxy_http_version 1.1;
         proxy_set_header Upgrade $http_upgrade;
-        proxy_set_header Connection "upgrade";
+        proxy_set_header Connection $ems_connection_upgrade;
+        proxy_set_header Host $host;
+        proxy_set_header X-Forwarded-Host $host;
+        proxy_set_header X-Forwarded-Proto https;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_read_timeout 720s;
+    }
+
+    # The scanner's service worker must be served from its own scope and never
+    # from a stale cache.
+    location = /ems/scanner/sw.js {
+        proxy_pass http://ems_odoo_backend;
+        proxy_http_version 1.1;
         proxy_set_header Host $host;
         proxy_set_header X-Forwarded-Proto https;
         proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        add_header Cache-Control "no-cache" always;
     }
 
     location / {
         proxy_pass http://ems_odoo_backend;
         proxy_http_version 1.1;
         proxy_set_header Host $host;
+        proxy_set_header X-Forwarded-Host $host;
         proxy_set_header X-Real-IP $remote_addr;
         proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
         proxy_set_header X-Forwarded-Proto https;
+    }
+
+    location ~* /web/static/ {
+        proxy_pass http://ems_odoo_backend;
+        proxy_http_version 1.1;
+        proxy_set_header Host $host;
+        proxy_set_header X-Forwarded-Proto https;
+        proxy_cache_valid 200 60m;
+        expires 7d;
     }
 }

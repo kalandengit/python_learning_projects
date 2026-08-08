@@ -1,20 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
 <odoo>
+  <!-- Check-in analytics -->
   <record id="scan_pivot" model="ir.ui.view">
     <field name="name">ems.scan.log.pivot</field><field name="model">ems.scan.log</field>
     <field name="arch" type="xml"><pivot string="Check-in Analysis">
-      <field name="event_id" type="row"/><field name="result" type="col"/><field name="id" type="measure"/>
+      <field name="event_id" type="row"/><field name="result" type="col"/>
     </pivot></field>
   </record>
+
   <record id="scan_graph" model="ir.ui.view">
     <field name="name">ems.scan.log.graph</field><field name="model">ems.scan.log</field>
     <field name="arch" type="xml"><graph string="Check-ins" type="bar">
-      <field name="server_scanned_at" interval="hour"/><field name="id" type="measure"/>
+      <field name="server_scanned_at" interval="hour"/>
+      <field name="result"/>
     </graph></field>
   </record>
+
   <record id="action_reporting_scans" model="ir.actions.act_window">
     <field name="name">Check-in Analytics</field><field name="res_model">ems.scan.log</field>
     <field name="view_mode">pivot,graph,list</field>
+    <field name="context">{'search_default_group_event': 1}</field>
   </record>
-  <menuitem id="menu_reporting" name="Analytics" parent="ems_core.menu_ems_root"
-            action="action_reporting_scans" sequence="80"/>
+
+  <!-- Ticket analytics -->
+  <record id="ticket_pivot" model="ir.ui.view">
+    <field name="name">ems.ticket.pivot</field><field name="model">ems.ticket</field>
+    <field name="arch" type="xml"><pivot string="Ticket Analysis">
+      <field name="event_id" type="row"/><field name="state" type="col"/>
+    </pivot></field>
+  </record>
+
+  <record id="ticket_graph" model="ir.ui.view">
+    <field name="name">ems.ticket.graph</field><field name="model">ems.ticket</field>
+    <field name="arch" type="xml"><graph string="Tickets Issued" type="line">
+      <field name="create_date" interval="day"/>
+    </graph></field>
+  </record>
+
+  <record id="ticket_search" model="ir.ui.view">
+    <field name="name">ems.ticket.search</field><field name="model">ems.ticket</field>
+    <field name="arch" type="xml"><search>
+      <field name="name"/><field name="event_id"/><field name="partner_id"/>
+      <filter name="active_tickets" string="Active" domain="[('state','=','active')]"/>
+      <filter name="used_tickets" string="Checked in" domain="[('state','=','used')]"/>
+      <filter name="revoked_tickets" string="Revoked" domain="[('state','=','revoked')]"/>
+      <group>
+        <filter name="group_event" string="Event" context="{'group_by':'event_id'}"/>
+        <filter name="group_state" string="Status" context="{'group_by':'state'}"/>
+      </group>
+    </search></field>
+  </record>
+
+  <record id="action_reporting_tickets" model="ir.actions.act_window">
+    <field name="name">Ticket Analytics</field><field name="res_model">ems.ticket</field>
+    <field name="view_mode">pivot,graph,list</field>
+  </record>
+
+  <menuitem id="menu_reporting_root" name="Analytics" parent="ems_core.menu_ems_root"
+            sequence="80"/>
+  <menuitem id="menu_reporting" name="Check-ins" parent="menu_reporting_root"
+            action="action_reporting_scans" sequence="10"/>
+  <menuitem id="menu_reporting_tickets" name="Tickets" parent="menu_reporting_root"
+            action="action_reporting_tickets" sequence="20"/>
 </odoo>

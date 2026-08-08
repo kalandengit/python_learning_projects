@@ -4,14 +4,27 @@ db_host = db
 db_port = 5432
 db_user = ${POSTGRES_USER}
 db_password = ${POSTGRES_PASSWORD}
-db_name = False
-dbfilter = .*
+
+; Pin the served database and refuse everything else. Combined with
+; list_db = False this keeps the database manager closed on a public host.
+db_name = ${ODOO_DB}
+dbfilter = ^${ODOO_DB}$
 list_db = False
+
+; Odoo sits behind host Nginx which terminates TLS.
 proxy_mode = True
+
 addons_path = /usr/lib/python3/dist-packages/odoo/addons,/mnt/extra-addons
+
 workers = ${ODOO_WORKERS}
 max_cron_threads = 1
 limit_time_cpu = 120
 limit_time_real = 240
+limit_time_real_cron = 300
 limit_memory_soft = 2147483648
 limit_memory_hard = 2684354560
+
+; Logging to a file so logrotate owns retention (see deploy/logrotate/).
+logfile = /var/log/odoo/odoo.log
+log_level = info
+logrotate = False

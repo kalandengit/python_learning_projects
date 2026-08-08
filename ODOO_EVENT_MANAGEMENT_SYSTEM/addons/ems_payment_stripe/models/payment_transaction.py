@@ -22,7 +22,8 @@ class PaymentTransaction(models.Model):
         self._ems_reconcile_event_payment()
         return result
 
-    def _set_canceled(self, state_message=None):
-        result = super()._set_canceled(state_message=state_message)
+    def _set_canceled(self, state_message=None, extra_allowed_states=()):
+        result = super()._set_canceled(state_message=state_message,
+                                       extra_allowed_states=extra_allowed_states)
         self._ems_reconcile_event_payment()
         return result

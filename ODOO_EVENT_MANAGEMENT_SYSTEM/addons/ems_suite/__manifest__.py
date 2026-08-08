@@ -1,6 +1,8 @@
 {
     "name": "EMS Enterprise Suite - Odoo 19 Community",
     "version": "19.0.2.0.0",
+    "summary": "Installs the complete EMS suite",
+    "author": "EMS",
     "category": "Marketing/Events",
     "license": "LGPL-3",
     "depends": [

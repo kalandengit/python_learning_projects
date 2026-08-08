@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo noupdate="1">
+  <record id="cron_gdpr_retention" model="ir.cron">
+    <field name="name">EMS: Apply GDPR Retention Policy</field>
+    <field name="model_id" ref="model_ems_gdpr_request"/>
+    <field name="state">code</field>
+    <field name="code">model._cron_apply_retention()</field>
+    <field name="interval_number">1</field>
+    <field name="interval_type">days</field>
+    <field name="active">True</field>
+  </record>
+
+  <record id="param_scan_log_retention" model="ir.config_parameter">
+    <field name="key">ems.gdpr.scan_log_retention_days</field>
+    <field name="value">730</field>
+  </record>
+</odoo>

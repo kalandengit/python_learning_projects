@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+  <record id="view_partner_form_ems_gdpr" model="ir.ui.view">
+    <field name="name">res.partner.form.ems.gdpr</field>
+    <field name="model">res.partner</field>
+    <field name="inherit_id" ref="base.view_partner_form"/>
+    <field name="arch" type="xml">
+      <!-- Odoo 19 rejects group restrictions on the inherited view record
+           itself; the restriction belongs on the injected nodes. -->
+      <xpath expr="//sheet" position="inside">
+        <group string="EMS Data Protection" groups="ems_core.group_ems_manager">
+          <field name="ems_legal_hold"/>
+          <field name="ems_legal_hold_reason" invisible="not ems_legal_hold"
+                 required="ems_legal_hold"/>
+          <field name="ems_anonymized_on" readonly="1"/>
+        </group>
+      </xpath>
+    </field>
+  </record>
+</odoo>
