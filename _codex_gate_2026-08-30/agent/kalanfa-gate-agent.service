@@ -1,0 +1,20 @@
+[Unit]
+Description=Kalanfa Stage08 gate agent (command/evidence channel)
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=simple
+ExecStart=/root/gate-agent.sh \
+  --repo https://github.com/kalandengit/kalanfa-gate-channel.git \
+  --branch main \
+  --workdir /root/kalanfa-gate-agent \
+  --token-file /root/.kalanfa-gate-agent.token \
+  --interval 20
+Restart=always
+RestartSec=15
+StandardOutput=append:/var/log/kalanfa-gate-agent.log
+StandardError=append:/var/log/kalanfa-gate-agent.log
+
+[Install]
+WantedBy=multi-user.target
